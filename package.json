@@ -1,0 +1,27 @@
+{
+  "private": true,
+  "devDependencies": {
+    "webpack": "^1.13.0",
+    "babel-core": "^6.3.26",
+    "babel-loader": "^6.2.0",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13"
+  },
+  "dependencies": {
+    "react": "^15.0.1",
+    "react-dom": "^15.0.1"
+  },
+  "name": "ParagonGG",
+  "description": "Paragon GG is a news, strategy, and statistics website for Paragon by Epic Games",
+  "version": "2.0.0",
+  "main": "gulpfile.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "start": "webpack --progress --colors --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Jamie Shepherd"
+}
