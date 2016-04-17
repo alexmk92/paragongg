@@ -5,6 +5,10 @@
         height: 360px;
         position: relative;
         display: inline-block;
+        transition: all 0.3s;
+        &:hover {
+            filter: brightness(130%);
+        }
         .overlay {
             position: absolute;
             bottom: 0;
@@ -15,6 +19,9 @@
             padding-bottom: 5px;
             margin-bottom: 15px;
             border-bottom: 1px solid rgba(138,135,132, 0.8);
+        }
+        .snippet {
+            line-height: $font-line-height;
         }
     }
     .latest-news {

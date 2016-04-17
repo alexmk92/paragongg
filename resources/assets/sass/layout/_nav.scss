@@ -6,7 +6,6 @@ nav {
     right: 0;
     width: 100%;
     max-width: 1350px;
-    overflow: hidden;
     .logo {
         float: left;
         width: 55px;
@@ -15,13 +14,18 @@ nav {
             width: 25px;
         }
     }
-    .links {
+    .wrapper {
         margin-left: 55px;
-        width: 100%;
         border-bottom: 1px solid #343a4a;
+    }
+    ul {
+        .links {
+
+        }
     }
     li {
         display: inline-block;
+        text-transform: uppercase;
         a {
             display: inline-block;
             padding: 25px 15px 18px;
@@ -55,6 +59,25 @@ nav {
             &:after {
                 left: 0;
             }
+        }
+    }
+    .account-nav {
+        top: 26px;
+        right: 0;
+        position: absolute;
+        font-size: 14px;
+        text-transform: none;
+        font-weight: 600;
+    }
+    .account-avatar {
+        vertical-align: top;
+        margin-top: -4px;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        margin-right: 3px;
+        .fa-caret-down {
+            font-size: 12px;
         }
     }
 }
