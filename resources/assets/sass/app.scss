@@ -1,2 +1,19 @@
-// @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+// Vendor
+@import
+"vendor/reset";
 
+// Utils
+@import
+"utilities/variables",
+"utilities/typography";
+
+// Layout
+@import
+"layout/main",
+"layout/nav",
+"layout/footer",
+"layout/home";
+
+// Components
+//@import
+//"components/component";

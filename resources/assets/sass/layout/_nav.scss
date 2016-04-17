@@ -1,0 +1,60 @@
+nav {
+    position: absolute;
+    margin: 0 auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: 1350px;
+    overflow: hidden;
+    .logo {
+        float: left;
+        width: 55px;
+        padding-top: 15px;
+        img {
+            width: 25px;
+        }
+    }
+    .links {
+        margin-left: 55px;
+        width: 100%;
+        border-bottom: 1px solid #343a4a;
+    }
+    li {
+        display: inline-block;
+        a {
+            display: inline-block;
+            padding: 25px 15px 18px;
+            position: relative;
+            transition: color 0.3s;
+            &:after {
+                content: '';
+                box-sizing: border-box;
+                position: relative;
+                bottom: -19px;
+                left: 0;
+                right: 0;
+                margin: 0 auto;
+                height: 1px;
+                opacity: 0;
+                display: block;
+                background-color: $primary-highlight;
+                transition: all 0.3s;
+                width: 0;
+            }
+            &:hover, &.active {
+                color: $primary-highlight;
+                &:after {
+                    opacity: 1;
+                    width: 100%;
+                }
+            }
+        }
+        &:first-of-type a {
+            padding-left: 0;
+            &:after {
+                left: 0;
+            }
+        }
+    }
+}

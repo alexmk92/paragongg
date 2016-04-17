@@ -1,82 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-US">
 <head>
+    <!-- Title -->
+    <title>
+        @yield('title')
+        Paragon.gg - News, strategy, information
+    </title>
+
+    <!-- Meta tags -->
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    @yield('meta_description')
+    <meta name="keywords" content="
+        @yield('meta_keywords', 'paragon,news,strategy,guides,database,data,cards,moba,livestream,livestreams')
+            "/>
+    @yield('meta_thumbnail')
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Laravel</title>
-
-    <!-- Fonts -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet' type='text/css'>
-    <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700" rel='stylesheet' type='text/css'>
-
     <!-- Styles -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-    {{-- <link href="{{ elixir('css/app.css') }}" rel="stylesheet"> --}}
+    {{-- Should probably be handled by Webpack --}}
+    <link media="all" type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
-    <style>
-        body {
-            font-family: 'Lato';
-        }
+    {{--<script src="https://use.typekit.net/lpk6pfi.js"></script>--}}
+    {{--<script>try{Typekit.load({ async: true });}catch(e){}</script>--}}
 
-        .fa-btn {
-            margin-right: 6px;
-        }
-    </style>
+    <!-- Scripts -->
+    @yield('libraries')
+    {{--<script type="text/javascript" src="{{ url('/js/vendor/jquery-2.2.0.min.js') }}"></script>--}}
+    {{--<script type="text/javascript" src="{{ url('/js/vendor/jquery.tooltipster.min.js') }}"></script>--}}
+    {{--<script type="text/javascript" src="{{ url('/js/vendor/venobox.min.js') }}"></script>--}}
+    {{--<script type="text/javascript" src="{{ url('/js/vendor/jquery.timeago.js') }}"></script>--}}
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
 </head>
-<body id="app-layout">
-    <nav class="navbar navbar-default navbar-static-top">
-        <div class="container">
-            <div class="navbar-header">
+<body>
 
-                <!-- Collapsed Hamburger -->
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
-                    <span class="sr-only">Toggle Navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
+{{-- Yield navigation content --}}
+@include('layouts.nav')
+{{-- Yield the main page content --}}
+<div id="page">
+    @yield('body')
+</div>
 
-                <!-- Branding Image -->
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    Laravel
-                </a>
-            </div>
+@if(Session::has('notification'))
+    <div class="notification">
+        <i class="fa fa-info-circle"></i> {{ Session::get('notification') }}
+    </div>
+@endif
 
-            <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                <!-- Left Side Of Navbar -->
-                <ul class="nav navbar-nav">
-                    <li><a href="{{ url('/home') }}">Home</a></li>
-                </ul>
+@if(Session::has('alert'))
+    <div class="notification alert">
+        <i class="fa fa-exclamation-circle"></i> {{ Session::get('alert') }}
+    </div>
+@endif
 
-                <!-- Right Side Of Navbar -->
-                <ul class="nav navbar-nav navbar-right">
-                    <!-- Authentication Links -->
-                    @if (Auth::guest())
-                        <li><a href="{{ url('/login') }}">Login</a></li>
-                        <li><a href="{{ url('/register') }}">Register</a></li>
-                    @else
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                {{ Auth::user()->name }} <span class="caret"></span>
-                            </a>
+<footer>
+    <p><a href="/">News</a> | <a href="/articles">Articles</a> | <a href="/strategy">Strategy</a> | <a href="/cards">Cards</a> | <a href="/account">Account</a> | <a href="/terms">Terms</a> | <a href="/privacy">Privacy</a></p>
 
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
-                            </ul>
-                        </li>
-                    @endif
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <p>Paragon.gg is built and maintained by &copy; <a href="https://jamie.sh">Jamie Shepherd</a> 2015-<?php echo date("Y"); ?>.<br/>
+        Paragon, Unreal, Unreal Engine 4, UE4, and their respective logos are trademarks or registered trademarks of <a href="http://epicgames.com">Epic Games, Inc.</a></p>
+</footer>
 
-    @yield('content')
+@if(!isset($hideAnalytics))
+    {{--
+     <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-    <!-- JavaScripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
+        ga('create', 'UA-52110087-4', 'auto');
+        ga('send', 'pageview');
+    </script>
+    --}}
+@endif
+
+{{-- Should probably be handled by Webpack --}}
+<script type="text/javascript" src="/js/bundle.min.js"></script>
+@yield('scripts')
+
 </body>
 </html>

@@ -1,0 +1,35 @@
+body {
+    color: $font-color-base;
+    font-family: $font-body;
+}
+a {
+    color: $font-color-emphasis;
+    text-decoration: none;
+}
+nav {
+    font-family: $font-nav;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+h1, h2, h3 {
+    color: $font-color-emphasis;
+}
+h2 {
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 40px;
+}
+p {
+    line-height: 150%;
+    margin: 5px 0 10px;
+    &:first-of-type {
+        margin-top: 0;
+    }
+    &:last-of-type {
+        margin-bottom: 0;
+    }
+}
+//"nimbus-sans-condensed"
+//"proxima-nova-condensed"
+//"proxima-nova"

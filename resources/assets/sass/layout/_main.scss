@@ -1,0 +1,10 @@
+body {
+    background: $background url('/assets/background.jpg');
+    background-position: top right;
+    background-size: cover;
+}
+#page {
+    margin: 100px auto 0;
+    width: 100%;
+    max-width: 1350px;
+}
