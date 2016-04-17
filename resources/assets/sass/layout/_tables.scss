@@ -1,0 +1,27 @@
+table {
+    width: 100%;
+    &.minimal {
+        font-size: 12px;
+        text-transform: uppercase;
+        thead tr {
+            background: #0f1219;
+            th {
+                text-align: left;
+            }
+        }
+        tbody tr {
+            border-bottom: 1px solid #343a4a;
+            border-left: 1px solid $panel-color;
+            &:last-of-type {
+                border-bottom: none;
+            }
+            &:hover {
+                background: rgba(#0f1219, 0.5);
+                border-left: 1px solid #ff6600;
+            }
+        }
+        td, th {
+            padding: 12px 15px;
+        }
+    }
+}

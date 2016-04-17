@@ -1,0 +1,43 @@
+// Component specific styles
+#stats-overview {
+    width: 640px;
+    .ReactTabs__Tab {
+        background: $panel-color-dark;
+        color: $font-color-base;
+        padding: 15px 20px;
+        font-size: 14px;
+        &.ReactTabs__Tab--selected {
+            background: $panel-color;
+            border: none;
+            color: $font-color-emphasis;
+            border-radius: 0;
+            font-weight: 600;
+        }
+    }
+    .ReactTabs__TabList {
+        margin-bottom: 0;
+        border-bottom: 0;
+    }
+    .ReactTabs__TabPanel {
+        background: $panel-color;
+        padding: 20px;
+    }
+    table td {
+        &:nth-of-type(1) {
+            color: $font-color-faded;
+        }
+        &:nth-of-type(2) {
+            color: $font-color-highlight;
+        }
+        &:nth-of-type(3) {
+            font-weight: bold;
+            color: $font-color-emphasis;
+        }
+        &:nth-of-type(4) {
+            color: #a8ff00;
+        }
+        &:nth-of-type(5) {
+            color: #ff2a00;
+        }
+    }
+}

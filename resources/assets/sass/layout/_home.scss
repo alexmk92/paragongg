@@ -1,5 +1,5 @@
-.home-latest {
-    .latest-news-focus {
+.featured-panel {
+    .featured-focus {
         background: url('/assets/example-article-background.jpg');
         width: 640px;
         height: 360px;
@@ -24,7 +24,7 @@
             line-height: $font-line-height;
         }
     }
-    .latest-news {
+    .featured-list {
         display: inline-block;
         max-width: 320px;
         width: 100%;
@@ -60,7 +60,35 @@
             a {
                 color: $font-color-base;
                 font-weight: bold;
+                &:hover {
+                    color: $font-color-highlight;
+                }
+            }
+        }
+        .post-context {
+            float: left;
+            max-width: 32px;
+            margin-right: 10px;
+            text-align: center;
+            color: $font-color-faded;
+            .date-day {
+                display: inline-block;
+                font-size: 24px;
+                line-height: 22px;
+                font-weight: 600;
+            }
+            .date-month {
+                display: block;
+                font-size: 11px;
+                text-transform: uppercase;
+            }
+            img {
+                width: 32px;
+                border-radius: 50%;
             }
         }
     }
+}
+.secondary-panel {
+    margin: 50px 0;
 }

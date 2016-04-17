@@ -3,9 +3,11 @@ $background: #0b0d12;
 $primary-highlight: #ff6600;
 $faded-line: #343a4a;
 $font-color-base: #dddddd;
-$font-color-emphasis: #ffffff;
-$font-color-highlight: #ff6600;
+$font-color-emphasis: white;
+$font-color-highlight: $primary-highlight;
 $font-color-faded: #5a606f;
+$panel-color: #181d27;
+$panel-color-dark: #0d1016;
 
 // Fonts
 $font-body: "proxima-nova", Arial, sans-serif;

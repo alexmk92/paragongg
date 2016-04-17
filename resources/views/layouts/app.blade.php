@@ -19,11 +19,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Styles -->
-    {{-- Should probably be handled by Webpack --}}
-    <link media="all" type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link media="all" type="text/css" rel="stylesheet" href="/build/css/app.css">
 
-    {{--<script src="https://use.typekit.net/lpk6pfi.js"></script>--}}
-    {{--<script>try{Typekit.load({ async: true });}catch(e){}</script>--}}
+    <script src="https://use.typekit.net/lpk6pfi.js"></script>
+    <script>try{Typekit.load({ async: false });}catch(e){}</script>
 
     <!-- Scripts -->
     @yield('libraries')
@@ -79,7 +78,7 @@
 @endif
 
 {{-- Should probably be handled by Webpack --}}
-<script type="text/javascript" src="/js/bundle.min.js"></script>
+<script type="text/javascript" src="/build/js/app.min.js"></script>
 @yield('scripts')
 
 </body>
