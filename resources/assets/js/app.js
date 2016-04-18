@@ -1,5 +1,7 @@
 // Require stylesheet to be built once
 require("../sass/app.scss");
+require("./helpers");
 
-
-var StatsOverview = require('./components/StatsOverview.js');
+// React components
+require('./components/StatsOverview');
+require('./components/AccountNav');

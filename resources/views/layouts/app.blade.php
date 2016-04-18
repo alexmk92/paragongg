@@ -56,12 +56,7 @@
     </div>
 @endif
 
-<footer>
-    <p><a href="/">News</a> | <a href="/articles">Articles</a> | <a href="/strategy">Strategy</a> | <a href="/cards">Cards</a> | <a href="/account">Account</a> | <a href="/terms">Terms</a> | <a href="/privacy">Privacy</a></p>
-
-    <p>Paragon.gg is built and maintained by &copy; <a href="https://jamie.sh">Jamie Shepherd</a> 2015-<?php echo date("Y"); ?>.<br/>
-        Paragon, Unreal, Unreal Engine 4, UE4, and their respective logos are trademarks or registered trademarks of <a href="http://epicgames.com">Epic Games, Inc.</a></p>
-</footer>
+@include('layouts.footer')
 
 @if(!isset($hideAnalytics))
     {{--

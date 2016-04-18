@@ -12,12 +12,18 @@
             <li><a href="/cards">Cards</a></li>
             <li><a href="/heroes">Heroes</a></li>
         </ul>
-        <div class="account-nav">
-            <a href="/account">
+        <div id="account-nav">
+
+        </div>
+
+        {{--
+
+        <a href="/account">
                 <img class="account-avatar" src="https://www.gravatar.com/avatar/d5d3310834b43c6f96e200339734c949?s=20&amp;d=https%3A%2F%2Fparagon.gg%2Fimages%2Fdefault-avatar.png" alt="Your avatar">
                 Jamie
                 <i class="fa fa-caret-down" aria-hidden="true"></i>
             </a>
-        </div>
+
+        --}}
     </div>
 </nav>

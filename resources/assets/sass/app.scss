@@ -1,7 +1,8 @@
 // Vendor
 @import
 "vendor/reset",
-"vendor/fontawesome/fontawesome";
+"vendor/fontawesome/fontawesome",
+"vendor/clearfix";
 
 // Utils
 @import
@@ -18,4 +19,6 @@
 
 // Components
 @import
+'components/ReactTabs',
+'components/ReactDropdown',
 "components/StatsOverview";

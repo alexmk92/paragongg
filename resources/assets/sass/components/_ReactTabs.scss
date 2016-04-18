@@ -1,0 +1,25 @@
+.ReactTabs {
+    .ReactTabs__Tab {
+        background: $panel-color-dark;
+        color: $font-color-base;
+        padding: 15px 20px;
+        font-size: 14px;
+        margin-left: 1px;
+        border: none;
+        &.ReactTabs__Tab--selected {
+            background: $panel-color;
+            color: $font-color-emphasis;
+            border-radius: 0;
+            font-weight: 600;
+            margin-left: 0;
+        }
+    }
+    .ReactTabs__TabList {
+        margin-bottom: 0;
+        border-bottom: 0;
+    }
+    .ReactTabs__TabPanel {
+        background: $panel-color;
+        padding: 20px;
+    }
+}
