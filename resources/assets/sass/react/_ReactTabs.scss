@@ -6,6 +6,7 @@
         font-size: 14px;
         margin-left: 1px;
         border: none;
+        bottom: 0;
         &.ReactTabs__Tab--selected {
             background: $panel-color;
             color: $font-color-emphasis;

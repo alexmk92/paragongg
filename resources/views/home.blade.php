@@ -4,16 +4,15 @@
 
         <div class="panel-wrapper first">
             <a class="unique" href="/news/slug">
-            <div class="featured-focus">
-                <div class="overlay">
-                    <div class="date">6 Hours Ago</div>
-                    <div class="heading"><h2>Iggy & Scorch Coming April 21</h2></div>
-                    <span class="snippet">
-                        Here’s a little bit of fluff text about Iggy & Scorch, the newest heroes to come to Paragon. Turns out they’re really powerful, and are good and stuff...
-                    </span>
+                <div class="featured-focus">
+                    <div class="overlay">
+                        <div class="date">6 Hours Ago</div>
+                        <div class="heading"><h2>Iggy & Scorch Coming April 21</h2></div>
+                        <span class="snippet">
+                            Here’s a little bit of fluff text about Iggy & Scorch, the newest heroes to come to Paragon. Turns out they’re really powerful, and are good and stuff...
+                        </span>
+                    </div>
                 </div>
-
-            </div>
             </a>
         </div><div class="panel-wrapper">
             <div class="featured-list latest-news">
@@ -23,7 +22,6 @@
                         <div class="post-context">
                             <span class="date-day">18</span>
                             <span class="date-month">Mar</span>
-                            </span>
                         </div>
                         <span class="latest-subheader"><a href="/">New updates brings early private matches</a></span>
                         <span class="post-details">Posted by <a href="">&#64;Jamie</a> 13 hours ago</span>
@@ -32,7 +30,6 @@
                         <div class="post-context">
                             <span class="date-day">18</span>
                             <span class="date-month">Mar</span>
-                            </span>
                         </div>
                         <span class="latest-subheader"><a href="/">Sevarog mastery skin revealed</a></span>
                         <span class="post-details">Posted by <a href="">&#64;Facerafter</a> 4 days ago</span>
@@ -41,7 +38,6 @@
                         <div class="post-context">
                             <span class="date-day">18</span>
                             <span class="date-month">Mar</span>
-                            </span>
                         </div>
                         <span class="latest-subheader"><a href="/">Play Sevarog - Patch notes - 29 March</a></span>
                         <span class="post-details">Posted by <a href="">&#64;Shuu</a> 6 days ago</span>
@@ -50,7 +46,6 @@
                         <div class="post-context">
                             <span class="date-day">18</span>
                             <span class="date-month">Mar</span>
-                            </span>
                         </div>
                         <span class="latest-subheader">Paragon Tier List - March 2016</span>
                         <span class="post-details">Posted by <a href="">&#64;Jamie</a> 1 week ago</span>
@@ -59,24 +54,52 @@
                         <div class="post-context">
                             <span class="date-day">18</span>
                             <span class="date-month">Mar</span>
-                            </span>
                         </div>
                         <span class="latest-subheader">Epic Teases Upcoming Hero Sevarog - "Soon."</span>
                         <span class="post-details">Posted by <a href="">&#64;Jamie</a> 1 week ago</span>
                     </li>
                 </ul>
             </div>
+
             <div class="featured-list popular-decks">
                 <div class="subheading">Popular decks</div>
-                <div class="deck-preview" style="">
-
-                </div>
+                <a href="/">
+                    <div class="deck-preview" style="background-image: url('/assets/images/heroes/murdock/deck-preview.jpg');">
+                        <div class="stars-rating">
+                            <i class="fa fa-star" aria-hidden="true"></i> 710
+                        </div>
+                        <div class="underlay">
+                            <span class="latest-subheader">Beeckon's murdock deck</span>
+                            <span class="post-details">Posted by <span class="emphasis">&#64;Beeckon</span> 1 week ago</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="/">
+                    <div class="deck-preview" style="background-image: url('/assets/images/heroes/feng-mao/deck-preview.jpg');">
+                        <div class="stars-rating">
+                            <i class="fa fa-star" aria-hidden="true"></i> 397
+                        </div>
+                        <div class="underlay">
+                            <span class="latest-subheader">One with the wind - Feng Mao AS Deck</span>
+                            <span class="post-details">Posted by <span class="emphasis">&#64;Jamie</span> 1 week ago</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="/">
+                    <div class="deck-preview" style="background-image: url('/assets/images/heroes/sparrow/deck-preview.jpg');">
+                        <div class="stars-rating">
+                            <i class="fa fa-star" aria-hidden="true"></i> 210
+                        </div>
+                        <div class="underlay">
+                            <span class="latest-subheader">Critical Sparrow Deck</span>
+                            <span class="post-details">Posted by <span class="emphasis">&#64;Andhoth</span> 13 hours aog</span>
+                        </div>
+                    </div>
+                </a>
             </div>
         </div>
-        <div class="featured-guides">
-
-        </div>
     </div>
+
     <div class="secondary-panel">
         <div class="panel-wrapper first">
             <div id="stats-overview"></div>

@@ -60,7 +60,6 @@
 
         }
         .latest-subheader {
-            // TODO: Move this to typography
             font-family: $font-condensed;
             font-size: 13px;
             line-height: 18px;
@@ -99,9 +98,9 @@
 .secondary-panel {
     margin: 50px 0;
     .panel-wrapper {
-        width: 50%;
+        width: 60%;
         &.first {
-            width: 50%;
+            width: 40%;
         }
     }
     .article-preview {
@@ -150,6 +149,32 @@
             max-height: 45px;
             margin-left: 5px;
         }
+    }
+}
+.deck-preview {
+    min-height: 90px;
+    margin-top: 15px;
+    position: relative;
+    border: 1px solid $faded-line;
+    transition: border-color 0.3s;
+    .stars-rating {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 12px;
+        color: $font-color-emphasis;
+    }
+    .underlay {
+        position: absolute;
+        bottom: 0;
+        padding: 10px 20px;
+        font-size: 12px;
+    }
+    .post-details {
+        color: #ccc;
+    }
+    &:hover {
+        border-color: white;
     }
 }
 .post-details {
