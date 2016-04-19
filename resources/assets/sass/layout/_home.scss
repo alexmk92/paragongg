@@ -24,6 +24,14 @@
         &:hover {
             filter: brightness(130%);
         }
+        .date {
+            background: $primary-highlight;
+            padding: 6px 8px;
+            font-size: 12px;
+            display: inline-block;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
         .overlay {
             position: absolute;
             bottom: 0;
@@ -43,6 +51,7 @@
         display: inline-block;
         max-width: 320px;
         width: 100%;
+        vertical-align: top;
         li {
             padding: 14px 0;
             border-bottom: 1px solid $faded-line;
@@ -83,12 +92,18 @@
             }
         }
     }
-    .featured-guides {
+    .popular-decks {
         margin-left: 30px;
     }
 }
 .secondary-panel {
     margin: 50px 0;
+    .panel-wrapper {
+        width: 50%;
+        &.first {
+            width: 50%;
+        }
+    }
     .article-preview {
         margin-top: 14px;
         width: 50%;
@@ -100,8 +115,9 @@
 .guide-preview {
     border-bottom: 1px solid $faded-line;
     padding: 15px 10px;
+    background: no-repeat top right;
     &:hover {
-        background: $panel-color-dark;
+        background-color: $panel-color-dark;
     }
     .hero-icon {
         float: left;
@@ -145,5 +161,8 @@
         &:hover {
             color: $font-color-highlight;
         }
+    }
+    .category {
+        color: white;
     }
 }

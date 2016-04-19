@@ -1,0 +1,12 @@
+.tag {
+    display: inline-block;
+    background: $primary-highlight;
+    color: white;
+    font-weight: normal;
+    &.mini {
+        padding: 5px;
+    }
+    &.blue {
+        background: $secondary-highlight;
+    }
+}

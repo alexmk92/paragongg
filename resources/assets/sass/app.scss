@@ -17,8 +17,12 @@
 "layout/home",
 'layout/tables';
 
-// Components
+// React components
 @import
-'components/ReactTabs',
-'components/ReactDropdown',
-"components/StatsOverview";
+"react/ReactTabs",
+"react/ReactDropdown",
+"react/StatsOverview";
+
+// General components
+@import
+"components/tags";

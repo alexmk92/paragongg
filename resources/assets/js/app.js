@@ -2,6 +2,6 @@
 require("../sass/app.scss");
 require("./helpers");
 
-// React components
+// React react
 require('./components/StatsOverview');
 require('./components/AccountNav');

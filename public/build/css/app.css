@@ -2294,12 +2294,12 @@ nav {
   max-width: 1350px; }
   nav .logo {
     float: left;
-    width: 55px;
-    padding-top: 15px; }
+    width: 70px;
+    padding-top: 26px; }
     nav .logo img {
-      width: 25px; }
+      width: 47px; }
   nav .wrapper {
-    margin-left: 55px;
+    margin-left: 70px;
     border-bottom: 1px solid #343a4a; }
   nav li {
     display: inline-block;
@@ -2381,6 +2381,13 @@ footer {
   .featured-panel .featured-focus:hover {
     -webkit-filter: brightness(130%);
             filter: brightness(130%); }
+  .featured-panel .featured-focus .date {
+    background: #ff6600;
+    padding: 6px 8px;
+    font-size: 12px;
+    display: inline-block;
+    text-transform: uppercase;
+    font-weight: 600; }
   .featured-panel .featured-focus .overlay {
     position: absolute;
     bottom: 0;
@@ -2396,7 +2403,8 @@ footer {
 .featured-panel .featured-list {
   display: inline-block;
   max-width: 320px;
-  width: 100%; }
+  width: 100%;
+  vertical-align: top; }
   .featured-panel .featured-list li {
     padding: 14px 0;
     border-bottom: 1px solid #343a4a; }
@@ -2427,11 +2435,15 @@ footer {
       width: 32px;
       border-radius: 50%; }
 
-.featured-panel .featured-guides {
+.featured-panel .popular-decks {
   margin-left: 30px; }
 
 .secondary-panel {
   margin: 50px 0; }
+  .secondary-panel .panel-wrapper {
+    width: 50%; }
+    .secondary-panel .panel-wrapper.first {
+      width: 50%; }
   .secondary-panel .article-preview {
     margin-top: 14px;
     width: 50%;
@@ -2441,9 +2453,10 @@ footer {
 
 .guide-preview {
   border-bottom: 1px solid #343a4a;
-  padding: 15px 10px; }
+  padding: 15px 10px;
+  background: no-repeat top right; }
   .guide-preview:hover {
-    background: #0d1016; }
+    background-color: #0d1016; }
   .guide-preview .hero-icon {
     float: left;
     display: inline-block;
@@ -2479,6 +2492,8 @@ footer {
     font-weight: bold; }
     .post-details a:hover {
       color: #ff6600; }
+  .post-details .category {
+    color: white; }
 
 table {
   width: 100%; }
@@ -2542,3 +2557,13 @@ table {
 
 #stats-overview table td:nth-of-type(5) {
   color: #ff2a00; }
+
+.tag {
+  display: inline-block;
+  background: #ff6600;
+  color: white;
+  font-weight: normal; }
+  .tag.mini {
+    padding: 5px; }
+  .tag.blue {
+    background: #288fce; }

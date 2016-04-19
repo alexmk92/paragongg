@@ -1,12 +1,11 @@
 <nav>
     <div class="logo">
-        <img src="/assets/logo-temp.png" />
+        <img src="/assets/images/logo.png" />
     </div>
     <div class="wrapper">
         <ul class="links">
             <li><a href="/" {{ Request::is( '/') ? 'class=active' : '' }}>Home</a></li>
             <li><a href="/news">News</a></li>
-            <li><a href="/articles">Articles</a></li>
             <li><a href="/guides">Guides</a></li>
             <li><a href="/stats">Stats</a></li>
             <li><a href="/cards">Cards</a></li>
