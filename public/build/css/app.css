@@ -2250,12 +2250,15 @@ a {
   text-decoration: none;
   transition: color 0.3s; }
   a:hover {
-    color: #ff6600; }
+    color: #288fce; }
   a.unique:hover {
     color: inherit; }
 
 span.emphasis {
   color: white; }
+
+strong {
+  font-weight: bold; }
 
 nav .links {
   font-family: "nimbus-sans-condensed", sans-serif;
@@ -2304,15 +2307,15 @@ nav {
   nav .wrapper {
     margin-left: 70px;
     border-bottom: 1px solid #343a4a; }
-  nav li {
+  nav .links li {
     display: inline-block;
     text-transform: uppercase; }
-    nav li a {
+    nav .links li a {
       display: inline-block;
       padding: 25px 15px 18px;
       position: relative;
       transition: color 0.3s; }
-      nav li a:after {
+      nav .links li a:after {
         content: '';
         box-sizing: border-box;
         position: relative;
@@ -2326,29 +2329,15 @@ nav {
         background-color: #ff6600;
         transition: all 0.3s;
         width: 0; }
-      nav li a:hover, nav li a.active {
+      nav .links li a:hover, nav .links li a.active {
         color: #ff6600; }
-        nav li a:hover:after, nav li a.active:after {
+        nav .links li a:hover:after, nav .links li a.active:after {
           opacity: 1;
           width: 100%; }
-    nav li:first-of-type a {
+    nav .links li:first-of-type a {
       padding-left: 0; }
-      nav li:first-of-type a:after {
+      nav .links li:first-of-type a:after {
         left: 0; }
-  nav .account-nav {
-    top: 26px;
-    right: 0;
-    position: absolute;
-    font-size: 13px; }
-  nav .account-avatar {
-    vertical-align: top;
-    margin-top: -4px;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    margin-right: 3px; }
-    nav .account-avatar .fa-caret-down {
-      font-size: 12px; }
 
 footer {
   border-top: 1px solid #343a4a;
@@ -2561,15 +2550,71 @@ table {
   background: #181d27;
   padding: 20px; }
 
-.dropdown {
-  display: inline-block; }
-
-.dropdown__content {
-  display: none;
-  position: absolute; }
-
-.dropdown--active .dropdown__content {
-  display: block; }
+#account-nav {
+  float: right;
+  top: 26px;
+  right: 0;
+  position: absolute;
+  font-size: 13px;
+  z-index: 1337;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none; }
+  #account-nav .account-nav-trigger {
+    cursor: pointer;
+    text-align: right;
+    color: white; }
+  #account-nav .account-nav-panel {
+    position: relative;
+    top: 18px;
+    background: #181d27;
+    border: 1px solid #343a4a;
+    box-shadow: 0px 0px 3px #000;
+    min-width: 200px;
+    transition: opacity 0.2s; }
+    #account-nav .account-nav-panel.active {
+      opacity: 1; }
+    #account-nav .account-nav-panel.inactive {
+      opacity: 0; }
+  #account-nav .account-avatar {
+    vertical-align: top;
+    margin-top: -4px;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    margin-right: 5px; }
+    #account-nav .account-avatar .fa-caret-down {
+      font-size: 12px; }
+  #account-nav .account-amber {
+    padding: 0 10px; }
+    #account-nav .account-amber .fa {
+      margin-right: 3px;
+      color: #ff6600; }
+  #account-nav .account-properties {
+    padding: 10px 0; }
+    #account-nav .account-properties li {
+      display: block; }
+      #account-nav .account-properties li a {
+        display: block;
+        text-transform: none;
+        padding: 10px 20px;
+        transition: all 0.2s; }
+        #account-nav .account-properties li a:hover {
+          background: #0d1016; }
+      #account-nav .account-properties li .fa {
+        width: 25px; }
+  #account-nav .sign-out {
+    background: #0d1016;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    display: block;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 600; }
+    #account-nav .sign-out:hover {
+      color: #ff6600; }
 
 #stats-overview table td:nth-of-type(1) {
   color: #5a606f; }

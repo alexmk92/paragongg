@@ -18,64 +18,44 @@ nav {
         margin-left: 70px;
         border-bottom: 1px solid #343a4a;
     }
-    ul {
-        .links {
-
-        }
-    }
-    li {
-        display: inline-block;
-        text-transform: uppercase;
-        a {
+    .links {
+        li {
             display: inline-block;
-            padding: 25px 15px 18px;
-            position: relative;
-            transition: color 0.3s;
-            &:after {
-                content: '';
-                box-sizing: border-box;
+            text-transform: uppercase;
+            a {
+                display: inline-block;
+                padding: 25px 15px 18px;
                 position: relative;
-                bottom: -19px;
-                left: 0;
-                right: 0;
-                margin: 0 auto;
-                height: 1px;
-                opacity: 0;
-                display: block;
-                background-color: $primary-highlight;
-                transition: all 0.3s;
-                width: 0;
-            }
-            &:hover, &.active {
-                color: $primary-highlight;
+                transition: color 0.3s;
                 &:after {
-                    opacity: 1;
-                    width: 100%;
+                    content: '';
+                    box-sizing: border-box;
+                    position: relative;
+                    bottom: -19px;
+                    left: 0;
+                    right: 0;
+                    margin: 0 auto;
+                    height: 1px;
+                    opacity: 0;
+                    display: block;
+                    background-color: $primary-highlight;
+                    transition: all 0.3s;
+                    width: 0;
+                }
+                &:hover, &.active {
+                    color: $primary-highlight;
+                    &:after {
+                        opacity: 1;
+                        width: 100%;
+                    }
                 }
             }
-        }
-        &:first-of-type a {
-            padding-left: 0;
-            &:after {
-                left: 0;
+            &:first-of-type a {
+                padding-left: 0;
+                &:after {
+                    left: 0;
+                }
             }
-        }
-    }
-    .account-nav {
-        top: 26px;
-        right: 0;
-        position: absolute;
-        font-size: 13px;
-    }
-    .account-avatar {
-        vertical-align: top;
-        margin-top: -4px;
-        border-radius: 50%;
-        width: 20px;
-        height: 20px;
-        margin-right: 3px;
-        .fa-caret-down {
-            font-size: 12px;
         }
     }
 }

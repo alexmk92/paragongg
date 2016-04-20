@@ -1,58 +1,46 @@
 var React    = require('react');
 var ReactDOM = require('react-dom');
-var Dropdown = require('react-simple-dropdown');
-
-var DropdownTrigger = Dropdown.DropdownTrigger;
-var DropdownContent = Dropdown.DropdownContent;
 
 var AccountNav = React.createClass({
+
+    getInitialState: function(){
+        return {
+            active: false
+        }
+    },
+
+    showContent: function() {
+        this.setState({active: !this.state.active})
+    },
+
+    isActive: function() {
+        return (this.state.active) ? 'account-nav-panel active' : 'account-nav-panel inactive';
+    },
+
     render: function () {
         //var user = this.props.user;
         return(
-            <Dropdown className="account-dropdown">
-                <DropdownTrigger>
-                    <img className="account-dropdown__avatar" src="" /><span className="account-dropdown__name">My Account</span>
-                </DropdownTrigger>
-                <DropdownContent>
-                    <div className="account-dropdown__identity account-dropdown__segment">
-                        Signed in as <strong>Jamie</strong>
-                    </div>
-                    <ul className="account-dropdown__quick-links account-dropdown__segment">
-                        <li className="account-dropdown__link">
-                            <a className="account-dropdown__link__anchor" href="#">
-                                Your profile
-                            </a>
-                        </li>
-                        <li className="account-dropdown__link">
-                            <a className="account-dropdown__link__anchor" href="#">
-                                Your stars
-                            </a>
-                        </li>
-                        <li className="account-dropdown__link">
-                            <a className="account-dropdown__link__anchor" href="#">
-                                Explore
-                            </a>
-                        </li>
-                        <li className="account-dropdown__link">
-                            <a className="account-dropdown__link__anchor" href="#">
-                                Help
-                            </a>
-                        </li>
+            <div className="account-dropdown">
+                <div className="account-nav-trigger" onClick={this.showContent}>
+
+
+                    <img className="account-avatar" src="https://www.gravatar.com/avatar/d5d3310834b43c6f96e200339734c949?s=20&amp;d=https%3A%2F%2Fparagon.gg%2Fimages%2Fdefault-avatar.png" alt="Your avatar" />
+                    <span>jamieshepherd</span>
+                    <span className="account-amber"><i className="fa fa-diamond" aria-hidden="true"></i>1,534</span>
+                    <i className="fa fa-caret-down" aria-hidden="true"></i>
+
+                </div>
+                <div className={this.isActive()}>
+                    <ul className="account-properties">
+                        <li><a href="/"><i className="fa fa-user" aria-hidden="true"></i>View profile</a></li>
+                        <li><a href="/"><i className="fa fa-book" aria-hidden="true"></i>Your decks</a></li>
+                        <li><a href="/"><i className="fa fa-graduation-cap" aria-hidden="true"></i>Your guides</a></li>
+                        <li><a href="/"><i className="fa fa-lock" aria-hidden="true"></i>Manage account</a></li>
                     </ul>
-                    <ul className="account-dropdown__management-links account-dropdown__segment">
-                        <li className="account-dropdown__link">
-                            <a className="account-dropdown__link__anchor" href="#">
-                                Settings
-                            </a>
-                        </li>
-                        <li className="account-dropdown__link">
-                            <a className="account-dropdown__link__anchor" href="#">
-                                Sign out
-                            </a>
-                        </li>
-                    </ul>
-                </DropdownContent>
-            </Dropdown>
+                    <a href="/" className="sign-out"><i className="fa fa-power-off" aria-hidden="true"></i> Sign out</a>
+
+                </div>
+            </div>
         );
     }
 });

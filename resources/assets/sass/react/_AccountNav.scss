@@ -1,0 +1,80 @@
+#account-nav {
+    float: right;
+    top: 26px;
+    right: 0;
+    position: absolute;
+    font-size: 13px;
+    z-index: 1337;
+    user-select: none;
+    .account-nav-trigger {
+        cursor: pointer;
+        text-align: right;
+        color: $font-color-emphasis;
+    }
+    .account-nav-panel {
+        position: relative;
+        top: 18px;
+        background: $panel-color;
+        border: 1px solid $faded-line;
+        box-shadow: 0px 0px 3px #000;
+        min-width: 200px;
+        transition: opacity 0.2s;
+        &.active {
+            //display: inline-block;
+            opacity: 1;
+        }
+        &.inactive {
+            //display: none;
+            opacity: 0;
+        }
+    }
+    .account-avatar {
+        vertical-align: top;
+        margin-top: -4px;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+        .fa-caret-down {
+            font-size: 12px;
+        }
+    }
+    .account-amber {
+        padding: 0 10px;
+        .fa {
+            margin-right: 3px;
+            color: $primary-highlight;
+        }
+    }
+    .account-properties {
+        padding: 10px 0;
+        li {
+            display: block;
+            a {
+                display: block;
+                text-transform: none;
+                padding: 10px 20px;
+                transition: all 0.2s;
+                &:hover {
+                    background: $panel-color-dark;
+                }
+            }
+            .fa {
+                width: 25px;
+            }
+        }
+    }
+    .sign-out {
+        background: $panel-color-dark;
+        color: white;
+        padding: 15px;
+        text-align: center;
+        display: block;
+        text-transform: uppercase;
+        font-size: 12px;
+        font-weight: 600;
+        &:hover {
+            color: $primary-highlight;
+        }
+    }
+}

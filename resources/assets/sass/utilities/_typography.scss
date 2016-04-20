@@ -7,7 +7,7 @@ a {
     text-decoration: none;
     transition: color 0.3s;
     &:hover {
-        color: $font-color-highlight;
+        color: $secondary-highlight;
     }
     &.unique {
         &:hover {
@@ -19,6 +19,9 @@ span {
     &.emphasis {
         color: $font-color-emphasis;
     }
+}
+strong {
+    font-weight: bold;
 }
 nav .links {
     font-family: $font-nav;
