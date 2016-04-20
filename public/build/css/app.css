@@ -2282,7 +2282,7 @@ p {
     margin-bottom: 0; }
 
 body {
-  background: url("/assets/background.jpg") top right;
+  background: #08090d url("/assets/background.jpg") top right;
   background-size: cover; }
 
 #page {
@@ -2300,10 +2300,10 @@ nav {
   max-width: 1350px; }
   nav .logo {
     float: left;
-    width: 70px;
+    width: 60px;
     padding-top: 26px; }
     nav .logo img {
-      width: 47px; }
+      width: 40px; }
   nav .wrapper {
     margin-left: 70px;
     border-bottom: 1px solid #343a4a; }
@@ -2324,16 +2324,19 @@ nav {
         right: 0;
         margin: 0 auto;
         height: 1px;
-        opacity: 0;
         display: block;
-        background-color: #ff6600;
         transition: all 0.3s;
         width: 0; }
-      nav .links li a:hover, nav .links li a.active {
+      nav .links li a:hover {
+        color: #288fce; }
+        nav .links li a:hover:after {
+          background-color: #288fce; }
+      nav .links li a.active {
         color: #ff6600; }
-        nav .links li a:hover:after, nav .links li a.active:after {
-          opacity: 1;
-          width: 100%; }
+        nav .links li a.active:after {
+          background-color: #ff6600; }
+      nav .links li a:hover:after, nav .links li a.active:after {
+        width: 100%; }
     nav .links li:first-of-type a {
       padding-left: 0; }
       nav .links li:first-of-type a:after {

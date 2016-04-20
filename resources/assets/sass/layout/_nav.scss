@@ -8,10 +8,10 @@ nav {
     max-width: 1350px;
     .logo {
         float: left;
-        width: 70px;
+        width: 60px;
         padding-top: 26px;
         img {
-            width: 47px;
+            width: 40px;
         }
     }
     .wrapper {
@@ -36,16 +36,24 @@ nav {
                     right: 0;
                     margin: 0 auto;
                     height: 1px;
-                    opacity: 0;
                     display: block;
-                    background-color: $primary-highlight;
                     transition: all 0.3s;
                     width: 0;
                 }
-                &:hover, &.active {
+                &:hover {
+                    color: $secondary-highlight;
+                    &:after {
+                        background-color: $secondary-highlight;
+                    }
+                }
+                &.active {
                     color: $primary-highlight;
                     &:after {
-                        opacity: 1;
+                        background-color: $primary-highlight;
+                    }
+                }
+                &:hover, &.active {
+                    &:after {
                         width: 100%;
                     }
                 }

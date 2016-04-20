@@ -1,6 +1,6 @@
 <nav>
     <div class="logo">
-        <img src="/assets/images/logo.png" />
+        <img src="/assets/images/logo.svg" />
     </div>
     <div class="wrapper">
         <ul class="links">
