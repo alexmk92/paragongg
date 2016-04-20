@@ -7,7 +7,7 @@ a {
     text-decoration: none;
     transition: color 0.3s;
     &:hover {
-        color: $secondary-highlight;
+        color: $font-color-highlight;
     }
     &.unique {
         &:hover {
