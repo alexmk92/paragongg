@@ -25,7 +25,7 @@ var AccountNav = React.createClass({
 
 
                     <img className="account-avatar" src="https://www.gravatar.com/avatar/d5d3310834b43c6f96e200339734c949?s=20&amp;d=https%3A%2F%2Fparagon.gg%2Fimages%2Fdefault-avatar.png" alt="Your avatar" />
-                    <span>jamieshepherd</span>
+                    <span>Jamie Shepherd</span>
                     <span className="account-amber"><i className="fa fa-diamond" aria-hidden="true"></i>1,534</span>
                     <i className="fa fa-caret-down" aria-hidden="true"></i>
 
