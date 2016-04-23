@@ -12,6 +12,13 @@
             <li><a href="/heroes">Heroes</a></li>
             <li><a href="/community">Community</a></li>
         </ul>
+        @if(Auth::user())
         <div id="account-nav"></div>
+        @else
+        <div id="account-noauth">
+            <a href="/login" class="login">Login</a>
+            <a href="/register" class="register">Sign up</a>
+        </div>
+        @endif
     </div>
 </nav>

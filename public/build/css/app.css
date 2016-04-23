@@ -2301,9 +2301,9 @@ nav {
   nav .logo {
     float: left;
     width: 60px;
-    padding-top: 26px; }
+    padding-top: 20px; }
     nav .logo img {
-      width: 40px; }
+      width: 45px; }
   nav .wrapper {
     margin-left: 70px;
     border-bottom: 1px solid #343a4a; }
@@ -2553,6 +2553,31 @@ table {
   background: #181d27;
   padding: 20px; }
 
+#account-noauth {
+  float: right;
+  top: 26px;
+  right: 0;
+  position: absolute;
+  font-size: 12px;
+  z-index: 1337;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  text-transform: uppercase; }
+  #account-noauth .login {
+    padding: 5px 8px;
+    margin-right: 10px; }
+  #account-noauth .register {
+    border: 1px solid #ff6600;
+    color: #ff6600;
+    border-radius: 0px;
+    transition: all 0.3s;
+    padding: 5px 8px; }
+    #account-noauth .register:hover {
+      border-color: #288fce;
+      color: #288fce; }
+
 #account-nav {
   float: right;
   top: 26px;
@@ -2590,10 +2615,11 @@ table {
     #account-nav .account-avatar .fa-caret-down {
       font-size: 12px; }
   #account-nav .account-amber {
+    font-weight: bold;
+    color: #ff6600;
     padding: 0 10px; }
     #account-nav .account-amber .fa {
-      margin-right: 3px;
-      color: #ff6600; }
+      margin-right: 3px; }
   #account-nav .account-properties {
     padding: 10px 0; }
     #account-nav .account-properties li {

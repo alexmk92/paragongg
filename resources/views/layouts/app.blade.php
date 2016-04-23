@@ -18,6 +18,9 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/assets/images/favicon.ico?v=2" />
+
     <!-- Styles -->
     <link media="all" type="text/css" rel="stylesheet" href="/build/css/app.css">
 
