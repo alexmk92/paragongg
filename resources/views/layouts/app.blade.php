@@ -39,6 +39,7 @@
     <![endif]-->
 </head>
 <body>
+<div id="page-wrapper">
 
 {{-- Yield navigation content --}}
 @include('layouts.nav')
@@ -74,6 +75,8 @@
     </script>
     --}}
 @endif
+
+</div>
 
 {{-- Should probably be handled by Webpack --}}
 <script type="text/javascript" src="/build/js/app.min.js"></script>

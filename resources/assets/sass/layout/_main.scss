@@ -2,6 +2,14 @@ body {
     background: #08090d url('/assets/background.jpg') top right;
     background-size: cover;
 }
+html.wf-loading, html.wf-inactive {
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+html.wf-active {
+    opacity: 1;
+    transition: opacity 0.3s;
+}
 #page {
     margin: 100px auto 0;
     width: 100%;

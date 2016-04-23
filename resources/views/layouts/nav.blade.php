@@ -1,7 +1,9 @@
 <nav>
+    <a href="/">
     <div class="logo">
         <img src="/assets/images/logo.svg" />
     </div>
+    </a>
     <div class="wrapper">
         <ul class="links">
             <li><a href="/" {{ Request::is( '/') ? 'class=active' : '' }}>Home</a></li>
