@@ -12,8 +12,8 @@ nav {
         padding-top: 20px;
         img {
             width: 45px;
-            &:hover {
-                transition: all 0.3s;
+            transition: transform 0.3s;
+            &:hover  {
                 transform: rotate(-9deg);
             }
         }

@@ -31,12 +31,12 @@ var AccountNav = React.createClass({
                 </div>
                 <div className={this.isActive()}>
                     <ul className="account-properties">
-                        <li><a href="/"><i className="fa fa-user" aria-hidden="true"></i>View profile</a></li>
-                        <li><a href="/"><i className="fa fa-book" aria-hidden="true"></i>Your decks</a></li>
-                        <li><a href="/"><i className="fa fa-graduation-cap" aria-hidden="true"></i>Your guides</a></li>
-                        <li><a href="/"><i className="fa fa-lock" aria-hidden="true"></i>Manage account</a></li>
+                        <li><a href="/users/jamieshepherd"><i className="fa fa-user" aria-hidden="true"></i>View profile</a></li>
+                        <li><a href="/account/decks"><i className="fa fa-book" aria-hidden="true"></i>Your decks</a></li>
+                        <li><a href="/account/guides"><i className="fa fa-graduation-cap" aria-hidden="true"></i>Your guides</a></li>
+                        <li><a href="/account"><i className="fa fa-lock" aria-hidden="true"></i>Manage account</a></li>
                     </ul>
-                    <a href="/" className="sign-out"><i className="fa fa-power-off" aria-hidden="true"></i> Sign out</a>
+                    <a href="/logout" className="sign-out"><i className="fa fa-power-off" aria-hidden="true"></i> Sign out</a>
 
                 </div>
             </div>

@@ -2,66 +2,65 @@
 <html lang="en-US">
 <head>
     <!-- Title -->
-    <title>
-        @yield('title')
-        Paragon.gg - News, strategy, information
-    </title>
+    <title>@yield('title') Paragon.gg - News, strategy, information</title>
 
     <!-- Meta tags -->
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="@yield('meta_keywords', 'paragon,news,strategy,guides,database,data,cards,moba,livestream,livestreams')"/>
     @yield('meta_description')
-    <meta name="keywords" content="
-        @yield('meta_keywords', 'paragon,news,strategy,guides,database,data,cards,moba,livestream,livestreams')
-            "/>
     @yield('meta_thumbnail')
 
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <!-- Favicon -->
-    <link rel="shortcut icon" href="/assets/images/favicon.ico?v=2" />
+    <link rel="shortcut icon" href="/assets/images/favicon.ico" />
 
     <!-- Styles -->
     <link media="all" type="text/css" rel="stylesheet" href="/build/css/app.css">
 
-    <script src="https://use.typekit.net/lpk6pfi.js"></script>
-    <script>try{Typekit.load({ async: false });}catch(e){}</script>
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
 
     <!-- Scripts -->
+    <script src="https://use.typekit.net/lpk6pfi.js"></script>
+    <script>try{Typekit.load({ async: false });}catch(e){}</script>
     @yield('libraries')
     {{--<script type="text/javascript" src="{{ url('/js/vendor/jquery-2.2.0.min.js') }}"></script>--}}
     {{--<script type="text/javascript" src="{{ url('/js/vendor/jquery.tooltipster.min.js') }}"></script>--}}
     {{--<script type="text/javascript" src="{{ url('/js/vendor/venobox.min.js') }}"></script>--}}
     {{--<script type="text/javascript" src="{{ url('/js/vendor/jquery.timeago.js') }}"></script>--}}
 
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
 </head>
 <body>
-<div id="page-wrapper">
-
 {{-- Yield navigation content --}}
 @include('layouts.nav')
+
 {{-- Yield the main page content --}}
 <div id="page">
     @yield('body')
 </div>
 
+{{-- Flash notifications --}}
 @if(Session::has('notification'))
     <div class="notification">
         <i class="fa fa-info-circle"></i> {{ Session::get('notification') }}
     </div>
 @endif
 
+{{-- Flash errors (merge?) --}}
 @if(Session::has('alert'))
     <div class="notification alert">
         <i class="fa fa-exclamation-circle"></i> {{ Session::get('alert') }}
     </div>
 @endif
 
+{{-- Include footer --}}
 @include('layouts.footer')
 
+{{-- Webpack --}}
+<script type="text/javascript" src="/build/js/app.min.js"></script>
+@yield('scripts')
 @if(!isset($hideAnalytics))
     {{--
      <script>
@@ -75,12 +74,6 @@
     </script>
     --}}
 @endif
-
-</div>
-
-{{-- Should probably be handled by Webpack --}}
-<script type="text/javascript" src="/build/js/app.min.js"></script>
-@yield('scripts')
 
 </body>
 </html>
