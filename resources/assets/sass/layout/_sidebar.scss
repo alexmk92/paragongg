@@ -1,0 +1,15 @@
+#sidebar {
+    float: right;
+    width: 400px;
+    height: 100%;
+    padding-left: 30px;
+    h4 {
+        margin-bottom: 20px;
+    }
+    .sidebox {
+        &.panel {
+            background: $panel-color-dark;
+            padding: 20px;
+        }
+    }
+}

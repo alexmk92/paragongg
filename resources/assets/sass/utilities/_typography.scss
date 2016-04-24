@@ -30,20 +30,49 @@ nav .links {
 h1, h2, h3 {
     color: $font-color-emphasis;
 }
+h1 {
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 42px;
+}
 h2 {
     text-transform: uppercase;
     font-weight: 700;
     font-size: 30px;
     line-height: 40px;
 }
+h3 {
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 30px;
+}
+h4 {
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 24px;
+}
 p {
     line-height: 150%;
-    margin: 5px 0 10px;
+    margin: 5px 0 20px;
     &:first-of-type {
         margin-top: 0;
     }
     &:last-of-type {
         margin-bottom: 0;
+    }
+}
+time {
+    &:hover {
+        .updated_at {
+            opacity: 1;
+        }
+    }
+    .updated_at {
+        transition: opacity 0.3s;
+        opacity: 0;
     }
 }
 //"nimbus-sans-condensed"

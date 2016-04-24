@@ -37,7 +37,7 @@
 @include('layouts.nav')
 
 {{-- Yield the main page content --}}
-<div id="page">
+<div id="page" class="cf">
     @yield('body')
 </div>
 

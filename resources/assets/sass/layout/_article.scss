@@ -1,0 +1,36 @@
+.article-header {
+    background: #333;
+    background: url('/assets/images/example2.jpg');
+    background-size: cover;
+    height: 300px;
+    width: 100%;
+}
+
+article {
+    margin-right: 400px;
+    border-right: 1px solid $faded-line;
+    padding-right: 30px;
+    padding-bottom: 50px;
+    .article-header {
+        margin-bottom: 30px;
+    }
+    .article-details {
+        color: $font-color-faded;
+        font-size: 14px;
+        margin-top: 5px;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid $faded-line;
+    }
+    .article-body {
+        font-size: 110%;
+    }
+    p {
+        a {
+            color: $secondary-highlight;
+            &:hover {
+                border-bottom: 1px dotted $secondary-highlight;
+            }
+        }
+    }
+}
