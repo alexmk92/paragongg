@@ -1,0 +1,133 @@
+#game-feed {
+    margin: 20px 0 30px;
+    .match-preview {
+        background: $panel-color;
+        border-left: 5px solid $faded-line;
+        padding: 15px;
+        margin-bottom: 40px;
+        position: relative;
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+        &.win {
+            border-left-color: $green;
+        }
+        &.loss {
+            border-left-color: $primary-highlight;
+        }
+        &.live {
+            border-left-color: $secondary-highlight;
+        }
+        .match-overview {
+            font-size: 12px;
+            color: $font-color-faded;
+            margin-bottom: 15px;
+            .dark {
+                background: $panel-color-dark;
+                padding: 5px 8px;
+                display: inline-block;
+                margin-right: 10px;
+                text-transform: uppercase;
+                .win {
+                    font-weight: bold;
+                    color: $green;
+                }
+                .loss {
+                    font-weight: bold;
+                    color: $primary-highlight;
+                }
+            }
+        }
+        .hero-portrait {
+            width: 48px;
+            float: left;
+            border-radius: 50%;
+            margin-right: 20px;
+        }
+        span.win {
+            font-size: 12px;
+            color: white;
+            text-transform: uppercase;
+            margin-right: 5px;
+        }
+        .player-stats {
+            display: inline-block;
+            margin-left: 10px;
+            margin-right: 10px;
+            color: $font-color-faded;
+            vertical-align: top;
+            padding-top: 5px;
+            border-left: 1px solid $faded-line;
+            padding-left: 20px;
+            &.kda {
+                padding-left: 0;
+                border-left: none;
+            }
+            .label {
+                display: block;
+            }
+            .stat, .player-kda {
+                display: block;
+                margin-top: 5px;
+                font-size: 18px;
+            }
+            .player-kda {
+                .player-kills {
+                    margin-right: 2px;
+                    color: white;
+                }
+                .player-deaths {
+                    margin: 0 2px;
+                    color: white;
+                }
+                .player-assists {
+                    margin: 0 2px;
+                    color: white;
+                }
+            }
+        }
+        .personal-stats {
+            width: 50%;
+            display: inline-block;
+        }
+        .team-overview {
+            width: 50%;
+            display: inline-block;
+            height: 100%;
+            vertical-align: top;
+            clear: left;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            padding: 0;
+            vertical-align: middle;
+            .team1, .team2 {
+                width: 50%;
+                height: 100%;
+                display: inline-block;
+                padding: 5px 15px;
+                font-size: 13px;
+                line-height: 14px;
+                text-rendering: optimizeLegibility;
+                color: $font-color-faded;
+                .hero-portrait {
+                    width: 16px;
+                    border-radius: 2px;
+                    margin-right: 10px;
+                    border: 1px solid #222222;
+                }
+                &.winner {
+                    border-left: 1px solid rgba($green,0.5);
+                }
+                &.loser {
+                    border-left: 1px solid $faded-line;
+                }
+            }
+            ul {
+                padding-top: 5px;
+                li {
+                    margin-bottom: 6px;
+                }
+            }
+        }
+    }
+}

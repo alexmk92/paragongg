@@ -2,7 +2,8 @@
 @import
 "vendor/reset",
 "vendor/fontawesome/fontawesome",
-"vendor/clearfix";
+"vendor/clearfix",
+"vendor/hr";
 
 // Utils
 @import
@@ -17,7 +18,10 @@
 "layout/home",
 "layout/sidebar",
 "layout/tables",
-"layout/article";
+"layout/article",
+"layout/user",
+"layout/stats",
+"layout/games";
 
 // React components
 @import
@@ -28,4 +32,5 @@
 // General components
 @import
 "components/tags",
+"components/lists",
 "components/articlePreview";

@@ -31,7 +31,8 @@ class ArticleController extends Controller
     public function show($slug)
     {
         $article = Article::where('slug', $slug)->firstOrFail();
-        return view('articles.show')->with('article', $article);
+        $recent  = Article::where('slug', '!=', $slug)->take('10')->get();
+        return view('articles.show')->with('article', $article)->with('recent', $recent);
     }
 
     // Edit

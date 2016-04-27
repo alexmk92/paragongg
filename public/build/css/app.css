@@ -64,7 +64,7 @@ table {
 
 .fa {
   display: inline-block;
-  font: normal normal normal 14px / 1 FontAwesome;
+  font: normal normal normal 14px/1 FontAwesome;
   font-size: inherit;
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
@@ -2241,9 +2241,23 @@ table {
 .cf {
   *zoom: 1; }
 
+*, :after, :before {
+  box-sizing: border-box; }
+
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #343a4a;
+  margin: 20px 0;
+  padding: 0; }
+  hr.light {
+    border-color: #e5e5e5; }
+
 body {
-  color: #dddddd;
-  font-family: "proxima-nova", Arial, sans-serif; }
+  color: #cccccc;
+  font-family: "proxima-nova", Arial, sans-serif;
+  font-size: 15px; }
 
 a {
   color: white;
@@ -2260,11 +2274,14 @@ span.emphasis {
 strong {
   font-weight: bold; }
 
+em {
+  font-style: italic; }
+
 nav .links {
   font-family: "nimbus-sans-condensed", sans-serif;
   font-size: 16px; }
 
-h1, h2, h3 {
+h1, h2, h3, h4 {
   color: white; }
 
 h1 {
@@ -2292,7 +2309,7 @@ h4 {
   line-height: 24px; }
 
 p {
-  line-height: 150%;
+  line-height: 130%;
   margin: 5px 0 20px; }
   p:first-of-type {
     margin-top: 0; }
@@ -2307,8 +2324,8 @@ time .updated_at {
   opacity: 0; }
 
 body {
-  background: #08090d url("/assets/background.jpg") top right;
-  background-size: cover; }
+  background: #08090d url("/assets/background.jpg") top right no-repeat;
+  background-size: 100%; }
 
 html.wf-loading, html.wf-inactive {
   opacity: 0;
@@ -2334,21 +2351,20 @@ nav {
   nav .logo {
     float: left;
     width: 60px;
-    padding-top: 20px; }
+    padding-top: 25px;
+    transition: all 0.3s; }
     nav .logo img {
-      width: 45px;
-      transition: -webkit-transform 0.3s;
-      transition: transform 0.3s;
-      transition: transform 0.3s, -webkit-transform 0.3s; }
-      nav .logo img:hover {
-        -webkit-transform: rotate(-9deg);
-                transform: rotate(-9deg); }
+      width: 30px; }
+    nav .logo:hover {
+      -webkit-filter: brightness(150%);
+              filter: brightness(150%); }
   nav .wrapper {
-    margin-left: 70px;
+    margin-left: 60px;
     border-bottom: 1px solid #343a4a; }
   nav .links li {
     display: inline-block;
-    text-transform: uppercase; }
+    text-transform: uppercase;
+    margin-bottom: 0; }
     nav .links li a {
       display: inline-block;
       padding: 25px 15px 18px;
@@ -2544,7 +2560,7 @@ footer {
   font-size: 12px;
   color: #5a606f; }
   .post-details a {
-    color: #dddddd;
+    color: #cccccc;
     font-weight: bold; }
     .post-details a:hover {
       color: #288fce; }
@@ -2557,10 +2573,15 @@ footer {
   height: 100%;
   padding-left: 30px; }
   #sidebar h4 {
+    margin-bottom: 10px; }
+  #sidebar h4.heading {
     margin-bottom: 20px; }
-  #sidebar .sidebox.panel {
-    background: #0d1016;
-    padding: 20px; }
+  #sidebar .sidebox {
+    margin-bottom: 20px; }
+    #sidebar .sidebox.panel {
+      background: #0d1016;
+      padding: 20px;
+      border: 1px solid #343a4a; }
 
 table {
   width: 100%; }
@@ -2603,25 +2624,205 @@ article {
     border-bottom: 1px solid #343a4a; }
   article .article-body {
     font-size: 110%; }
-  article p a {
+  article h1 {
+    background: -webkit-linear-gradient(#fff, #bbb);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; }
+  article p {
+    line-height: 150%; }
+    article p a {
+      color: #288fce; }
+      article p a:hover {
+        border-bottom: 1px dotted #288fce; }
+
+.user-avatar {
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  float: left;
+  margin-right: 15px; }
+
+.user-username {
+  color: white;
+  display: block;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px; }
+
+.user-active {
+  color: #5a606f;
+  display: block;
+  margin-top: 5px; }
+
+.ign-handle {
+  display: block;
+  margin-top: 5px; }
+  .ign-handle .fa-user {
+    margin-right: 2px; }
+  .ign-handle .fa-times-circle {
+    margin-left: 3px;
+    color: #5a606f; }
+  .ign-handle .fa-check-circle {
+    margin-left: 3px;
     color: #288fce; }
-    article p a:hover {
-      border-bottom: 1px dotted #288fce; }
+
+#player-stats {
+  overflow: auto; }
+
+.quick-stats {
+  margin: 20px 0 30px 0; }
+
+.statbox {
+  vertical-align: top; }
+  .statbox.small {
+    display: inline-block;
+    width: 300px;
+    margin-right: 25px;
+    background: #0d1016;
+    border: 1px solid #343a4a; }
+    .statbox.small:nth-of-type(3) {
+      margin-right: 0; }
+    .statbox.small .content {
+      padding: 30px 20px; }
+    .statbox.small .label, .statbox.small .statistic {
+      text-transform: uppercase;
+      display: block;
+      text-align: center; }
+    .statbox.small .label {
+      color: #5a606f;
+      margin-bottom: 5px; }
+    .statbox.small .statistic {
+      font-size: 40px;
+      color: white; }
+
+#game-feed {
+  margin: 20px 0 30px; }
+  #game-feed .match-preview {
+    background: #181d27;
+    border-left: 5px solid #343a4a;
+    padding: 15px;
+    margin-bottom: 40px;
+    position: relative;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px; }
+    #game-feed .match-preview.win {
+      border-left-color: #84D400; }
+    #game-feed .match-preview.loss {
+      border-left-color: #ff6600; }
+    #game-feed .match-preview.live {
+      border-left-color: #288fce; }
+    #game-feed .match-preview .match-overview {
+      font-size: 12px;
+      color: #5a606f;
+      margin-bottom: 15px; }
+      #game-feed .match-preview .match-overview .dark {
+        background: #0d1016;
+        padding: 5px 8px;
+        display: inline-block;
+        margin-right: 10px;
+        text-transform: uppercase; }
+        #game-feed .match-preview .match-overview .dark .win {
+          font-weight: bold;
+          color: #84D400; }
+        #game-feed .match-preview .match-overview .dark .loss {
+          font-weight: bold;
+          color: #ff6600; }
+    #game-feed .match-preview .hero-portrait {
+      width: 48px;
+      float: left;
+      border-radius: 50%;
+      margin-right: 20px; }
+    #game-feed .match-preview span.win {
+      font-size: 12px;
+      color: white;
+      text-transform: uppercase;
+      margin-right: 5px; }
+    #game-feed .match-preview .player-stats {
+      display: inline-block;
+      margin-left: 10px;
+      margin-right: 10px;
+      color: #5a606f;
+      vertical-align: top;
+      padding-top: 5px;
+      border-left: 1px solid #343a4a;
+      padding-left: 20px; }
+      #game-feed .match-preview .player-stats.kda {
+        padding-left: 0;
+        border-left: none; }
+      #game-feed .match-preview .player-stats .label {
+        display: block; }
+      #game-feed .match-preview .player-stats .stat, #game-feed .match-preview .player-stats .player-kda {
+        display: block;
+        margin-top: 5px;
+        font-size: 18px; }
+      #game-feed .match-preview .player-stats .player-kda .player-kills {
+        margin-right: 2px;
+        color: white; }
+      #game-feed .match-preview .player-stats .player-kda .player-deaths {
+        margin: 0 2px;
+        color: white; }
+      #game-feed .match-preview .player-stats .player-kda .player-assists {
+        margin: 0 2px;
+        color: white; }
+    #game-feed .match-preview .personal-stats {
+      width: 50%;
+      display: inline-block; }
+    #game-feed .match-preview .team-overview {
+      width: 50%;
+      display: inline-block;
+      height: 100%;
+      vertical-align: top;
+      clear: left;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      padding: 0;
+      vertical-align: middle; }
+      #game-feed .match-preview .team-overview .team1, #game-feed .match-preview .team-overview .team2 {
+        width: 50%;
+        height: 100%;
+        display: inline-block;
+        padding: 5px 15px;
+        font-size: 13px;
+        line-height: 14px;
+        text-rendering: optimizeLegibility;
+        color: #5a606f; }
+        #game-feed .match-preview .team-overview .team1 .hero-portrait, #game-feed .match-preview .team-overview .team2 .hero-portrait {
+          width: 16px;
+          border-radius: 2px;
+          margin-right: 10px;
+          border: 1px solid #222222; }
+        #game-feed .match-preview .team-overview .team1.winner, #game-feed .match-preview .team-overview .team2.winner {
+          border-left: 1px solid rgba(132, 212, 0, 0.5); }
+        #game-feed .match-preview .team-overview .team1.loser, #game-feed .match-preview .team-overview .team2.loser {
+          border-left: 1px solid #343a4a; }
+      #game-feed .match-preview .team-overview ul {
+        padding-top: 5px; }
+        #game-feed .match-preview .team-overview ul li {
+          margin-bottom: 6px; }
 
 .ReactTabs .ReactTabs__Tab {
   background: #0d1016;
-  color: #dddddd;
+  color: #cccccc;
   padding: 15px 20px;
   font-size: 14px;
   margin-left: 1px;
+  margin-bottom: 0;
   border: none;
-  bottom: 0; }
+  bottom: 0;
+  outline: none; }
   .ReactTabs .ReactTabs__Tab.ReactTabs__Tab--selected {
     background: #181d27;
     color: white;
     border-radius: 0;
     font-weight: 600;
     margin-left: 0; }
+  .ReactTabs .ReactTabs__Tab:focus {
+    box-shadow: none;
+    border: none; }
+    .ReactTabs .ReactTabs__Tab:focus:after {
+      display: none; }
 
 .ReactTabs .ReactTabs__TabList {
   margin-bottom: 0;
@@ -2746,6 +2947,12 @@ article {
   .tag.blue {
     background: #288fce; }
 
+ul li {
+  margin-bottom: 10px; }
+
+ul.social .fa {
+  margin-right: 5px; }
+
 #news-feed {
   margin: 0 -15px;
   overflow: hidden; }
@@ -2785,7 +2992,11 @@ article {
     position: absolute;
     bottom: 0;
     width: 100%;
-    padding: 20px; }
+    padding: 20px;
+    /* For Safari 5.1 to 6.0 */
+    /* For Opera 11.1 to 12.0 */
+    /* For Firefox 3.6 to 15 */
+    background: linear-gradient(transparent, black); }
     .article-preview .preview-details .date {
       font-size: 12px;
       text-transform: uppercase; }

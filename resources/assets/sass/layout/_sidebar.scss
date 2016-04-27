@@ -4,12 +4,17 @@
     height: 100%;
     padding-left: 30px;
     h4 {
+        margin-bottom: 10px;
+    }
+    h4.heading {
         margin-bottom: 20px;
     }
     .sidebox {
+        margin-bottom: 20px;
         &.panel {
             background: $panel-color-dark;
             padding: 20px;
+            border: 1px solid $faded-line;
         }
     }
 }

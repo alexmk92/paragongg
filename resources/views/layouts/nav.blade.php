@@ -1,7 +1,7 @@
 <nav>
     <a href="/">
     <div class="logo">
-        <img src="/assets/images/logo.svg" />
+        <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgNTcgNzAiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDU3IDcwOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHN0eWxlIHR5cGU9InRleHQvY3NzIj4uc3Qwe2ZpbGw6I0ZGNjYwMDt9PC9zdHlsZT48cG9seWdvbiBjbGFzcz0ic3QwIiBwb2ludHM9IjU3LDcgNTcsMCAwLDAgMCwzMC40IDAsMzguNCAwLDU0IDM2LDU0IDM2LDQ2IDgsNDYgOCwzOCA0OSwzOCA0OSw2MiAwLDYyIDAsNzAgNTcsNzAgNTcsMzguNCA1NywzMC40IDU3LDE1IDIxLDE1IDIxLDIzIDQ5LDIzIDQ5LDMwIDgsMzAgOCw3ICIvPjwvc3ZnPg==" />
     </div>
     </a>
     <div class="wrapper">

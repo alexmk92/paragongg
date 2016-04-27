@@ -5,14 +5,23 @@
         padding: 15px 20px;
         font-size: 14px;
         margin-left: 1px;
+        margin-bottom: 0;
         border: none;
         bottom: 0;
+        outline: none;
         &.ReactTabs__Tab--selected {
             background: $panel-color;
             color: $font-color-emphasis;
             border-radius: 0;
             font-weight: 600;
             margin-left: 0;
+        }
+        &:focus {
+            box-shadow: none;
+            border: none;
+            &:after {
+                display: none;
+            }
         }
     }
     .ReactTabs__TabList {

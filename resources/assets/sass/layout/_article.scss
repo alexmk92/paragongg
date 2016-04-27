@@ -25,7 +25,13 @@ article {
     .article-body {
         font-size: 110%;
     }
+    h1 {
+        background: -webkit-linear-gradient(#fff, #bbb);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
     p {
+        line-height: 150%;
         a {
             color: $secondary-highlight;
             &:hover {

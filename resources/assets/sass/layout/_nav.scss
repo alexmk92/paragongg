@@ -9,23 +9,24 @@ nav {
     .logo {
         float: left;
         width: 60px;
-        padding-top: 20px;
+        padding-top: 25px;
+        transition: all 0.3s;
         img {
-            width: 45px;
-            transition: transform 0.3s;
-            &:hover  {
-                transform: rotate(-9deg);
-            }
+            width: 30px;
+        }
+        &:hover  {
+            filter: brightness(150%);
         }
     }
     .wrapper {
-        margin-left: 70px;
+        margin-left: 60px;
         border-bottom: 1px solid #343a4a;
     }
     .links {
         li {
             display: inline-block;
             text-transform: uppercase;
+            margin-bottom: 0;
             a {
                 display: inline-block;
                 padding: 25px 15px 18px;
