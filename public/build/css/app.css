@@ -2323,6 +2323,50 @@ time .updated_at {
   transition: opacity 0.3s;
   opacity: 0; }
 
+.anim-pulse {
+  -webkit-animation: pulse 3s infinite linear;
+  animation: pulse 3s infinite linear; }
+
+.anim-flash {
+  -webkit-animation: flash 1s infinite linear;
+  animation: flash 1s infinite linear; }
+
+@-webkit-keyframes pulse {
+  0% {
+    opacity: 1; }
+  50% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+
+@keyframes pulse {
+  0% {
+    opacity: 1; }
+  50% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+
+@-webkit-keyframes flash {
+  0% {
+    opacity: 0; }
+  25% {
+    opacity: 1; }
+  75% {
+    opacity: 1; }
+  100% {
+    opacity: 0; } }
+
+@keyframes flash {
+  0% {
+    opacity: 0; }
+  25% {
+    opacity: 1; }
+  75% {
+    opacity: 1; }
+  100% {
+    opacity: 0; } }
+
 body {
   background: #08090d url("/assets/background.jpg") top right no-repeat;
   background-size: 100%; }
@@ -2351,7 +2395,7 @@ nav {
   nav .logo {
     float: left;
     width: 60px;
-    padding-top: 25px;
+    padding-top: 24px;
     transition: all 0.3s; }
     nav .logo img {
       width: 30px; }
@@ -2670,17 +2714,15 @@ article {
 #player-stats {
   overflow: auto; }
 
-.quick-stats {
-  margin: 20px 0 30px 0; }
-
 .statbox {
   vertical-align: top; }
   .statbox.small {
     display: inline-block;
-    width: 300px;
+    width: 280px;
     margin-right: 25px;
-    background: #0d1016;
-    border: 1px solid #343a4a; }
+    border-left: 1px solid #343a4a; }
+    .statbox.small:first-of-type {
+      border-left: none; }
     .statbox.small:nth-of-type(3) {
       margin-right: 0; }
     .statbox.small .content {
@@ -2879,11 +2921,15 @@ article {
     border: 1px solid #343a4a;
     box-shadow: 0px 0px 3px #000;
     min-width: 200px;
-    transition: opacity 0.2s; }
+    transition: opacity 0.2s linear, height 0.2s step-start; }
     #account-nav .account-nav-panel.active {
+      height: auto;
       opacity: 1; }
     #account-nav .account-nav-panel.inactive {
-      opacity: 0; }
+      opacity: 0;
+      height: 0;
+      overflow: hidden;
+      transition-timing-function: linear, step-end; }
   #account-nav .account-avatar {
     vertical-align: top;
     margin-top: -4px;
@@ -2936,6 +2982,25 @@ article {
 
 #stats-overview table td:nth-of-type(5) {
   color: #ff2a00; }
+
+#player-stats-overview {
+  margin: 20px 0 30px; }
+  #player-stats-overview .hidden {
+    display: none; }
+  #player-stats-overview .fa-twitch {
+    color: #5a606f; }
+  #player-stats-overview .live {
+    -webkit-animation: flash 2s infinite linear;
+            animation: flash 2s infinite linear;
+    color: #288fce; }
+  #player-stats-overview .ReactTabs__Tab--selected .live {
+    -webkit-animation: none !important;
+            animation: none !important; }
+  #player-stats-overview #eloChange {
+    height: 500px; }
+  #player-stats-overview .twitchembed {
+    width: 100%;
+    height: 512px; }
 
 .tag {
   display: inline-block;

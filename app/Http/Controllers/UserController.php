@@ -11,6 +11,10 @@ class UserController extends Controller
     public function show($username)
     {
         $user = User::where('username', $username)->firstOrFail();
-        return view('users.show')->with('user', $user);
+        $twitchLive = false;
+        if($user->twitch_tv) {
+            $twitchLive = isTwitchLive($user->twitch_tv);
+        }
+        return view('users.show')->with('user', $user)->with('twitchLive', $twitchLive);
     }
 }

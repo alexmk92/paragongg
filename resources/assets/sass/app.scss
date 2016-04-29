@@ -8,7 +8,8 @@
 // Utils
 @import
 "utilities/variables",
-"utilities/typography";
+"utilities/typography",
+"utilities/animations";
 
 // Layout
 @import
@@ -27,7 +28,8 @@
 @import
 "react/ReactTabs",
 "react/AccountNav",
-"react/StatsOverview";
+"react/StatsOverview",
+"react/PlayerStatsOverview";
 
 // General components
 @import

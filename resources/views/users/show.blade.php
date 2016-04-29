@@ -1,4 +1,10 @@
 @extends('layouts/app')
+@section('libraries')
+    {{-- Is stream live --}}
+    @if($user->twitch_tv)
+        <script src= "http://player.twitch.tv/js/embed/v1.js"></script>
+    @endif
+@endsection
 @section('body')
     <div id="sidebar">
         <div class="sidebox panel cf">
@@ -20,29 +26,21 @@
                 <li><i class="fa fa-twitter" aria-hidden="true"></i> <a href="/">jamieshepherd</a></li>
             </ul>
         </div>
+        <div class="sidebox panel cf">
+            <h4>Guides</h4>
+            <p><em>No guides published.</em></p>
+        </div>
+        <div class="sidebox panel cf">
+            <h4>Decks</h4>
+            <p><em>No decks published.</em></p>
+        </div>
 
     </div>
+
     <div id="player-stats">
         <h2>Player stats</h2>
+        <div id="player-stats-overview" class="{{ $user->twitch_tv}}" @if($twitchLive) data-live="true" @else data-live="false" @endif></div>
         {{-- 300 WIDTH, 25 MARGIN --}}
-        <div class="quick-stats">
-            <div class="statbox small">
-                <div class="content">
-                    <span class="label">Win/Loss Ratio</span>
-                    <span class="statistic">76%</span>
-                </div>
-            </div><div class="statbox small">
-                <div class="content">
-                    <span class="label">Games played</span>
-                    <span class="statistic">126</span>
-                </div>
-            </div><div class="statbox small">
-                <div class="content">
-                    <span class="label">Total played</span>
-                    <span class="statistic">513 hrs</span>
-                </div>
-            </div>
-        </div>
         <h2>Match history</h2>
         <div id="game-feed">
             <div class="match-preview win cf">

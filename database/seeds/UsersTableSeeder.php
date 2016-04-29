@@ -14,11 +14,12 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         $user = new User();
-        $user->name     = 'Jamie Shepherd';
-        $user->username = 'jamieshepherd';
-        $user->email    = 'hello@jamie.sh';
-        $user->role     = 'owner';
-        $user->password = bcrypt('secret');
+        $user->name      = 'Jamie Shepherd';
+        $user->username  = 'jamieshepherd';
+        $user->email     = 'hello@jamie.sh';
+        $user->role      = 'owner';
+        $user->twitch_tv = 'jamieshepherd';
+        $user->password  = bcrypt('secret');
         $user->save();
 
         $user = new User();

@@ -1,0 +1,22 @@
+.anim-pulse {
+    -webkit-animation: pulse 3s infinite linear;
+    animation: pulse 3s infinite linear;
+}
+
+.anim-flash {
+    -webkit-animation: flash 1s infinite linear;
+    animation: flash 1s infinite linear;
+}
+
+@keyframes pulse {
+    0%   { opacity: 1; }
+    50%  { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes flash {
+    0%   { opacity: 0; }
+    25%  { opacity: 1; }
+    75%  { opacity: 1; }
+    100% { opacity: 0; }
+}
