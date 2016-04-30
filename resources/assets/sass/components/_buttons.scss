@@ -1,0 +1,32 @@
+.btn {
+    display: inline-block;
+
+    padding: 10px;
+    background: none;
+    cursor: pointer;
+
+    border: 1px solid white;
+    color: white;
+    border-radius: 0px;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    font-size: 12px;
+    transition: color 0.2s, border-color 0.2s;
+
+    margin-right: 10px;
+    &.btn-warning {
+        color: $primary-highlight;
+        border-color: $primary-highlight;
+    }
+    &.btn-faded {
+        color: $font-color-faded;
+        border-color: $faded-line;
+    }
+    .fa {
+        margin-right: 5px;
+    }
+    &:hover {
+        color: $secondary-highlight;
+        border-color: $secondary-highlight;
+    }
+}

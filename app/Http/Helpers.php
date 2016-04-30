@@ -16,3 +16,15 @@ function isTwitchLive($channel)
     // Cache this request
     return (!is_null($twitchLive->stream)) ? TRUE : FALSE;
 }
+
+function displayNotification()
+{
+    if (Session::has('notification'))
+    {
+        $notification = explode('|', Session::get('notification'));
+
+        return '<div class="notification notification-'.$notification[0].'">'.$notification[1].'</div>';
+    }
+
+    return '';
+}

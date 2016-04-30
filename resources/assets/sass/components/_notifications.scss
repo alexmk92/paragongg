@@ -1,0 +1,41 @@
+.notification {
+    display: inline-block;
+    font-size: 14px;
+    line-height: 24px;
+    font-weight: 600;
+    max-width: 350px;
+    width: 100%;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    text-align: center;
+    cursor: pointer;
+    opacity: 1;
+    animation: fadeOut 5s linear forwards;
+    z-index: 1337;
+    &.notification-success {
+        color: #3c763d;
+        background: #dff0d8;
+    }
+    &.notification-info {
+        color: #31708f;
+        background: #d9edf7;
+    }
+    &.notification-warning {
+        color: #8a6d3b;
+        background: #fcf8e3;
+    }
+    &.notification-danger {
+        color: #a94442;
+        background: #f2dede;
+    }
+}
+
+@keyframes fadeOut {
+    0%  { opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; transform: translateY(0px);}
+    99% { opacity: 0; transform: translateY(-10px);}
+    100% { opacity: 0; }
+}

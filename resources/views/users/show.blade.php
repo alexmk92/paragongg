@@ -16,16 +16,23 @@
                  <strong>jamieshepherd <i class="fa fa-check-circle" aria-hidden="true" title="Linked account"></i></strong>
             </span>
         </div>
+        @if($user->bio || $user->website || $user->twitch_tv || $user->twitter)
         <div class="sidebox panel cf">
+            @if($user->bio)
             <h4>Bio</h4>
-            <p><em>Computer Science final year student who's passionate about Paragon. Subreddit moderator whenever I have any time left.</em></p>
+            <p><em>{{ $user->bio }}</em></p>
             <hr>
+            @endif
             <ul class="social">
-                <li><i class="fa fa-globe" aria-hidden="true"></i> <a href="/">paragon.gg</a></li>
-                <li><i class="fa fa-twitch" aria-hidden="true"></i> <a href="/">jamieshepherd</a></li>
-                <li><i class="fa fa-twitter" aria-hidden="true"></i> <a href="/">jamieshepherd</a></li>
+                @if($user->website)
+                <li><i class="fa fa-globe" aria-hidden="true"></i> <a href="{{ $user->website }}">{{ $user->website }}</a></li> @endif
+                @if($user->twitch_tv)
+                <li><i class="fa fa-twitch" aria-hidden="true"></i> <a href="http://twitch.tv/{{ $user->twitch_tv }}">{{ $user->twitch_tv }}</a></li> @endif
+                @if($user->twitter)
+                <li><i class="fa fa-twitter" aria-hidden="true"></i> <a href="https://twitter.com/{{ $user->twitter }}">{{ $user->twitter }}</a></li> @endif
             </ul>
         </div>
+        @endif
         <div class="sidebox panel cf">
             <h4>Guides</h4>
             <p><em>No guides published.</em></p>

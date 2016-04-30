@@ -14,6 +14,7 @@
 // Layout
 @import
 "layout/main",
+"layout/news",
 "layout/nav",
 "layout/footer",
 "layout/home",
@@ -22,7 +23,8 @@
 "layout/article",
 "layout/user",
 "layout/stats",
-"layout/games";
+"layout/games",
+"layout/forms";
 
 // React components
 @import
@@ -35,4 +37,9 @@
 @import
 "components/tags",
 "components/lists",
-"components/articlePreview";
+"components/articlePreview",
+"components/buttons",
+"components/alerts",
+"components/notifications",
+"components/simplemde",
+"components/abilitySelect";

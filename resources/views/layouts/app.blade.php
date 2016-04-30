@@ -25,6 +25,7 @@
     <!-- Scripts -->
     <script src="https://use.typekit.net/lpk6pfi.js"></script>
     <script>try{Typekit.load({ async: false });}catch(e){}</script>
+    <script type="text/javascript" src="/build/js/helpers.min.js"></script>
     @yield('libraries')
     {{--<script type="text/javascript" src="{{ url('/js/vendor/jquery-2.2.0.min.js') }}"></script>--}}
     {{--<script type="text/javascript" src="{{ url('/js/vendor/jquery.tooltipster.min.js') }}"></script>--}}
@@ -42,18 +43,12 @@
 </div>
 
 {{-- Flash notifications --}}
-@if(Session::has('notification'))
-    <div class="notification">
-        <i class="fa fa-info-circle"></i> {{ Session::get('notification') }}
-    </div>
-@endif
-
-{{-- Flash errors (merge?) --}}
-@if(Session::has('alert'))
-    <div class="notification alert">
-        <i class="fa fa-exclamation-circle"></i> {{ Session::get('alert') }}
-    </div>
-@endif
+{!! displayNotification() !!}
+{{--@if(Session::has('notification'))--}}
+    {{--<div class="notification">--}}
+        {{--<i class="fa fa-info-circle"></i> {{ Session::get('notification') }}--}}
+    {{--</div>--}}
+{{--@endif--}}
 
 {{-- Include footer --}}
 @include('layouts.footer')

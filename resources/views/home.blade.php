@@ -3,7 +3,7 @@
     <div class="featured-panel">
 
         <div class="panel-wrapper first">
-            <a class="unique" href="/news/slug">
+            <a class="unique" href="/news/iggy-and-scorch-release-date-announced">
                 <div class="featured-focus">
                     <div class="overlay">
                         <div class="date">6 Hours Ago</div>

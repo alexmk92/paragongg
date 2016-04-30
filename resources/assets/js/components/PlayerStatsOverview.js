@@ -16,7 +16,7 @@ var PlayerStatsOverview = React.createClass({
         }
     },
     handleSelect: function (index) {
-        if(index != 3) {
+        if(index != 4) {
             this.player.setMuted(true);
         } else {
             this.player.setMuted(false);
@@ -74,13 +74,14 @@ var PlayerStatsOverview = React.createClass({
         return (
             <Tabs forceRenderTabPanel={true} onSelect={this.handleSelect}>
                 <TabList>
-                    <Tab>Lifetime stats</Tab>
+                    <Tab>Player overview</Tab>
                     <Tab>Elo change</Tab>
+                    <Tab>Lifetime stats</Tab>
                     <Tab>Achievements</Tab>
                     <Tab className={this.state.twitchTV ? 'visible' : 'hidden'}><i className={"fa fa-twitch " + this.state.twitchLive} aria-hidden="true"></i> Twitch TV</Tab>
                 </TabList>
 
-                {/* Top players */}
+                {/* Player overview */}
                 <TabPanel>
                     <div className="quick-stats">
                         <div className="statbox small">
@@ -105,6 +106,11 @@ var PlayerStatsOverview = React.createClass({
                 {/* Elo change */}
                 <TabPanel>
                     <canvas id="eloChange" ref={el => this.initChartJs(el)}></canvas>
+                </TabPanel>
+
+                {/* Lifetime stats */}
+                <TabPanel>
+                    <p>Lifetime stats</p>
                 </TabPanel>
 
                 {/* Achievements */}

@@ -3,6 +3,14 @@
     width: 400px;
     height: 100%;
     padding-left: 30px;
+    &.align-left {
+        float: left;
+        padding-left: 0;
+        padding-right: 30px;
+    }
+    &.small {
+        width: 300px;
+    }
     h4 {
         margin-bottom: 10px;
     }
@@ -15,6 +23,23 @@
             background: $panel-color-dark;
             padding: 20px;
             border: 1px solid $faded-line;
+        }
+        &.navigation {
+            background: $panel-color-dark;
+            border: 1px solid $faded-line;
+            li {
+                margin-bottom: 0;
+            }
+            li a {
+                display: block;
+                padding: 15px 20px;
+                background: $panel-color-dark;
+                margin-bottom: 0;
+                &.active {
+                    border-left: 3px solid $primary-highlight;
+                    background: $panel-color;
+                }
+            }
         }
     }
 }

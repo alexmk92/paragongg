@@ -19,6 +19,10 @@ Route::auth();
 
 Route::get('/home', 'HomeController@index');
 
+/* STATIC */
+Route::get('/terms',   function(){ return view('static.terms');   });
+Route::get('/privacy', function(){ return view('static.privacy'); });
+
 /* NEWS */
 
 Route::get('/news', 'ArticleController@index');
@@ -56,8 +60,21 @@ Route::get('/decks/{slug}', 'DeckController@index');
 /* GUIDES */
 
 Route::get('/guides', 'GuideController@index');
+Route::get('/guides/create', 'GuideController@create');
 Route::post('/guides/create', 'GuideController@store');
 Route::get('/guides/edit/{id}', 'GuideController@edit');
 Route::post('/guides/edit/{id}', 'GuideController@update');
 Route::get('/guides/delete/{id}', 'GuideController@delete');
-Route::get('/guides/{slug}', 'GuideController@index');
+Route::get('/guides/{slug}', 'GuideController@show');
+
+
+/* GUIDES */
+
+Route::get('/account', 'AccountController@index');
+Route::get('/account/profile', 'AccountController@editProfile');
+Route::get('/account/link', 'AccountController@linkAccount');
+Route::post('/account/profile', 'AccountController@updateProfile');
+Route::get('/account/password', 'AccountController@editPassword');
+Route::post('/account/password', 'AccountController@updatePassword');
+Route::get('/account/guides', 'AccountController@guides');
+Route::get('/account/decks', 'AccountController@decks');

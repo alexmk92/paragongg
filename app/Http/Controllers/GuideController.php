@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Guide;
 use App\Http\Requests;
+use App\Http\Requests\Guide\CreateGuideRequest;
 
 class GuideController extends Controller
 {
@@ -21,10 +22,40 @@ class GuideController extends Controller
     }
 
     // Store
-    public function store()
+    public function store(CreateGuideRequest $request)
     {
-        // Store item
-        return view('guides.create');
+        $guide = new Guide;
+        $guide->user_id   = auth()->user()->id;
+        $guide->type      = $request->type;
+        $guide->title     = $request->title;
+        $guide->slug      = $request->slug;
+        $guide->body      = $request->body;
+
+        if($guide->type == 'hero') {
+            $abilityString = '';
+            for($i = 1; $i < 16; $i++) {
+                $current = 'ability-'.$i;
+                $abilityString .= $request->$current;
+                if($i < 15) {
+                    $abilityString .= ',';
+                }
+            }
+            $guide->deck      = $request->deck;
+            $guide->hero      = $request->hero;
+            $guide->abilities = $abilityString;
+        }
+
+        if(isset($_POST['draft'])) {
+            $guide->status = 'draft';
+        } else {
+            $guide->status = 'published';
+        }
+
+        $guide->save();
+
+        session()->flash('notification', 'success|Guide saved.');
+
+        return redirect('/guides/show/'.$guide->slug);
     }
 
     // Read

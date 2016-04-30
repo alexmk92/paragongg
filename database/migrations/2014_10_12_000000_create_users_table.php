@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('bio', 300)->nullable();
             $table->string('website')->nullable();
+            $table->string('twitter')->nullable();
             $table->string('twitch_tv')->nullable();
             $table->rememberToken();
             $table->timestamps();

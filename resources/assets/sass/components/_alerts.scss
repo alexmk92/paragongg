@@ -1,0 +1,22 @@
+.alert {
+    max-width: 800px;
+    width: 100%;
+    margin-bottom: 30px;
+    padding: 20px;
+    &.alert-success {
+        color: #3c763d;
+        background: #dff0d8;
+    }
+    &.alert-info {
+        color: #31708f;
+        background: #d9edf7;
+    }
+    &.alert-warning {
+        color: #8a6d3b;
+        background: #fcf8e3;
+    }
+    &.alert-danger {
+        color: #a94442;
+        background: #f2dede;
+    }
+}
