@@ -18,13 +18,13 @@ Route::get('/', function () {
 Route::auth();
 
 Route::get('/home', 'HomeController@index');
+Route::get('/auth', 'Auth\OauthController@accountLink');
 
 /* STATIC */
 Route::get('/terms',   function(){ return view('static.terms');   });
 Route::get('/privacy', function(){ return view('static.privacy'); });
 
 /* NEWS */
-
 Route::get('/news', 'ArticleController@index');
 Route::get('/news/create', 'ArticleController@create'); // Admin
 Route::post('/news/create', 'ArticleController@store'); // Admin
@@ -34,31 +34,36 @@ Route::get('/news/delete/{id}', 'ArticleController@delete'); // Admin
 Route::get('/news/{slug}', 'ArticleController@show');
 
 /* USERS */
-
 Route::get('/users/{username}', 'UserController@show');
 
 /* PLAYERS */
-
 Route::get('/players', 'PlayerController@index');
 Route::get('/players/top', 'PlayerController@top');
 Route::get('/players/{username}', 'PlayerController@show');
 
 /* GAMES */
-
 Route::get('/games', 'GameController@index');
 Route::get('/games/id', 'GameController@show');
 
 /* DECKS */
+Route::get('/cards', 'CardController@index');
+Route::get('/cards/create', 'CardController@create');
+Route::post('/cards/create', 'CardController@store');
+Route::get('/cards/edit/{id}', 'CardController@edit');
+Route::post('/cards/edit/{id}', 'CardController@update');
+Route::get('/cards/delete/{id}', 'CardController@delete');
+Route::get('/cards/{slug}', 'CardController@show');
 
+/* DECKS */
 Route::get('/decks', 'DeckController@index');
+Route::get('/decks/create', 'DeckController@create');
 Route::post('/decks/create', 'DeckController@store');
 Route::get('/decks/edit/{id}', 'DeckController@edit');
 Route::post('/decks/edit/{id}', 'DeckController@update');
 Route::get('/decks/delete/{id}', 'DeckController@delete');
-Route::get('/decks/{slug}', 'DeckController@index');
+Route::get('/decks/{slug}', 'DeckController@show');
 
 /* GUIDES */
-
 Route::get('/guides', 'GuideController@index');
 Route::get('/guides/create', 'GuideController@create');
 Route::post('/guides/create', 'GuideController@store');
@@ -69,7 +74,6 @@ Route::get('/guides/{slug}', 'GuideController@show');
 
 
 /* GUIDES */
-
 Route::get('/account', 'AccountController@index');
 Route::get('/account/profile', 'AccountController@editProfile');
 Route::get('/account/link', 'AccountController@linkAccount');

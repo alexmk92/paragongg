@@ -17,6 +17,10 @@ html.wf-active {
 }
 .wrapper {
     overflow: hidden;
+    &.bordered-right {
+        padding-right: 30px;
+        border-right: 1px solid $faded-line;
+    }
 }
 .content-wrapper {
     margin: 20px 0 50px;

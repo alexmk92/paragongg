@@ -5,6 +5,8 @@ var AccountNav = React.createClass({
 
     getInitialState: function(){
         return {
+            username: this.props.username,
+            amber: this.props.amber,
             active: false
         }
     },
@@ -24,8 +26,8 @@ var AccountNav = React.createClass({
                 <div className="account-nav-trigger" onClick={this.showContent}>
                     
                     <img className="account-avatar" src="https://www.gravatar.com/avatar/d5d3310834b43c6f96e200339734c949?s=20&amp;d=https%3A%2F%2Fparagon.gg%2Fimages%2Fdefault-avatar.png" alt="Your avatar" />
-                    <span>Jamie</span>
-                    <span className="account-amber"><i className="fa fa-diamond" aria-hidden="true"></i>50</span>
+                    <span>{this.state.username}</span>
+                    <span className="account-amber"><i className="fa fa-diamond" aria-hidden="true"></i>{this.state.amber}</span>
                     <i className="fa fa-caret-down" aria-hidden="true"></i>
 
                 </div>
@@ -45,4 +47,4 @@ var AccountNav = React.createClass({
 });
 
 var element = document.getElementById('account-nav');
-if(element) ReactDOM.render(<AccountNav />, element);
+if(element) ReactDOM.render(<AccountNav username={element.dataset.username} amber={element.dataset.amber}/>, element);

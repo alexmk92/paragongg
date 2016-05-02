@@ -16,7 +16,7 @@
 
             {!! csrf_field() !!}
             <label>Username</label>
-            <input type="text" name="username" value="{{ $user->username }}" disabled>
+            <input type="text" name="username" value="{{ $user->username }}">
             <label>Full name</label>
             <input type="text" name="name" value="{{ $user->name }}">
             <label>Email</label>

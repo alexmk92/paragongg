@@ -25,6 +25,7 @@ class UpdateProfileRequest extends Request
     public function rules()
     {
         return [
+            'username'  => 'required|max:20|unique:users,username,'.Auth::user()->id,
             'email'     => 'required|email|max:255|unique:users,email,'.Auth::user()->id,
             'name'      => 'min:3',
             'twitch_tv' => 'min:3',

@@ -2391,6 +2391,9 @@ html.wf-active {
 
 .wrapper {
   overflow: hidden; }
+  .wrapper.bordered-right {
+    padding-right: 30px;
+    border-right: 1px solid #343a4a; }
 
 .content-wrapper {
   margin: 20px 0 50px;
@@ -2951,6 +2954,57 @@ form {
   form.solo {
     max-width: 400px;
     margin: 20px auto 50px; }
+
+#guides-feed {
+  margin: 20px 0; }
+  #guides-feed #guide-filter {
+    margin-bottom: 50px;
+    background: #181d27;
+    padding: 20px 20px 5px 20px; }
+    #guides-feed #guide-filter .heroes li {
+      display: inline-block;
+      margin-right: 15px;
+      border-radius: 5px;
+      margin-bottom: 15px; }
+    #guides-feed #guide-filter img {
+      width: 80px;
+      vertical-align: top;
+      border-radius: 5px; }
+  #guides-feed .guide-preview {
+    background: #222;
+    display: inline-block;
+    max-width: 444px;
+    width: 100%;
+    margin-bottom: 30px;
+    margin-right: 30px;
+    min-height: 200px;
+    position: relative;
+    transition: all 0.3s;
+    padding: 15px 0; }
+    #guides-feed .guide-preview:nth-of-type(2n) {
+      margin-right: 0; }
+    #guides-feed .guide-preview:hover {
+      -webkit-filter: brightness(130%);
+              filter: brightness(130%); }
+    #guides-feed .guide-preview .preview-details {
+      position: absolute;
+      bottom: -1px;
+      width: 100%;
+      padding: 20px;
+      /* For Safari 5.1 to 6.0 */
+      /* For Opera 11.1 to 12.0 */
+      /* For Firefox 3.6 to 15 */
+      background: linear-gradient(transparent, black); }
+      #guides-feed .guide-preview .preview-details .date {
+        font-size: 12px;
+        text-transform: uppercase;
+        margin-bottom: 5px; }
+      #guides-feed .guide-preview .preview-details .heading h2 {
+        font-size: 20px;
+        line-height: 24px; }
+      #guides-feed .guide-preview .preview-details .snippet {
+        font-size: 14px;
+        line-height: 130%; }
 
 .ReactTabs .ReactTabs__Tab {
   background: #0d1016;

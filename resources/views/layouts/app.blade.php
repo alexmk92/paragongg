@@ -54,8 +54,8 @@
 @include('layouts.footer')
 
 {{-- Webpack --}}
-<script type="text/javascript" src="/build/js/app.min.js"></script>
 @yield('scripts')
+    <script type="text/javascript" src="/build/js/app.min.js"></script>
 @if(!isset($hideAnalytics))
     {{--
      <script>

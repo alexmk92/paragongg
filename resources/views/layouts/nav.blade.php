@@ -16,7 +16,7 @@
             {{-- <li><a href="/community" {{ Request::is( 'community*') ? 'class=active' : '' }}>Community</a></li> --}}
         </ul>
         @if(Auth::user())
-        <div id="account-nav"></div>
+        <div id="account-nav" @if(Auth::check()) data-username="{{ Auth::user()->username }}" data-amber="{{ Auth::user()->amber }}" @endif></div>
         @else
         <div id="account-noauth">
             <a href="/login" class="login">Login</a>

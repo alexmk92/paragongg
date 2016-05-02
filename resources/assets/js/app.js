@@ -7,3 +7,4 @@ require("../sass/app.scss");
 require("./components/StatsOverview");
 require("./components/PlayerStatsOverview");
 require("./components/AccountNav");
+require("./components/GuidesFeed");

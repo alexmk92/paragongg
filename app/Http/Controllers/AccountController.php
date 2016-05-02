@@ -27,6 +27,7 @@ class AccountController extends Controller
     public function updateProfile(UpdateProfileRequest $request)
     {
         $user = Auth::user();
+        $user->username  = $request->username;
         $user->email     = $request->email;
         $user->website   = $request->website;
         $user->twitter   = $request->twitter;
