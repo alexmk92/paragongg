@@ -1,7 +1,7 @@
 <?php
-// Helpers
 
-//use GuzzleHttp\Client;
+use Carbon\Carbon;
+use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Cache;
 
 function isTwitchLive($channel)
@@ -27,4 +27,32 @@ function displayNotification()
     }
 
     return '';
+}
+
+function APIToken()
+{
+    if(!Cache::has('APITOKEN')) {
+
+        $auth = base64_encode(env('EPIC_API_CLIENT_ID').':'.env('EPIC_API_CLIENT_SECRET'));
+
+        $client = new Client();
+        $res = $client->request('POST', 'https://account-public-service-prod03.ol.epicgames.com/account/api/oauth/token', [
+            'headers' => [
+                'Authorization' => 'Basic '.$auth,
+                'Cache-Control'     => 'no-cache',
+                'Content-Type'      => 'application/x-www-form-urlencoded'
+            ],
+            'form_params' => [
+                'grant_type' => 'password',
+                'username'   => env('EPIC_API_EMAIL'),
+                'password'   => env('EPIC_API_PASSWORD'),
+            ]
+        ])->getBody();
+        $response = json_decode($res);
+        $expires = Carbon::now()->addSeconds($response->expires_in);
+        Cache::put('APITOKEN', $response->access_token, $expires);
+
+    }
+
+    return Cache::get('APITOKEN');
 }

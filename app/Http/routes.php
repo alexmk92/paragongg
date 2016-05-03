@@ -19,6 +19,8 @@ Route::auth();
 
 Route::get('/home', 'HomeController@index');
 Route::get('/auth', 'Auth\OauthController@accountLink');
+Route::get('/updateCards', 'CardController@updateCards');
+Route::get('/apikey', function(){ return APIToken(); });
 
 /* STATIC */
 Route::get('/terms',   function(){ return view('static.terms');   });
