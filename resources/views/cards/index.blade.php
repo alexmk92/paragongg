@@ -1,10 +1,10 @@
 @extends('layouts/app')
 @section('body')
-    <h2>Cards index</h2>
-
+    <h2>Paragon cards</h2>
+    <div id="card-feed"></div>
 @endsection
 @section('scripts')
     <script>
-        var cards = "{!! json_encode($cards) !!}";
+        var CARDS = {!! json_encode($cards) !!};
     </script>
 @endsection

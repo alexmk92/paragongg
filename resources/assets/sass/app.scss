@@ -25,14 +25,16 @@
 "layout/stats",
 "layout/games",
 "layout/forms",
-"layout/guides";
+"layout/guides",
+"layout/cards";
 
 // React components
 @import
 "react/ReactTabs",
 "react/AccountNav",
 "react/StatsOverview",
-"react/PlayerStatsOverview";
+"react/PlayerStatsOverview",
+"react/ReactCSSTransitionGroup";
 
 // General components
 @import
