@@ -56,3 +56,34 @@ function APIToken()
 
     return Cache::get('APITOKEN');
 }
+
+function OAuthToken()
+{
+    $user = Auth::user();
+    if(!Cache::has('user.'.$user->id.'.token')) {
+
+        $auth = base64_encode(env('EPIC_API_CLIENT_ID').':'.env('EPIC_API_CLIENT_SECRET'));
+
+        $client = new Client();
+        $res = $client->request('POST', 'https://account-public-service-prod03.ol.epicgames.com/account/api/oauth/token', [
+            'headers' => [
+                'Authorization' => 'Basic '.$auth,
+                'Cache-Control'     => 'no-cache',
+                'Content-Type'      => 'application/x-www-form-urlencoded'
+            ],
+            'form_params' => [
+                'grant_type' => 'authorization_code',
+                'code'       => $user->oauth_epic_code
+            ]
+        ])->getBody();
+        $response = json_decode($res);
+        $user->epic_account_id = $response->account_id;
+        $user->save();
+        $expires = Carbon::now()->addSeconds($response->expires_in);
+
+        Cache::put('user.'.$user->id.'.token', $response->access_token, $expires);
+
+    }
+
+    return Cache::get('user.'.$user->id.'.token');
+}

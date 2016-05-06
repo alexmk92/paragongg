@@ -18,7 +18,8 @@ class CreateUsersTable extends Migration
             $table->integer('amber')->default(50);
             $table->string('name')->nullable();
             $table->string('username');
-            $table->string('oauth_epic')->nullable();
+            $table->string('oauth_epic_code')->nullable();
+            $table->string('epic_account_id')->nullable();
             $table->string('ign_epic')->nullable();
             $table->string('ign_psn')->nullable();
             $table->string('email')->unique();

@@ -16,8 +16,10 @@ class OauthController extends Controller
             // If user is authenticated
             if(Auth::check()) {
                 $user = Auth::user();
-                $user->oauth_epic = $_GET['code'];
+                $user->oauth_epic_code = $_GET['code'];
                 $user->save();
+
+                OAuthToken();
                 
                 session()->flash('notification', 'success|Epic account linked.');
                 

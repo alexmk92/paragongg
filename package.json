@@ -23,7 +23,8 @@
     "react-dom": "^15.0.1",
     "react-flip-move": "^2.1.2",
     "react-simple-dropdown": "^1.0.1",
-    "react-tabs": "^0.5.3"
+    "react-tabs": "^0.5.3",
+    "react-tooltip": "^2.0.0"
   },
   "name": "ParagonGG",
   "description": "Paragon GG is a news, strategy, and statistics website for Paragon by Epic Games",

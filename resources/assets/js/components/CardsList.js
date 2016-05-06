@@ -24,11 +24,16 @@ var CardsList = React.createClass({
         }
     },
     shouldBeVisible: function (card) {
-        if(this.state.filter_affinity == 'All' || this.state.filter_affinity == card.affinity) {
-            return true;
-        } else {
+        if(this.state.filter_owned == true && card.owned == false) {
             return false;
         }
+        if(this.state.filter_affinity != 'All' && this.state.filter_affinity != card.affinity) {
+            return false;
+        }
+        if(this.state.filter_type != 'All' && this.state.filter_type != card.type) {
+            return false;
+        }
+        return true;
     },
     render: function () {
         var cards = [];
@@ -36,18 +41,21 @@ var CardsList = React.createClass({
             if(this.shouldBeVisible(card) == true) {
                 cards.push(<CardPreview affinity={card.affinity}
                     key={card.code}
+                    owned={card.owned}
                     code={card.code}
+                    cost={card.cost}
                     name={card.name}
                 />);
             }
         }, this);
+        // Sort by cost
+        cards.sort(function(a,b) { return a.cost - b.cost; });
         return(
             <div>
                 <div id="sidebar">
                     <div className="sidebox panel cf">
                         <h4>Filter cards</h4>
                         <form>
-                        <label><input name="owned" type="checkbox" onChange={this.filter} /> Owned</label>
                         <label>Affinity</label>
                         <select name="affinity" onChange={this.filter} defaultValue="All">
                             <option value="All">All</option>
@@ -66,6 +74,16 @@ var CardsList = React.createClass({
                             <option value="zero">Token</option>
                             <option value="three">Prime Helix</option>
                         </select>
+                        <label>Rarity</label>
+                        <select name="type" onChange={this.filter} defaultValue="All">
+                            <option value="All">All</option>
+                            <option value="Rarity.Common">Common</option>
+                            <option value="Rarity.Uncommon">Uncommon</option>
+                            <option value="Rarity.Rare">Rare</option>
+                            <option value="Rarity.EpicRare">Epic Rare</option>
+                        </select>
+                        <label><input name="owned" type="checkbox" onChange={this.filter} /> Show only cards I own</label>
+                        <label><input name="hasActive" type="checkbox" onChange={this.filter} /> Has active/passive</label>
                         </form>
                     </div>
                 </div>
@@ -86,8 +104,10 @@ var CardPreview = React.createClass({
         var divStyle = {
             backgroundImage: 'url(assets/images/cards/' + this.props.code + '/background.png)',
         }
+        var className = "card-preview ";
+            className += (this.props.owned) ? "owned" : "missing";
         return (
-            <li className='card-preview' style={divStyle}>
+            <li className={className} style={divStyle}>
                 <div className="card-name">{this.props.name}</div>
             </li>
         )

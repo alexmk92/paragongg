@@ -8,12 +8,7 @@ class Card extends Model
 {
     protected $connection = 'mongodb';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'name', 'code',
+    protected $hidden = [
+        '_id', 'created_at', 'updated_at'
     ];
 }
