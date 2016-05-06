@@ -1,27 +1,43 @@
-# Laravel PHP Framework
+# ParagonGG 2.0
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
+This repository hosts the code for the application layer of ParagonGG, a news, strategy, and stats website for the MOBA title from Epic Games: Paragon.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
+## Production Stack
+- Amazon AWS
+    - Elastic Beanstalk
+    - RDS cluster for structured data (AuroraDB)
+    - EC2 cluster for unstructured data (MongoDB)
+- PHP 7.0 running Laravel
+- ReactJS *enhanced* front end
+- Webpack
+- Typekit
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+## Prerequisites
 
-## Official Documentation
+- PHP >=5.5
+- [Laravel Homestead](https://github.com/laravel/homestead)
+- [Node / NPM](https://nodejs.org/en/)
 
-Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
+## Installation
+
+- Clone [jamieshepherd/paragongg](https://github.com/jamieshepherd/paragongg)
+- Add ParagonGG to Homestead.yaml
+- Ensure storage/app is writeable
+- Run `composer install`
+- Run `npm install`
+
+## Development
+
+- General development can all be achieved with `npm run dev` which will run the development webpack service
+- This will build all *.scss* in resources/assets/sass to [public/build/css/app.css](public/build/css/app.css)
+- This will build all *.js* in resources/assets/js to [public/build/js/app.min.js](public/build/js/app.min.js)
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+- Fork the main repository and pull request your changes
+- General changes should go to the *develop* branch
+- New features should be separate branches e.g. *new-cache-system*
 
-## Security Vulnerabilities
+## Issues
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+Feel free to log any issues in the origin/master repository as you see fit.
