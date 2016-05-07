@@ -3,6 +3,8 @@ require("../sass/app.scss");
 //require("./helpers");
 //require("./lib/twitch-v1.js");
 
+// Non React components
+require("./components/CardTooltip")
 // React react
 require("./components/StatsOverview");
 require("./components/PlayerStatsOverview");

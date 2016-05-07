@@ -1,30 +1,29 @@
-var React    = require('react');
-var ReactDOM = require('react-dom');
+import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 
-var AccountNav = React.createClass({
-
-    getInitialState: function(){
-        return {
+class AccountNav extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
             username: this.props.username,
             amber: this.props.amber,
             active: false
         }
-    },
 
-    showContent: function() {
+        this.showContent = this.showContent.bind(this)
+    }
+    showContent() {
         this.setState({active: !this.state.active})
-    },
-
-    isActive: function() {
+    }
+    isActive() {
         return (this.state.active) ? 'account-nav-panel active' : 'account-nav-panel inactive';
-    },
-
-    render: function () {
+    }
+    render() {
         //var user = this.props.user;
         return(
             <div className="account-dropdown">
                 <div className="account-nav-trigger" onClick={this.showContent}>
-                    
+
                     <img className="account-avatar" src="https://www.gravatar.com/avatar/d5d3310834b43c6f96e200339734c949?s=20&amp;d=https%3A%2F%2Fparagon.gg%2Fimages%2Fdefault-avatar.png" alt="Your avatar" />
                     <span>{this.state.username}</span>
                     <span className="account-amber"><i className="fa fa-diamond" aria-hidden="true"></i>{this.state.amber}</span>
@@ -42,9 +41,9 @@ var AccountNav = React.createClass({
 
                 </div>
             </div>
-        );
+        )
     }
-});
+}
 
 var element = document.getElementById('account-nav');
 if(element) ReactDOM.render(<AccountNav username={element.dataset.username} amber={element.dataset.amber}/>, element);
