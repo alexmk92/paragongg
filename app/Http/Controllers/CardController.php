@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Card;
 use App\Http\Requests;
+use App\Jobs\UpdateCardObject;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Auth;
@@ -117,6 +118,7 @@ class CardController extends Controller
     {
         $updateImages = false;
         if(isset($_GET['update_images']) && $_GET['update_images'] == true) $updateImages = true;
+        
         // Get latest card list
         $client = new Client();
         $res = $client->request('GET', 'https://developer-paragon.epicgames.com/v1/card/list', [
@@ -131,84 +133,11 @@ class CardController extends Controller
 
         // Run through each card returned
         foreach($response as $object) {
-            $exists = Card::where('code', $object->id)->first();
-            if(!$exists) {
-
-                if (!file_exists('assets/images/cards/'.$object->id)) {
-                    mkdir('assets/images/cards/' . $object->id, 0777, true);
-                }
-
-                Card::create(['name' => $object->name, 'code' => $object->id]);
-
-                // BACKGROUND
-                $client->request('GET', 'https://oriondata-public-service-prod09.ol.epicgames.com/v1/card/'.$object->id.'/image/background.png', [
-                    'headers' => [
-                        'Accept'        => 'image/png',
-                        'Authorization' => 'Bearer '.APIToken(),
-                        'X-Epic-ApiKey' => env('EPIC_API_KEY'),
-                    ],
-                    'save_to' => 'assets/images/cards/'.$object->id.'/background.png'
-                ])->getBody();
-
-                // ICON
-                $client->request('GET', 'https://oriondata-public-service-prod09.ol.epicgames.com/v1/card/'.$object->id.'/image/icon.png', [
-                    'headers' => [
-                        'Accept'        => 'image/png',
-                        'Authorization' => 'Bearer '.APIToken(),
-                        'X-Epic-ApiKey' => env('EPIC_API_KEY'),
-                    ],
-                    'save_to' => 'assets/images/cards/'.$object->id.'/icon.png'
-                ])->getBody();
-
-            }
-
-            $cardDetails = $client->request('GET', 'https://oriondata-public-service-prod09.ol.epicgames.com/v1/card/'.$object->id, [
-                'headers' => [
-                    'Accept'        => 'application/json',
-                    'Authorization' => 'Bearer '.APIToken(),
-                    'X-Epic-ApiKey' => env('EPIC_API_KEY'),
-                ]
-            ])->getBody();
-
-            $cardDetails = json_decode($cardDetails);
-
-            $card = Card::where('code', $object->id)->first();
-            $card->description  = $cardDetails->description;
-            $card->type         = $cardDetails->type;
-            $card->cost         = $cardDetails->cost;
-            $card->upgradeSlots = $cardDetails->upgradeSlots;
-            $card->affinity     = $cardDetails->affinity;
-            $card->effects      = $cardDetails->effects;
-            $card->save();
-
-            if($updateImages) {
-
-                if (!file_exists('assets/images/cards/'.$object->id)) {
-                    mkdir('assets/images/cards/' . $object->id, 0777, true);
-                }
-                // BACKGROUND
-                $client->request('GET', 'https://oriondata-public-service-prod09.ol.epicgames.com/v1/card/'.$object->id.'/image/background.png', [
-                    'headers' => [
-                        'Accept'        => 'image/png',
-                        'Authorization' => 'Bearer '.APIToken(),
-                        'X-Epic-ApiKey' => env('EPIC_API_KEY'),
-                    ],
-                    'save_to' => 'assets/images/cards/'.$object->id.'/background.png'
-                ])->getBody();
-
-                // ICON
-                $client->request('GET', 'https://oriondata-public-service-prod09.ol.epicgames.com/v1/card/'.$object->id.'/image/icon.png', [
-                    'headers' => [
-                        'Accept'        => 'image/png',
-                        'Authorization' => 'Bearer '.APIToken(),
-                        'X-Epic-ApiKey' => env('EPIC_API_KEY'),
-                    ],
-                    'save_to' => 'assets/images/cards/'.$object->id.'/icon.png'
-                ])->getBody();
-
-            }
+            $this->dispatch(new UpdateCardObject($object, $updateImages));
         }
-        session()->flash('notification', 'success|All cards updated.');
+
+        session()->flash('notification', 'success|Cards update processing...');
+
         return redirect('/cards');
     }
 }

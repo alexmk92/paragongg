@@ -38,6 +38,7 @@ var CardsList = React.createClass({
     render: function () {
         var cards = [];
         this.props.cards.forEach(function(card) {
+
             if(this.shouldBeVisible(card) == true) {
                 cards.push(<CardPreview affinity={card.affinity}
                     key={card.code}
@@ -105,7 +106,9 @@ var CardPreview = React.createClass({
             backgroundImage: 'url(assets/images/cards/' + this.props.code + '/background.png)',
         }
         var className = "card-preview ";
+        if(typeof this.props.owned !== 'undefined') {
             className += (this.props.owned) ? "owned" : "missing";
+        }
         return (
             <li className={className} style={divStyle}>
                 <div className="card-name">{this.props.name}</div>

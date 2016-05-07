@@ -3,8 +3,12 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 57 70" style="enable-background:new 0 0 57 70;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#FF6600;}
+	.st0{fill:url(#SVGID_1_);}
 </style>
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="28.5" y1="70" x2="28.5" y2="-1.279659e-009">
+	<stop  offset="0" style="stop-color:#FF8800"/>
+	<stop  offset="1" style="stop-color:#FF6600"/>
+</linearGradient>
 <polygon class="st0" points="57,7 57,0 0,0 0,30.4 0,38.4 0,54 36,54 36,46 8,46 8,38 49,38 49,62 0,62 0,70 57,70 57,38.4 57,30.4 
 	57,15 21,15 21,23 49,23 49,30 8,30 8,7 "/>
 </svg>
