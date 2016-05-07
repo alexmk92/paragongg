@@ -1,15 +1,14 @@
-var React    = require('react');
-var ReactDOM = require('react-dom');
+import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 
-var GuidesList = React.createClass({
-
-    getInitialState: function(){
-        return {
-            guides: this.props.guides
+class GuidesList extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            guides : this.props.guides
         }
-    },
-
-    render: function () {
+    }
+    render() {
         var guides = [];
         this.props.guides.forEach(function(guide) {
             guides.push(<GuidePreview key={guide.slug} slug={guide.slug} title={guide.title} created={guide.created} />);
@@ -19,12 +18,12 @@ var GuidesList = React.createClass({
                 <GuideFilter />
                 {guides}
             </div>
-        );
+        )
     }
-});
+}
 
-var GuidePreview = React.createClass({
-    render: function () {
+class GuidePreview extends Component {
+    render() {
         return(
             <a className="guide-preview" href={"/guides/" + this.props.slug}>
                 <div className="preview-details">
@@ -32,12 +31,12 @@ var GuidePreview = React.createClass({
                     <div className="heading"><h2>{ this.props.title }</h2></div>
                 </div>
             </a>
-        );
+        )
     }
-});
+}
 
-var GuideFilter = React.createClass({
-    render: function() {
+class GuideFilter extends Component {
+    render() {
         return (
             <div id="guide-filter">
                 <ul className="heroes">
@@ -58,9 +57,9 @@ var GuideFilter = React.createClass({
                     <li><a href="/guides?hero=twinblast"><img src="/assets/images/heroes/twinblast/portrait.jpg"/></a></li>
                 </ul>
             </div>
-        );
+        )
     }
-});
+}
 
 var element = document.getElementById('guides-feed');
 if(element) ReactDOM.render(<GuidesList guides={GUIDES} />, element);

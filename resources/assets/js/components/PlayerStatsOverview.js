@@ -1,28 +1,33 @@
-var React     = require('react');
-var ReactDOM  = require('react-dom');
-var ReactTabs = require('react-tabs');
-var Chart     = require('chart.js')
+import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
+import ReactTabs from 'react-tabs'
+import Chart from 'chart.js'
 
-var Tab       = ReactTabs.Tab;
-var Tabs      = ReactTabs.Tabs;
-var TabList   = ReactTabs.TabList;
-var TabPanel  = ReactTabs.TabPanel;
+const Tab       = ReactTabs.Tab
+const Tabs      = ReactTabs.Tabs
+const TabList   = ReactTabs.TabList
+const TabPanel  = ReactTabs.TabPanel
 
-var PlayerStatsOverview = React.createClass({
-    getInitialState: function() {
-        return { 
+class PlayerStatsOverview extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
             twitchLive: this.props.twitchLive,
             twitchTV: this.props.twitchTV
         }
-    },
-    handleSelect: function (index) {
+
+        this.handleSelect = this.handleSelect.bind(this)
+        this.initTwitchEmbed = this.initTwitchEmbed.bind(this)
+        this.initChartJs = this.initChartJs.bind(this)
+    }
+    handleSelect(index) {
         if(index != 4) {
             this.player.setMuted(true);
         } else {
             this.player.setMuted(false);
         }
-    },
-    initTwitchEmbed: function (el) {
+    }
+    initTwitchEmbed(el) {
         console.log(this.state.twitchLive);
         console.log(this.state.twitchTV);
         if(this.state.twitchTV) {
@@ -35,8 +40,8 @@ var PlayerStatsOverview = React.createClass({
             this.player.setVolume(0.5);
             this.player.setMuted(true);
         }
-    },
-    initChartJs: function (el) {
+    }
+    initChartJs(el) {
         if(el) {
             new Chart(el, {
                 type: 'line',
@@ -58,7 +63,7 @@ var PlayerStatsOverview = React.createClass({
                         pointHoverBackgroundColor: "rgba(75,192,192,1)",
                         pointHoverBorderColor: "rgba(220,220,220,1)",
                         pointHoverBorderWidth: 2,
-                        pointRadius: 20,
+                        pointRadius: 5,
                         pointHitRadius: 20,
                         fill: false,
                     }]
@@ -68,9 +73,8 @@ var PlayerStatsOverview = React.createClass({
                 }
             });
         }
-
-    },
-    render: function () {
+    }
+    render() {
         return (
             <Tabs forceRenderTabPanel={true} onSelect={this.handleSelect}>
                 <TabList>
@@ -123,9 +127,9 @@ var PlayerStatsOverview = React.createClass({
                     <div id="twitchEmbed" ref={el => this.initTwitchEmbed(el)}></div>
                 </TabPanel>
             </Tabs>
-        );
+        )
     }
-});
+}
 
 var element = document.getElementById('player-stats-overview');
 if(element) {

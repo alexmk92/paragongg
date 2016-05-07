@@ -1,16 +1,21 @@
-var React     = require('react');
-var ReactDOM  = require('react-dom');
-var FlipMove  = require('react-flip-move');
+import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
+import FlipMove from 'react-flip-move'
+import CardTooltip from './CardTooltip'
 
-var CardsList = React.createClass({
-    getInitialState: function () {
-        return {
-            filter_owned: false,
-            filter_affinity: 'All',
-            filter_type: 'All'
+class CardsList extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            filter_owned : false,
+            filter_affinity : 'All',
+            filter_type : 'All'
         }
-    },
-    filter: function (element) {
+
+        this.filter = this.filter.bind(this)
+    }
+    filter(element) {
+        console.log(this.state)
         switch(element.target.name) {
             case 'owned':
                 this.setState({filter_owned: element.target.checked});
@@ -22,8 +27,8 @@ var CardsList = React.createClass({
                 this.setState({filter_type: element.target.value});
                 break;
         }
-    },
-    shouldBeVisible: function (card) {
+    }
+    shouldBeVisible(card) {
         if(this.state.filter_owned == true && card.owned == false) {
             return false;
         }
@@ -34,8 +39,8 @@ var CardsList = React.createClass({
             return false;
         }
         return true;
-    },
-    render: function () {
+    }
+    render() {
         var cards = [];
         this.props.cards.forEach(function(card) {
 
@@ -96,12 +101,12 @@ var CardsList = React.createClass({
                     </ul>
                 </div>
             </div>
-        );
+        )
     }
-});
+}
 
-var CardPreview = React.createClass({
-    render: function() {
+class CardPreview extends Component {
+    render() {
         var divStyle = {
             backgroundImage: 'url(assets/images/cards/' + this.props.code + '/background.png)',
         }
@@ -115,7 +120,10 @@ var CardPreview = React.createClass({
             </li>
         )
     }
-});
+}
 
-var element = document.getElementById('card-feed');
+//var c = new CardTooltip()
+//c.sayHello()
+
+var element = document.querySelector('#card-feed');
 if(element) ReactDOM.render(<CardsList cards={CARDS}/>, element);
