@@ -4011,3 +4011,39 @@ span.CodeMirror-selectedtext {
   .ability-selection input[type="radio"] {
     margin: 0;
     border: 2px solid #f60; }
+
+.hidden {
+  opacity: 0.0; }
+
+.fadeIn {
+  transition: 750ms;
+  opacity: 1.0; }
+
+.fadeOut {
+  transition: 750ms;
+  opacity: 0.0; }
+
+.card-tooltip {
+  max-width: 500px;
+  background: #1e1e1e;
+  min-width: 360px;
+  border: 1px solid rgba(152, 176, 222, 0.1);
+  border-radius: 4px; }
+  .card-tooltip .head-bar {
+    padding: 14px 16px;
+    height: 100px; }
+    .card-tooltip .head-bar .head-card-name {
+      font-size: 28px; }
+    .card-tooltip .head-bar .head-card-row:first-of-type {
+      margin-top: 10px; }
+    .card-tooltip .head-bar .head-card-row {
+      padding: 6px 0px; }
+      .card-tooltip .head-bar .head-card-row span:nth-child(2) {
+        float: right; }
+  .card-tooltip .card-content {
+    padding: 16px 16px;
+    background: #171717;
+    margin-top: 22px; }
+
+.head-card-name {
+  font-size: 20px; }
