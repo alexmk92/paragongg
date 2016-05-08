@@ -84,3 +84,6 @@ Route::get('/account/password', 'AccountController@editPassword');
 Route::post('/account/password', 'AccountController@updatePassword');
 Route::get('/account/guides', 'AccountController@guides');
 Route::get('/account/decks', 'AccountController@decks');
+
+/* API */
+Route::get('/api/v1/cards/find/{id}', 'API\CardController@show');

@@ -106,6 +106,31 @@ class CardsList extends Component {
 }
 
 class CardPreview extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            tooltip : null
+        }
+
+        this.focused = this.focused.bind(this)
+        this.blur = this.blur.bind(this)
+    }
+    focused(event) {
+        if(this.state.tooltip) {
+            this.state.tooltip.abortClose()
+        } else {
+            this.setState({
+                tooltip : new CardTooltip({ targetNode : event.target, parentNodeName : "card-preview", uniqueId : this.props.name, dataURL : `http://paragon.dev/api/v1/cards/find/${this.props.code}` })
+            })
+        }
+    }
+    blur(event) {
+        console.log("Calling blur")
+        this.state.tooltip.destructor((payload) => {
+            this.state.tooltip = payload.targetNode
+        })
+
+    }
     render() {
         var divStyle = {
             backgroundImage: 'url(assets/images/cards/' + this.props.code + '/background.png)',
@@ -115,15 +140,12 @@ class CardPreview extends Component {
             className += (this.props.owned) ? "owned" : "missing";
         }
         return (
-            <li className={className} style={divStyle}>
+            <li onMouseOver={this.focused} onMouseLeave={this.blur} className={className} style={divStyle}>
                 <div className="card-name">{this.props.name}</div>
             </li>
         )
     }
 }
-
-//var c = new CardTooltip()
-//c.sayHello()
 
 var element = document.querySelector('#card-feed');
 if(element) ReactDOM.render(<CardsList cards={CARDS}/>, element);
