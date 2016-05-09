@@ -1,6 +1,5 @@
 export default class CardTooltip {
     constructor(props) {
-        var id = ""
         if(typeof props.uniqueId === "undefined")
             props.uniqueId = "sder243rfsdf24dsfc"
         if(typeof props.tooltipInfo === "undefined")

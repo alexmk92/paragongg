@@ -26,7 +26,7 @@ function displayNotification()
         return '<div class="notification notification-'.$notification[0].'">'.$notification[1].'</div>';
     }
 
-    return '';
+    return '<input type="checkbox" id="dismissNotification" /><div class="notification notification-danger">Test Notification <label for="dismissNotification>"<i class="fa fa-times" aria-hiddne="true"></i></label></div>';
 }
 
 function APIToken()

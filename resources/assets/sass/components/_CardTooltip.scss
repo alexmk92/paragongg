@@ -2,6 +2,7 @@
     opacity: 0.0;
 }
 .fadeIn {
+    z-index: 1;
     -webkit-transition: 400ms;
        -moz-transition: 400ms;
         -ms-transition: 400ms;
@@ -10,6 +11,7 @@
     opacity: 1.0;
 }
 .fadeOut {
+    z-index: 0;
     -webkit-transition: 400ms;
        -moz-transition: 400ms;
         -ms-transition: 400ms;
