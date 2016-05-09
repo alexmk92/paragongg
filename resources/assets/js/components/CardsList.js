@@ -15,7 +15,6 @@ class CardsList extends Component {
         this.filter = this.filter.bind(this)
     }
     filter(element) {
-        console.log(this.state)
         switch(element.target.name) {
             case 'owned':
                 this.setState({filter_owned: element.target.checked});
@@ -120,12 +119,11 @@ class CardPreview extends Component {
             this.state.tooltip.abortClose()
         } else {
             this.setState({
-                tooltip : new CardTooltip({ targetNode : event.target, parentNodeName : "card-preview", uniqueId : this.props.name, dataURL : `http://paragon.dev/api/v1/cards/find/${this.props.code}` })
+                tooltip : new CardTooltip({ targetNode : event.target, parentNodeName : "card-preview", uniqueId : this.props.name, dataURL : `/api/v1/cards/find/${this.props.code}` })
             })
         }
     }
     blur(event) {
-        console.log("Calling blur")
         this.state.tooltip.destructor((payload) => {
             this.state.tooltip = payload.targetNode
         })
