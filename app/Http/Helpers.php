@@ -23,10 +23,9 @@ function displayNotification()
     {
         $notification = explode('|', Session::get('notification'));
 
-        return '<div class="notification notification-'.$notification[0].'">'.$notification[1].'</div>';
+        return '<input type="checkbox" id="dismissNotification" /><div class="notification notification-'.$notification[0].'">'.$notification[1].'<label for="dismissNotification>"<i class="fa fa-times" aria-hiddne="true"></i></label></div>';
     }
-
-    return '<input type="checkbox" id="dismissNotification" /><div class="notification notification-danger">Test Notification <label for="dismissNotification>"<i class="fa fa-times" aria-hiddne="true"></i></label></div>';
+    return '';
 }
 
 function APIToken()
