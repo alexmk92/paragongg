@@ -16,33 +16,29 @@ export default class CardTooltip {
     }
     request(cb) {
 
-        var xmlhttp;
+        var xhr;
 
         if (window.XMLHttpRequest) {
-            // code for IE7+, Firefox, Chrome, Opera, Safari
-            xmlhttp = new XMLHttpRequest();
+            xhr = new XMLHttpRequest(); // code for IE7+, Firefox, Chrome, Opera, Safari
         } else {
-            // code for IE6, IE5
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            xhr = new ActiveXObject("Microsoft.XMLHTTP"); // code for IE6, IE5
         }
 
-        xmlhttp.onreadystatechange = function() {
-            if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
-               if(xmlhttp.status == 200){
-                   console.log("Successfully got data, calling back")
-                   cb({ error : null, data : xmlhttp.responseText })
-               }
-               else if(xmlhttp.status == 400) {
-                  cb({ error : 400 })
-               }
-               else {
-                   cb({ error : "Couldn't retrieve data from API" })
-               }
-            }
+        xhr.open("GET", this.state.dataURL, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.onload = function() {
+           if(xhr.status === 200){
+               console.log("Successfully got data, calling back")
+               cb({ error : null, data : xhr.responseText })
+           }
+           else {
+               console.log("Request failed. Returned status of: " + xhr.status)
+               cb({ error : "Request failed" })
+           }
         };
 
-        xmlhttp.open("GET", this.state.dataURL, true);
-        xmlhttp.send();
+        xhr.send();
     }
     initialise(data) {
         var card = this.getParentNode(data.targetNode, data.parentNodeName)
@@ -61,7 +57,7 @@ export default class CardTooltip {
                 isRendered : false,
                 targetNode : data.targetNode,
                 parentNodeName : data.parentNodeName,
-                animationDuration: 750,
+                animationDuration: 400,
                 isVisible : false,
                 bounds : {
                     distanceFromTopLayoutMargin : cardRect.top,
@@ -207,20 +203,8 @@ export default class CardTooltip {
 
             var nodeContent = ''
             nodeContent += '<div class="card-tooltip">'
-            nodeContent += '      <div class="head-bar">'
-            nodeContent += '          <span class="head-card-name">Executioner\'s Key</span>'
-            nodeContent += '          <div class="head-card-row">'
-            nodeContent += '              <span class="head-card-type">Equipment</span>'
-            nodeContent += '              <span class="head-card-cost">Cost: 2</span>'
-            nodeContent += '          </div>'
-            nodeContent += '          <div class="head-card-row">'
-            nodeContent += '              <span class="head-card-affinity">Corruption</span>'
-            nodeContent += '              <span class="head-card-rarity">Common</span>'
-            nodeContent += '          </div>'
-            nodeContent += '      </div>'
             nodeContent += '      <div class="card-content">'
-            nodeContent += `          cardStats`
-            nodeContent += `          cardStatsUpgraded`
+            nodeContent += '          <i class="fa fa-spinner fa-spin"></i> Loading...'
             nodeContent += '      </div>'
             nodeContent += '</div>'
 

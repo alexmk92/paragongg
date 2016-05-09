@@ -86,4 +86,6 @@ Route::get('/account/guides', 'AccountController@guides');
 Route::get('/account/decks', 'AccountController@decks');
 
 /* API */
-Route::get('/api/v1/cards/find/{id}', 'API\CardController@show');
+Route::group(['prefix' => 'api', 'namespace' => 'API', 'middleware' => 'cors'], function () {
+    Route::get('/v1/cards/find/{id}', 'CardController@show');
+});

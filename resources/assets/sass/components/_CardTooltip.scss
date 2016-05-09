@@ -2,19 +2,19 @@
     opacity: 0.0;
 }
 .fadeIn {
-    -webkit-transition: 750ms;
-       -moz-transition: 750ms;
-        -ms-transition: 750ms;
-         -o-transition: 750ms;
-            transition: 750ms;
+    -webkit-transition: 400ms;
+       -moz-transition: 400ms;
+        -ms-transition: 400ms;
+         -o-transition: 400ms;
+            transition: 400ms;
     opacity: 1.0;
 }
 .fadeOut {
-    -webkit-transition: 750ms;
-       -moz-transition: 750ms;
-        -ms-transition: 750ms;
-         -o-transition: 750ms;
-            transition: 750ms;
+    -webkit-transition: 400ms;
+       -moz-transition: 400ms;
+        -ms-transition: 400ms;
+         -o-transition: 400ms;
+            transition: 400ms;
     opacity: 0.0;
 }
 
@@ -24,7 +24,7 @@
     min-width: 360px;
     border: 1px solid rgba(152, 176, 222, 0.1);
     border-radius: 4px;
-
+    cursor: default;
     .head-bar {
         padding: 14px 16px;
         height: 100px;
