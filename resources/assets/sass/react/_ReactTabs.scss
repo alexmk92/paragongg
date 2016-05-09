@@ -9,6 +9,7 @@
         border: none;
         bottom: 0;
         outline: none;
+        user-select: none;
         &.ReactTabs__Tab--selected {
             background: $panel-color;
             color: $font-color-emphasis;
