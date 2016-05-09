@@ -1,21 +1,26 @@
 .hidden {
+    z-index: 1;
     opacity: 0.0;
 }
+.fadeOut {
+    z-index: -1;
+    -webkit-transition: 400ms;
+       -moz-transition: 400ms;
+        -ms-transition: 400ms;
+         -o-transition: 400ms;
+            transition: 400ms;
+    opacity: 0.0;
+    display: none;
+}
+
 .fadeIn {
+    z-index: 1;
     -webkit-transition: 400ms;
        -moz-transition: 400ms;
         -ms-transition: 400ms;
          -o-transition: 400ms;
             transition: 400ms;
     opacity: 1.0;
-}
-.fadeOut {
-    -webkit-transition: 400ms;
-       -moz-transition: 400ms;
-        -ms-transition: 400ms;
-         -o-transition: 400ms;
-            transition: 400ms;
-    opacity: 0.0;
 }
 
 .card-tooltip {
