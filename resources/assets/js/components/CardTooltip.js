@@ -109,35 +109,41 @@ export default class CardTooltip {
 
         // Balance both sides of the equation, we are adding height to our offsetTop so need to
         // that here to check bounds of off screen elements.
-        const viewPortOffsetToBottomMargin = ((bodyRect.top - screen.height) + this.state.frame.size.height) * -1
+        const viewPortOffsetToBottomMargin = ((bodyRect.top - window.innerHeight.height) + this.state.frame.size.height) * -1
         const viewPortOffsetToTopMargin = ((bodyRect.top) - this.state.frame.size.height) * -1
 
         if(node) {
             node.style.position = "absolute"
 
-            if(nodeRect.height === 0) {
-                node.style.top = `${offsetTop}px`
-                node.style.left = `${offsetLeft + 20}px`
-            } else {
-                // check for off top or bottom of page
-                if(offsetTop + nodeRect.height > viewPortOffsetToBottomMargin) {
-                    offsetLeft = offsetLeft - (nodeRect.width / 2)
-                    node.style.setProperty("top", `${(offsetTop - nodeRect.height) - this.state.frame.size.height / 4}px`)
-                    node.style.setProperty("left", `${offsetLeft}px`)
-                }
-                else if(offsetTop + nodeRect.height > viewPortOffsetToTopMargin) {
-                    offsetLeft = offsetLeft - (nodeRect.width / 2)
-                    node.style.setProperty("top", `${(offsetTop + this.state.frame.size.height) - 20}px`)
-                    node.style.setProperty("left", `${offsetLeft}px`)
-                }
-                // Check if the left or right margins are out of bounds
-                if(offsetLeft < 0 || offsetLeft === 0) node.style.setProperty("left", "10px")
-                if((offsetLeft + nodeRect.width) > window.innerWidth) {
-                    const overflow = (offsetLeft + nodeRect.width) - window.innerWidth
-                    const newLeft = offsetLeft - overflow - 40 < 0 ? 10 : offsetLeft - overflow - 30
-                    node.style.setProperty("left", `${newLeft}px`)
-                }
+            // Assigning a second rect property here, on the initial load getBoundingClientRect yields
+            // { width: 0, height: 0 ... } we set default values here so that the card will render in the
+            // same location
+            var rect = {
+                height: nodeRect.height,
+                width: nodeRect.width
             }
+
+            if(rect.height === 0) rect.height = 200
+            if(rect.width === 0) rect.width = 400
+
+            // check for off top or bottom of page
+            if((offsetTop + rect.height) > viewPortOffsetToTopMargin && (offsetTop) < (viewPortOffsetToTopMargin + rect.height)) {
+                offsetLeft = offsetLeft - (nodeRect.width / 2)
+                node.style.setProperty("top", `${(offsetTop + this.state.frame.size.height) - 20}px`)
+                node.style.setProperty("left", `${offsetLeft}px`)
+            } else {
+                offsetLeft = offsetLeft - (rect.width / 2)
+                node.style.setProperty("top", `${(offsetTop - rect.height) - this.state.frame.size.height / 4}px`)
+                node.style.setProperty("left", `${offsetLeft}px`)
+            }
+            // Check if the left or right margins are out of bounds
+            if(offsetLeft < 0 || offsetLeft === 0) node.style.setProperty("left", "10px")
+            if((offsetLeft + rect.width) > window.innerWidth) {
+                const overflow = (offsetLeft + rect.width) - window.innerWidth
+                const newLeft = offsetLeft - overflow - 40 < 0 ? 10 : offsetLeft - overflow - 30
+                node.style.setProperty("left", `${newLeft}px`)
+            }
+
             return node
         }
     }
@@ -206,6 +212,8 @@ export default class CardTooltip {
             var rootNode = document.createElement("div")
             rootNode.setAttribute("id", this.state.uniqueId)
             rootNode.setAttribute("class", "hidden")
+            rootNode.setAttribute("width", "400px")
+            rootNode.setAttribute("height", "500px")
 
             var nodeContent = ''
             nodeContent += '<div class="card-tooltip">'
