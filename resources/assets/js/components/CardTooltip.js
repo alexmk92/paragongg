@@ -28,11 +28,9 @@ export default class CardTooltip {
 
         xhr.onload = function() {
            if(xhr.status === 200){
-               console.log("Successfully got data, calling back")
                cb({ error : null, data : xhr.responseText })
            }
            else {
-               console.log("Request failed. Returned status of: " + xhr.status)
                cb({ error : "Request failed" })
            }
         };
@@ -89,7 +87,6 @@ export default class CardTooltip {
         var tooltipNode = document.getElementById(this.state.uniqueId)
         if(tooltipNode) {
             this.state.isFadingOut = true
-            console.log(tooltipNode)
             tooltipNode.className += " fadeOut"
             setTimeout(() => {
                 if(this.state.isFadingOut) {
@@ -105,8 +102,10 @@ export default class CardTooltip {
     }
     setPosition(node) {
         const bodyRect = document.body.getBoundingClientRect()
-        const offsetTop = (this.state.bounds.distanceFromTopLayoutMargin - bodyRect.top) + this.state.frame.size.height
-        const offsetLeft = this.state.bounds.distanceFromLeftLayoutMargin + this.state.frame.size.width
+        const nodeRect = node.getBoundingClientRect()
+
+        var offsetTop = (this.state.bounds.distanceFromTopLayoutMargin - bodyRect.top) + this.state.frame.size.height
+        var offsetLeft = this.state.bounds.distanceFromLeftLayoutMargin + this.state.frame.size.width
 
         // Balance both sides of the equation, we are adding height to our offsetTop so need to
         // that here to check bounds of off screen elements.
@@ -115,19 +114,29 @@ export default class CardTooltip {
 
         if(node) {
             node.style.position = "absolute"
-            node.style.top = `${offsetTop}px`
-            node.style.left = `${offsetLeft + 20}px`
-            // check for off top of page
-            if(offsetTop > viewPortOffsetToBottomMargin) {
-                node.style.setProperty("top", `${offsetTop - (this.state.frame.size.height / 2)}px`)
-            }
-            // check off bottom page
-            else if(offsetTop < viewPortOffsetToTopMargin) {
-                node.style.setProperty("top", `${offsetTop + (this.state.frame.size.height / 1.5)}px`)
-            }
-            // check for off right of page TODO
-            else if(offsetLeft > screen.width) {
-                console.log("Hanging off screen")
+
+            if(nodeRect.height === 0) {
+                node.style.top = `${offsetTop}px`
+                node.style.left = `${offsetLeft + 20}px`
+            } else {
+                // check for off top or bottom of page
+                if(offsetTop + nodeRect.height > viewPortOffsetToBottomMargin) {
+                    offsetLeft = offsetLeft - (nodeRect.width / 2)
+                    node.style.setProperty("top", `${(offsetTop - nodeRect.height) - this.state.frame.size.height / 4}px`)
+                    node.style.setProperty("left", `${offsetLeft}px`)
+                }
+                else if(offsetTop + nodeRect.height > viewPortOffsetToTopMargin) {
+                    offsetLeft = offsetLeft - (nodeRect.width / 2)
+                    node.style.setProperty("top", `${(offsetTop + this.state.frame.size.height) - 20}px`)
+                    node.style.setProperty("left", `${offsetLeft}px`)
+                }
+                // Check if the left or right margins are out of bounds
+                if(offsetLeft < 0 || offsetLeft === 0) node.style.setProperty("left", "10px")
+                if((offsetLeft + nodeRect.width) > window.innerWidth) {
+                    const overflow = (offsetLeft + nodeRect.width) - window.innerWidth
+                    const newLeft = offsetLeft - overflow - 40 < 0 ? 10 : offsetLeft - overflow - 30
+                    node.style.setProperty("left", `${newLeft}px`)
+                }
             }
             return node
         }
@@ -157,8 +166,6 @@ export default class CardTooltip {
         const data = this.state.tooltipInfo
         const node = document.getElementById(this.state.uniqueId)
 
-        console.log(data)
-
         const cardStats = data.effects.map((effect) => {
             return `<p>${effect.attribute} [${effect.operation}]</p>`
         })
@@ -183,13 +190,13 @@ export default class CardTooltip {
         nodeContent += '</div>'
 
         node.innerHTML = nodeContent
+        this.setPosition(node)
     }
     render() {
         if(!this.state.isRendered && !document.getElementById(this.state.uniqueId))
         {
             this.request((payload) => {
                 if(payload.error === null) {
-                    console.log("Called back")
                     this.state.tooltipInfo = JSON.parse(payload.data)
                     this.updateTooltipInfo()
                 }
