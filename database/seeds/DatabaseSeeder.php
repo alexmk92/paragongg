@@ -1,5 +1,6 @@
 <?php
 
+use App\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -11,7 +12,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(UsersTableSeeder::class);
-        $this->call(ArticlesTableSeeder::class);
+        // Check if this is the first seed
+        $users = User::all();
+        if($users->count() == 0) {
+            $this->call(UsersTableSeeder::class);
+            $this->call(ArticlesTableSeeder::class);
+        }
+
     }
 }
