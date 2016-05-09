@@ -74,6 +74,9 @@ class PlayerStatsOverview extends Component {
             });
         }
     }
+    disableDoubleClick() {
+        console.log("Yeah")
+    }
     render() {
         return (
             <Tabs forceRenderTabPanel={true} onSelect={this.handleSelect}>

@@ -3047,7 +3047,11 @@ form {
   margin-bottom: 0;
   border: none;
   bottom: 0;
-  outline: none; }
+  outline: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none; }
   .ReactTabs .ReactTabs__Tab.ReactTabs__Tab--selected {
     background: #181d27;
     color: white;
