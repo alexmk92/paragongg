@@ -31,10 +31,7 @@ export default class CardTooltip {
             if (httpRequest.readyState === XMLHttpRequest.DONE) {
                 if (httpRequest.status === 200) {
                     cb({error: null, data: httpRequest.responseText})
-                } else if (httpRequest.status === 304) {
-                    console.log("CACHED");
-                }
-                else {
+                } else {
                     cb({error: "Request failed"})
                 }
             }
@@ -61,7 +58,7 @@ export default class CardTooltip {
                 isRendered: false,
                 targetNode: data.targetNode,
                 parentNodeName: data.parentNodeName,
-                animationDuration: 150,
+                animationDuration: 300,
                 isVisible: false,
                 bounds: {
                     distanceFromTopLayoutMargin: cardRect.top,

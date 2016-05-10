@@ -4037,7 +4037,7 @@ span.CodeMirror-selectedtext {
 .tooltip-wrapper {
   z-index: 999999;
   opacity: 0;
-  transition: opacity 150ms linear !important;
+  transition: opacity 300ms ease-in !important;
   pointer-events: none !important; }
 
 .tooltip-fade-show {
