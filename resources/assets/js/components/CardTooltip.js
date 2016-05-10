@@ -58,7 +58,7 @@ export default class CardTooltip {
                 isRendered: false,
                 targetNode: data.targetNode,
                 parentNodeName: data.parentNodeName,
-                animationDuration: 300,
+                animationDuration: 150,
                 isVisible: false,
                 bounds: {
                     distanceFromTopLayoutMargin: cardRect.top,
@@ -141,7 +141,7 @@ export default class CardTooltip {
                 node.style.setProperty("left", `${offsetLeft}px`)
             } else {
                 offsetLeft = offsetLeft - (rect.width / 2)
-                node.style.setProperty("top", `${(offsetTop - rect.height) - this.state.frame.size.height / 4}px`)
+                node.style.setProperty("top", `${(offsetTop - rect.height - 14) - this.state.frame.size.height / 4}px`)
                 node.style.setProperty("left", `${offsetLeft}px`)
             }
             // Check if the left or right margins are out of bounds

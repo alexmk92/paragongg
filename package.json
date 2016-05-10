@@ -17,11 +17,13 @@
   },
   "dependencies": {
     "chart.js": "^2.0.2",
+    "imports-loader": "^0.6.5",
     "react": "^15.0.1",
     "react-addons-css-transition-group": "^15.0.2",
     "react-addons-transition-group": "^15.0.2",
     "react-dom": "^15.0.1",
     "react-flip-move": "^2.1.2",
+    "react-masonry-component": "^4.0.4",
     "react-simple-dropdown": "^1.0.1",
     "react-tabs": "^0.5.3",
     "react-tooltip": "^2.0.0"
