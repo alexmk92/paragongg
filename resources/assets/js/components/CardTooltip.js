@@ -1,75 +1,82 @@
 export default class CardTooltip {
     constructor(props) {
-        if(typeof props.uniqueId === "undefined")
-            props.uniqueId = "sder243rfsdf24dsfc"
-        if(typeof props.tooltipInfo === "undefined")
+        if (typeof props.uniqueId === "undefined")
+            props.uniqueId = uuid()
+        if (typeof props.tooltipInfo === "undefined")
             props.tooltipInfo = {}
 
         this.initialise({
-            targetNode : props.targetNode,
-            parentNodeName : props.parentNodeName,
-            uniqueId : props.uniqueId,
-            tooltipInfo : props.tooltipInfo,
-            dataURL : props.dataURL
+            targetNode: props.targetNode,
+            parentNodeName: props.parentNodeName,
+            uniqueId: props.uniqueId,
+            tooltipInfo: props.tooltipInfo,
+            dataURL: props.dataURL
         })
     }
+
     request(cb) {
 
-        var xhr;
+        var httpRequest;
 
         if (window.XMLHttpRequest) {
-            xhr = new XMLHttpRequest(); // code for IE7+, Firefox, Chrome, Opera, Safari
+            httpRequest = new XMLHttpRequest(); // code for IE7+, Firefox, Chrome, Opera, Safari
         } else {
-            xhr = new ActiveXObject("Microsoft.XMLHTTP"); // code for IE6, IE5
+            httpRequest = new ActiveXObject("Microsoft.XMLHTTP"); // code for IE6, IE5
         }
 
-        xhr.open("GET", this.state.dataURL, true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
+        httpRequest.open("GET", this.state.dataURL, true);
+        httpRequest.setRequestHeader('Content-Type', 'application/json');
 
-        xhr.onload = function() {
-           if(xhr.status === 200){
-               cb({ error : null, data : xhr.responseText })
-           }
-           else {
-               cb({ error : "Request failed" })
-           }
+        httpRequest.onreadystatechange = function () {
+            if (httpRequest.readyState === XMLHttpRequest.DONE) {
+                if (httpRequest.status === 200) {
+                    cb({error: null, data: httpRequest.responseText})
+                } else if (httpRequest.status === 304) {
+                    console.log("CACHED");
+                }
+                else {
+                    cb({error: "Request failed"})
+                }
+            }
+
         };
 
-        xhr.send();
+        httpRequest.send();
     }
+
     initialise(data) {
         var card = this.getParentNode(data.targetNode, data.parentNodeName)
         var cardRect = card.getBoundingClientRect()
         var width, height = 0
-        if(cardRect.width && cardRect.height) {
-            width  = cardRect.width
+        if (cardRect.width && cardRect.height) {
+            width = cardRect.width
             height = cardRect.height
         }
-        if(cardRect) {
+        if (cardRect) {
             this.state = {
-                uniqueId : this.hashCode(data.uniqueId),
-                tooltipInfo : data.tooltipInfo,
-                isFadingOut : false,
-                dataURL : data.dataURL,
-                isRendered : false,
-                targetNode : data.targetNode,
-                parentNodeName : data.parentNodeName,
-                animationDuration: 400,
-                isVisible : false,
-                bounds : {
-                    distanceFromTopLayoutMargin : cardRect.top,
-                    distanceFromLeftLayoutMargin : cardRect.left,
-                    distanceFromRightLayoutMargin : cardRect.right,
-                    distanceFromBottomLayoutMargin : cardRect.bottom,
-                    viewportWidth : screen.width,
-                    viewportHeight : screen.height
+                uniqueId: this.hashCode(data.uniqueId),
+                tooltipInfo: data.tooltipInfo,
+                isFadingOut: false,
+                dataURL: data.dataURL,
+                isRendered: false,
+                targetNode: data.targetNode,
+                parentNodeName: data.parentNodeName,
+                animationDuration: 150,
+                isVisible: false,
+                bounds: {
+                    distanceFromTopLayoutMargin: cardRect.top,
+                    distanceFromLeftLayoutMargin: cardRect.left,
+                    distanceFromRightLayoutMargin: cardRect.right,
+                    distanceFromBottomLayoutMargin: cardRect.bottom,
+                    viewportWidth: screen.width,
+                    viewportHeight: screen.height
                 },
-                frame : {
-                    origin : {
-                        x : cardRect.left,
-                        y : cardRect.top
+                frame: {
+                    origin: {
+                        x: cardRect.left,
+                        y: cardRect.top
                     },
-                    size : {
+                    size: {
                         width,
                         height
                     }
@@ -78,28 +85,31 @@ export default class CardTooltip {
             this.render()
         }
     }
+
     abortClose() {
         this.state.isFadingOut = false
-        var node = document.getElementById(this.state.uniqueId)
-        node.setAttribute("class", "fadeIn")
+        var tooltipNode = document.getElementById(this.state.uniqueId)
+        tooltipNode.className = "tooltip-wrapper tooltip-fade-show"
     }
+
     destructor(callback) {
         var tooltipNode = document.getElementById(this.state.uniqueId)
-        if(tooltipNode) {
+        if (tooltipNode) {
             this.state.isFadingOut = true
-            tooltipNode.className += " fadeOut"
+            tooltipNode.className = "tooltip-wrapper"
             setTimeout(() => {
-                if(this.state.isFadingOut) {
+                if (this.state.isFadingOut) {
                     document.body.removeChild(tooltipNode)
-                    if(tooltipNode) {
-                        callback({ node: null, error: null })
+                    if (tooltipNode) {
+                        callback({node: null, error: null})
                     } else {
-                        callback({ node: null, error: "No node was found in the DOM tree" })
+                        callback({node: null, error: "No node was found in the DOM tree"})
                     }
                 }
             }, this.state.animationDuration)
         }
     }
+
     setPosition(node) {
         const bodyRect = document.body.getBoundingClientRect()
         const nodeRect = node.getBoundingClientRect()
@@ -112,7 +122,7 @@ export default class CardTooltip {
         const viewPortOffsetToBottomMargin = ((bodyRect.top - window.innerHeight.height) + this.state.frame.size.height) * -1
         const viewPortOffsetToTopMargin = ((bodyRect.top) - this.state.frame.size.height) * -1
 
-        if(node) {
+        if (node) {
             node.style.position = "absolute"
 
             // Assigning a second rect property here, on the initial load getBoundingClientRect yields
@@ -123,11 +133,11 @@ export default class CardTooltip {
                 width: nodeRect.width
             }
 
-            if(rect.height === 0) rect.height = 200
-            if(rect.width === 0) rect.width = 400
+            if (rect.height === 0) rect.height = 200
+            if (rect.width === 0) rect.width = 400
 
             // check for off top or bottom of page
-            if((offsetTop + rect.height) > viewPortOffsetToTopMargin && (offsetTop) < (viewPortOffsetToTopMargin + rect.height)) {
+            if ((offsetTop + rect.height) > viewPortOffsetToTopMargin && (offsetTop) < (viewPortOffsetToTopMargin + rect.height)) {
                 offsetLeft = offsetLeft - (nodeRect.width / 2)
                 node.style.setProperty("top", `${(offsetTop + this.state.frame.size.height) - 20}px`)
                 node.style.setProperty("left", `${offsetLeft}px`)
@@ -137,8 +147,8 @@ export default class CardTooltip {
                 node.style.setProperty("left", `${offsetLeft}px`)
             }
             // Check if the left or right margins are out of bounds
-            if(offsetLeft < 0 || offsetLeft === 0) node.style.setProperty("left", "10px")
-            if((offsetLeft + rect.width) > window.innerWidth) {
+            if (offsetLeft < 0 || offsetLeft === 0) node.style.setProperty("left", "10px")
+            if ((offsetLeft + rect.width) > window.innerWidth) {
                 const overflow = (offsetLeft + rect.width) - window.innerWidth
                 const newLeft = offsetLeft - overflow - 40 < 0 ? 10 : offsetLeft - overflow - 30
                 node.style.setProperty("left", `${newLeft}px`)
@@ -147,27 +157,29 @@ export default class CardTooltip {
             return node
         }
     }
-    getParentNode(el, selector) {
-        var matchesFn;
 
-        if(typeof selector === "undefined")
+    getParentNode(el, selector) {
+        if (typeof selector === "undefined")
             selector = "card-preview"
 
         selector = selector.trim()
-        if(el.className.trim() !== selector) {
+        if (el.className.trim() !== selector) {
             // traverse parents
             while (el.className.trim() !== selector) {
                 el = el.parentNode
-                if(!el) return null
+                if (!el) return null
             }
             return el
         } else {
             return el
         }
     }
+
     hashCode(str) {
+        //return 'test';
         return str.split('').reduce((prevHash, currVal) => ((prevHash << 5) - prevHash) + currVal.charCodeAt(0), 0);
     }
+
     updateTooltipInfo() {
         const data = this.state.tooltipInfo
         const node = document.getElementById(this.state.uniqueId)
@@ -198,11 +210,11 @@ export default class CardTooltip {
         node.innerHTML = nodeContent
         this.setPosition(node)
     }
+
     render() {
-        if(!this.state.isRendered && !document.getElementById(this.state.uniqueId))
-        {
+        if (!this.state.isRendered && !document.getElementById(this.state.uniqueId)) {
             this.request((payload) => {
-                if(payload.error === null) {
+                if (payload.error === null) {
                     this.state.tooltipInfo = JSON.parse(payload.data)
                     this.updateTooltipInfo()
                 }
@@ -211,7 +223,7 @@ export default class CardTooltip {
             this.state.isRendered = true
             var rootNode = document.createElement("div")
             rootNode.setAttribute("id", this.state.uniqueId)
-            rootNode.setAttribute("class", "hidden")
+            rootNode.setAttribute("class", "tooltip-wrapper")
             rootNode.setAttribute("width", "400px")
             rootNode.setAttribute("height", "500px")
 
@@ -227,8 +239,15 @@ export default class CardTooltip {
 
             document.body.appendChild(this.setPosition(rootNode))
             setTimeout(() => {
-                rootNode.className += " fadeIn"
+                rootNode.className = "tooltip-wrapper tooltip-fade-show"
             }, 100)
         }
     }
+}
+
+function uuid() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = 16 * Math.random() | 0;
+        return ('x' == c ? r : r & 3 | 8).toString(16)
+    });
 }

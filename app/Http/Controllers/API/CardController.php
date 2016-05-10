@@ -14,6 +14,6 @@ class CardController extends Controller
     {
         $card = Card::where('code', $id)->firstOrFail();
 
-        return $card->toJSON();
+        return response()->json($card);
     }
 }

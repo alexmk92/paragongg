@@ -44,11 +44,6 @@
 
 {{-- Flash notifications --}}
 {!! displayNotification() !!}
-{{--@if(Session::has('notification'))--}}
-    {{--<div class="notification">--}}
-        {{--<i class="fa fa-info-circle"></i> {{ Session::get('notification') }}--}}
-    {{--</div>--}}
-{{--@endif--}}
 
 {{-- Include footer --}}
 @include('layouts.footer')

@@ -4034,20 +4034,14 @@ span.CodeMirror-selectedtext {
     margin: 0;
     border: 2px solid #f60; }
 
-.hidden {
-  z-index: 1;
-  opacity: 0.0; }
+.tooltip-wrapper {
+  z-index: 999999;
+  opacity: 0;
+  transition: opacity 150ms linear !important;
+  pointer-events: none !important; }
 
-.fadeOut {
-  z-index: -1;
-  transition: 400ms;
-  opacity: 0.0;
-  display: none; }
-
-.fadeIn {
-  z-index: 1;
-  transition: 400ms;
-  opacity: 1.0; }
+.tooltip-fade-show {
+  opacity: 1; }
 
 .card-tooltip {
   max-width: 400px;
