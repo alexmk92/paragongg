@@ -96,8 +96,9 @@ export default class CardTooltip {
             tooltipNode.className = "tooltip-wrapper"
             setTimeout(() => {
                 if (this.state.isFadingOut) {
-                    document.body.removeChild(tooltipNode)
-                    if (tooltipNode) {
+                    const nodeAfterDelay = document.getElementById(this.state.uniqueId)
+                    if (nodeAfterDelay) {
+                        document.body.removeChild(nodeAfterDelay)
                         callback({node: null, error: null})
                     } else {
                         callback({node: null, error: "No node was found in the DOM tree"})
@@ -181,35 +182,38 @@ export default class CardTooltip {
         const data = this.state.tooltipInfo
         const node = document.getElementById(this.state.uniqueId)
 
-        const cardStats = data.effects.map((effect) => {
-            return `<p>${effect.attribute} [${effect.operation}]</p>`
-        })
+        if(node) {
+            const cardStats = data.effects.map((effect) => {
+                return `<p>${effect.attribute} [${effect.operation}]</p>`
+            })
 
-        var nodeContent = ''
-        nodeContent += '<div class="card-tooltip">'
-        nodeContent += '      <div class="head-bar">'
-        nodeContent += `          <span class="head-card-name">${data.name}</span>`
-        nodeContent += '          <div class="head-card-row">'
-        nodeContent += `              <span class="head-card-type">Equipment</span>`
-        nodeContent += `              <span class="head-card-cost">Cost: ${data.cost}</span>`
-        nodeContent += '          </div>'
-        nodeContent += '          <div class="head-card-row">'
-        nodeContent += `              <span class="head-card-affinity">${data.affinity}</span>`
-        nodeContent += `              <span class="head-card-rarity">Common</span>`
-        nodeContent += '          </div>'
-        nodeContent += '      </div>'
-        nodeContent += '      <div class="card-content">'
-        nodeContent += `          ${cardStats}`
-        nodeContent += `          $Upgrade slots: {data.upgradeSlots}`
-        nodeContent += '      </div>'
-        nodeContent += '</div>'
+            var nodeContent = ''
+            nodeContent += '<div class="card-tooltip">'
+            nodeContent += '      <div class="head-bar">'
+            nodeContent += `          <span class="head-card-name">${data.name}</span>`
+            nodeContent += '          <div class="head-card-row">'
+            nodeContent += `              <span class="head-card-type">Equipment</span>`
+            nodeContent += `              <span class="head-card-cost">Cost: ${data.cost}</span>`
+            nodeContent += '          </div>'
+            nodeContent += '          <div class="head-card-row">'
+            nodeContent += `              <span class="head-card-affinity">${data.affinity}</span>`
+            nodeContent += `              <span class="head-card-rarity">Common</span>`
+            nodeContent += '          </div>'
+            nodeContent += '      </div>'
+            nodeContent += '      <div class="card-content">'
+            nodeContent += `          ${cardStats}`
+            nodeContent += `          $Upgrade slots: {data.upgradeSlots}`
+            nodeContent += '      </div>'
+            nodeContent += '</div>'
 
-        node.innerHTML = nodeContent
-        this.setPosition(node)
+            node.innerHTML = nodeContent
+            this.setPosition(node)
+        }
     }
 
     render() {
         if (!this.state.isRendered && !document.getElementById(this.state.uniqueId)) {
+
             this.request((payload) => {
                 if (payload.error === null) {
                     this.state.tooltipInfo = JSON.parse(payload.data)
