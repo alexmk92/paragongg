@@ -8,15 +8,9 @@ class NewsFeed extends Component {
 
         this.masonryOptions = {
             percentPosition: true,
-            transitionDuration: 0,
+            //transitionDuration: 0,
             gutter: 30
         }
-        // set state here if needed...
-        /*
-         this.state = {
-
-         }
-         */
     }
     handleSelect(index, last) {
         console.log('Selected tab: ' + index + ', Last tab: ' + last);
