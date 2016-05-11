@@ -19,7 +19,6 @@ Route::auth();
 
 Route::get('/home', 'HomeController@index');
 Route::get('/auth', 'Auth\OauthController@accountLink');
-Route::get('/updateCards', 'CardController@updateCards');
 Route::get('/apikey', function(){ return APIToken(); });
 
 /* STATIC */
@@ -84,6 +83,16 @@ Route::get('/account/password', 'AccountController@editPassword');
 Route::post('/account/password', 'AccountController@updatePassword');
 Route::get('/account/guides', 'AccountController@guides');
 Route::get('/account/decks', 'AccountController@decks');
+
+/* Administration */
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'auth', 'admin', 'cors'], function () {
+    Route::get('/', 'AdminController@index');
+    Route::get('/jobs', 'AdminController@jobs');
+    Route::get('/maintenance', 'MaintenanceController@index');
+    Route::get('/maintenance/update-cards', 'MaintenanceController@updateCards');
+
+    Route::get('/api/jobs', 'AdminController@getJobs');
+});
 
 /* API */
 Route::group(['prefix' => 'api', 'namespace' => 'API', 'middleware' => 'cors'], function () {

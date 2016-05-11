@@ -1,0 +1,29 @@
+#jobs-feed {
+    .job {
+        display: block;
+        width: 100%;
+        background: $panel-color;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        padding: 10px;
+        .id, .queue, .attempts, .reserved {
+            display: inline-block;
+            padding-right: 10px;
+            margin-right: 10px;
+            border-right: 1px solid $faded-line;
+        }
+        .created_at {
+            display: inline-block;
+        }
+        .payload {
+            color: $font-color-faded;
+            font-size: 12px;
+            display: block;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid $faded-line;
+            line-height: 16px;
+            overflow: hidden;
+        }
+    }
+}

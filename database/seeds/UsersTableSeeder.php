@@ -17,7 +17,7 @@ class UsersTableSeeder extends Seeder
         $user->name      = 'Jamie Shepherd';
         $user->username  = 'jamieshepherd';
         $user->email     = 'hello@jamie.sh';
-        $user->role      = 'owner';
+        $user->role      = 'administrator';
         $user->twitch_tv = 'jamieshepherd';
         $user->password  = bcrypt('secret');
         $user->save();

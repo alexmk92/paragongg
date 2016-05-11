@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import FlipMove from 'react-flip-move'
 import CardTooltip from './CardTooltip'
 
-class CardsList extends Component {
+class CardsFeed extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -57,6 +57,8 @@ class CardsList extends Component {
         cards.sort(function(a,b) { return a.cost - b.cost; });
         return(
             <div>
+                <h2>Paragon Cards</h2>
+                <h5>{cards.length} cards found</h5>
                 <div id="sidebar">
                     <div className="sidebox panel cf">
                         <h4>Filter cards</h4>
@@ -145,5 +147,5 @@ class CardPreview extends Component {
     }
 }
 
-var element = document.querySelector('#card-feed');
-if(element) ReactDOM.render(<CardsList cards={CARDS}/>, element);
+var element = document.querySelector('#cards-feed');
+if(element) ReactDOM.render(<CardsFeed cards={CARDS}/>, element);

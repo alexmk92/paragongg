@@ -1,7 +1,13 @@
 $card-width : 100px;
 $card-height : 133px;
-#card-feed {
-    margin-top: 30px;
+#cards-feed {
+    h2 {
+        margin-bottom: 0px;
+    }
+    h5 {
+        color: $font-color-faded;
+        margin-bottom: 30px;
+    }
     .card-preview {
         z-index: 1;
         display: inline-block;
