@@ -160,6 +160,7 @@ export default class CardTooltip {
         if (typeof selector === "undefined")
             selector = "card-preview"
 
+        /*
         selector = selector.trim()
         if (el.className.trim() !== selector) {
             // traverse parents
@@ -171,6 +172,8 @@ export default class CardTooltip {
         } else {
             return el
         }
+        */
+        return el;
     }
 
     hashCode(str) {
