@@ -13,6 +13,8 @@ class CreateCommentThreadsTable extends Migration
     public function up()
     {
         Schema::create('comment_threads', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('uri');
             $table->timestamps();
         });
     }

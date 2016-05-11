@@ -1,8 +1,22 @@
 <?php
 
+use App\CommentThread;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Cache;
+
+function findOrCreateThread($uri)
+{
+    $thread = CommentThread::where('uri', $uri)->first();
+
+    if(!$thread) {
+        $thread = new CommentThread();
+        $thread->uri = $uri;
+        $thread->save();
+    }
+
+    return $thread;
+}
 
 function isTwitchLive($channel)
 {

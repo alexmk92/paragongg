@@ -87,5 +87,6 @@ Route::get('/account/decks', 'AccountController@decks');
 
 /* API */
 Route::group(['prefix' => 'api', 'namespace' => 'API', 'middleware' => 'cors'], function () {
+    Route::post('/v1/comments/store', 'CommentController@store');
     Route::get('/v1/cards/find/{id}', 'CardController@show');
 });
