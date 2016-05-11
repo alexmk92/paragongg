@@ -87,7 +87,7 @@ class CardsList extends Component {
                             <option value="Rarity.Rare">Rare</option>
                             <option value="Rarity.EpicRare">Epic Rare</option>
                         </select>
-                        <label><input name="owned" type="checkbox" onChange={this.filter} /> Show only cards I own</label>
+                        { AUTHED ? <label><input name="owned" type="checkbox" onChange={this.filter} /> Show only cards I own</label> : ''}
                         <label><input name="hasActive" type="checkbox" onChange={this.filter} /> Has active/passive</label>
                         </form>
                     </div>
