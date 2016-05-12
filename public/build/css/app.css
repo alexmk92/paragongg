@@ -3266,6 +3266,55 @@ form {
     line-height: 16px;
     overflow: hidden; }
 
+#comment-feed {
+  margin-right: 400px;
+  background: none;
+  border-right: 1px solid #343a4a; }
+  #comment-feed:before {
+    content: "Comments";
+    font-size: 1.5em; }
+  #comment-feed #comment-list {
+    padding-top: 20px; }
+    #comment-feed #comment-list .comment-item {
+      position: relative;
+      padding-top: 10px;
+      padding-bottom: 25px;
+      padding-left: 80px;
+      padding-right: 30px;
+      margin-top: 5px;
+      min-height: 95px;
+      border-bottom: 1px solid #343a4a; }
+      #comment-feed #comment-list .comment-item img.comment-avatar {
+        position: absolute;
+        left: 0px;
+        width: 60px;
+        height: 60px;
+        border-radius: calc(60px / 2);
+        border: 2px solid #585858; }
+      #comment-feed #comment-list .comment-item span.author-name {
+        font-size: 1.2em;
+        color: #ff6600; }
+      #comment-feed #comment-list .comment-item i.vote-button span {
+        font-size: 1em;
+        color: white;
+        font-family: "proxima-nova";
+        padding-left: 8px; }
+      #comment-feed #comment-list .comment-item i.vote-button.active,
+      #comment-feed #comment-list .comment-item i.vote-button.active span {
+        color: #ff6600;
+        pointer-events: none; }
+      #comment-feed #comment-list .comment-item p.comment-body {
+        padding-top: 7px;
+        padding-bottom: 35px; }
+      #comment-feed #comment-list .comment-item span.created-at {
+        font-size: 0.8em;
+        color: #9A9A9A; }
+        #comment-feed #comment-list .comment-item span.created-at:before {
+          content: " -  "; }
+      #comment-feed #comment-list .comment-item a.report {
+        float: right;
+        padding-right: 15px; }
+
 .tag {
   display: inline-block;
   background: #ff6600;
