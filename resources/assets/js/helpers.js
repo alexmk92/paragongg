@@ -2,7 +2,7 @@ module.exports = {
      prettyDate : function(time){
          var system_date = new Date(Date.parse(time));
          var user_date = new Date();
-         
+
          var diff = Math.floor((user_date - system_date) / 1000);
          if (diff <= 1) {return "just now";}
          if (diff < 20) {return diff + " seconds ago";}
