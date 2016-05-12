@@ -133,7 +133,7 @@ class CardPreview extends Component {
     }
     render() {
         var divStyle = {
-            backgroundImage: 'url(http://https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/' + this.props.code + '/background_small.png)',
+            backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/' + this.props.code + '/background_small.png)',
         }
         var className = "card-preview ";
         if(typeof this.props.owned !== 'undefined') {
