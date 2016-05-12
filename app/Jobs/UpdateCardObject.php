@@ -7,6 +7,8 @@ use GuzzleHttp\Client;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class UpdateCardObject extends Job implements ShouldQueue
 {
@@ -34,42 +36,20 @@ class UpdateCardObject extends Job implements ShouldQueue
      */
     public function handle()
     {
+        $storage = Storage::disk('s3');
+
         $client = new Client();
         $exists = Card::where('code', $this->object->id)->first();
-        if(!$exists) {
 
-            if (!file_exists('assets/images/cards/'.$this->object->id)) {
-                mkdir('assets/images/cards/' . $this->object->id, 0777, true);
-            }
-
+        if (!$exists) {
             Card::create(['name' => $this->object->name, 'code' => $this->object->id]);
-
-            // BACKGROUND
-            $client->request('GET', 'https://oriondata-public-service-prod09.ol.epicgames.com/v1/card/'.$this->object->id.'/image/background.png', [
-                'headers' => [
-                    'Accept'        => 'image/png',
-                    'Authorization' => 'Bearer '.APIToken(),
-                    'X-Epic-ApiKey' => env('EPIC_API_KEY'),
-                ],
-                'save_to' => 'assets/images/cards/'.$this->object->id.'/background.png'
-            ])->getBody();
-
-            // ICON
-            $client->request('GET', 'https://oriondata-public-service-prod09.ol.epicgames.com/v1/card/'.$this->object->id.'/image/icon.png', [
-                'headers' => [
-                    'Accept'        => 'image/png',
-                    'Authorization' => 'Bearer '.APIToken(),
-                    'X-Epic-ApiKey' => env('EPIC_API_KEY'),
-                ],
-                'save_to' => 'assets/images/cards/'.$this->object->id.'/icon.png'
-            ])->getBody();
-
+            $this->updateImages = true;
         }
 
-        $cardDetails = $client->request('GET', 'https://oriondata-public-service-prod09.ol.epicgames.com/v1/card/'.$this->object->id, [
+        $cardDetails = $client->request('GET', 'https://oriondata-public-service-prod09.ol.epicgames.com/v1/card/' . $this->object->id, [
             'headers' => [
-                'Accept'        => 'application/json',
-                'Authorization' => 'Bearer '.APIToken(),
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer ' . APIToken(),
                 'X-Epic-ApiKey' => env('EPIC_API_KEY'),
             ]
         ])->getBody();
@@ -77,40 +57,45 @@ class UpdateCardObject extends Job implements ShouldQueue
         $cardDetails = json_decode($cardDetails);
 
         $card = Card::where('code', $this->object->id)->first();
-        $card->description  = $cardDetails->description;
-        $card->type         = $cardDetails->type;
-        $card->cost         = $cardDetails->cost;
+        $card->description = $cardDetails->description;
+        $card->type = $cardDetails->type;
+        $card->cost = $cardDetails->cost;
         $card->upgradeSlots = $cardDetails->upgradeSlots;
-        $card->affinity     = $cardDetails->affinity;
-        $card->effects      = $cardDetails->effects;
+        $card->affinity = $cardDetails->affinity;
+        $card->effects = $cardDetails->effects;
         $card->save();
 
-        if($this->updateImages) {
+        if ($this->updateImages) {
 
-            // @TODO make this S3
-            if (!file_exists('assets/images/cards/'.$this->object->id)) {
-                mkdir('assets/images/cards/' . $this->object->id, 0777, true);
-            }
             // BACKGROUND
-            $client->request('GET', 'https://oriondata-public-service-prod09.ol.epicgames.com/v1/card/'.$this->object->id.'/image/background.png', [
+            $background = $client->request('GET', 'https://oriondata-public-service-prod09.ol.epicgames.com/v1/card/' . $this->object->id . '/image/background.png', [
                 'headers' => [
-                    'Accept'        => 'image/png',
-                    'Authorization' => 'Bearer '.APIToken(),
+                    'Accept' => 'image/png',
+                    'Authorization' => 'Bearer ' . APIToken(),
                     'X-Epic-ApiKey' => env('EPIC_API_KEY'),
-                ],
-                'save_to' => 'assets/images/cards/'.$this->object->id.'/background.png'
-            ])->getBody();
+                ]
+            ])->getBody()->getContents();
+
+            $background_small = Image::make($background)->resize(150, null, function($constraint) {
+                $constraint->aspectRatio();
+            })->stream()->getContents();
+            $storage->put('images/cards/' . $this->object->id . '/background.png', $background);
+            $storage->put('images/cards/' . $this->object->id . '/background_small.png', $background_small);
 
             // ICON
-            $client->request('GET', 'https://oriondata-public-service-prod09.ol.epicgames.com/v1/card/'.$this->object->id.'/image/icon.png', [
+            $icon = $client->request('GET', 'https://oriondata-public-service-prod09.ol.epicgames.com/v1/card/' . $this->object->id . '/image/icon.png', [
                 'headers' => [
-                    'Accept'        => 'image/png',
-                    'Authorization' => 'Bearer '.APIToken(),
+                    'Accept' => 'image/png',
+                    'Authorization' => 'Bearer ' . APIToken(),
                     'X-Epic-ApiKey' => env('EPIC_API_KEY'),
-                ],
-                'save_to' => 'assets/images/cards/'.$this->object->id.'/icon.png'
-            ])->getBody();
+                ]
+            ])->getBody()->getContents();
 
+            $icon_small = Image::make($background)->resize(128,128)->stream()->getContents();
+            $icon_medium = Image::make($background)->resize(256,256)->stream()->getContents();
+            $storage->put('images/cards/' . $this->object->id . '/icon.png', $icon);
+            $storage->put('images/cards/' . $this->object->id . '/icon_medium.png', $icon_medium);
+            $storage->put('images/cards/' . $this->object->id . '/icon_small.png', $icon_small);
         }
     }
 }
