@@ -1,4 +1,13 @@
 #!/bin/bash
+#
+# Author: Günter Grodotzki (gunter@grodotzki.co.za)
+# Version: 2015-04-25
+#
+# install supervisord
+#
+# See:
+# - https://github.com/Supervisor/initscripts
+# - http://supervisord.org/
 
 if [ "${SUPERVISE}" == "enable" ]; then
 
@@ -8,6 +17,35 @@ if [ "${SUPERVISE}" == "enable" ]; then
   easy_install supervisor
 
   cat <<'EOB' > /etc/init.d/supervisord
+#!/bin/bash
+#
+# supervisord   Startup script for the Supervisor process control system
+#
+# Author:       Mike McGrath <mmcgrath@redhat.com> (based off yumupdatesd)
+#               Jason Koppe <jkoppe@indeed.com> adjusted to read sysconfig,
+#                   use supervisord tools to start/stop, conditionally wait
+#                   for child processes to shutdown, and startup later
+#               Erwan Queffelec <erwan.queffelec@gmail.com>
+#                   make script LSB-compliant
+#
+# chkconfig:    345 83 04
+# description: Supervisor is a client/server system that allows \
+#   its users to monitor and control a number of processes on \
+#   UNIX-like operating systems.
+# processname: supervisord
+# config: /etc/supervisord.conf
+# config: /etc/sysconfig/supervisord
+# pidfile: /var/run/supervisord.pid
+#
+### BEGIN INIT INFO
+# Provides: supervisord
+# Required-Start: $all
+# Required-Stop: $all
+# Short-Description: start and stop Supervisor process control system
+# Description: Supervisor is a client/server system that allows
+#   its users to monitor and control a number of processes on
+#   UNIX-like operating systems.
+### END INIT INFO
 
 # Source function library
 . /etc/rc.d/init.d/functions
@@ -17,7 +55,8 @@ if [ -f /etc/sysconfig/supervisord ]; then
     . /etc/sysconfig/supervisord
 fi
 
-# Path to the supervisorctl script, server binary, and short-form for messages.
+# Path to the supervisorctl script, server binary,
+# and short-form for messages.
 supervisorctl=${SUPERVISORCTL-/usr/bin/supervisorctl}
 supervisord=${SUPERVISORD-/usr/bin/supervisord}
 prog=supervisord
@@ -99,6 +138,12 @@ EOB
   chmod +x /etc/init.d/supervisord
 
   cat <<'EOB' > /etc/sysconfig/supervisord
+# Configuration file for the supervisord service
+#
+# Author: Jason Koppe <jkoppe@indeed.com>
+#             orginal work
+#         Erwan Queffelec <erwan.queffelec@gmail.com>
+#             adjusted to new LSB-compliant init script
 
 # make sure elasticbeanstalk PARAMS are being passed through to supervisord
 . /opt/elasticbeanstalk/support/envvars
@@ -165,5 +210,4 @@ EOB
   # then right after the webserver is reloaded, we can start supervisord again
   echo -e '#!/usr/bin/env bash\nservice supervisord start' > /opt/elasticbeanstalk/hooks/appdeploy/enact/99_z_start_supervisord.sh
   chmod +x /opt/elasticbeanstalk/hooks/appdeploy/enact/99_z_start_supervisord.sh
-  
 fi
