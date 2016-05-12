@@ -7,9 +7,83 @@ $avatar-radius : calc(#{$avatar-width} / 2);
     background: none;
     border-right: 1px solid #343a4a;
 
+    .child-feed {
+        #comment-list li.comment-item img.comment-avatar,
+        #comment-box form img.comment-avatar {
+            position: absolute;
+            left: 8px;
+            top: 8px;
+            width: calc(#{$avatar-width}/1.25);
+            height: calc(#{$avatar-height}/1.25);
+            border-radius: calc(#{$avatar-radius}/1.25);
+        }
+    }
+
     &:before {
         content : "Comments";
         font-size: 1.5em;
+    }
+
+    #comment-box {
+
+        form {
+            position: relative;
+            padding-left: 80px;
+            max-width: 100%;
+            padding-right: 40px;
+
+            &.disabled {
+                pointer-events: none;
+                transition: 500ms;
+                opacity: 0.3;
+            }
+
+            textarea {
+                background: #0d1016;
+                max-width: 100%;
+                min-height: 75px;
+                padding: 13px;
+            }
+
+            button {
+                margin-left: 10px;
+                float: right;
+                height: 35px;
+                width: 80px;
+                margin-top: -20px;
+                background: $primary-highlight;
+                border: 1px solid #C1540C;
+                color: white;
+                border-radius: 5px;
+                outline : none;
+                transition: 300ms;
+                opacity: 1.0;
+
+                &:hover {
+                    cursor: pointer;
+                }
+
+                &.hidden {
+                    transition: 250ms;
+                    opacity: 0.0;
+                }
+
+                &:last-of-type {
+                    background: #E8E8E8;
+                    color: #0d1016;
+                    border: 1px solid #575757;
+                }
+            }
+
+            img.comment-avatar {
+                position: absolute;
+                left: 0px;
+                width: $avatar-width;
+                height: $avatar-height;
+                border-radius: $avatar-radius;
+                border: 2px solid #585858;
+            }
+        }
     }
 
     #comment-list {
@@ -24,6 +98,10 @@ $avatar-radius : calc(#{$avatar-width} / 2);
             margin-top: 5px;
             min-height: 95px;
             border-bottom: 1px solid #343a4a;
+
+            &:last-of-type {
+                border-bottom: none;
+            }
 
             img.comment-avatar {
                 position: absolute;
@@ -67,6 +145,5 @@ $avatar-radius : calc(#{$avatar-width} / 2);
                 padding-right: 15px;
             }
         }
-
     }
 }
