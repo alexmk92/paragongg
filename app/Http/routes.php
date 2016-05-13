@@ -92,7 +92,7 @@ Route::group(['prefix' => 'api', 'namespace' => 'API', 'middleware' => 'cors'], 
 });
 
 /* Administration */
-Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'auth', 'admin', 'cors'], function () {
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['auth', 'admin', 'cors']], function () {
     Route::get('/', 'AdminController@index');
     Route::get('/jobs', 'AdminController@jobs');
     Route::get('/maintenance', 'MaintenanceController@index');

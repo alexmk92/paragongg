@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Auth;
 
 class Admin
 {
@@ -16,8 +17,9 @@ class Admin
     public function handle($request, Closure $next)
     {
         $role = Auth::user()->role;
-        if($role != 'administrator' OR $role != 'moderator') {
-            abort(401);
+
+        if($role != 'administrator' && $role != 'moderator') {
+            abort(403);
         }
         return $next($request);
     }
