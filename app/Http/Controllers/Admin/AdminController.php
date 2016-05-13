@@ -23,7 +23,7 @@ class AdminController extends Controller
     function getJobs()
     {
         $jobs = Job::orderByRaw("FIELD(queue, 'high', 'default', 'low')")
-            ->orderBy('created_at', 'ASC')
+            ->orderBy('created_at', 'DESC')
             ->get();
 
         return response()->json($jobs);

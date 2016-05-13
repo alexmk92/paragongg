@@ -79,8 +79,8 @@ class UpdateCardObject extends Job implements ShouldQueue
             $background_small = Image::make($background)->resize(150, null, function($constraint) {
                 $constraint->aspectRatio();
             })->stream()->getContents();
-            $storage->put('images/cards/' . $this->object->id . '/background.png', $background);
-            $storage->put('images/cards/' . $this->object->id . '/background_small.png', $background_small);
+            $storage->getDriver()->put('images/cards/' . $this->object->id . '/background.png', $background, ["CacheControl" => "max-age=3600"]);
+            $storage->getDriver()->put('images/cards/' . $this->object->id . '/background_small.png', $background_small, ["CacheControl" => "max-age=3600"]);
 
             // ICON
             $icon = $client->request('GET', 'https://oriondata-public-service-prod09.ol.epicgames.com/v1/card/' . $this->object->id . '/image/icon.png', [
@@ -91,11 +91,11 @@ class UpdateCardObject extends Job implements ShouldQueue
                 ]
             ])->getBody()->getContents();
 
-            $icon_small = Image::make($background)->resize(128,128)->stream()->getContents();
+            $icon_small =  Image::make($background)->resize(128,128)->stream()->getContents();
             $icon_medium = Image::make($background)->resize(256,256)->stream()->getContents();
-            $storage->put('images/cards/' . $this->object->id . '/icon.png', $icon);
-            $storage->put('images/cards/' . $this->object->id . '/icon_medium.png', $icon_medium);
-            $storage->put('images/cards/' . $this->object->id . '/icon_small.png', $icon_small);
+            $storage->getDriver()->put('images/cards/' . $this->object->id . '/icon.png', $icon, ["CacheControl" => "max-age=3600"]);
+            $storage->getDriver()->put('images/cards/' . $this->object->id . '/icon_medium.png', $icon_medium, ["CacheControl" => "max-age=3600"]);
+            $storage->getDriver()->put('images/cards/' . $this->object->id . '/icon_small.png', $icon_small, ["CacheControl" => "max-age=3600"]);
         }
     }
 }
