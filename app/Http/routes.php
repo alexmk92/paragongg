@@ -84,6 +84,14 @@ Route::post('/account/password', 'AccountController@updatePassword');
 Route::get('/account/guides', 'AccountController@guides');
 Route::get('/account/decks', 'AccountController@decks');
 
+/* API */
+Route::group(['prefix' => 'api', 'namespace' => 'API', 'middleware' => 'cors'], function () {
+    Route::get('/v1/comments/thread/{id}', 'CommentController@thread');
+    Route::post('/v1/comments/store', 'CommentController@store');
+    Route::get('/v1/cards/find/{id}', 'CardController@show');
+});
+
+
 /* Administration */
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'auth', 'admin', 'cors'], function () {
     Route::get('/', 'AdminController@index');
@@ -94,8 +102,3 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'auth
     Route::get('/api/jobs', 'AdminController@getJobs');
 });
 
-/* API */
-Route::group(['prefix' => 'api', 'namespace' => 'API', 'middleware' => 'cors'], function () {
-    Route::post('/v1/comments/store', 'CommentController@store');
-    Route::get('/v1/cards/find/{id}', 'CardController@show');
-});

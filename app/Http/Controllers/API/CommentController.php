@@ -11,6 +11,14 @@ use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
+    public function thread($id)
+    {
+        $thread = Thread::findOrFail($id);
+        $comments = $thread->comments;
+
+        return response()->json($comments);
+    }
+
     public function store(Request $request)
     {
         $comment = new CommentThreadComment();
@@ -19,4 +27,6 @@ class CommentController extends Controller
         $comment->user_id = Auth::user()->id;
         $comment->save();
     }
+
+
 }
