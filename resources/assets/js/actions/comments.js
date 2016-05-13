@@ -42,7 +42,7 @@ export function postComment(comment, callback) {
 
     httpRequest.open("POST", "/api/v1/comments/store", true);
     httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    httpRequest.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
+    httpRequest.setRequestHeader('X-CSRF-TOKEN', csrf);
 
     httpRequest.onreadystatechange = function () {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
@@ -70,5 +70,5 @@ export function postComment(comment, callback) {
     };
 
     //console.log("Sending: body=BODYBODY&thread=1")
-    httpRequest.send("body=BODYBODY&thread=1");
+    httpRequest.send(`body=${comment}&thread=1`);
 }
