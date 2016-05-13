@@ -37,7 +37,7 @@ function displayNotification()
     {
         $notification = explode('|', Session::get('notification'));
 
-        return '<input type="checkbox" id="dismissNotification" /><div class="notification notification-'.$notification[0].'">'.$notification[1].'<label for="dismissNotification>"<i class="fa fa-times" aria-hiddne="true"></i></label></div>';
+        return '<div id="notification" class="notification notification-'.$notification[0].'" onclick="this.style.display=\'none\';">'.$notification[1].'<i class="fa fa-times" aria-hidden="true"></i></div>';
     }
     return '';
 }
