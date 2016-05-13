@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
         if($users->count() == 0) {
             $this->call(UsersTableSeeder::class);
             $this->call(ArticlesTableSeeder::class);
+            $this->call(CommentThreadsTableSeeder::class);
+            $this->call(CommentThreadCommentsTableSeeder::class);
         }
 
     }

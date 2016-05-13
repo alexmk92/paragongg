@@ -91,7 +91,6 @@ Route::group(['prefix' => 'api', 'namespace' => 'API', 'middleware' => 'cors'], 
     Route::get('/v1/cards/find/{id}', 'CardController@show');
 });
 
-
 /* Administration */
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'auth', 'admin', 'cors'], function () {
     Route::get('/', 'AdminController@index');

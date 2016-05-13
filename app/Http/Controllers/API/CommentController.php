@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 
+use App\CommentThread;
 use App\CommentThreadComment;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -13,8 +14,11 @@ class CommentController extends Controller
 {
     public function thread($id)
     {
-        $thread = Thread::findOrFail($id);
-        $comments = $thread->comments;
+        $comments = CommentThreadComment::where('thread_id', $id)->where('parent_id', 0)->get();
+
+        foreach($comments as $comment) {
+            $this->getChildren($comment);
+        }
 
         return response()->json($comments);
     }
@@ -23,10 +27,21 @@ class CommentController extends Controller
     {
         $comment = new CommentThreadComment();
         $comment->body = $request->body;
-        $comment->thread_id = 1;
+        $comment->thread_id = $request->thread_id;
         $comment->user_id = Auth::user()->id;
         $comment->save();
     }
 
+    private function getChildren($comment)
+    {
+        $children = CommentThreadComment::where('parent_id', $comment->id)->get();
+        if($children) {
+            $comment->children = $children;
+            foreach($children as $comment) {
+                $this->getChildren($comment);
+            }
+        }
+        return $comment;
+    }
 
 }
