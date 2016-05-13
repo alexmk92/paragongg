@@ -5,6 +5,10 @@
 @section('scripts')
     <script>
         var CARDS = {!! json_encode($cards) !!};
-        var AUTHED = {{ Auth::check() ? "true" : "false" }};
+        @if(Auth::check() && Auth::user()->oauth_epic_code != null)
+            var AUTHED = true;
+        @else
+            var AUTHED = false;
+        @endif
     </script>
 @endsection

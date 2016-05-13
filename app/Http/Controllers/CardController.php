@@ -18,7 +18,7 @@ class CardController extends Controller
         $cards = Card::all('name', 'code', 'cost', 'type', 'affinity', 'rarity');
         $cardsOwned = null;
 
-        if(Auth::user()) {
+        if(Auth::user() && Auth::user()->oauth_epic_code != null) {
             $cardsOwned = $this->cardCollection();
 
             foreach($cards as $card) {
@@ -36,11 +36,11 @@ class CardController extends Controller
         return view('cards.index')->with('cards', $cards);
     }
     
-    // Index
-    public function cardCollection()
+    // Get a user's card collection
+    private function cardCollection()
     {
         $user = Auth::user();
-        //curl -X GET --header 'Accept: application/json' --header 'Authorization: Bearer 924ba60333b24c6e94b99cdf62602916' --header 'X-Epic-ApiKey: a1253524e2f442a39ea8fd592fd402a9' 'https://developer-paragon.epicgames.com/v1/account/099bc6a93f954cc6b164f2afd31aff35/cards'
+
         if(!Cache::has('user.'.$user->id.'.cards')) {
 
             $client = new Client();
