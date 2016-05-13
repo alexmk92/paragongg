@@ -7,7 +7,8 @@ class AccountNav extends Component {
         this.state = {
             username: this.props.username,
             amber: this.props.amber,
-            active: false
+            active: false,
+            admin: this.props.admin
         }
 
         this.showContent = this.showContent.bind(this)
@@ -15,11 +16,18 @@ class AccountNav extends Component {
     showContent() {
         this.setState({active: !this.state.active})
     }
+    isAdmin() {
+        return (this.state.admin) ? true : false;
+    }
     isActive() {
         return (this.state.active) ? 'account-nav-panel active' : 'account-nav-panel inactive';
     }
     render() {
         //var user = this.props.user;
+        var isAdmin = false;
+        if(this.isAdmin()) {
+            isAdmin = <li><a href="/admin"><i className="fa fa-lock" aria-hidden="true"></i>Administration</a></li>;
+        }
         return(
             <div className="account-dropdown">
                 <div className="account-nav-trigger" onClick={this.showContent}>
@@ -35,7 +43,8 @@ class AccountNav extends Component {
                         <li><a href="/users/jamieshepherd"><i className="fa fa-user" aria-hidden="true"></i>View profile</a></li>
                         <li><a href="/account/decks"><i className="fa fa-book" aria-hidden="true"></i>Your decks</a></li>
                         <li><a href="/account/guides"><i className="fa fa-graduation-cap" aria-hidden="true"></i>Your guides</a></li>
-                        <li><a href="/account"><i className="fa fa-lock" aria-hidden="true"></i>Manage account</a></li>
+                        <li><a href="/account"><i className="fa fa-cog" aria-hidden="true"></i>Manage account</a></li>
+                        {isAdmin}
                     </ul>
                     <a href="/logout" className="sign-out"><i className="fa fa-power-off" aria-hidden="true"></i> Sign out</a>
 
@@ -46,4 +55,4 @@ class AccountNav extends Component {
 }
 
 var element = document.getElementById('account-nav');
-if(element) ReactDOM.render(<AccountNav username={element.dataset.username} amber={element.dataset.amber}/>, element);
+if(element) ReactDOM.render(<AccountNav username={element.dataset.username} amber={element.dataset.amber} admin={element.dataset.admin}/>, element);
