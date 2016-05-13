@@ -26,5 +26,5 @@
             {!! (new Parsedown())->text($article->body) !!}
         </div>
     </article>
-    <div id="comment-feed"></div>
+    @include('layouts.commentFeed')
 @endsection
