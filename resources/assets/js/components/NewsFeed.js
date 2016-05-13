@@ -10,6 +10,9 @@ class NewsFeed extends Component {
             news: [],
             newsEnd: false
         }
+        this.options = {
+            stagger: true
+        }
         this.masonryOptions = {
             percentPosition: true,
             //transitionDuration: 0,
@@ -17,6 +20,7 @@ class NewsFeed extends Component {
         }
 
         this.getResults = this.getResults.bind(this)
+        this.addResults = this.addResults.bind(this)
     }
     componentDidMount() {
         this.getResults();
@@ -41,7 +45,7 @@ class NewsFeed extends Component {
                 if (httpRequest.status === 200) {
                     var response = JSON.parse(httpRequest.responseText)
                     if(response.length > 0) {
-                        this.setState({news: this.state.news.concat(response)});
+                        this.addResults(response);
                     } else {
                         this.setState({newsEnd: true});
                         console.log('END OF NEWS');
@@ -54,6 +58,19 @@ class NewsFeed extends Component {
         };
 
         httpRequest.send();
+    }
+    addResults(response) {
+        console.log("ADDING RESULTS");
+        if(this.options.stagger == true) {
+            response.forEach(function(post) {
+                var _this = this;
+                setTimeout(function(){
+                    _this.setState({news: _this.state.news.concat(post)});
+                }, 1000);
+            }, this);
+        } else {
+            this.setState({news: this.state.news.concat(response)});
+        }
     }
     render() {
         var childElements = this.state.news.map(function(element){

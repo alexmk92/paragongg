@@ -33,4 +33,9 @@
         background: $panel-color;
         padding: 20px;
     }
+    &.padless {
+        .ReactTabs__TabPanel {
+            padding: 0;
+        }
+    }
 }

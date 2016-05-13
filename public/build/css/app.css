@@ -2577,21 +2577,21 @@ footer {
     height: 200px;
     display: inline-block; }
 
-.guide-preview {
+.home-guide-preview {
   border-bottom: 1px solid #343a4a;
   padding: 15px 10px;
   background: no-repeat top right; }
-  .guide-preview:hover {
+  .home-guide-preview:hover {
     background-color: #0d1016; }
-  .guide-preview .hero-icon {
+  .home-guide-preview .hero-icon {
     float: left;
     display: inline-block;
     max-width: 38px;
     margin-right: 15px; }
-    .guide-preview .hero-icon img {
+    .home-guide-preview .hero-icon img {
       width: 100%;
       border-radius: 50%; }
-  .guide-preview .guide-title {
+  .home-guide-preview .guide-title {
     margin-left: 55px;
     font-size: 20px;
     line-height: 24px;
@@ -2599,14 +2599,14 @@ footer {
     font-weight: bold;
     display: block;
     margin-bottom: 5px; }
-  .guide-preview .post-details {
+  .home-guide-preview .post-details {
     margin-left: 55px;
     display: block; }
-  .guide-preview .mini-build {
+  .home-guide-preview .mini-build {
     float: right;
     display: inline-block;
     margin-left: 20px; }
-    .guide-preview .mini-build img {
+    .home-guide-preview .mini-build img {
       max-height: 45px;
       margin-left: 5px; }
 
@@ -2983,40 +2983,20 @@ form {
       vertical-align: top;
       border-radius: 5px; }
   #guides-feed .guide-preview {
-    background: #222;
-    display: inline-block;
-    max-width: 444px;
+    display: block;
     width: 100%;
-    margin-bottom: 30px;
-    margin-right: 30px;
-    min-height: 200px;
-    position: relative;
-    transition: all 0.3s;
-    padding: 15px 0; }
-    #guides-feed .guide-preview:nth-of-type(2n) {
-      margin-right: 0; }
+    min-height: 80px;
+    padding: 20px;
+    border-bottom: 1px solid #343a4a; }
     #guides-feed .guide-preview:hover {
-      -webkit-filter: brightness(130%);
-              filter: brightness(130%); }
-    #guides-feed .guide-preview .preview-details {
-      position: absolute;
-      bottom: -1px;
-      width: 100%;
-      padding: 20px;
-      /* For Safari 5.1 to 6.0 */
-      /* For Opera 11.1 to 12.0 */
-      /* For Firefox 3.6 to 15 */
-      background: linear-gradient(transparent, black); }
-      #guides-feed .guide-preview .preview-details .date {
-        font-size: 12px;
-        text-transform: uppercase;
-        margin-bottom: 5px; }
-      #guides-feed .guide-preview .preview-details .heading h2 {
-        font-size: 20px;
-        line-height: 24px; }
-      #guides-feed .guide-preview .preview-details .snippet {
-        font-size: 14px;
-        line-height: 130%; }
+      background: rgba(13, 16, 22, 0.1); }
+  #guides-feed .guide-hero {
+    float: left;
+    margin-right: 20px; }
+    #guides-feed .guide-hero img {
+      width: 64px;
+      height: 64px;
+      border-radius: 5px; }
 
 #cards-feed h2 {
   margin-bottom: 0px; }
@@ -3113,6 +3093,9 @@ form {
 .ReactTabs .ReactTabs__TabPanel {
   background: #181d27;
   padding: 20px; }
+
+.ReactTabs.padless .ReactTabs__TabPanel {
+  padding: 0; }
 
 #account-noauth {
   float: right;

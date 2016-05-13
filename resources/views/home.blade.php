@@ -106,42 +106,42 @@
         </div><div class="panel-wrapper">
             <div>
                 <div class="subheading">Featured guides</div>
-                <div class="guide-preview cf" style="background-image: url('/assets/images/heroes/sparrow/cutout-small.png');">
+                <div class="home-guide-preview cf" style="background-image: url('/assets/images/heroes/sparrow/cutout-small.png');">
                     <div class="hero-icon">
                         <img src="https://paragon.gg/images/strategy/sparrow_icon.jpg"/>
                     </div>
                     <span class="guide-title"><a href="/">The Ultimate Sparrow Guide So Good</a></span>
                     <span class="post-details"><span class="category">Sparrow guide</span> posted by <a href="">&#64;Facerafter</a> 3 weeks ago</span>
                 </div>
-                <div class="guide-preview cf" style="background-image: url('/assets/images/heroes/kallari/cutout-small.png');">
+                <div class="home-guide-preview cf" style="background-image: url('/assets/images/heroes/kallari/cutout-small.png');">
                     <div class="hero-icon">
                         <img src="https://paragon.gg/images/strategy/kallari_icon.jpg"/>
                     </div>
                     <span class="guide-title"><a href="/">I am the night; how to become the hero gotham deserves</a></span>
                     <span class="post-details"><span class="category">Kallari guide</span> posted by <a href="">&#64;Facerafter</a> 3 weeks ago</span>
                 </div>
-                <div class="guide-preview cf" style="background-image: url('/assets/images/heroes/twinblast/cutout-small.png');">
+                <div class="home-guide-preview cf" style="background-image: url('/assets/images/heroes/twinblast/cutout-small.png');">
                     <div class="hero-icon">
                         <img src="https://paragon.gg/images/strategy/twinblast_icon.jpg"/>
                     </div>
                     <span class="guide-title"><a href="/">Easy Twinblast Guide</a></span>
                     <span class="post-details"><span class="category">Twinblast guide</span> posted by <a href="">&#64;Facerafter</a> 3 weeks ago</span>
                 </div>
-                <div class="guide-preview cf" style="background-image: url('/assets/images/heroes/feng-mao/cutout-small.png');">
+                <div class="home-guide-preview cf" style="background-image: url('/assets/images/heroes/feng-mao/cutout-small.png');">
                     <div class="hero-icon">
                         <img src="https://paragon.gg/images/strategy/feng-mao_icon.jpg"/>
                     </div>
                     <span class="guide-title"><a href="/">Tank / Crit Jungler</a></span>
                     <span class="post-details"><span class="category">Feng-mao guide</span> posted by <a href="">&#64;Facerafter</a> 3 weeks ago</span>
                 </div>
-                <div class="guide-preview cf" style="background-image: url('/assets/images/heroes/steel/cutout-small.png');">
+                <div class="home-guide-preview cf" style="background-image: url('/assets/images/heroes/steel/cutout-small.png');">
                     <div class="hero-icon">
                         <img src="https://paragon.gg/images/strategy/steel_icon.jpg"/>
                     </div>
                     <span class="guide-title"><a href="/">Steel "The Legendary Shield"</a></span>
                     <span class="post-details"><span class="category">Steel guide</span> posted by <a href="">&#64;Facerafter</a> 3 weeks ago</span>
                 </div>
-                <div class="guide-preview cf" style="background-image: url('/assets/images/heroes/rampage/cutout-small.png');">
+                <div class="home-guide-preview cf" style="background-image: url('/assets/images/heroes/rampage/cutout-small.png');">
                     <div class="hero-icon">
                         <img src="https://paragon.gg/images/strategy/rampage_icon.jpg"/>
                     </div>
