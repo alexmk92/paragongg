@@ -11,6 +11,6 @@ class ModerationController extends Controller
 {
     public function index()
     {
-        return "Hi mod";
+        return view('moderation.index');
     }
 }
