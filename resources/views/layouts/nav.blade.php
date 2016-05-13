@@ -18,6 +18,9 @@
         @if(Auth::user())
         <div id="account-nav"
              @if(Auth::check()) data-username="{{ Auth::user()->username }}" data-amber="{{ Auth::user()->amber }}"
+                 @if(Auth::user()->isMod())
+                    data-mod=true
+                 @endif
                 @if(Auth::user()->isAdmin())
                     data-admin=true
                 @endif

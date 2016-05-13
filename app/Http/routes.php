@@ -84,12 +84,9 @@ Route::group(['prefix' => 'account', 'middleware' => 'auth'], function () {
     Route::get('/decks', 'AccountController@decks');
 });
 
-
-/* API */
-Route::group(['prefix' => 'api', 'namespace' => 'API', 'middleware' => 'cors'], function () {
-    Route::get('/v1/comments/thread/{id}', 'CommentController@thread');
-    Route::post('/v1/comments/store', 'CommentController@store');
-    Route::get('/v1/cards/find/{id}', 'CardController@show');
+/* Moderation */
+Route::group(['prefix' => 'moderation', 'namespace' => 'Moderation', 'middleware' => ['auth', 'mod', 'cors']], function () {
+    Route::get('/', 'ModerationController@index');
 });
 
 /* Administration */
@@ -102,3 +99,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::get('/api/jobs', 'AdminController@getJobs');
 });
 
+/* API */
+Route::group(['prefix' => 'api', 'namespace' => 'API', 'middleware' => 'cors'], function () {
+    Route::get('/v1/comments/thread/{id}', 'CommentController@thread');
+    Route::post('/v1/comments/store', 'CommentController@store');
+    Route::get('/v1/cards/find/{id}', 'CardController@show');
+});
