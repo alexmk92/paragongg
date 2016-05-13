@@ -18,23 +18,19 @@ class JobsFeed extends Component {
         var httpRequest;
 
         if (window.XMLHttpRequest) {
-            httpRequest = new XMLHttpRequest(); // code for IE7+, Firefox, Chrome, Opera, Safari
+            httpRequest = new XMLHttpRequest();
         } else {
-            httpRequest = new ActiveXObject("Microsoft.XMLHTTP"); // code for IE6, IE5
+            httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
         }
 
         httpRequest.open("GET", '/admin/api/jobs', true);
 
-        //var that = this;
         httpRequest.onreadystatechange = () => {
             if (httpRequest.readyState === XMLHttpRequest.DONE) {
                 if (httpRequest.status === 200) {
                     this.setState({jobs: JSON.parse(httpRequest.responseText)});
-                    //that.setState({jobs: httpRequest.responseText});
-                    //that.forceUpdate();
-                    //console.log(that.state.jobs);
                 } else{
-                    console.log("AW NO");
+                    // Log error
                 }
             }
 

@@ -73,7 +73,7 @@ class ArticlesTableSeeder extends Seeder
         $news->user_id  = 1;
         $news->status   = 'published';
         $news->title    = 'Iggy &amp; Scorch Release Date Announced';
-        $news->slug     = 'iggy-and-scorch-release-date-announced4';
+        $news->slug     = 'iggy-and-scorch-release-date-announced5';
         $news->body     = "The release date for Iggy & Scorch was just announced. Turns out it's already out and I've just been pretty lazy making the ParagonGG website.";
         $news->save();
 
