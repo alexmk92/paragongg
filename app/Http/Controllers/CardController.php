@@ -18,7 +18,7 @@ class CardController extends Controller
         $cards = Card::all('name', 'code', 'cost', 'type', 'affinity', 'rarity');
         $cardsOwned = null;
 
-        if(Auth::user() && Auth::user()->oauth_epic_code != null) {
+        if(Auth::check() && Auth::user()->epicAccountLinked()) {
             $cardsOwned = $this->cardCollection();
 
             foreach($cards as $card) {

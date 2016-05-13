@@ -93,7 +93,7 @@ function OAuthToken()
         $user->epic_account_id = $response->account_id;
         $user->save();
         $expires = Carbon::now()->addSeconds($response->expires_in);
-        
+
         Cache::put('user.'.$user->id.'.token', $response->access_token, $expires);
 
     }

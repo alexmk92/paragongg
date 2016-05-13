@@ -49,8 +49,7 @@ class AccountNav extends Component {
                     <ul className="account-properties">
                         <li><a href="/users/jamieshepherd"><i className="fa fa-user" aria-hidden="true"></i>View profile</a></li>
                         <li><a href="/account/decks"><i className="fa fa-book" aria-hidden="true"></i>Your decks</a></li>
-                        <li><a href="/account/guides"><i className="fa fa-graduation-cap" aria-hidden="true"></i>Your guides</a></li>
-                        <li><a href="/account"><i className="fa fa-cog" aria-hidden="true"></i>Manage account</a></li>
+                        <li><a href="/account"><i className="fa fa-cog" aria-hidden="true"></i>Account settings</a></li>
                         {isMod}
                         {isAdmin}
                     </ul>

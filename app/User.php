@@ -40,4 +40,12 @@ class User extends Authenticatable
         }
         return false;
     }
+
+    public function epicAccountLinked()
+    {
+        if($this->oauth_epic_code != null && $this->epic_account_id != null) {
+            return true;
+        }
+        return false;
+    }
 }
