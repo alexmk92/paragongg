@@ -19,7 +19,7 @@
         @endif
         &nbsp;
     </div>
-    <div class="wrapper bordered-right">
+    <div class="wrapper">
         <h2>Paragon guides</h2>
         <div id="guides-feed"></div>
     </div>

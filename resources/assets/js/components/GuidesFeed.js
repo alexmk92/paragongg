@@ -28,22 +28,26 @@ class GuideFilter extends Component {
     render() {
         return (
             <div id="guide-filter">
+                <div className="header">
+                    <span className="heading">Hero guides</span>
+                    <input className="hero-search" type="text" placeholder="Start typing a hero name to search..." autoFocus="true"/>
+                </div>
                 <ul className="heroes">
-                    <li><a href="/guides?hero=dekker"><img src="/assets/images/heroes/dekker/portrait.jpg"/></a></li>
-                    <li><a href="/guides?hero=feng-mao"><img src="/assets/images/heroes/feng-mao/portrait.jpg"/></a></li>
-                    <li><a href="/guides?hero=gadget"><img src="/assets/images/heroes/gadget/portrait.jpg"/></a></li>
-                    <li><a href="/guides?hero=gideon"><img src="/assets/images/heroes/gideon/portrait.jpg"/></a></li>
-                    <li><a href="/guides?hero=grux"><img src="/assets/images/heroes/grux/portrait.jpg"/></a></li>
-                    <li><a href="/guides?hero=howitzer"><img src="/assets/images/heroes/howitzer/portrait.jpg"/></a></li>
-                    <li><a href="/guides?hero=iggy-scorch"><img src="/assets/images/heroes/iggy-scorch/portrait.jpg"/></a></li>
-                    <li><a href="/guides?hero=kallari"><img src="/assets/images/heroes/kallari/portrait.jpg"/></a></li>
-                    <li><a href="/guides?hero=murdock"><img src="/assets/images/heroes/murdock/portrait.jpg"/></a></li>
-                    <li><a href="/guides?hero=muriel"><img src="/assets/images/heroes/muriel/portrait.jpg"/></a></li>
-                    <li><a href="/guides?hero=rampage"><img src="/assets/images/heroes/rampage/portrait.jpg"/></a></li>
-                    <li><a href="/guides?hero=sevarog"><img src="/assets/images/heroes/sevarog/portrait.jpg"/></a></li>
-                    <li><a href="/guides?hero=sparrow"><img src="/assets/images/heroes/sparrow/portrait.jpg"/></a></li>
-                    <li><a href="/guides?hero=steel"><img src="/assets/images/heroes/steel/portrait.jpg"/></a></li>
-                    <li><a href="/guides?hero=twinblast"><img src="/assets/images/heroes/twinblast/portrait.jpg"/></a></li>
+                    <li><a href="/guides?hero=dekker"><img src="/assets/images/heroes/dekker/portrait.jpg"/><span>Dekker</span></a></li>
+                    <li><a href="/guides?hero=feng-mao"><img src="/assets/images/heroes/feng-mao/portrait.jpg"/><span>Feng-mao</span></a></li>
+                    <li><a href="/guides?hero=gadget"><img src="/assets/images/heroes/gadget/portrait.jpg"/></a><span>Gadget</span></li>
+                    <li><a href="/guides?hero=gideon"><img src="/assets/images/heroes/gideon/portrait.jpg"/></a><span>Gideon</span></li>
+                    <li><a href="/guides?hero=grux"><img src="/assets/images/heroes/grux/portrait.jpg"/></a><span>Grux</span></li>
+                    <li><a href="/guides?hero=howitzer"><img src="/assets/images/heroes/howitzer/portrait.jpg"/><span>Howitzer</span></a></li>
+                    <li><a href="/guides?hero=iggy-scorch"><img src="/assets/images/heroes/iggy-scorch/portrait.jpg"/><span>Iggy &amp; Scorch</span></a></li>
+                    <li><a href="/guides?hero=kallari"><img src="/assets/images/heroes/kallari/portrait.jpg"/><span>Kallari</span></a></li>
+                    <li><a href="/guides?hero=murdock"><img src="/assets/images/heroes/murdock/portrait.jpg"/><span>Murdock</span></a></li>
+                    <li><a href="/guides?hero=muriel"><img src="/assets/images/heroes/muriel/portrait.jpg"/><span>Muriel</span></a></li>
+                    <li><a href="/guides?hero=rampage"><img src="/assets/images/heroes/rampage/portrait.jpg"/><span>Rampage</span></a></li>
+                    <li><a href="/guides?hero=sevarog"><img src="/assets/images/heroes/sevarog/portrait.jpg"/><span>Sevarog</span></a></li>
+                    <li><a href="/guides?hero=sparrow"><img src="/assets/images/heroes/sparrow/portrait.jpg"/><span>Sparrow</span></a></li>
+                    <li><a href="/guides?hero=steel"><img src="/assets/images/heroes/steel/portrait.jpg"/><span>Steel</span></a></li>
+                    <li><a href="/guides?hero=twinblast"><img src="/assets/images/heroes/twinblast/portrait.jpg"/><span>Twinblast</span></a></li>
                 </ul>
             </div>
         )

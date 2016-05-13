@@ -3,17 +3,68 @@
     #guide-filter {
         margin-bottom: 50px;
         background: $panel-color;
-        padding: 20px 20px 5px 20px;
+        padding: 20px 20px 10px 20px;
+        .header {
+            border-bottom: 1px solid $faded-line;
+            padding-bottom: 15px;
+        }
+        span.heading {
+            display: inline-block;
+            font-size: 18px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: white;
+        }
+        .hero-search {
+            display: inline-block;
+            margin-bottom: 0;
+            font-size: 16px;
+            margin-left: 20px;
+            border: none;
+            border-left: 2px solid $faded-line;
+            padding: 0 0 0 20px;
+            &:focus {
+                border-color: $secondary-highlight;
+            }
+        }
+        .heroes {
+            margin-top: 30px;
+        }
         .heroes li {
             display: inline-block;
-            margin-right: 15px;
-            border-radius: 5px;
-            margin-bottom: 15px;
+            margin-right: 13px;
+            margin-bottom: 13px;
+            filter: drop-shadow(0px 0px 2px rgba(0,0,0,0.3));
+            transition: all 0.1s;
+            border: 1px solid #111111;
+            position: relative;
+            span {
+                display: block;
+                opacity: 0;
+                position: absolute;
+                bottom: -5px;
+                left: 0;
+                width: 100%;
+                text-align: center;
+                color: white;
+                font-size: 9px;
+                text-transform: uppercase;
+                background: rgba(0,0,0,0.8);
+                padding: 5px;
+                transition: all 0.2s;
+            }
+            &:hover {
+                transform: scale(1.1);
+                border-color: $faded-line;
+                span {
+                    opacity: 1;
+                    bottom: 0;
+                }
+            }
         }
         img {
-            width: 80px;
+            width: 76px;
             vertical-align: top;
-            border-radius: 5px;
         }
     }
     .guide-preview {
