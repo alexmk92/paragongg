@@ -12,7 +12,7 @@
             <li><a href="/decks" {{ Request::is( 'decks*') ? 'class=active' : '' }}>Decks</a></li>
             {{-- <li><a href="/stats" {{ Request::is( 'stats*') ? 'class=active' : '' }}>Stats</a></li> --}}
             <li><a href="/cards" {{ Request::is( 'cards*') ? 'class=active' : '' }}>Cards</a></li>
-            {{-- <li><a href="/heroes" {{ Request::is( 'heroes*') ? 'class=active' : '' }}>Heroes</a></li> --}}
+            <li><a href="/heroes" {{ Request::is( 'heroes*') ? 'class=active' : '' }}>Heroes</a></li>
             {{-- <li><a href="/community" {{ Request::is( 'community*') ? 'class=active' : '' }}>Community</a></li> --}}
         </ul>
         @if(Auth::user())

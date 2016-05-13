@@ -45,14 +45,13 @@ Route::get('/players/{username}', 'PlayerController@show');
 Route::get('/games', 'GameController@index');
 Route::get('/games/id', 'GameController@show');
 
-/* DECKS */
+/* CARDS */
 Route::get('/cards', 'CardController@index');
-Route::get('/cards/create', 'CardController@create');
-Route::post('/cards/create', 'CardController@store');
-Route::get('/cards/edit/{id}', 'CardController@edit');
-Route::post('/cards/edit/{id}', 'CardController@update');
-Route::get('/cards/delete/{id}', 'CardController@delete');
 Route::get('/cards/{slug}', 'CardController@show');
+
+/* HEROES */
+Route::get('/heroes', 'HeroController@index');
+Route::get('/heroes/{slug}', 'HeroController@show');
 
 /* DECKS */
 Route::get('/decks', 'DeckController@index');
@@ -95,6 +94,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::get('/jobs', 'AdminController@jobs');
     Route::get('/maintenance', 'MaintenanceController@index');
     Route::get('/maintenance/update-cards', 'MaintenanceController@updateCards');
+    Route::get('/maintenance/update-heroes', 'MaintenanceController@updateHeroes');
 
     Route::get('/api/jobs', 'AdminController@getJobs');
 });
