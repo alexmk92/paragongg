@@ -72,16 +72,18 @@ Route::post('/guides/edit/{id}', 'GuideController@update');
 Route::get('/guides/delete/{id}', 'GuideController@delete');
 Route::get('/guides/{slug}', 'GuideController@show');
 
+/* Account */
+Route::group(['prefix' => 'account', 'middleware' => 'auth'], function () {
+    Route::get('/', 'AccountController@index');
+    Route::get('/profile', 'AccountController@editProfile');
+    Route::get('/link', 'AccountController@linkAccount');
+    Route::post('/profile', 'AccountController@updateProfile');
+    Route::get('/password', 'AccountController@editPassword');
+    Route::post('/password', 'AccountController@updatePassword');
+    Route::get('/guides', 'AccountController@guides');
+    Route::get('/decks', 'AccountController@decks');
+});
 
-/* GUIDES */
-Route::get('/account', 'AccountController@index');
-Route::get('/account/profile', 'AccountController@editProfile');
-Route::get('/account/link', 'AccountController@linkAccount');
-Route::post('/account/profile', 'AccountController@updateProfile');
-Route::get('/account/password', 'AccountController@editPassword');
-Route::post('/account/password', 'AccountController@updatePassword');
-Route::get('/account/guides', 'AccountController@guides');
-Route::get('/account/decks', 'AccountController@decks');
 
 /* API */
 Route::group(['prefix' => 'api', 'namespace' => 'API', 'middleware' => 'cors'], function () {

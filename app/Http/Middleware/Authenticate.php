@@ -21,6 +21,7 @@ class Authenticate
             if ($request->ajax() || $request->wantsJson()) {
                 abort(401);
             } else {
+                session()->flash('notification', 'info|You need to be logged in to do that.');
                 return redirect()->guest('login');
             }
         }
