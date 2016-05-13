@@ -17,9 +17,8 @@ Route::get('/', function () {
 
 Route::auth();
 
-Route::get('/home', 'HomeController@index');
-Route::get('/auth', 'Auth\OauthController@accountLink');
-Route::get('/apikey', function(){ return APIToken(); });
+//Route::get('/home', 'HomeController@index');
+Route::get('/auth', 'Auth\OauthController@accountLink')->middleware('auth');;
 
 /* STATIC */
 Route::get('/terms',   function(){ return view('static.terms');   });
@@ -27,11 +26,11 @@ Route::get('/privacy', function(){ return view('static.privacy'); });
 
 /* NEWS */
 Route::get('/news', 'ArticleController@index');
-Route::get('/news/create', 'ArticleController@create'); // Admin
-Route::post('/news/create', 'ArticleController@store'); // Admin
-Route::get('/news/edit/{id}', 'ArticleController@edit'); // Admin
-Route::post('/news/edit/{id}', 'ArticleController@update'); // Admin
-Route::get('/news/delete/{id}', 'ArticleController@delete'); // Admin
+Route::get('/news/create', 'ArticleController@create')->middleware('admin');
+Route::post('/news/create', 'ArticleController@store')->middleware('admin');
+Route::get('/news/edit/{id}', 'ArticleController@edit')->middleware('admin');
+Route::post('/news/edit/{id}', 'ArticleController@update')->middleware('admin');
+Route::get('/news/delete/{id}', 'ArticleController@delete')->middleware('admin');
 Route::get('/news/{slug}', 'ArticleController@show');
 
 /* USERS */
