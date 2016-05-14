@@ -1,4 +1,4 @@
-import { uuid } from '../helpers';
+import { uuid, ajax } from '../helpers';
 
 export default class CardTooltip {
     constructor(props) {
@@ -18,6 +18,7 @@ export default class CardTooltip {
 
     request(cb) {
 
+        /*
         var httpRequest;
 
         if (window.XMLHttpRequest) {
@@ -41,6 +42,8 @@ export default class CardTooltip {
         };
 
         httpRequest.send();
+        */
+
     }
 
     initialise(data) {
@@ -220,13 +223,21 @@ export default class CardTooltip {
 
     render() {
         if (!this.state.isRendered && !document.getElementById(this.state.uniqueId)) {
-
-            this.request((payload) => {
-                if (payload.error === null) {
-                    this.state.tooltipInfo = JSON.parse(payload.data)
-                    this.updateTooltipInfo()
+            
+            ajax({
+                contentType : "application/json",
+                returnType : "json",
+                type : "GET",
+                url : this.state.dataURL,
+                cache : true
+            }, (error, data) => {
+                if(error === null && data !== null) {
+                    this.state.tooltipInfo = data;
+                    this.updateTooltipInfo();
+                } else {
+                    console.log(`Error: ${error.code}.  Message: ${error.message}`);
                 }
-            })
+            });
 
             this.state.isRendered = true
             var rootNode = document.createElement("div")
