@@ -2425,6 +2425,33 @@ html.wf-active {
       opacity: 0.0;
       transition: opacity 1000ms; }
 
+@media screen and (max-width: 1400px) {
+  #article-wrapper {
+    padding-left: 15px; } }
+
+@media screen and (max-width: 1050px) {
+  #article-wrapper {
+    padding-left: 0px;
+    display: table-header-group; }
+    #article-wrapper article {
+      width: 100%;
+      margin-right: 0;
+      border-right: none;
+      padding: 0px 15px; }
+    #article-wrapper #comment-feed {
+      padding: 70px 10px 70px 30px;
+      margin-right: 0;
+      width: 100%;
+      border-right: none; }
+  #sidebar.article-sidebar {
+    display: table-footer-group; }
+    #sidebar.article-sidebar .article-preview {
+      width: calc(49% - 30px);
+      margin-left: 15px !important;
+      margin-right: 15px !important; }
+    #sidebar.article-sidebar h4.heading {
+      margin-left: 15px; } }
+
 nav {
   position: absolute;
   margin: 0 auto;
