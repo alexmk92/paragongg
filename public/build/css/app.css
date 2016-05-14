@@ -2452,6 +2452,12 @@ html.wf-active {
     #sidebar.article-sidebar h4.heading {
       margin-left: 15px; } }
 
+@media screen and (max-width: 600px) {
+  #sidebar.article-sidebar .article-preview {
+    width: calc(100% - 30px);
+    margin-left: 15px !important;
+    margin-right: 15px !important; } }
+
 nav {
   position: absolute;
   margin: 0 auto;
