@@ -153,13 +153,13 @@ class CommentFeed extends Component {
         this.getComments();
     }
     getComments(comment) {
-        fetchComments((payload) => {
-            if(payload.error.code === 200) {
-                var comments = payload.data;
+        fetchComments((error, data) => {
+            if(error === null) {
+                var comments = data;
                 console.log("Attempting to push " + comment + " to the array of length " + comments.length);
                 if(typeof comment !== "undefined") {
-                    comments.push(comment)
-                    console.log(`pushed ${comment} to comments array of length ${comments.length}, comments is now: `)
+                    comments.push(comment);
+                    console.log(`pushed ${comment} to comments array of length ${comments.length}, comments is now: `);
                     console.log(comments);
                 }
                 this.setState({ comments })

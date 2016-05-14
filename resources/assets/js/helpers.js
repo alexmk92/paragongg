@@ -25,6 +25,9 @@ module.exports = {
             return ('x' == c ? r : r & 3 | 8).toString(16)
         });
     },
+    hashCode : function(str) {
+        return str.split('').reduce((prevHash, currVal) => ((prevHash << 5) - prevHash) + currVal.charCodeAt(0), 0);
+    },
     /**
      * Makes an AJAX request to a given URL and calls back to the user
      * @param payload - Fields

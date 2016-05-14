@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import ReactDOM             from 'react-dom'
 import Masonry              from 'react-masonry-component'
+import { fetchNews }        from '../actions/news'
 
 class NewsFeed extends Component {
     constructor(props) {
@@ -19,45 +20,37 @@ class NewsFeed extends Component {
             gutter: 30,
         }
 
-        this.getResults = this.getResults.bind(this)
-        this.addResults = this.addResults.bind(this)
+        this.getResults = this.getResults.bind(this);
+        this.addResults = this.addResults.bind(this);
+        this.handleScroll = this.handleScroll.bind(this);
     }
     componentDidMount() {
         this.getResults();
+        window.addEventListener('scroll', this.handleScroll);
+    }
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.handleScroll);
+    }
+    handleScroll() {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+            this.getResults();
+        }
     }
     handleSelect(index, last) {
         console.log('Selected tab: ' + index + ', Last tab: ' + last);
     }
     getResults() {
-        var httpRequest;
-
-        if (window.XMLHttpRequest) {
-            httpRequest = new XMLHttpRequest(); // code for IE7+, Firefox, Chrome, Opera, Safari
-        } else {
-            httpRequest = new ActiveXObject("Microsoft.XMLHTTP"); // code for IE6, IE5
-        }
-
-        httpRequest.open("GET", '/api/v1/news?skip=' + this.state.news.length, true);
-
-        //var that = this;
-        httpRequest.onreadystatechange = () => {
-            if (httpRequest.readyState === XMLHttpRequest.DONE) {
-                if (httpRequest.status === 200) {
-                    var response = JSON.parse(httpRequest.responseText)
-                    if(response.length > 0) {
-                        this.addResults(response);
-                    } else {
-                        this.setState({newsEnd: true});
-                        console.log('END OF NEWS');
-                    }
-                } else{
-                    console.log("AW NO");
+        fetchNews(this.state.news.length, (error, data) => {
+            if(error === null && data !== null) {
+                console.log(data);
+                if(data.length > 0) {
+                    this.addResults(data);
+                } else {
+                    this.setState({newsEnd: true});
+                    console.log('END OF NEWS');
                 }
             }
-
-        };
-
-        httpRequest.send();
+        });
     }
     addResults(response) {
         console.log("ADDING RESULTS");
