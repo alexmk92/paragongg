@@ -1,3 +1,5 @@
+import { uuid } from '../helpers';
+
 export default class CardTooltip {
     constructor(props) {
         if (typeof props.uniqueId === "undefined")
@@ -44,11 +46,13 @@ export default class CardTooltip {
     initialise(data) {
         var card = this.getParentNode(data.targetNode, data.parentNodeName)
         var cardRect = card.getBoundingClientRect()
-        var width, height = 0
-        if (cardRect.width && cardRect.height) {
-            width = cardRect.width
-            height = cardRect.height
-        }
+        /*
+         var width, height = 0
+         if (cardRect.width && cardRect.height) {
+         width = cardRect.width
+         height = cardRect.height
+         }
+         */
         if (cardRect) {
             this.state = {
                 uniqueId: this.hashCode(data.uniqueId),
@@ -58,7 +62,7 @@ export default class CardTooltip {
                 isRendered: false,
                 targetNode: data.targetNode,
                 parentNodeName: data.parentNodeName,
-                animationDuration: 150,
+                animationDuration: 200,
                 isVisible: false,
                 bounds: {
                     distanceFromTopLayoutMargin: cardRect.top,
@@ -74,8 +78,8 @@ export default class CardTooltip {
                         y: cardRect.top
                     },
                     size: {
-                        width,
-                        height
+                        width: cardRect.width,
+                        height : cardRect.height
                     }
                 }
             }
@@ -126,6 +130,7 @@ export default class CardTooltip {
             // Assigning a second rect property here, on the initial load getBoundingClientRect yields
             // { width: 0, height: 0 ... } we set default values here so that the card will render in the
             // same location
+
             var rect = {
                 height: nodeRect.height,
                 width: nodeRect.width
@@ -161,18 +166,18 @@ export default class CardTooltip {
             selector = "card-preview"
 
         /*
-        selector = selector.trim()
-        if (el.className.trim() !== selector) {
-            // traverse parents
-            while (el.className.trim() !== selector) {
-                el = el.parentNode
-                if (!el) return null
-            }
-            return el
-        } else {
-            return el
-        }
-        */
+         selector = selector.trim()
+         if (el.className.trim() !== selector) {
+         // traverse parents
+         while (el.className.trim() !== selector) {
+         el = el.parentNode
+         if (!el) return null
+         }
+         return el
+         } else {
+         return el
+         }
+         */
         return el;
     }
 
@@ -246,11 +251,4 @@ export default class CardTooltip {
             }, 100)
         }
     }
-}
-
-function uuid() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        var r = 16 * Math.random() | 0;
-        return ('x' == c ? r : r & 3 | 8).toString(16)
-    });
 }

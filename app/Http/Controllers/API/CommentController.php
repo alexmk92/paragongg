@@ -13,11 +13,8 @@ class CommentController extends Controller
 {
     public function thread($id)
     {
-        $comments = CommentThreadComment::where('thread_id', $id)->where('parent_id', 0)->get();
-
-        foreach($comments as $comment) {
-            $this->getChildren($comment);
-        }
+        $thread = Thread::findOrFail($id);
+        $comments = $thread->comments;
 
         return response()->json($comments);
     }
@@ -31,16 +28,5 @@ class CommentController extends Controller
         $comment->save();
     }
 
-    private function getChildren($comment)
-    {
-        $children = CommentThreadComment::where('parent_id', $comment->id)->get();
-        if($children) {
-            $comment->children = $children;
-            foreach($children as $comment) {
-                $this->getChildren($comment);
-            }
-        }
-        return $comment;
-    }
 
 }
