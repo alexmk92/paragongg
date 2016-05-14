@@ -10,15 +10,15 @@ class NewsFeed extends Component {
         this.state = {
             news: [],
             newsEnd: false
-        }
+        };
         this.options = {
             stagger: true
-        }
+        };
         this.masonryOptions = {
             percentPosition: true,
             //transitionDuration: 0,
             gutter: 30,
-        }
+        };
 
         this.getResults = this.getResults.bind(this);
         this.addResults = this.addResults.bind(this);
@@ -54,7 +54,7 @@ class NewsFeed extends Component {
     }
     addResults(response) {
         console.log("ADDING RESULTS");
-        if(this.options.stagger == true) {
+        if(this.options.stagger) {
             response.forEach(function(post) {
                 this.setState({news: this.state.news.concat(post)}); // Stagger this somehow?
             }, this);
@@ -63,7 +63,7 @@ class NewsFeed extends Component {
         }
     }
     render() {
-        var childElements = this.state.news.map(function(element){
+        const childElements = this.state.news.map(function(element){
             return (
                 <a className="article-preview" href={"/news/" + element.slug} key={element.slug}>
                     <div className="article-image">
@@ -84,7 +84,7 @@ class NewsFeed extends Component {
                     options={this.masonryOptions} // default {}
                     disableImagesLoaded={false} // default false
                 >
-                    {childElements}
+                    { childElements }
                 </Masonry>
                 <div>
                     <button onClick={this.getResults}>Hello</button>

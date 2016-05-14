@@ -191,3 +191,54 @@
         color: white;
     }
 }
+
+@media screen and (max-width: $media-desktop) {
+    .featured-panel {
+        .panel-wrapper {
+            width: 100%;
+            &.first {
+                padding-right: 5px;
+            }
+            .featured-focus {
+                background-size: cover;
+                width: 100%;
+                transition: all 500ms;
+            }
+            .featured-list {
+                max-width: 49%;
+                width: 100%;
+                padding: 30px 15px;
+                transition: all 200ms;
+
+                &.popular-decks {
+                    margin-left: 0px;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: $media-tablet) {
+    .featured-panel {
+        .panel-wrapper {
+            .featured-list {
+                max-width: 100%;
+                padding: 30px 15px;
+                transition: all 200ms;
+            }
+        }
+    }
+    .secondary-panel {
+        padding: 0px 20px;
+        margin-top: 5px;
+        .panel-wrapper {
+            width: 100%;
+            &.first {
+                width: 100%;
+                padding-right: 5px;
+                float: left;
+                padding-bottom: 35px;
+            }
+        }
+    }
+}
