@@ -62,12 +62,15 @@ $card-height : 133px;
     .wrapper.bordered-right {
         padding: 0px;
     }
+    #cards-feed {
+        padding: 0px 20px;
+    }
 }
 @media screen and (max-width: $media-mobile) {
     .card-preview {
         width: calc(#{$card-width} + (#{$card-width}/2)) !important;
         height: calc(#{$card-height} + (#{$card-height}/2)) !important;
-        background-size: calc(#{$card-width} + (#{$card-width}/2)) calc(#{$card-height} + (#{$card-height}/2)) !important;
+        background-size: 100% !important;
     }
     #sidebar form select {
         height: 50px;

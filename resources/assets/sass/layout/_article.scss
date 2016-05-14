@@ -40,3 +40,13 @@ article {
         }
     }
 }
+
+@media screen and (max-width: $media-tablet) {
+
+}
+
+@media screen and (max-width: $media-mobile) {
+    .article-preview {
+        width : 100%;
+    }
+}

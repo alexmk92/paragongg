@@ -2380,7 +2380,7 @@ time .updated_at {
 @media screen and (max-width: 1400px) {
   #page,
   nav {
-    padding: 0px 30px; } }
+    padding: 0px 10px; } }
 
 body {
   background: #08090d url("/assets/background.jpg") top right no-repeat;
@@ -2643,6 +2643,39 @@ footer {
   .post-details .category {
     color: white; }
 
+@media screen and (max-width: 1400px) {
+  .featured-panel .panel-wrapper {
+    width: 100%; }
+    .featured-panel .panel-wrapper.first {
+      padding-right: 5px; }
+    .featured-panel .panel-wrapper .featured-focus {
+      background-size: cover;
+      width: 100%;
+      transition: all 500ms; }
+    .featured-panel .panel-wrapper .featured-list {
+      max-width: 49%;
+      width: 100%;
+      padding: 30px 15px;
+      transition: all 200ms; }
+      .featured-panel .panel-wrapper .featured-list.popular-decks {
+        margin-left: 0px; } }
+
+@media screen and (max-width: 1050px) {
+  .featured-panel .panel-wrapper .featured-list {
+    max-width: 100%;
+    padding: 30px 15px;
+    transition: all 200ms; }
+  .secondary-panel {
+    padding: 0px 20px;
+    margin-top: 5px; }
+    .secondary-panel .panel-wrapper {
+      width: 100%; }
+      .secondary-panel .panel-wrapper.first {
+        width: 100%;
+        padding-right: 5px;
+        float: left;
+        padding-bottom: 35px; } }
+
 #sidebar {
   float: right;
   width: 400px;
@@ -2729,6 +2762,10 @@ article {
       color: #288fce; }
       article p a:hover {
         border-bottom: 1px dotted #288fce; }
+
+@media screen and (max-width: 600px) {
+  .article-preview {
+    width: 100%; } }
 
 .user-avatar {
   border-radius: 50%;
@@ -3098,13 +3135,15 @@ button[type="submit"] {
 
 @media screen and (max-width: 1400px) {
   .wrapper.bordered-right {
-    padding: 0px; } }
+    padding: 0px; }
+  #cards-feed {
+    padding: 0px 20px; } }
 
 @media screen and (max-width: 600px) {
   .card-preview {
     width: calc(100px + (100px/2)) !important;
     height: calc(133px + (133px/2)) !important;
-    background-size: calc(100px + (100px/2)) calc(133px + (133px/2)) !important; }
+    background-size: 100% !important; }
   #sidebar form select {
     height: 50px;
     font-size: 1.25em;

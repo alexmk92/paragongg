@@ -16,7 +16,7 @@ class NewsController extends Controller
         if(isset($_GET['skip'])) {
             $skip = $_GET['skip'];
         }
-        $articles = Article::orderBy('created_at', 'DESC')->skip($skip)->take(2)->get();
+        $articles = Article::orderBy('created_at', 'DESC')->skip($skip)->take(10)->get();
 
         return response()->json($articles);
     }
