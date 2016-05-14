@@ -58,6 +58,12 @@ class UpdateHeroObject extends Job implements ShouldQueue
 
         $hero = Hero::where('code', $this->object->id)->first();
         $hero->affinities = $heroDetails->affinities;
+        $hero->type       = $heroDetails->type;
+        $hero->role       = $heroDetails->role;
+        $hero->attack     = $heroDetails->attack;
+        $hero->scale      = $heroDetails->scale;
+        $hero->stats      = $heroDetails->stats;
+        $hero->abilities  = $heroDetails->abilities;
         $hero->save();
 
         if ($this->updateImages) {
