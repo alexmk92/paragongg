@@ -87,7 +87,7 @@ class NewsFeed extends Component {
                     { childElements }
                 </Masonry>
                 <div>
-                    <button onClick={this.getResults}>Hello</button>
+                    <p id="end-of-news-label" className={this.state.newsEnd ? "" : "hidden"}>No more news!</p>
                 </div>
             </div>
         );
