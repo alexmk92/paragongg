@@ -23,13 +23,13 @@ class JobsFeed extends Component {
             httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
         }
 
-        httpRequest.open("GET", '/admin/api/jobs', true);
+        httpRequest.open("GET", '/admin/api/jobs?nocache='+Math.random(), true);
 
         httpRequest.onreadystatechange = () => {
             if (httpRequest.readyState === XMLHttpRequest.DONE) {
                 if (httpRequest.status === 200) {
                     this.setState({jobs: JSON.parse(httpRequest.responseText)});
-                } else{
+                } else {
                     // Log error
                 }
             }

@@ -63,10 +63,7 @@ class NewsFeed extends Component {
         console.log("ADDING RESULTS");
         if(this.options.stagger == true) {
             response.forEach(function(post) {
-                var _this = this;
-                setTimeout(function(){
-                    _this.setState({news: _this.state.news.concat(post)});
-                }, 1000);
+                this.setState({news: this.state.news.concat(post)}); // Stagger this somehow?
             }, this);
         } else {
             this.setState({news: this.state.news.concat(response)});
