@@ -73,22 +73,25 @@ module.exports = {
         // Set headers
         httpRequest.open(payload.type, payload.url, true);
         httpRequest.setRequestHeader("Content-type", payload.contentType);
-        payload.headers.map((header) => {
-            httpRequest.setRequestHeader(header.type, header.value);
+        payload.headers.map((object) => {
+            Object.keys(object).forEach((key) => {
+                httpRequest.setRequestHeader(key, object[key]);
+                console.log("Added header:");
+                console.log(`${key} : ${object[key]}`);
+            });
         });
 
         // Build the payload to send
         if(payload.contentType.toLowerCase() === "application/x-www-form-urlencoded") {
             payload.data.map((object) => {
-                console.log("KEY IS " + object.key + " VALUE IS " + object.value);
-                requestData += `${object.key}=${object.value}&`;
+                Object.keys(object).forEach((key) => {
+                    requestData += `${key}=${object[key]}&`;
+                });
             });
             requestData = requestData.replace(/&\s*$/, "");
-        } else if(payload.contentType.toLowerCase() === "json") {
-            requestData = {};
-            payload.data.map((object) => {
-                requestData[object.key] = object.value;
-            });
+        } else if(payload.contentType.toLowerCase() === "application/json") {
+            requestData = payload.data
+            console.log("SET JSON REQUEST DATA")
         }
 
         // Initialise the listener on request
@@ -103,6 +106,7 @@ module.exports = {
             }
         };
 
+        console.log("Headers are ");
         console.log("Request data is, now sending:");
         console.log(requestData);
         httpRequest.send(requestData);

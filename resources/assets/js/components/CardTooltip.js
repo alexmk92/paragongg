@@ -223,13 +223,14 @@ export default class CardTooltip {
 
     render() {
         if (!this.state.isRendered && !document.getElementById(this.state.uniqueId)) {
-            
+
             ajax({
-                contentType : "application/json",
+                contentType : "application/x-www-form-urlencoded",
                 returnType : "json",
                 type : "GET",
                 url : this.state.dataURL,
-                cache : true
+                cache : true,
+                data : [{"Forename" : "Alex"},  {"dob" : new Date()}, {"surname" : "Sims"}]
             }, (error, data) => {
                 if(error === null && data !== null) {
                     this.state.tooltipInfo = data;
