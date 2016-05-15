@@ -3387,6 +3387,8 @@ button[type="submit"] {
   #comment-feed:before {
     content: "Comments";
     font-size: 1.5em; }
+  #comment-feed .child-comment-box-wrapper.hidden {
+    display: none; }
   #comment-feed #comment-box {
     display: block; }
     #comment-feed #comment-box.hidden {

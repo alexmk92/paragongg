@@ -27,6 +27,8 @@ class CommentController extends Controller
         $comment->thread_id = $request->thread_id;
         $comment->user_id = Auth::user()->id;
         $comment->save();
+
+        return response()->json(['code' => 200, 'message' => 'Message stored']);
     }
 
 
