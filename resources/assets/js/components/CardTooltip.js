@@ -2,7 +2,7 @@ import { uuid, ajax, hashCode } from '../helpers';
 
 export default class CardTooltip {
     constructor(props) {
-        if (typeof props.uniqueId === "undefined") props.uniqueId = uuid();
+        if (typeof props.uniqueId === "undefined") props.uniqueId = uuid;
         if (typeof props.tooltipInfo === "undefined") props.tooltipInfo = {};
 
         this.initialise({
