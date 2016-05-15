@@ -82,7 +82,7 @@ class UpdateHeroObject extends Job implements ShouldQueue
             
             $storage->getDriver()->put('images/heroes/' . $this->object->id . '/portrait.png', $portrait, ["CacheControl" => "max-age=3600"]);
             $storage->getDriver()->put('images/heroes/' . $this->object->id . '/portrait_medium.png', $portrait_medium, ["CacheControl" => "max-age=3600"]);
-            $storage->getDriver()->put('images/heroes/' . $this->object->id . '/portrait_medium.png', $portrait_small, ["CacheControl" => "max-age=3600"]);
+            $storage->getDriver()->put('images/heroes/' . $this->object->id . '/portrait_small.png', $portrait_small, ["CacheControl" => "max-age=3600"]);
 
         }
     }
