@@ -53,3 +53,15 @@
         }
     }
 }
+
+@media screen and (max-width: $media-mobile) {
+    #sidebar {
+        &.article-sidebar {
+            .article-preview {
+                width: calc(100% - 30px);
+                margin-left: 15px !important;
+                margin-right: 15px !important;
+            }
+        }
+    }
+}

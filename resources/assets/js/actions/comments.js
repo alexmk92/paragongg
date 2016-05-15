@@ -1,7 +1,22 @@
 import { ajax } from '../helpers';
 
-export function fetchComments(callback) {
-    // Do a real request to the API for all of our comments here
+export function fetchComments(threadId, callback) {
+
+    ajax({
+        type : "GET",
+        url : `/api/v1/comments/thread/${threadId}`,
+        contentType : "application/json",
+        cache: true
+    }, (error, data) => {
+        if(error === null && data !== null) {
+            console.log(data);
+            callback(null, data);
+        } else {
+            console.log(`Error: ${error.code}, Message: ${error.message}`);
+            callback(error, null);
+        }
+    });
+    /*
     callback(
         null,
         [
@@ -27,6 +42,7 @@ export function fetchComments(callback) {
             }
         ]
     );
+    */
 }
 
 export function postComment(comment, callback) {

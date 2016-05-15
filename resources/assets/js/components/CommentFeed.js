@@ -5,19 +5,22 @@ import { prettyDate, uuid } from '../helpers'
 // Actions
 import { postComment, fetchComments } from '../actions/comments'
 
-//var hasChildComments = false;
-//var childCommentCount = 1;
-
 class CommentListItem extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            commentId : props.comment.commentId || 0,
-            comment : props.comment.body,
-            createdAt : props.comment.createdAt,
+            thread_id : props.comment.thread_id || 0,
+            parent_id : props.comment.parent_id || 0,
+            comment_id : props.comment.id || 0,
+            author_id : props.comment.user_id || 0,
+            body : props.comment.body || "",
+            created_at : props.comment.created_at,
             votes : props.comment.votes || 0,
+            reports : props.comment.reports || 0,
             author : props.comment.author || "",
-            voted : false
+            voted : false,
+            childComments : props.childComments || [],
+            isChildComment : props.childComment || false
         };
 
         this.vote = this.vote.bind(this);
@@ -35,26 +38,33 @@ class CommentListItem extends Component {
 
     }
     reply(event) {
-
+        event.preventDefault();
+        this.setState({ replying : !this.state.replying });
     }
     getReplies() {
 
     }
     render() {
-        let toggleClass = "fa fa-thumbs-up vote-button " + (this.state.voted ? "active" : "");
-        //let childComments = this.getReplies();
+        const toggleClass = `fa fa-thumbs-up vote-button ${(this.state.voted ? "active" : "")}`;
+        const commentClass = `comment-item ${this.state.isChildComment ? "child-comment" : ""}`;
+        const comments = this.state.childComments.map((comment) => {
+            if(comment.parent_id === this.state.comment_id) {
+                return <CommentListItem childComment={true} key={uuid()} comment={comment} childComments={this.state.childComments} />
+            }
+        });
         return(
-            <li className="comment-item">
+            <li className={commentClass}>
                 <img className="comment-avatar" src="https://s.gravatar.com/avatar/bae38bd358b0325c7a3c049a4671a9cf?s=80" alt="Your avatar" />
-                <span className="author-name">{ this.state.author.name } <span className="created-at">{ prettyDate(this.state.createdAt) }</span></span>
-                <p className="comment-body">{ this.state.comment }</p>
+                <span className="author-name">{ this.state.author.name } <span className="created-at">{ prettyDate(this.state.created_at) }</span></span>
+                <p className="comment-body">{ this.state.body }</p>
                 <a href="#" onClick={this.reply}>Reply</a>
                 <i onClick={ this.vote } className={toggleClass} aria-hidden="true"><span>{ this.state.votes }</span></i>
-                <a className="report" onClick={this.report} href="">Report</a>
+                <a className="report" onClick={this.report} href="#">Report</a>
+                <CommentBox isHidden={!this.state.replying} />
+                <ul class="comment-list">
+                    { comments }
+                </ul>
             </li>
-            // Adds sub comments but crashes for time being
-            //{ (childCommentCount > 0) ? <CommentFeed className="child-feed" showInput={this.state.showChildInput} /> : "" }
-            //{ (childCommentCount === 0) ? hasChildComments = false : childCommentCount-- }
         );
     }
 }
@@ -68,20 +78,19 @@ class CommentBox extends Component {
             lineCount : 0,
             comment : "",
             posting : false,
-            isFocused : false
+            isFocused : false,
+            isHidden : props.isHidden
         };
+        console.log(props);
         this.post = this.post.bind(this);
         this.inputChanged = this.inputChanged.bind(this);
         this.cancelPost = this.cancelPost.bind(this);
-        console.log("State of box is")
-        console.log(this.state)
     }
     post(event) {
         event.preventDefault();
         this.setState({ posting : true });
         if(this.state.hasText) {
             postComment(this.state.comment, (payload) => {
-                //console.log(payload);
                 this.props.onCommentRequestRefresh( { body : this.state.comment, createdAt : new Date() });
                 this.setState({ posting : false, comment : "" });
             })
@@ -110,9 +119,10 @@ class CommentBox extends Component {
         }
     }
     render() {
+        console.log("RENDERING THE COMMENT BOX")
         const buttonClass = (!this.state.isFocused && !this.state.posting) ? "hidden" : "";
         return(
-            <div id="comment-box">
+            <div id="comment-box" className={this.state.isHidden ? "hidden" : ""}>
                 <form className={this.state.posting ? "disabled" : ""}>
                     <img className="comment-avatar" src="https://s.gravatar.com/avatar/bae38bd358b0325c7a3c049a4671a9cf?s=80" alt="Your avatar" />
                     <textarea
@@ -143,36 +153,38 @@ class CommentFeed extends Component {
         super(props);
         this.state = {
             className : props.className,
-            threadId : 0,
-            parentCommentId : 0,
-            comments : []
+            thread_id : 0,
+            parent_id : 0,
+            comments : [],
+            childComments : []
         };
         this.getComments = this.getComments.bind(this)
     }
     componentWillMount() {
         this.getComments();
     }
-    getComments(comment) {
-        fetchComments((error, data) => {
+    getComments() {
+        fetchComments(1, (error, data) => {
             if(error === null) {
-                var comments = data;
-                console.log("Attempting to push " + comment + " to the array of length " + comments.length);
-                if(typeof comment !== "undefined") {
-                    comments.push(comment);
-                    console.log(`pushed ${comment} to comments array of length ${comments.length}, comments is now: `);
-                    console.log(comments);
-                }
-                this.setState({ comments })
+                var childComments = [];
+                var comments = [];
+                data.map((comment) => {
+                    if(typeof comment !== "undefined") {
+                        if(comment.parent_id <= 0) comments.push(comment);
+                        else childComments.push(comment);
+                    }
+                });
+                this.setState({ comments, childComments });
             }
         })
     }
     render() {
         const comments = this.state.comments.map((comment) => {
-            return <CommentListItem key={uuid()} comment={comment} />
+            return <CommentListItem key={uuid()} comment={comment} childComments={this.state.childComments} />
         });
         return (
             <div id="comments-wrapper" className={this.state.className || ""}>
-                <CommentBox onCommentRequestRefresh={ this.getComments } />
+                <CommentBox isHidden={false} onCommentRequestRefresh={ this.getComments } />
                 <ul id="comment-list">
                     { comments }
                 </ul>

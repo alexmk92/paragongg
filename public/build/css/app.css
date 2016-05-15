@@ -2452,6 +2452,12 @@ html.wf-active {
     #sidebar.article-sidebar h4.heading {
       margin-left: 15px; } }
 
+@media screen and (max-width: 600px) {
+  #sidebar.article-sidebar .article-preview {
+    width: calc(100% - 30px);
+    margin-left: 15px !important;
+    margin-right: 15px !important; } }
+
 nav {
   position: absolute;
   margin: 0 auto;
@@ -3378,60 +3384,56 @@ button[type="submit"] {
   margin-right: 400px;
   background: none;
   border-right: 1px solid #343a4a; }
-  #comment-feed .child-feed #comment-list li.comment-item img.comment-avatar,
-  #comment-feed .child-feed #comment-box form img.comment-avatar {
-    position: absolute;
-    left: 8px;
-    top: 8px;
-    width: calc(60px/1.25);
-    height: calc(60px/1.25);
-    border-radius: calc(calc(60px / 2)/1.25); }
   #comment-feed:before {
     content: "Comments";
     font-size: 1.5em; }
-  #comment-feed #comment-box form {
-    position: relative;
-    padding-left: 80px;
-    max-width: 100%;
-    padding-right: 40px; }
-    #comment-feed #comment-box form.disabled {
-      pointer-events: none;
-      transition: 500ms;
-      opacity: 0.3; }
-    #comment-feed #comment-box form textarea {
-      background: #0d1016;
+  #comment-feed #comment-box {
+    display: block; }
+    #comment-feed #comment-box.hidden {
+      display: none; }
+    #comment-feed #comment-box form {
+      position: relative;
+      padding-left: 80px;
       max-width: 100%;
-      min-height: 75px;
-      padding: 13px; }
-    #comment-feed #comment-box form button {
-      margin-left: 10px;
-      float: right;
-      height: 35px;
-      width: 80px;
-      margin-top: -20px;
-      background: #ff6600;
-      border: 1px solid #C1540C;
-      color: white;
-      border-radius: 5px;
-      outline: none;
-      transition: 300ms;
-      opacity: 1.0; }
-      #comment-feed #comment-box form button:hover {
-        cursor: pointer; }
-      #comment-feed #comment-box form button.hidden {
-        transition: 250ms;
-        opacity: 0.0; }
-      #comment-feed #comment-box form button:last-of-type {
-        background: #E8E8E8;
-        color: #0d1016;
-        border: 1px solid #575757; }
-    #comment-feed #comment-box form img.comment-avatar {
-      position: absolute;
-      left: 0px;
-      width: 60px;
-      height: 60px;
-      border-radius: calc(60px / 2);
-      border: 2px solid #585858; }
+      padding-right: 40px; }
+      #comment-feed #comment-box form.disabled {
+        pointer-events: none;
+        transition: 500ms;
+        opacity: 0.3; }
+      #comment-feed #comment-box form textarea {
+        background: #0d1016;
+        max-width: 100%;
+        min-height: 75px;
+        padding: 13px; }
+      #comment-feed #comment-box form button {
+        margin-left: 10px;
+        float: right;
+        height: 35px;
+        width: 80px;
+        margin-top: -20px;
+        background: #ff6600;
+        border: 1px solid #C1540C;
+        color: white;
+        border-radius: 5px;
+        outline: none;
+        transition: 300ms;
+        opacity: 1.0; }
+        #comment-feed #comment-box form button:hover {
+          cursor: pointer; }
+        #comment-feed #comment-box form button.hidden {
+          transition: 250ms;
+          opacity: 0.0; }
+        #comment-feed #comment-box form button:last-of-type {
+          background: #E8E8E8;
+          color: #0d1016;
+          border: 1px solid #575757; }
+      #comment-feed #comment-box form img.comment-avatar {
+        position: absolute;
+        left: 0px;
+        width: 60px;
+        height: 60px;
+        border-radius: calc(60px / 2);
+        border: 2px solid #585858; }
   #comment-feed #comment-list {
     padding-top: 20px; }
     #comment-feed #comment-list .comment-item {
@@ -3439,12 +3441,20 @@ button[type="submit"] {
       padding-top: 10px;
       padding-bottom: 25px;
       padding-left: 80px;
-      padding-right: 30px;
+      padding-right: 0px;
       margin-top: 5px;
       min-height: 95px;
       border-bottom: 1px solid #343a4a; }
       #comment-feed #comment-list .comment-item:last-of-type {
         border-bottom: none; }
+      #comment-feed #comment-list .comment-item.child-comment img.comment-avatar,
+      #comment-feed #comment-list .comment-item #comment-box form img.comment-avatar {
+        position: absolute;
+        left: 8px;
+        top: 8px;
+        width: calc(60px/1.25);
+        height: calc(60px/1.25);
+        border-radius: calc(calc(60px / 2)/1.25); }
       #comment-feed #comment-list .comment-item img.comment-avatar {
         position: absolute;
         left: 0px;

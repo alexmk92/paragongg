@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\CommentThread;
 use Illuminate\Http\Request;
 
 use App\CommentThreadComment;
@@ -13,7 +14,7 @@ class CommentController extends Controller
 {
     public function thread($id)
     {
-        $thread = Thread::findOrFail($id);
+        $thread = CommentThread::findOrFail($id);
         $comments = $thread->comments;
 
         return response()->json($comments);
