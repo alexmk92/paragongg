@@ -9,10 +9,12 @@ class CardsFeed extends Component {
         this.state = {
             filter_owned : false,
             filter_affinity : 'All',
-            filter_type : 'All'
+            filter_type : 'All',
+            search_term : ""
         }
 
-        this.filter = this.filter.bind(this)
+        this.filter = this.filter.bind(this);
+        this.inputChanged = this.inputChanged.bind(this);
     }
     filter(element) {
         switch(element.target.name) {
@@ -37,7 +39,14 @@ class CardsFeed extends Component {
         if(this.state.filter_type != 'All' && this.state.filter_type != card.type) {
             return false;
         }
-        return true;
+        if(card.name.toLowerCase().indexOf(this.state.search_term.toLowerCase()) > -1) {
+            return true;
+        }
+        return false;
+    }
+    inputChanged(event) {
+        event.preventDefault();
+        this.setState({ search_term : event.target.value });
     }
     render() {
         var cards = [];
@@ -63,6 +72,8 @@ class CardsFeed extends Component {
                     <div className="sidebox panel cf">
                         <h4>Filter cards</h4>
                         <form>
+                        <label>Search by name</label>
+                        <input onChange={this.inputChanged} type="text" placeholder="Card Name" />
                         <label>Affinity</label>
                         <select name="affinity" onChange={this.filter} defaultValue="All">
                             <option value="All">All</option>
@@ -129,7 +140,6 @@ class CardPreview extends Component {
         this.state.tooltip.destructor((payload) => {
             this.state.tooltip = payload.targetNode
         })
-
     }
     render() {
         var divStyle = {

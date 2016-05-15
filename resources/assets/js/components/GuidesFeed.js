@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import ReactTabs from 'react-tabs'
+import FlipMove from 'react-flip-move'
 
 const Tab       = ReactTabs.Tab
 const Tabs      = ReactTabs.Tabs
@@ -24,30 +25,77 @@ class GuidesFeed extends Component {
     }
 }
 
-class GuideFilter extends Component {
+class HeroListItem extends Component {
+    constructor(props) {
+        super(props);
+    }
     render() {
+        return (
+            <li>
+                <a href={`/guides?hero=${this.props.url}`}>
+                     <img src={`/assets/images/heroes/${this.props.url}/portrait.jpg`} />
+                     <span>{this.props.name}</span>
+                </a>
+            </li>
+        );
+    }
+}
+
+class GuideFilter extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            search_term : "",
+            heroes : [
+                { name : "Dekker", url : "dekker" },
+                { name : "Feng-mao", url : "feng-mao" },
+                { name : "Gadget", url : "gadget" },
+                { name : "Gideon", url : "gideon" },
+                { name : "Grux", url : "grux" },
+                { name : "Howitzer", url : "howitzer" },
+                { name : "Iggy &amp Scorch", url : "iggy-scorch" },
+                { name : "Kallari", url : "kallari" },
+                { name : "Murdock", url : "murdock" },
+                { name : "Muriel", url : "muriel" },
+                { name : "Rampage", url : "rampage" },
+                { name : "Sevarog", url : "sevarog" },
+                { name : "Sparrow", url : "sparrow" },
+                { name : "Steel", url : "steel" },
+                { name : "Twinblast", url : "twinblast" }
+            ]
+        };
+
+        this.inputChanged = this.inputChanged.bind(this);
+    }
+
+    inputChanged(event) {
+        event.preventDefault();
+        this.setState({ search_term : event.target.value })
+    }
+    render() {
+        var heroes = [];
+        this.state.heroes.forEach((hero) => {
+            console.log("SEARCHING FOR HERO THAT CONTAINS " + this.state.search_term);
+            if(hero.name.toLowerCase().indexOf(this.state.search_term.toLowerCase()) > -1) {
+               heroes.push(
+                   <HeroListItem
+                       key={hero.name}
+                       name={hero.name}
+                       url={hero.url}
+                   />
+               );
+            }
+        });
         return (
             <div id="guide-filter">
                 <div className="header">
                     <span className="heading">Hero guides</span>
-                    <input className="hero-search" type="text" placeholder="Start typing a hero name to search..." autoFocus="true"/>
+                    <input onChange={this.inputChanged} className="hero-search" type="text" placeholder="Start typing a hero name to search..." autoFocus="true"/>
                 </div>
                 <ul className="heroes">
-                    <li><a href="/guides?hero=dekker"><img src="/assets/images/heroes/dekker/portrait.jpg"/><span>Dekker</span></a></li>
-                    <li><a href="/guides?hero=feng-mao"><img src="/assets/images/heroes/feng-mao/portrait.jpg"/><span>Feng-mao</span></a></li>
-                    <li><a href="/guides?hero=gadget"><img src="/assets/images/heroes/gadget/portrait.jpg"/></a><span>Gadget</span></li>
-                    <li><a href="/guides?hero=gideon"><img src="/assets/images/heroes/gideon/portrait.jpg"/></a><span>Gideon</span></li>
-                    <li><a href="/guides?hero=grux"><img src="/assets/images/heroes/grux/portrait.jpg"/></a><span>Grux</span></li>
-                    <li><a href="/guides?hero=howitzer"><img src="/assets/images/heroes/howitzer/portrait.jpg"/><span>Howitzer</span></a></li>
-                    <li><a href="/guides?hero=iggy-scorch"><img src="/assets/images/heroes/iggy-scorch/portrait.jpg"/><span>Iggy &amp; Scorch</span></a></li>
-                    <li><a href="/guides?hero=kallari"><img src="/assets/images/heroes/kallari/portrait.jpg"/><span>Kallari</span></a></li>
-                    <li><a href="/guides?hero=murdock"><img src="/assets/images/heroes/murdock/portrait.jpg"/><span>Murdock</span></a></li>
-                    <li><a href="/guides?hero=muriel"><img src="/assets/images/heroes/muriel/portrait.jpg"/><span>Muriel</span></a></li>
-                    <li><a href="/guides?hero=rampage"><img src="/assets/images/heroes/rampage/portrait.jpg"/><span>Rampage</span></a></li>
-                    <li><a href="/guides?hero=sevarog"><img src="/assets/images/heroes/sevarog/portrait.jpg"/><span>Sevarog</span></a></li>
-                    <li><a href="/guides?hero=sparrow"><img src="/assets/images/heroes/sparrow/portrait.jpg"/><span>Sparrow</span></a></li>
-                    <li><a href="/guides?hero=steel"><img src="/assets/images/heroes/steel/portrait.jpg"/><span>Steel</span></a></li>
-                    <li><a href="/guides?hero=twinblast"><img src="/assets/images/heroes/twinblast/portrait.jpg"/><span>Twinblast</span></a></li>
+                    <FlipMove>
+                        { heroes }
+                    </FlipMove>
                 </ul>
             </div>
         )
