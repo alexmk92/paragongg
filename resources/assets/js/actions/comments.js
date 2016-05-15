@@ -1,7 +1,6 @@
 import { ajax } from '../helpers';
 
 export function fetchComments(threadId, callback) {
-
     ajax({
         type : "GET",
         url : `/api/v1/comments/thread/${threadId}`,
@@ -16,33 +15,6 @@ export function fetchComments(threadId, callback) {
             callback(error, null);
         }
     });
-    /*
-    callback(
-        null,
-        [
-            {
-                commentId : 1,
-                body : "The release date for Iggy & Scorch was just announced. Turns out it's already out and I've just been pretty lazy making the ParagonGG website. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci amet commodi cumque eligendi iure labore neque non quasi qui quibusdam. Alias asperiores deserunt dolores exercitationem minus, optio tempore velit voluptas.",
-                votes : 10,
-                createdAt : new Date(),
-                author : {
-                    name : "Alex Sims",
-                    avatarURL : "some_link"
-                }
-            },
-            {
-                commentId : 2,
-                body : "What a pile of crap, the comments from Alex was just utter dire.",
-                votes : 12,
-                createdAt : new Date(),
-                author : {
-                    name : "Alex Sims",
-                    avatarURL : "some_link"
-                }
-            }
-        ]
-    );
-    */
 }
 
 export function postComment(comment, callback) {
@@ -52,7 +24,8 @@ export function postComment(comment, callback) {
         headers : [{ "X-CSRF-TOKEN" : csrf }],
         contentType : "application/x-www-form-urlencoded",
         cache : false,
-        data : [{ "body" : comment, "thread" : 1 }]
+        returnType : "json",
+        data : [{ "body" : comment, "thread_id" : 1 }]
     }, (error, data) => {
         if(error === null && data !== null) {
             console.log(data);
@@ -62,4 +35,10 @@ export function postComment(comment, callback) {
             callback(error, null);
         }
     });
+}
+
+// Wire this action creator to Redux.  This will update the state through the
+// dispatchProps method in CommentFeed
+export function upVoteComment(comment) {
+    console.log(`A comment has been selected for up voting: ${comment.created_at}`)
 }

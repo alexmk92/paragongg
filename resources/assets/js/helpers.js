@@ -95,8 +95,7 @@ module.exports = {
             });
             requestData = requestData.replace(/&\s*$/, "");
         } else if(payload.contentType.toLowerCase() === "application/json") {
-            requestData = payload.data
-            console.log("SET JSON REQUEST DATA")
+            requestData = payload.data;
         }
 
         // Initialise the listener on request
@@ -104,6 +103,9 @@ module.exports = {
             if (httpRequest.readyState === XMLHttpRequest.DONE) {
                 //console.log(httpRequest);
                 if (httpRequest.status === 200) {
+                    if(httpRequest.responseText === null) {
+                        callback({ code : 200, message : httpRequest.statusText }, null);
+                    }
                     callback(null, parsers.get(t)(httpRequest.responseText));
                 } else {
                     callback({code : httpRequest.status, message : httpRequest.statusText}, null);

@@ -12,6 +12,12 @@ $avatar-radius : calc(#{$avatar-width} / 2);
         font-size: 1.5em;
     }
 
+    .child-comment-box-wrapper {
+        &.hidden {
+            display: none;
+        }
+    }
+    
     #comment-box {
 
         display: block;
