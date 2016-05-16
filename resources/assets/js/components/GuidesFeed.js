@@ -12,14 +12,15 @@ class GuidesFeed extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            guides : this.props.guides
+            guides : props.guides,
+            heroes : props.heroes
         }
     }
     render() {
         return(
             <div>
-                <GuideFilter />
-                <GuideResults guides={this.state.guides}/>
+                <GuideFilter heroes={this.state.heroes} />
+                <GuideResults guides={this.state.guides} />
             </div>
         )
     }
@@ -32,9 +33,9 @@ class HeroListItem extends Component {
     render() {
         return (
             <li>
-                <a href={`/guides?hero=${this.props.url}`}>
-                     <img src={`/assets/images/heroes/${this.props.url}/portrait.jpg`} />
-                     <span>{this.props.name}</span>
+                <a href={`/guides?hero=${this.props.hero.name}`}>
+                    <img src={`https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/${this.props.hero.code}/portrait_small.png`} />
+                    <span>{this.props.hero.name}</span>
                 </a>
             </li>
         );
@@ -45,24 +46,7 @@ class GuideFilter extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            search_term : "",
-            heroes : [
-                { name : "Dekker", url : "dekker" },
-                { name : "Feng-mao", url : "feng-mao" },
-                { name : "Gadget", url : "gadget" },
-                { name : "Gideon", url : "gideon" },
-                { name : "Grux", url : "grux" },
-                { name : "Howitzer", url : "howitzer" },
-                { name : "Iggy &amp Scorch", url : "iggy-scorch" },
-                { name : "Kallari", url : "kallari" },
-                { name : "Murdock", url : "murdock" },
-                { name : "Muriel", url : "muriel" },
-                { name : "Rampage", url : "rampage" },
-                { name : "Sevarog", url : "sevarog" },
-                { name : "Sparrow", url : "sparrow" },
-                { name : "Steel", url : "steel" },
-                { name : "Twinblast", url : "twinblast" }
-            ]
+            search_term : ""
         };
 
         this.inputChanged = this.inputChanged.bind(this);
@@ -74,16 +58,14 @@ class GuideFilter extends Component {
     }
     render() {
         var heroes = [];
-        this.state.heroes.forEach((hero) => {
-            console.log("SEARCHING FOR HERO THAT CONTAINS " + this.state.search_term);
+        this.props.heroes.forEach((hero) => {
             if(hero.name.toLowerCase().indexOf(this.state.search_term.toLowerCase()) > -1) {
-               heroes.push(
-                   <HeroListItem
-                       key={hero.name}
-                       name={hero.name}
-                       url={hero.url}
-                   />
-               );
+                heroes.push(
+                    <HeroListItem
+                        key={hero.name}
+                        hero={hero}
+                    />
+                );
             }
         });
         return (
@@ -110,7 +92,6 @@ class GuideResults extends Component {
         }
     }
     componentDidMount() {
-        console.log(this.state.guides);
     }
     render() {
         var guides = [];
@@ -158,7 +139,6 @@ class GuideResults extends Component {
 
 class GuidePreview extends Component {
     componentDidMount() {
-        console.log(this.props);
     }
     render() {
         return(
@@ -176,4 +156,4 @@ class GuidePreview extends Component {
 }
 
 var element = document.getElementById('guides-feed');
-if(element) ReactDOM.render(<GuidesFeed guides={GUIDES} />, element);
+if(element) ReactDOM.render(<GuidesFeed guides={GUIDES} heroes={HEROES} />, element);

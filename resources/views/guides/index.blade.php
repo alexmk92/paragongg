@@ -2,20 +2,21 @@
 @section('scripts')
     <script type="text/javascript">
         var GUIDES = {!! json_encode($guides) !!};
+        var HEROES = {!! json_encode($heroes) !!};
     </script>
 @endsection
 @section('body')
     <div id="sidebar">
         @if(!empty($featured))
-        <h4 class="heading">Featured guides</h4>
-        @foreach($featured as $guides)
-            <a class="article-preview" href="/news/{{ $article->slug }}">
-                <div class="preview-details">
-                    <div class="date">6 Hours Ago</div>
-                    <div class="heading"><h2>{{ $article->title }}</h2></div>
-                </div>
-            </a>
-        @endforeach
+            <h4 class="heading">Featured guides</h4>
+            @foreach($featured as $guides)
+                <a class="article-preview" href="/news/{{ $article->slug }}">
+                    <div class="preview-details">
+                        <div class="date">6 Hours Ago</div>
+                        <div class="heading"><h2>{{ $article->title }}</h2></div>
+                    </div>
+                </a>
+            @endforeach
         @endif
         &nbsp;
     </div>

@@ -14,7 +14,7 @@ class Hero extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'code', 'description', 'type', 'cost', 'upgradeSlots', 'affinity', 'effects',
+        'name', 'code', 'affinities', 'type', 'role', 'attack', 'scale', 'stats', 'abilities'
     ];
 
     protected $hidden = [
