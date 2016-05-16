@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Guide;
+use App\Hero;
 use App\Http\Requests;
 use App\Http\Requests\Guide\CreateGuideRequest;
 
@@ -12,7 +13,9 @@ class GuideController extends Controller
     public function index()
     {
         $guides = Guide::all();
-        return view('guides.index')->with('guides', $guides);
+        $heroes = Hero::all();
+
+        return view('guides.index')->with('guides', $guides)->with('heroes', $heroes);
     }
 
     // Create
