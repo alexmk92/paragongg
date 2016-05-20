@@ -2264,7 +2264,7 @@ a {
   text-decoration: none;
   transition: color 0.3s; }
   a:hover {
-    color: #288fce; }
+    color: #42A9E8; }
   a.unique:hover {
     color: inherit; }
 
@@ -2501,9 +2501,9 @@ nav {
         transition: all 0.3s;
         width: 0; }
       nav .links li a:hover {
-        color: #288fce; }
+        color: #42A9E8; }
         nav .links li a:hover:after {
-          background-color: #288fce; }
+          background-color: #42A9E8; }
       nav .links li a.active {
         color: #ff6600; }
         nav .links li a.active:after {
@@ -2536,8 +2536,8 @@ nav {
       transition: all 0.3s;
       padding: 5px 8px; }
       nav #account-noauth .register:hover {
-        border-color: #288fce;
-        color: #288fce; }
+        border-color: #42A9E8;
+        color: #42A9E8; }
   nav #account-nav {
     float: right;
     top: 25px;
@@ -2715,7 +2715,7 @@ footer {
     color: #cccccc;
     font-weight: bold; }
     .post-details a:hover {
-      color: #288fce; }
+      color: #42A9E8; }
   .post-details .category {
     color: white; }
 
@@ -2835,9 +2835,9 @@ article {
   article p {
     line-height: 150%; }
     article p a {
-      color: #288fce; }
+      color: #42A9E8; }
       article p a:hover {
-        border-bottom: 1px dotted #288fce; }
+        border-bottom: 1px dotted #42A9E8; }
 
 @media screen and (max-width: 600px) {
   .article-preview {
@@ -2873,7 +2873,7 @@ article {
     color: #5a606f; }
   .ign-handle .fa-check-circle {
     margin-left: 3px;
-    color: #288fce; }
+    color: #42A9E8; }
 
 #player-stats {
   overflow: hidden; }
@@ -2917,7 +2917,7 @@ article {
     #game-feed .match-preview.loss {
       border-left-color: #ff6600; }
     #game-feed .match-preview.live {
-      border-left-color: #288fce; }
+      border-left-color: #42A9E8; }
     #game-feed .match-preview .match-overview {
       font-size: 12px;
       color: #5a606f;
@@ -3040,7 +3040,7 @@ input, textarea, select {
     background: #0d1016; }
   input:focus, textarea:focus, select:focus {
     outline: none;
-    border-color: #288fce; }
+    border-color: #42A9E8; }
   input[type="checkbox"], input[type="radio"], textarea[type="checkbox"], textarea[type="radio"], select[type="checkbox"], select[type="radio"] {
     width: auto;
     padding: 0;
@@ -3082,8 +3082,8 @@ button[type="submit"] {
   transition: color 0.2s, border-color 0.2s;
   margin-right: 10px; }
   button[type="submit"]:hover {
-    color: #288fce;
-    border-color: #288fce; }
+    color: #42A9E8;
+    border-color: #42A9E8; }
 
 #guides-feed {
   margin: 20px 0; }
@@ -3109,7 +3109,7 @@ button[type="submit"] {
       border-left: 2px solid #343a4a;
       padding: 0 0 0 20px; }
       #guides-feed #guide-filter .hero-search:focus {
-        border-color: #288fce; }
+        border-color: #42A9E8; }
     #guides-feed #guide-filter .heroes {
       margin-top: 30px; }
     #guides-feed #guide-filter .heroes li {
@@ -3349,7 +3349,7 @@ button[type="submit"] {
   #player-stats-overview .live {
     -webkit-animation: flash 2s infinite linear;
             animation: flash 2s infinite linear;
-    color: #288fce; }
+    color: #42A9E8; }
   #player-stats-overview .ReactTabs__Tab--selected .live {
     -webkit-animation: none !important;
             animation: none !important; }
@@ -3499,7 +3499,7 @@ button[type="submit"] {
   .tag.mini {
     padding: 5px; }
   .tag.blue {
-    background: #288fce; }
+    background: #42A9E8; }
 
 ul li {
   margin-bottom: 10px; }
@@ -3576,8 +3576,8 @@ ul.social .fa {
   .btn .fa {
     margin-right: 5px; }
   .btn:hover {
-    color: #288fce;
-    border-color: #288fce; }
+    color: #42A9E8;
+    border-color: #42A9E8; }
 
 .alert {
   max-width: 800px;
