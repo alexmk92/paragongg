@@ -1,5 +1,5 @@
-$card-width : 100px;
-$card-height : 133px;
+$card-width : 113px;
+$card-height : 150px;
 #cards-feed {
     h2 {
         margin-bottom: 0px;
@@ -13,9 +13,9 @@ $card-height : 133px;
         display: inline-block;
         margin-right: 10px;
         margin-bottom: 10px;
-        height: $card-height;
         width: $card-width;
-        background-size: 100px 133px;
+        height: $card-height;
+        background-size: $card-width $card-height;
         position: relative;
         cursor: pointer;
         transition: all 0.2s;
@@ -29,6 +29,7 @@ $card-height : 133px;
             width: 100%;
             font-size: 11px;
             text-align: center;
+            line-height: 13px;
         }
         &.devoid {
             opacity: 0.3;

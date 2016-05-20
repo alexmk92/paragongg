@@ -28,23 +28,46 @@
         }
     }
     .account-avatar {
-        vertical-align: top;
+        vertical-align: middle;
         margin-top: -4px;
         border-radius: 50%;
         width: 20px;
         height: 20px;
-        margin-right: 5px;
+        margin-right: 7px;
         .fa-caret-down {
             font-size: 12px;
+        }
+    }
+    .fa {
+        font-size: 14px;
+    }
+    .account-notifications {
+        padding: 0 15px;
+        color: $secondary-highlight;
+        &:hover {
+            color: white;
+        }
+        .fa {
+            margin-right: 5px;
         }
     }
     .account-amber {
         font-weight: bold;
         color: $primary-highlight;
-        padding: 0 10px;
         .fa {
-            margin-right: 3px;
+            margin-right: 5px;
         }
+        .amber-icon {
+            vertical-align: bottom;
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            margin-right: 5px;
+            background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgNTAgNTAiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDUwIDUwOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHN0eWxlIHR5cGU9InRleHQvY3NzIj4uc3Qwe2ZpbGw6I0ZGNjYwMDt9PC9zdHlsZT48cGF0aCBjbGFzcz0ic3QwIiBkPSJNMjUsNDkuN0wwLjMsMjVMMjUsMC4zTDQ5LjcsMjVMMjUsNDkuN3ogTTQuNCwyNUwyNSw0NS42TDQ1LjYsMjVMMjUsNC40TDQuNCwyNXoiLz48cG9seWdvbiBjbGFzcz0ic3QwIiBwb2ludHM9IjE5LjMsMzQuNSAxNi41LDMzLjUgMjUsMTAuMSAzMy41LDMzLjUgMzAuNywzNC41IDI1LDE4LjkgIi8+PC9zdmc+') no-repeat;
+        }
+    }
+    .fa-caret-down {
+        margin-left: 10px;
     }
     .account-properties {
         padding: 10px 0;

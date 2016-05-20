@@ -2,9 +2,9 @@ nav {
     position: fixed;
     top: 0;
     width: 100%;
-    background: #000000;
+    background: rgba(0,0,0,0.9);
     z-index: 1337;
-    border-bottom: 1px solid $faded-line;
+    border-bottom: 1px solid $panel-color;
     .nav-wrapper {
         margin: 0 auto;
         max-width: 1350px;
@@ -19,10 +19,11 @@ nav {
             width: 27px;
         }
         &:hover  {
-            filter: brightness(150%);
+            transform: scale(1.1);
         }
     }
     .links {
+        cursor: pointer;
         li {
             display: inline-block;
             text-transform: uppercase;

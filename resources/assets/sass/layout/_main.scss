@@ -1,6 +1,7 @@
 body {
     background: #08090d url('/assets/background.jpg') top right no-repeat;
     background-size: 100%;
+    animation: fadeIn 300ms;
 }
 html.wf-loading, html.wf-inactive {
     opacity: 0;

@@ -105,7 +105,7 @@ class CardsFeed extends Component {
                         </form>
                     </div>
                 </div>
-                <div className="wrapper bordered-right">
+                <div className="wrapper">
                     <ul className="card-list">
                         <FlipMove>
                         {cards}
