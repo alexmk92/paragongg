@@ -15,16 +15,12 @@
         &.active {
             height: auto;
             opacity: 1;
-            //display: inline-block;
-            //opacity: 1;
         }
         &.inactive {
             opacity: 0;
             height: 0;
             overflow: hidden;
             transition-timing-function: linear, step-end;
-            //display: none;
-            //opacity: 0;
         }
     }
     .account-avatar {

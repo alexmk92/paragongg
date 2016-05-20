@@ -41,7 +41,9 @@
 </div>
 
 {{-- Flash notifications --}}
+<div class="notification-panel">
 {!! displayNotification() !!}
+</div>
 
 {{-- Include footer --}}
 @include('layouts.footer')

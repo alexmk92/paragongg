@@ -2556,7 +2556,7 @@ nav {
         color: #42A9E8; }
   nav #account-nav {
     float: right;
-    top: 25px;
+    top: 23px;
     right: 0;
     position: absolute;
     font-size: 13px;
@@ -3634,35 +3634,34 @@ ul.social .fa {
     color: #a94442;
     background: #f2dede; }
 
-.notification {
-  display: inline-block;
-  font-size: 14px;
-  line-height: 24px;
-  font-weight: 600;
-  max-width: 350px;
-  width: 100%;
+.notification-panel {
+  display: block;
   position: fixed;
   bottom: 20px;
   right: 20px;
-  padding: 15px 20px;
+  width: 100%;
+  max-width: 350px; }
+
+.notification {
+  font-size: 14px;
+  line-height: 24px;
+  width: 100%;
+  padding: 20px;
   text-align: center;
   opacity: 1;
   cursor: pointer;
   -webkit-animation: fadeOut 5s linear forwards;
           animation: fadeOut 5s linear forwards;
-  z-index: 1337; }
+  z-index: 1337;
+  background: #181d27; }
   .notification.notification-success {
-    color: #3c763d;
-    background: #dff0d8; }
+    border-left: 5px solid #84D400; }
   .notification.notification-info {
-    color: #31708f;
-    background: #d9edf7; }
+    border-left: 5px solid #42A9E8; }
   .notification.notification-warning {
-    color: #8a6d3b;
-    background: #fcf8e3; }
+    border-left: 5px solid #ff6600; }
   .notification.notification-danger {
-    color: #a94442;
-    background: #f2dede; }
+    border-left: 5px solid #ff6600; }
   .notification .fa.fa-times {
     position: absolute;
     top: 10px;
