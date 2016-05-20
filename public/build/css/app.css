@@ -1,4 +1,4 @@
-@charset "UTF-8";
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,900italic,900,700italic,700,500italic,500,400italic,300,300italic|Raleway|BenchNine|Teko|Jaldi|Wire+One|News+Cycle);@charset "UTF-8";
 /* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
    License: none (public domain)
@@ -2256,7 +2256,7 @@ hr {
 
 body, input, select, button, textarea {
   color: #cccccc;
-  font-family: "proxima-nova", Arial, sans-serif;
+  font-family: "Roboto", Arial, sans-serif;
   font-size: 15px; }
 
 a {
@@ -2283,15 +2283,15 @@ em {
   font-style: italic; }
 
 nav .links {
-  font-family: "nimbus-sans-condensed", sans-serif;
-  font-size: 16px; }
+  font-family: "Roboto", sans-serif;
+  font-size: 14px; }
 
 h1, h2, h3, h4 {
   color: white; }
 
 h1 {
   text-transform: uppercase;
-  font-weight: 700;
+  font-weight: 900;
   font-size: 36px;
   line-height: 42px; }
 
@@ -2459,27 +2459,26 @@ html.wf-active {
     margin-right: 15px !important; } }
 
 nav {
-  position: absolute;
-  margin: 0 auto;
+  position: fixed;
   top: 0;
-  left: 0;
-  right: 0;
   width: 100%;
-  max-width: 1350px; }
+  background: #000000;
+  z-index: 1337;
+  border-bottom: 1px solid #343a4a; }
+  nav .nav-wrapper {
+    margin: 0 auto;
+    max-width: 1350px;
+    position: relative; }
   nav .logo {
     float: left;
     width: 60px;
-    padding-top: 24px;
+    padding-top: 15px;
     transition: all 0.3s; }
     nav .logo img {
-      width: 30px; }
+      width: 27px; }
     nav .logo:hover {
       -webkit-filter: brightness(150%);
               filter: brightness(150%); }
-  nav .wrapper {
-    margin-left: 60px;
-    border-bottom: 1px solid #343a4a;
-    overflow: visible; }
   nav .links li {
     display: inline-block;
     text-transform: uppercase;
@@ -2515,6 +2514,41 @@ nav {
       padding-left: 0; }
       nav .links li:first-of-type a:after {
         left: 0; }
+  nav #account-noauth {
+    float: right;
+    top: 25px;
+    right: 0;
+    position: absolute;
+    font-size: 12px;
+    z-index: 1337;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+    text-transform: uppercase; }
+    nav #account-noauth .login {
+      padding: 5px 8px;
+      margin-right: 10px; }
+    nav #account-noauth .register {
+      border: 1px solid #ff6600;
+      color: #ff6600;
+      border-radius: 0px;
+      transition: all 0.3s;
+      padding: 5px 8px; }
+      nav #account-noauth .register:hover {
+        border-color: #288fce;
+        color: #288fce; }
+  nav #account-nav {
+    float: right;
+    top: 25px;
+    right: 0;
+    position: absolute;
+    font-size: 13px;
+    z-index: 1337;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none; }
 
 footer {
   border-top: 1px solid #343a4a;
@@ -2577,7 +2611,7 @@ footer {
     padding: 14px 0;
     border-bottom: 1px solid #343a4a; }
   .featured-panel .featured-list .latest-subheader {
-    font-family: "proxima-nova-condensed", sans-serif;
+    font-family: "Roboto", sans-serif;
     font-size: 13px;
     line-height: 18px;
     color: white;
@@ -3228,101 +3262,70 @@ button[type="submit"] {
 .ReactTabs.padless .ReactTabs__TabPanel {
   padding: 0; }
 
-#account-noauth {
-  float: right;
-  top: 26px;
-  right: 0;
-  position: absolute;
-  font-size: 12px;
-  z-index: 1337;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-  text-transform: uppercase; }
-  #account-noauth .login {
-    padding: 5px 8px;
-    margin-right: 10px; }
-  #account-noauth .register {
-    border: 1px solid #ff6600;
-    color: #ff6600;
-    border-radius: 0px;
-    transition: all 0.3s;
-    padding: 5px 8px; }
-    #account-noauth .register:hover {
-      border-color: #288fce;
-      color: #288fce; }
+#account-nav .account-nav-trigger {
+  cursor: pointer;
+  text-align: right;
+  color: white; }
 
-#account-nav {
-  float: right;
-  top: 26px;
-  right: 0;
-  position: absolute;
-  font-size: 13px;
-  z-index: 1337;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none; }
-  #account-nav .account-nav-trigger {
-    cursor: pointer;
-    text-align: right;
-    color: white; }
-  #account-nav .account-nav-panel {
-    position: relative;
-    top: 18px;
-    background: #181d27;
-    border: 1px solid #343a4a;
-    box-shadow: 0px 0px 3px #000;
-    min-width: 200px;
-    transition: opacity 0.2s linear, height 0.2s step-start; }
-    #account-nav .account-nav-panel.active {
-      height: auto;
-      opacity: 1; }
-    #account-nav .account-nav-panel.inactive {
-      opacity: 0;
-      height: 0;
-      overflow: hidden;
-      transition-timing-function: linear, step-end; }
-  #account-nav .account-avatar {
-    vertical-align: top;
-    margin-top: -4px;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    margin-right: 5px; }
-    #account-nav .account-avatar .fa-caret-down {
-      font-size: 12px; }
-  #account-nav .account-amber {
-    font-weight: bold;
-    color: #ff6600;
-    padding: 0 10px; }
-    #account-nav .account-amber .fa {
-      margin-right: 3px; }
-  #account-nav .account-properties {
-    padding: 10px 0; }
-    #account-nav .account-properties li {
-      display: block; }
-      #account-nav .account-properties li a {
-        display: block;
-        text-transform: none;
-        padding: 10px 20px;
-        transition: all 0.2s; }
-        #account-nav .account-properties li a:hover {
-          background: #0d1016; }
-      #account-nav .account-properties li .fa {
-        width: 25px; }
-  #account-nav .sign-out {
-    background: #0d1016;
-    color: white;
-    padding: 15px;
-    text-align: center;
-    display: block;
-    text-transform: uppercase;
-    font-size: 12px;
-    font-weight: 600; }
-    #account-nav .sign-out:hover {
-      color: #ff6600; }
+#account-nav .account-nav-panel {
+  position: relative;
+  top: 18px;
+  background: #181d27;
+  border: 1px solid #343a4a;
+  box-shadow: 0px 0px 3px #000;
+  min-width: 200px;
+  transition: opacity 0.2s linear, height 0.2s step-start; }
+  #account-nav .account-nav-panel.active {
+    height: auto;
+    opacity: 1; }
+  #account-nav .account-nav-panel.inactive {
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    transition-timing-function: linear, step-end; }
+
+#account-nav .account-avatar {
+  vertical-align: top;
+  margin-top: -4px;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  margin-right: 5px; }
+  #account-nav .account-avatar .fa-caret-down {
+    font-size: 12px; }
+
+#account-nav .account-amber {
+  font-weight: bold;
+  color: #ff6600;
+  padding: 0 10px; }
+  #account-nav .account-amber .fa {
+    margin-right: 3px; }
+
+#account-nav .account-properties {
+  padding: 10px 0; }
+  #account-nav .account-properties li {
+    display: block; }
+    #account-nav .account-properties li a {
+      display: block;
+      text-transform: none;
+      padding: 10px 20px;
+      transition: all 0.2s; }
+      #account-nav .account-properties li a:hover {
+        background: #0d1016; }
+    #account-nav .account-properties li .fa {
+      width: 25px; }
+
+#account-nav .sign-out {
+  background: #0d1016;
+  color: white;
+  padding: 15px;
+  text-align: center;
+  display: block;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 600; }
+  #account-nav .sign-out:hover {
+    color: #ff6600; }
 
 #stats-overview table td:nth-of-type(1) {
   color: #5a606f; }

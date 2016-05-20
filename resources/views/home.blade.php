@@ -23,7 +23,7 @@
                             <span class="date-day">18</span>
                             <span class="date-month">Mar</span>
                         </div>
-                        <span class="latest-subheader"><a href="/">New updates brings early private matches</a></span>
+                        <span class="latest-subheader"><a href="/">Updates brings early private matches</a></span>
                         <span class="post-details">Posted by <a href="">&#64;Jamie</a> 13 hours ago</span>
                     </li>
                     <li>
@@ -55,7 +55,7 @@
                             <span class="date-day">18</span>
                             <span class="date-month">Mar</span>
                         </div>
-                        <span class="latest-subheader">Epic Teases Upcoming Hero Sevarog - "Soon."</span>
+                        <span class="latest-subheader">Epic Teases Upcoming Hero Sevarog</span>
                         <span class="post-details">Posted by <a href="">&#64;Jamie</a> 1 week ago</span>
                     </li>
                 </ul>

@@ -1,10 +1,10 @@
 <nav>
-    <a href="/">
-    <div class="logo">
-        <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgNTcgNzAiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDU3IDcwOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHN0eWxlIHR5cGU9InRleHQvY3NzIj4uc3Qwe2ZpbGw6dXJsKCNTVkdJRF8xXyk7fTwvc3R5bGU+PGxpbmVhckdyYWRpZW50IGlkPSJTVkdJRF8xXyIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiIHgxPSIyOC41IiB5MT0iNzAiIHgyPSIyOC41IiB5Mj0iLTEuMjc5NjU5ZS0wMDkiPjxzdG9wICBvZmZzZXQ9IjAiIHN0eWxlPSJzdG9wLWNvbG9yOiNGRjg4MDAiLz48c3RvcCAgb2Zmc2V0PSIxIiBzdHlsZT0ic3RvcC1jb2xvcjojRkY2NjAwIi8+PC9saW5lYXJHcmFkaWVudD48cG9seWdvbiBjbGFzcz0ic3QwIiBwb2ludHM9IjU3LDcgNTcsMCAwLDAgMCwzMC40IDAsMzguNCAwLDU0IDM2LDU0IDM2LDQ2IDgsNDYgOCwzOCA0OSwzOCA0OSw2MiAwLDYyIDAsNzAgNTcsNzAgNTcsMzguNCA1NywzMC40IDU3LDE1IDIxLDE1IDIxLDIzIDQ5LDIzIDQ5LDMwIDgsMzAgOCw3ICIvPjwvc3ZnPg==" />
-    </div>
-    </a>
-    <div class="wrapper">
+    <div class="nav-wrapper">
+        <a href="/">
+        <div class="logo">
+            <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgNTcgNzAiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDU3IDcwOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHN0eWxlIHR5cGU9InRleHQvY3NzIj4uc3Qwe2ZpbGw6dXJsKCNTVkdJRF8xXyk7fTwvc3R5bGU+PGxpbmVhckdyYWRpZW50IGlkPSJTVkdJRF8xXyIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiIHgxPSIyOC41IiB5MT0iNzAiIHgyPSIyOC41IiB5Mj0iLTEuMjc5NjU5ZS0wMDkiPjxzdG9wICBvZmZzZXQ9IjAiIHN0eWxlPSJzdG9wLWNvbG9yOiNGRjg4MDAiLz48c3RvcCAgb2Zmc2V0PSIxIiBzdHlsZT0ic3RvcC1jb2xvcjojRkY2NjAwIi8+PC9saW5lYXJHcmFkaWVudD48cG9seWdvbiBjbGFzcz0ic3QwIiBwb2ludHM9IjU3LDcgNTcsMCAwLDAgMCwzMC40IDAsMzguNCAwLDU0IDM2LDU0IDM2LDQ2IDgsNDYgOCwzOCA0OSwzOCA0OSw2MiAwLDYyIDAsNzAgNTcsNzAgNTcsMzguNCA1NywzMC40IDU3LDE1IDIxLDE1IDIxLDIzIDQ5LDIzIDQ5LDMwIDgsMzAgOCw3ICIvPjwvc3ZnPg==" />
+        </div>
+        </a>
         <ul class="links">
             <li><a href="/" {{ Request::is( '/') ? 'class=active' : '' }}>Home</a></li>
             <li><a href="/news" {{ Request::is( 'news*') ? 'class=active' : '' }}>News</a></li>

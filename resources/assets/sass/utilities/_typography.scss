@@ -1,3 +1,7 @@
+// Font imports
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,900italic,900,700italic,700,500italic,500,400italic,300,300italic|Raleway|BenchNine|Teko|Jaldi|Wire+One|News+Cycle);
+
+// Typography styles
 body, input, select, button, textarea {
     color: $font-color-base;
     font-family: $font-body;
@@ -34,14 +38,14 @@ em {
 }
 nav .links {
     font-family: $font-nav;
-    font-size: 16px;
+    font-size: 14px;
 }
 h1, h2, h3, h4 {
     color: $font-color-emphasis;
 }
 h1 {
     text-transform: uppercase;
-    font-weight: 700;
+    font-weight: 900;
     font-size: 36px;
     line-height: 42px;
 }

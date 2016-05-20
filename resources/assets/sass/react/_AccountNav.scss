@@ -1,36 +1,4 @@
-#account-noauth {
-    float: right;
-    top: 26px;
-    right: 0;
-    position: absolute;
-    font-size: 12px;
-    z-index: 1337;
-    user-select: none;
-    text-transform: uppercase;
-    .login {
-        padding: 5px 8px;
-        margin-right: 10px;
-    }
-    .register {
-        border: 1px solid $primary-highlight;
-        color: $primary-highlight;
-        border-radius: 0px;
-        transition: all 0.3s;
-        padding: 5px 8px;
-        &:hover {
-            border-color: $secondary-highlight;
-            color: $font-color-highlight;
-        }
-    }
-}
 #account-nav {
-    float: right;
-    top: 26px;
-    right: 0;
-    position: absolute;
-    font-size: 13px;
-    z-index: 1337;
-    user-select: none;
     .account-nav-trigger {
         cursor: pointer;
         text-align: right;

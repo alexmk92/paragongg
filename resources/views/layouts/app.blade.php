@@ -23,8 +23,6 @@
     <![endif]-->
 
     <!-- Scripts -->
-    <script src="https://use.typekit.net/lpk6pfi.js"></script>
-    <script>try{Typekit.load({ async: false });}catch(e){}</script>
     <script type="text/javascript" src="/build/js/helpers.min.js"></script>
     @yield('libraries')
     {{--<script type="text/javascript" src="{{ url('/js/vendor/jquery-2.2.0.min.js') }}"></script>--}}
