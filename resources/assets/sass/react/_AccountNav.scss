@@ -38,7 +38,6 @@
         font-size: 14px;
     }
     .account-notifications {
-        padding: 0 15px;
         color: $secondary-highlight;
         &:hover {
             color: white;
@@ -48,6 +47,7 @@
         }
     }
     .account-amber {
+        padding-left: 15px;
         font-weight: bold;
         color: $primary-highlight;
         .fa {

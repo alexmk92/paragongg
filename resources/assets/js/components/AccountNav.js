@@ -41,7 +41,6 @@ class AccountNav extends Component {
 
                     <img className="account-avatar" src="https://www.gravatar.com/avatar/d5d3310834b43c6f96e200339734c949?s=20&amp;d=https%3A%2F%2Fparagon.gg%2Fimages%2Fdefault-avatar.png" alt="Your avatar" />
                     <span>{this.state.username}</span>
-                    <span className="account-notifications"><i className="fa fa-bell-o" aria-hidden="true"></i>1</span>
                     <span className="account-amber"><i className="amber-icon" aria-hidden="true"></i>{this.state.amber}</span>
                     <i className="fa fa-caret-down" aria-hidden="true"></i>
 

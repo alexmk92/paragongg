@@ -26,7 +26,7 @@ export default class CardTooltip {
                 isRendered: false,
                 targetNode: data.targetNode,
                 parentNodeName: data.parentNodeName,
-                animationDuration: 200,
+                animationDuration: 300,
                 isVisible: false,
                 bounds: {
                     distanceFromTopLayoutMargin: cardRect.top,

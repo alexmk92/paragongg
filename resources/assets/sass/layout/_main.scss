@@ -1,15 +1,7 @@
 body {
     background: #08090d url('/assets/background.jpg') top right no-repeat;
     background-size: 100%;
-    animation: fadeIn 300ms;
-}
-html.wf-loading, html.wf-inactive {
-    opacity: 0;
-    transition: opacity 0.3s;
-}
-html.wf-active {
-    opacity: 1;
-    transition: opacity 0.3s;
+    animation: fadeIn 500ms;
 }
 #page {
     margin: 100px auto 0;
@@ -32,4 +24,8 @@ html.wf-active {
     &.solo {
         margin: 20px auto 50px;
     }
+}
+.panel {
+    padding: 20px;
+    background-color: $panel-color;
 }

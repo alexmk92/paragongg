@@ -1,11 +1,10 @@
 .tooltip-wrapper {
     z-index: 999999;
     opacity: 0;
-    transition: opacity 100ms ease-out !important;
+    transition: opacity 500ms !important;
     pointer-events: none !important;
 }
 .tooltip-fade-show {
-    transition: opacity 100ms ease-in !important;
     opacity: 1;
 }
 

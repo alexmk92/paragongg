@@ -14,12 +14,9 @@ nav {
         float: left;
         width: 60px;
         padding-top: 15px;
-        transition: all 0.3s;
+        transition: all 0.1s;
         img {
             width: 27px;
-        }
-        &:hover  {
-            transform: scale(1.1);
         }
     }
     .links {

@@ -25,13 +25,13 @@ Route::get('/terms',   function(){ return view('static.terms');   });
 Route::get('/privacy', function(){ return view('static.privacy'); });
 
 /* NEWS */
-Route::get('/news', 'ArticleController@index');
-Route::get('/news/create', 'ArticleController@create')->middleware('admin');
-Route::post('/news/create', 'ArticleController@store')->middleware('admin');
-Route::get('/news/edit/{id}', 'ArticleController@edit')->middleware('admin');
-Route::post('/news/edit/{id}', 'ArticleController@update')->middleware('admin');
-Route::get('/news/delete/{id}', 'ArticleController@delete')->middleware('admin');
-Route::get('/news/{slug}', 'ArticleController@show');
+Route::get('/news', 'NewsController@index');
+Route::get('/news/create', 'NewsController@create')->middleware('admin');
+Route::post('/news/create', 'NewsController@store')->middleware('admin');
+Route::get('/news/edit/{id}', 'NewsController@edit')->middleware('admin');
+Route::post('/news/edit/{id}', 'NewsController@update')->middleware('admin');
+Route::get('/news/delete/{id}', 'NewsController@delete')->middleware('admin');
+Route::get('/news/{slug}', 'NewsController@show');
 
 /* USERS */
 Route::get('/users/{username}', 'UserController@show');
