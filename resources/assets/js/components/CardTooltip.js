@@ -187,13 +187,9 @@ export default class CardTooltip {
                 type : "GET",
                 url : this.state.dataURL,
                 cache : true
-            }, (error, data) => {
-                if(error === null && data !== null) {
-                    this.state.tooltipInfo = data;
-                    this.updateTooltipInfo();
-                } else {
-                    console.log(`Error: ${error.code}.  Message: ${error.message}`);
-                }
+            }).then((payload) => {
+                this.state.tooltipInfo = payload.data;
+                this.updateTooltipInfo();
             });
 
             this.state.isRendered = true;
