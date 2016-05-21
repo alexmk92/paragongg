@@ -28,7 +28,8 @@
     "react-simple-dropdown": "^1.0.1",
     "react-tabs": "^0.5.3",
     "react-tooltip": "^2.0.0",
-    "redux": "^3.5.2"
+    "redux": "^3.5.2",
+    "redux-promise": "^0.5.3"
   },
   "name": "ParagonGG",
   "description": "Paragon GG is a news, strategy, and statistics website for Paragon by Epic Games",
