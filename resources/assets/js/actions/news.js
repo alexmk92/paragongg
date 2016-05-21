@@ -5,7 +5,7 @@ export function fetchNews(skip, callback) {
         type : "GET",
         contentType : "application/json",
         url : `/api/v1/news?skip=${ skip }`
-    }, (error, data) => {
-        callback(error, data);
+    }).then((payload) => {
+       callback(null, payload.data);
     });
 }
