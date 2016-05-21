@@ -12,6 +12,6 @@ require("./components/GuidesFeed");
 require("./components/CardsFeed");
 require("./components/NewsFeed");
 require("./components/JobsFeed");
-require("./containers/CommentFeed.container");
+require("./containers/CommentFeed.js");
 require("./components/CommentFeed");
 
