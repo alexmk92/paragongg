@@ -31,7 +31,7 @@
     {{--<script type="text/javascript" src="{{ url('/js/vendor/jquery.timeago.js') }}"></script>--}}
 
 </head>
-<body>
+<body @if(isset($customBackground)) style="background-image:url({{ $customBackground }});" @endif>
 {{-- Yield navigation content --}}
 @include('layouts.nav')
 
