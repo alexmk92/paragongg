@@ -1,0 +1,12 @@
+#hero-wrapper {
+    width: 1350px;
+    min-height: 800px;
+    background: url("/assets/hero/dekker/terrain.jpg") no-repeat;
+    background-size: contain;
+    margin-top: -50px;
+    padding-top: 50px;
+
+    #hero-spinner {
+        margin: 0 auto;
+    }
+}
