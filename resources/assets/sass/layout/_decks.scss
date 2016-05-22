@@ -1,0 +1,41 @@
+.deck-builder {
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top: 1px solid $faded-line;
+}
+.deck-list {
+    margin-top: 20px;
+    font-family: $font-condensed;
+    font-size: 14px;
+    .deck-list-actions {
+        margin-bottom: 20px;
+        .deck-total {
+            color: $font-color-faded;
+            text-transform: uppercase;
+            padding-top: 11px;
+            float: right;
+        }
+    }
+    li {
+        height: 40px;
+        margin-bottom: 0;
+        background: $panel-color-dark no-repeat;
+        background-position-y: -80px;
+        background-size: 330px 330px;
+    }
+    .wrapper {
+        background: rgba($panel-color-dark,0.7);
+        padding: 13px 10px;
+    }
+    .count, .cost {
+        color: $font-color-faded;
+    }
+    .name {
+        color: $font-color-emphasis;
+        padding: 0 10px;
+        text-transform: uppercase;
+    }
+    .cost {
+        float: right;
+    }
+}

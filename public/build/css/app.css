@@ -2295,13 +2295,13 @@ h1 {
   font-size: 36px;
   line-height: 42px; }
 
-h2 {
+h2, input.h2 {
   text-transform: uppercase;
   font-weight: 700;
   font-size: 30px;
   line-height: 40px; }
 
-h3 {
+h3, input.h3 {
   text-transform: uppercase;
   font-weight: 700;
   font-size: 24px;
@@ -2318,12 +2318,12 @@ h5 {
   font-size: 14px;
   line-height: 18px; }
 
-p {
+p, input.p, div.p {
   line-height: 150%;
   margin: 5px 0 20px; }
-  p:first-of-type {
+  p:first-of-type, input.p:first-of-type, div.p:first-of-type {
     margin-top: 0; }
-  p:last-of-type {
+  p:last-of-type, input.p:last-of-type, div.p:last-of-type {
     margin-bottom: 0; }
 
 time:hover .updated_at {
@@ -2422,6 +2422,12 @@ body {
 .panel {
   padding: 20px;
   background-color: #181d27; }
+
+.breadcrumb {
+  font-family: "Roboto Condensed", sans-serif;
+  font-size: 14px;
+  text-transform: uppercase;
+  color: #5a606f; }
 
 #news-feed {
   margin: 20px 0; }
@@ -2620,7 +2626,7 @@ footer {
     padding: 14px 0;
     border-bottom: 1px solid #343a4a; }
   .featured-panel .featured-list .latest-subheader {
-    font-family: "Roboto", sans-serif;
+    font-family: "Roboto Condensed", sans-serif;
     font-size: 13px;
     line-height: 18px;
     color: white;
@@ -3094,6 +3100,20 @@ button[type="submit"] {
     color: #42A9E8;
     border-color: #42A9E8; }
 
+input.h2, div.p, div.h2 {
+  display: block;
+  width: 100%;
+  max-width: none;
+  border: none;
+  padding: 0;
+  background: none; }
+
+input.h2, div.h2 {
+  margin-bottom: 20px; }
+
+div.p {
+  outline: none; }
+
 #guides-feed {
   margin: 20px 0; }
   #guides-feed #guide-filter {
@@ -3234,6 +3254,40 @@ button[type="submit"] {
     height: 50px;
     font-size: 1.25em;
     max-width: 100%; } }
+
+.deck-builder {
+  margin-top: 30px;
+  padding-top: 30px;
+  border-top: 1px solid #343a4a; }
+
+.deck-list {
+  margin-top: 20px;
+  font-family: "Roboto Condensed", sans-serif;
+  font-size: 14px; }
+  .deck-list .deck-list-actions {
+    margin-bottom: 20px; }
+    .deck-list .deck-list-actions .deck-total {
+      color: #5a606f;
+      text-transform: uppercase;
+      padding-top: 11px;
+      float: right; }
+  .deck-list li {
+    height: 40px;
+    margin-bottom: 0;
+    background: #0d1016 no-repeat;
+    background-position-y: -80px;
+    background-size: 330px 330px; }
+  .deck-list .wrapper {
+    background: rgba(13, 16, 22, 0.7);
+    padding: 13px 10px; }
+  .deck-list .count, .deck-list .cost {
+    color: #5a606f; }
+  .deck-list .name {
+    color: white;
+    padding: 0 10px;
+    text-transform: uppercase; }
+  .deck-list .cost {
+    float: right; }
 
 .ReactTabs .ReactTabs__Tab {
   background: #0d1016;

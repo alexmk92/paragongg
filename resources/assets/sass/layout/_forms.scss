@@ -85,3 +85,18 @@ button[type="submit"] {
         border-color: $secondary-highlight;
     }
 }
+
+input.h2, div.p, div.h2 {
+    display: block;
+    width: 100%;
+    max-width: none;
+    border: none;
+    padding: 0;
+    background: none;
+}
+input.h2, div.h2 {
+    margin-bottom: 20px;
+}
+div.p {
+    outline: none;
+}

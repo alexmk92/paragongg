@@ -29,3 +29,9 @@ body {
     padding: 20px;
     background-color: $panel-color;
 }
+.breadcrumb {
+    font-family: $font-condensed;
+    font-size: 14px;
+    text-transform: uppercase;
+    color: $font-color-faded;
+}
