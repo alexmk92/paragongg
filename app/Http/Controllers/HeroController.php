@@ -19,9 +19,15 @@ class HeroController extends Controller
     public function show($slug)
     {
         $customBackground = "/assets/custom/terrainDekker.jpg";
-        $hero = Hero::where('name', ucfirst(strtolower($slug)))->firstOrFail();
+        $heroes = Hero::all();
+        $activeHero = [];
+        foreach($heroes as $hero) {
+            if(strtolower($hero->name) == strtolower($slug)) {
+                $activeHero = $hero;
+            }
+        }
 
-        return view('heroes.show')->with('hero', $hero)->with('customBackground', $customBackground);
+        return view('heroes.show')->with('hero', $activeHero)->with('heroes', $heroes)->with('customBackground', $customBackground);
     }
 
 }

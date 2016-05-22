@@ -9,6 +9,7 @@
 @endsection
 @section('scripts')
     <script>
+        var HEROES = {!! json_encode($heroes) !!}
         var HERO = {!! json_encode($hero) !!};
     </script>
 @endsection
