@@ -3255,6 +3255,16 @@ div.p {
     font-size: 1.25em;
     max-width: 100%; } }
 
+#hero-wrapper {
+  width: 1350px;
+  min-height: 800px;
+  background: url("/assets/hero/dekker/terrain.jpg") no-repeat;
+  background-size: contain;
+  margin-top: -50px;
+  padding-top: 50px; }
+  #hero-wrapper #hero-spinner {
+    margin: 0 auto; }
+
 .deck-builder {
   margin-top: 30px;
   padding-top: 30px;

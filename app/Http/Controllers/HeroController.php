@@ -14,5 +14,14 @@ class HeroController extends Controller
 
         return view('heroes.index')->with('heroes', $heroes);
     }
-    
+
+    // Read
+    public function show($slug)
+    {
+        $customBackground = "/assets/custom/terrainDekker.jpg";
+        $hero = Hero::where('name', ucfirst(strtolower($slug)))->firstOrFail();
+
+        return view('heroes.show')->with('hero', $hero)->with('customBackground', $customBackground);
+    }
+
 }
