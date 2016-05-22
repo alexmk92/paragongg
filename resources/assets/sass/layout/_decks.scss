@@ -22,10 +22,18 @@
         background: $panel-color-dark no-repeat;
         background-position-y: -80px;
         background-size: 330px 330px;
+        cursor: pointer;
+        user-select: none;
+        &:hover {
+            .wrapper {
+                background: rgba($panel-color-dark,0.2);
+            }
+        }
     }
     .wrapper {
         background: rgba($panel-color-dark,0.7);
         padding: 13px 10px;
+        transition: background 0.1s;
     }
     .count, .cost {
         color: $font-color-faded;

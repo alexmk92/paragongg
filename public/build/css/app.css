@@ -3276,10 +3276,18 @@ div.p {
     margin-bottom: 0;
     background: #0d1016 no-repeat;
     background-position-y: -80px;
-    background-size: 330px 330px; }
+    background-size: 330px 330px;
+    cursor: pointer;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none; }
+    .deck-list li:hover .wrapper {
+      background: rgba(13, 16, 22, 0.2); }
   .deck-list .wrapper {
     background: rgba(13, 16, 22, 0.7);
-    padding: 13px 10px; }
+    padding: 13px 10px;
+    transition: background 0.1s; }
   .deck-list .count, .deck-list .cost {
     color: #5a606f; }
   .deck-list .name {
