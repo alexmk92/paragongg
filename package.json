@@ -38,7 +38,7 @@
     },
     "keywords": [],
     "scripts": {
-        "build": "webpack -p",
+        "build": "webpack -p --config webpack.production.config.js",
         "dev": "webpack --progress --colors --watch",
         "test": "echo \"Error: no test specified\" && exit 1"
     }
