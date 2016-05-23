@@ -6,7 +6,8 @@ class HeroSpinner extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            heroes: []
+            heroes: [],
+            activeIndex : 0
         };
 
         this.sortToMiddle = this.sortToMiddle.bind(this);
@@ -73,14 +74,14 @@ class HeroSpinner extends Component {
                 else heroes.push(this.props.heroes[index]);
             }
 
-            this.setState({ heroes : heroes })
+            this.setState({ heroes : heroes, activeIndex : middleIndex })
         }
     }
     render() {
-        const heroes = this.state.heroes.map((hero) => {
+        const heroes = this.state.heroes.map((hero, i) => {
             return (
-                <li key={ uuid() }>
-                    <a href={`/guides?hero=${hero.name}`}>
+                <li className={ i === (this.state.activeIndex - 1) ? "active" : "" } key={ uuid() }>
+                    <a href={`/heroes/${hero.name}`}>
                         <img src={`https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/${hero.code}/portrait_small.png`} />
                         <span>{hero.name}</span>
                     </a>
@@ -95,5 +96,5 @@ class HeroSpinner extends Component {
 
 var elem = document.getElementById("heroes-spinner");
 if(typeof elem !== "undefined" && elem) {
-    ReactDOM.render(<HeroSpinner heroes={ HEROES } activeHero={ HERO } heroDisplayCount={ 7 } />, elem);
+    ReactDOM.render(<HeroSpinner heroes={ HEROES } activeHero={ HERO } heroDisplayCount={ 5 } />, elem);
 }
