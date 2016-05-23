@@ -18,7 +18,6 @@ class HeroController extends Controller
     // Read
     public function show($slug)
     {
-        $customBackground = "/assets/custom/terrainDekker.jpg";
         $heroes = Hero::all();
         $activeHero = [];
         foreach($heroes as $hero) {
@@ -26,8 +25,12 @@ class HeroController extends Controller
                 $activeHero = $hero;
             }
         }
+        $heroModel = "/assets/hero/dekker/portrait.png";
+        $customBackground = "none";
+        // $stageBackground = "/assets/hero/".$activeHero->name."/terrain.jpg";  <-- WE WANT TO USE THIS IN PRODUCTION
+        $stageBackground = "/assets/hero/dekker/terrain.jpg";
 
-        return view('heroes.show')->with('hero', $activeHero)->with('heroes', $heroes)->with('customBackground', $customBackground);
+        return view('heroes.show')->with('hero', $activeHero)->with('heroes', $heroes)->with('customBackground', $customBackground)->with('stageBackground', $stageBackground)->with('heroModel', $heroModel);
     }
 
 }
