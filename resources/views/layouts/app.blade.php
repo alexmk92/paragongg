@@ -23,7 +23,7 @@
     <![endif]-->
 
     <!-- Scripts -->
-    <script type="text/javascript" src="/build/js/helpers.min.js"></script>
+    {{--<script type="text/javascript" src="/build/js/helpers.min.js"></script>--}}
     @yield('libraries')
     {{--<script type="text/javascript" src="{{ url('/js/vendor/jquery-2.2.0.min.js') }}"></script>--}}
     {{--<script type="text/javascript" src="{{ url('/js/vendor/jquery.tooltipster.min.js') }}"></script>--}}
