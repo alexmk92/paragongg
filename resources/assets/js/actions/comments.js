@@ -1,8 +1,9 @@
 var t = require('../actions/types');
+var Helpers    = require('../helpers');
 
 module.exports = {
     fetchComments: function (threadId) {
-        const request = ajax({
+        const request = Helpers.ajax({
             type: "GET",
             url: `/api/v1/comments/thread/${threadId}`,
             contentType: "application/json",
@@ -18,7 +19,7 @@ module.exports = {
 
     },
     postComment: function (comment, callback) {
-        ajax({
+        Helpers.ajax({
             type: "POST",
             url: "/api/v1/comments/store",
             headers: [{"X-CSRF-TOKEN": csrf}],

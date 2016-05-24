@@ -2,6 +2,7 @@ var React      = require('react');
 var Redux      = require('redux');
 var ReactRedux = require('react-redux');
 var Action     = require('../actions/comments');
+var Helpers    = require('../helpers');
 //import { postComment, upVoteComment, fetchComments } from '../actions/comments'
 // import { bindActionCreators } from 'redux'
 // import { connect } from 'react-redux'
@@ -42,13 +43,13 @@ var CommentListItem = React.createClass({
         const commentClass = `comment-item ${this.props.comment.childComment ? "child-comment" : ""}`;
         const comments = this.props.childComments.map((comment) => {
             if(this.props.comment.id === comment.parent_id) {
-                return <CommentListItem childComment={true} key={uuid()} comment={comment} childComments={this.props.childComments} author={ this.props.author } upVoteComment={this.props.upVoteComment} />
+                return <CommentListItem childComment={true} key={Helpers.uuid()} comment={comment} childComments={this.props.childComments} author={ this.props.author } upVoteComment={this.props.upVoteComment} />
             }
         });
         return(
             <li className={commentClass}>
                 <img className="comment-avatar" src="https://s.gravatar.com/avatar/bae38bd358b0325c7a3c049a4671a9cf?s=80" alt="Your avatar" />
-                <span className="author-name">{ this.props.author.name } <span className="created-at">{ prettyDate(this.props.comment.created_at) }</span></span>
+                <span className="author-name">{ this.props.author.name } <span className="created-at">{ Helpers.prettyDate(this.props.comment.created_at) }</span></span>
                 <p className="comment-body">{ this.props.comment.body }</p>
                 <a href="#" onClick={this.reply}>Reply</a>
                 <i onClick={ this.vote } className={toggleClass} aria-hidden="true"><span>{ this.props.comment.votes }</span></i>
@@ -152,7 +153,7 @@ var CommentFeed = React.createClass({
             if(comment.parent_id === 0) {
                 comments.push(
                     <CommentListItem
-                        key={uuid()}
+                        key={Helpers.uuid()}
                         comment={comment}
                         author={ author }
                         childComments={ this.props.comments }
