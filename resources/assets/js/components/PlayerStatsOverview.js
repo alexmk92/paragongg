@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import ReactTabs from 'react-tabs'
-import Chart from 'chart.js'
 
 const Tab       = ReactTabs.Tab
 const Tabs      = ReactTabs.Tabs
@@ -42,37 +41,7 @@ class PlayerStatsOverview extends Component {
         }
     }
     initChartJs(el) {
-        if(el) {
-            new Chart(el, {
-                type: 'line',
-                data: {
-                    labels: ["Apr 20", "Apr 21", "Apr 22", "Apr 23", "Apr 24", "Apr 25", "Apr 26", "Apr 27", "Apr 28", "Apr 29", "Apr 30", "May 1"],
-                    datasets: [{
-                        label: 'Matchmaking Rating',
-                        data: [1200, 1215, 1208, 1210, 1209, 1210, 1200, 1250, 1275, 1230, 1250, 1300],
-                        borderColor: "#288fce",
-                        pointStyle: "circle",
-                        borderCapStyle: 'butt',
-                        borderDash: [],
-                        borderDashOffset: 0.0,
-                        borderJoinStyle: 'miter',
-                        pointBorderColor: "rgba(255,255,255,1)",
-                        pointBackgroundColor: "#fff",
-                        pointBorderWidth: 1,
-                        pointHoverRadius: 5,
-                        pointHoverBackgroundColor: "rgba(75,192,192,1)",
-                        pointHoverBorderColor: "rgba(220,220,220,1)",
-                        pointHoverBorderWidth: 2,
-                        pointRadius: 5,
-                        pointHitRadius: 20,
-                        fill: false,
-                    }]
-                },
-                options: {
 
-                }
-            });
-        }
     }
     disableDoubleClick() {
         console.log("Yeah")
