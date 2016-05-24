@@ -1,0 +1,28 @@
+.ability-container {
+    border-left: 1px solid #13161f;
+    border-right: 1px solid #13161f;
+    background: #08090d;
+
+    &:nth-child(odd) {
+        background: #13161f;
+        & .video-wrapper {
+            float: right;
+        }
+        &.text-wrapper {
+            float: right;
+        }
+    }
+    & .video-wrapper {
+        position: relative;
+        display: inline-block;
+        width: 49%;
+        min-height: 550px;
+    }
+
+    & .text-wrapper {
+        position: relative;
+        display: inline-block;
+        width: 49%;
+        min-height: 550px;
+    }
+}
