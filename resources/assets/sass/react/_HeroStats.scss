@@ -1,5 +1,20 @@
 $blur-radius : 30px;
 
+canvas {
+    display: block;
+    vertical-align: bottom;
+}
+
+#particle-layer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #b61924;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50% 50%;
+}
+
 #hero-wrapper {
     width: 1350px;
     min-height: 800px;
