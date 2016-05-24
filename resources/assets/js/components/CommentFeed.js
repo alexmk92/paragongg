@@ -4,16 +4,17 @@ var CommentFeed = require('./../containers/CommentFeed.js');
 //var createStore = require('redux'), applyMiddleware } from 'redux'
 var Provider = require('react-redux');
 var ReduxPromise = require('redux-promise')
-require ('redux');
-require ('../reducers');
+var Redux = require ('redux');
+var Reducer = require('../reducers/index');
 
 // Render the component
 var element = document.querySelector('#comment-feed');
 
 if(element) {
-    const createStoreWithMiddleware = applyMiddleware(ReduxPromise)(createStore);
+    console.log(Reducer);
+    var createStoreWithMiddleware = Redux.applyMiddleware(ReduxPromise)(Redux.createStore);
     ReactDOM.render(
-        <Provider store={createStoreWithMiddleware(reducers)}>
+        <Provider store={createStoreWithMiddleware(Reducer)}>
             <CommentFeed />
         </Provider>
     ,element);
