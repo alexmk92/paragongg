@@ -60,7 +60,7 @@ var StatisticPanel = React.createClass({
     componentDidMount: function() {
         this.sliderChanged(1);
 
-        particlesJS('particle-layer', {particles: ParticleTheme.default()});
+        particlesJS('particle-layer', ParticleTheme.sparks());
     },
     sliderChanged: function(value) {
         const domNode = `<p>RANK<br/><span>${ value }</span></p>`;
