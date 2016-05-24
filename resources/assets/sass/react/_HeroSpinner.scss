@@ -1,0 +1,46 @@
+#heroes-spinner {
+    position: relative;
+    z-index: 20;
+    text-align: center;
+    margin-top: -10px;
+
+    li {
+        width: 110px;
+        display: inline-block;
+        text-align: center;
+        transition: opacity 250ms;
+        opacity: 0.25;
+
+        &:first-of-type {
+            padding-left: 0px;
+        }
+
+        &:hover {
+            transition: 250ms;
+            opacity: 1.0;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        &.active {
+            opacity: 1.0;
+        }
+
+        img {
+            display: block;
+            width: 60px;
+            height: 60px;
+            border-radius: 30px;
+            border: 2px solid #fff;
+            margin: 0 auto;
+            text-shadow: 1px 1px #000;
+        }
+
+        span {
+            display: block;
+            margin-top: 10px;
+            font-weight: 100;
+            text-shadow: 1px 1px #000;
+        }
+    }
+}
