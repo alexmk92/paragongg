@@ -91,8 +91,8 @@ class UpdateCardObject extends Job implements ShouldQueue
                 ]
             ])->getBody()->getContents();
 
-            $icon_small =  Image::make($background)->resize(128,128)->stream()->getContents();
-            $icon_medium = Image::make($background)->resize(256,256)->stream()->getContents();
+            $icon_small =  Image::make($icon)->resize(128,128)->stream()->getContents();
+            $icon_medium = Image::make($icon)->resize(256,256)->stream()->getContents();
             $storage->getDriver()->put('images/cards/' . $this->object->id . '/icon.png', $icon, ["CacheControl" => "max-age=3600"]);
             $storage->getDriver()->put('images/cards/' . $this->object->id . '/icon_medium.png', $icon_medium, ["CacheControl" => "max-age=3600"]);
             $storage->getDriver()->put('images/cards/' . $this->object->id . '/icon_small.png', $icon_small, ["CacheControl" => "max-age=3600"]);

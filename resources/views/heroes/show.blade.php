@@ -1,6 +1,6 @@
 @extends('layouts/app')
 @section('body')
-    <div id="hero-wrapper" style="background: url('{!! $stageBackground !!}') no-repeat; background-size: contain;">
+    <div id="hero-wrapper" style="background: url('/assets/hero/{{ strtolower($hero->name) }}/terrain.jpg') no-repeat; background-size: contain;">
         <div id="heroes-spinner">SPINNER COMPONENT HERE</div>
         <div id="left-wrapper">
             <div id="hero-stats">STAT COMPONENT HERE</div>
@@ -21,6 +21,5 @@
 
         var HEROES = {!! json_encode($heroes) !!}
         var HERO = {!! json_encode($hero) !!};
-        console.log(HERO.name);
     </script>
 @endsection

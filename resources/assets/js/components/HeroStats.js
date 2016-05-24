@@ -1,12 +1,16 @@
+require('rc-slider/assets/index.css');
+
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { uuid } from '../helpers';
+import Rcslider from 'rc-slider';
+import { uuid, delimitNumbers } from '../helpers';
+
 
 class StatisticPanel extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            rank : 1,
+            multiplier : 1,
             stats : [
                 {
                     icon : "",
@@ -52,6 +56,19 @@ class StatisticPanel extends Component {
                 }
             ]
         };
+
+        this.sliderChanged = this.sliderChanged.bind(this);
+    }
+    componentDidMount() {
+        this.sliderChanged(1);
+    }
+    sliderChanged(value) {
+        const domNode = `<p>RANK<br/><span>${ value }</span></p>`;
+        const elem = document.querySelector(".rc-slider-handle");
+        if(typeof elem !== "undefined" && elem !== null) {
+            elem.innerHTML = domNode;
+            this.setState({ multiplier : value });
+        }
     }
     render() {
         /*
@@ -65,7 +82,8 @@ class StatisticPanel extends Component {
         const roles = <li>No suggested roles</li>;
 
         const statistics = this.state.stats.map((stat) => {
-            const value = isNaN(stat.value) ? stat.value : stat.value * this.state.rank;
+            const scale = this.state.multiplier === 1 ? 0 : stat.scaling;
+            const value = isNaN(stat.value) ? stat.value : delimitNumbers((stat.value + ( scale* this.state.multiplier)).toFixed(1));
             const scaling = stat.scaling !== null ? <span className="scaling">({ stat.scaling } per level)</span> : "";
             return (
                 <li>
@@ -93,24 +111,15 @@ class StatisticPanel extends Component {
                     </li>
                 </ul>
 
-                <div id="rank-slider">SLIDER</div>
+                <div id="rank-slider">
+                    <Rcslider defaultValue={1} min={1} max={15} onChange={this.sliderChanged} tipFormatter={null}  />
+                </div>
 
                 <ul id="stat-container">
                     { statistics }
                 </ul>
             </div>
         );
-    }
-}
-
-class Statistic extends Component {
-    constructor(props) {
-        super(props);
-    }
-    render() {
-        return (
-            <li>I am a stat</li>
-        )
     }
 }
 
