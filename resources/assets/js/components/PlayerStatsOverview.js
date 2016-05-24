@@ -1,83 +1,44 @@
-import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
-import ReactTabs from 'react-tabs'
-import Chart from 'chart.js'
+var React     = require('react');
+var ReactDOM  = require('react-dom');
+var ReactTabs = require('react-tabs');
 
-const Tab       = ReactTabs.Tab
-const Tabs      = ReactTabs.Tabs
-const TabList   = ReactTabs.TabList
-const TabPanel  = ReactTabs.TabPanel
+const Tab       = ReactTabs.Tab;
+const Tabs      = ReactTabs.Tabs;
+const TabList   = ReactTabs.TabList;
+const TabPanel  = ReactTabs.TabPanel;
 
-class PlayerStatsOverview extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
+var PlayerStatsOverview = React.createClass({
+    getInitialState: function() {
+        return {
             twitchLive: this.props.twitchLive,
             twitchTV: this.props.twitchTV
         }
-
-        this.handleSelect = this.handleSelect.bind(this)
-        this.initTwitchEmbed = this.initTwitchEmbed.bind(this)
-        this.initChartJs = this.initChartJs.bind(this)
-    }
-    handleSelect(index) {
+    },
+    handleSelect: function(index) {
         if(index != 4) {
             this.player.setMuted(true);
         } else {
             this.player.setMuted(false);
         }
-    }
-    initTwitchEmbed(el) {
+    },
+    initTwitchEmbed: function(el) {
         console.log(this.state.twitchLive);
         console.log(this.state.twitchTV);
         if(this.state.twitchTV) {
             var options = {
                 width: 910,
                 height: 512,
-                channel: this.props.twitchTV,
+                channel: this.props.twitchTV
             };
             this.player = new Twitch.Player(el, options);
             this.player.setVolume(0.5);
             this.player.setMuted(true);
         }
-    }
-    initChartJs(el) {
-        if(el) {
-            new Chart(el, {
-                type: 'line',
-                data: {
-                    labels: ["Apr 20", "Apr 21", "Apr 22", "Apr 23", "Apr 24", "Apr 25", "Apr 26", "Apr 27", "Apr 28", "Apr 29", "Apr 30", "May 1"],
-                    datasets: [{
-                        label: 'Matchmaking Rating',
-                        data: [1200, 1215, 1208, 1210, 1209, 1210, 1200, 1250, 1275, 1230, 1250, 1300],
-                        borderColor: "#288fce",
-                        pointStyle: "circle",
-                        borderCapStyle: 'butt',
-                        borderDash: [],
-                        borderDashOffset: 0.0,
-                        borderJoinStyle: 'miter',
-                        pointBorderColor: "rgba(255,255,255,1)",
-                        pointBackgroundColor: "#fff",
-                        pointBorderWidth: 1,
-                        pointHoverRadius: 5,
-                        pointHoverBackgroundColor: "rgba(75,192,192,1)",
-                        pointHoverBorderColor: "rgba(220,220,220,1)",
-                        pointHoverBorderWidth: 2,
-                        pointRadius: 5,
-                        pointHitRadius: 20,
-                        fill: false,
-                    }]
-                },
-                options: {
+    },
+    initChartJs: function(el) {
 
-                }
-            });
-        }
-    }
-    disableDoubleClick() {
-        console.log("Yeah")
-    }
-    render() {
+    },
+    render: function() {
         return (
             <Tabs forceRenderTabPanel={true} onSelect={this.handleSelect}>
                 <TabList>
@@ -132,9 +93,7 @@ class PlayerStatsOverview extends Component {
             </Tabs>
         )
     }
-}
+});
 
 var element = document.getElementById('player-stats-overview');
-if(element) {
-    ReactDOM.render(<PlayerStatsOverview twitchTV={element.className ? element.className : null} twitchLive={element.dataset.live}/>, element);
-}
+if(element) ReactDOM.render(<PlayerStatsOverview twitchTV={element.className ? element.className : null} twitchLive={element.dataset.live}/>, element);

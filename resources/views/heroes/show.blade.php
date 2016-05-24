@@ -6,6 +6,7 @@
             <div id="hero-stats">STAT COMPONENT HERE</div>
             <div id="blur-layer"></div>
         </div>
+        <div id="particle-layer"></div>
         <div id="hero-model-wrapper">
             <div id="hero-model">
                 <img src="{!! $heroModel !!}" />
@@ -14,12 +15,11 @@
         </div>
     </div>
     <div id="graph-wrapper">GRAPH COMPONENT HERE</div>
-    <div id="abilities">ABILITY COMPONENT HERE</div>
+    <div id="abilities-wrapper">ABILITY COMPONENT HERE</div>
 @endsection
 @section('scripts')
-    <script>
-
-        var HEROES = {!! json_encode($heroes) !!}
+    <script type="text/javascript">
+        var HEROES = {!! json_encode($heroes) !!};
         var HERO = {!! json_encode($hero) !!};
     </script>
 @endsection

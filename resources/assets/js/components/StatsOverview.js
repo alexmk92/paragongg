@@ -1,27 +1,17 @@
-import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
-import ReactTabs from 'react-tabs'
+var React     = require('react');
+var ReactDOM  = require('react-dom');
+var ReactTabs = require('react-tabs');
 
 const Tab       = ReactTabs.Tab
 const Tabs      = ReactTabs.Tabs
 const TabList   = ReactTabs.TabList
 const TabPanel  = ReactTabs.TabPanel
 
-class StatsOverview extends Component {
-    constructor(props) {
-        super(props)
-
-        // set state here if needed...
-        /*
-        this.state = {
-
-        }
-        */
-    }
-    handleSelect(index, last) {
+var StatsOverview = React.createClass({
+    handleSelect: function(index, last) {
         console.log('Selected tab: ' + index + ', Last tab: ' + last);
-    }
-    render() {
+    },
+    render: function() {
         return (
             <Tabs onSelect={this.handleSelect} selectedIndex={0}>
                 <TabList>
@@ -77,7 +67,7 @@ class StatsOverview extends Component {
             </Tabs>
         );
     }
-}
+});
 
 var element = document.getElementById('stats-overview');
 if(element) ReactDOM.render(<StatsOverview />, element);

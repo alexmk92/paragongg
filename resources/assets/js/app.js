@@ -1,6 +1,9 @@
 // Require stylesheet to be built once
 require("../sass/app.scss");
 
+// Libraries
+//require("./lib/particles.min.js");
+
 // Non React components
 require("./components/CardTooltip");
 
@@ -16,4 +19,4 @@ require("./containers/CommentFeed");
 require("./components/CommentFeed");
 require("./components/HeroSpinner");
 require("./components/HeroStats");
-
+require("./components/AbilityFeed");
