@@ -1,22 +1,22 @@
 module.exports = {
-     prettyDate : function(time)
-     {
-         var system_date = new Date(Date.parse(time));
-         var user_date = new Date();
+    prettyDate : function(time)
+    {
+        var system_date = new Date(Date.parse(time));
+        var user_date = new Date();
 
-         var diff = Math.floor((user_date - system_date) / 1000);
-         if (diff <= 1) {return "just now";}
-         if (diff < 20) {return diff + " seconds ago";}
-         if (diff < 40) {return "half a minute ago";}
-         if (diff < 60) {return "less than a minute ago";}
-         if (diff <= 90) {return "one minute ago";}
-         if (diff <= 3540) {return Math.round(diff / 60) + " minutes ago";}
-         if (diff <= 5400) {return "1 hour ago";}
-         if (diff <= 86400) {return Math.round(diff / 3600) + " hours ago";}
-         if (diff <= 129600) {return "1 day ago";}
-         if (diff < 604800) {return Math.round(diff / 86400) + " days ago";}
-         if (diff <= 777600) {return "1 week ago";}
-         return "on " + system_date;
+        var diff = Math.floor((user_date - system_date) / 1000);
+        if (diff <= 1) {return "just now";}
+        if (diff < 20) {return diff + " seconds ago";}
+        if (diff < 40) {return "half a minute ago";}
+        if (diff < 60) {return "less than a minute ago";}
+        if (diff <= 90) {return "one minute ago";}
+        if (diff <= 3540) {return Math.round(diff / 60) + " minutes ago";}
+        if (diff <= 5400) {return "1 hour ago";}
+        if (diff <= 86400) {return Math.round(diff / 3600) + " hours ago";}
+        if (diff <= 129600) {return "1 day ago";}
+        if (diff < 604800) {return Math.round(diff / 86400) + " days ago";}
+        if (diff <= 777600) {return "1 week ago";}
+        return "on " + system_date;
     },
     uuid : function()
     {
@@ -36,13 +36,13 @@ module.exports = {
     /**
      * Makes an AJAX request to a given URL and calls back to the user
      * @param payload - Fields
-        * contentType (String) : Defaults to "application/x-www-form-urlencoded"
-        * cache (Boolean) : Defaults to false, we should only cache GET requests
-        * data (Array<Object>) : An array object containing data to send.  Must be Key Value pairs { key : "", value : "" }
-        * headers (Array<Object>) : Defaults to [], pass an array of objects { type : "", value : "" }
-        * returnType (String) : Defaults to JSON, specifies the return type from our request, text/json etc.
-        * type (String) : The type of request we are going to make, GET/PUT/POST/DELETE
-        * url (String) : The URL that we will hit, returns a 400 error if no url is supplied
+     * contentType (String) : Defaults to "application/x-www-form-urlencoded"
+     * cache (Boolean) : Defaults to false, we should only cache GET requests
+     * data (Array<Object>) : An array object containing data to send.  Must be Key Value pairs { key : "", value : "" }
+     * headers (Array<Object>) : Defaults to [], pass an array of objects { type : "", value : "" }
+     * returnType (String) : Defaults to JSON, specifies the return type from our request, text/json etc.
+     * type (String) : The type of request we are going to make, GET/PUT/POST/DELETE
+     * url (String) : The URL that we will hit, returns a 400 error if no url is supplied
      * @param callback - Callback function to be implemented on invoker, calls back with an error, message and data object
      */
     ajax : function(payload)

@@ -1,52 +1,44 @@
-import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
-import ReactTabs from 'react-tabs'
+var React     = require('react');
+var ReactDOM  = require('react-dom');
+var ReactTabs = require('react-tabs');
 
-const Tab       = ReactTabs.Tab
-const Tabs      = ReactTabs.Tabs
-const TabList   = ReactTabs.TabList
-const TabPanel  = ReactTabs.TabPanel
+const Tab       = ReactTabs.Tab;
+const Tabs      = ReactTabs.Tabs;
+const TabList   = ReactTabs.TabList;
+const TabPanel  = ReactTabs.TabPanel;
 
-class PlayerStatsOverview extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
+var PlayerStatsOverview = React.createClass({
+    getInitialState: function() {
+        return {
             twitchLive: this.props.twitchLive,
             twitchTV: this.props.twitchTV
         }
-
-        this.handleSelect = this.handleSelect.bind(this)
-        this.initTwitchEmbed = this.initTwitchEmbed.bind(this)
-        this.initChartJs = this.initChartJs.bind(this)
-    }
-    handleSelect(index) {
+    },
+    handleSelect: function(index) {
         if(index != 4) {
             this.player.setMuted(true);
         } else {
             this.player.setMuted(false);
         }
-    }
-    initTwitchEmbed(el) {
+    },
+    initTwitchEmbed: function(el) {
         console.log(this.state.twitchLive);
         console.log(this.state.twitchTV);
         if(this.state.twitchTV) {
             var options = {
                 width: 910,
                 height: 512,
-                channel: this.props.twitchTV,
+                channel: this.props.twitchTV
             };
             this.player = new Twitch.Player(el, options);
             this.player.setVolume(0.5);
             this.player.setMuted(true);
         }
-    }
-    initChartJs(el) {
+    },
+    initChartJs: function(el) {
 
-    }
-    disableDoubleClick() {
-        console.log("Yeah")
-    }
-    render() {
+    },
+    render: function() {
         return (
             <Tabs forceRenderTabPanel={true} onSelect={this.handleSelect}>
                 <TabList>
@@ -101,9 +93,7 @@ class PlayerStatsOverview extends Component {
             </Tabs>
         )
     }
-}
+});
 
 var element = document.getElementById('player-stats-overview');
-if(element) {
-    ReactDOM.render(<PlayerStatsOverview twitchTV={element.className ? element.className : null} twitchLive={element.dataset.live}/>, element);
-}
+if(element) ReactDOM.render(<PlayerStatsOverview twitchTV={element.className ? element.className : null} twitchLive={element.dataset.live}/>, element);

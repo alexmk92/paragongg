@@ -50,7 +50,8 @@
 
 {{-- Webpack --}}
 @yield('scripts')
-    <script type="text/javascript" src="/build/js/app.min.js"></script>
+<script type="text/javascript" src="/build/js/app.min.js"></script>
+
 @if(!isset($hideAnalytics))
     {{--
      <script>

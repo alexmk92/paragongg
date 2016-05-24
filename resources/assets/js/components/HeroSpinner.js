@@ -1,22 +1,18 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import { uuid } from '../helpers';
+var React    = require('react');
+var ReactDOM = require('react-dom');
+var Helpers  = require('../helpers');
 
-class HeroSpinner extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
+var HeroSpinner = React.createClass({
+    getInitialState: function() {
+        return {
             heroes: [],
             activeIndex : 0
-        };
-
-        this.sortToMiddle = this.sortToMiddle.bind(this);
-    }
-    componentDidMount() {
+        }
+    },
+    componentDidMount: function() {
         this.sortToMiddle();
-    }
-    sortToMiddle() {
-
+    },
+    sortToMiddle: function() {
         // Sort alphabetically first
         this.props.heroes.sort((a, b) => {
             if(a.name < b.name) return -1;
@@ -76,11 +72,11 @@ class HeroSpinner extends Component {
 
             this.setState({ heroes : heroes, activeIndex : middleIndex })
         }
-    }
-    render() {
+    },
+    render: function() {
         const heroes = this.state.heroes.map((hero, i) => {
             return (
-                <li className={ i === (this.state.activeIndex - 1) ? "active" : "" } key={ uuid() }>
+                <li className={ i === (this.state.activeIndex - 1) ? "active" : "" } key={ Helpers.uuid() }>
                     <a href={`/heroes/${hero.name}`}>
                         <img src={`https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/${hero.code}/portrait_small.png`} />
                         <span>{hero.name}</span>
@@ -92,9 +88,7 @@ class HeroSpinner extends Component {
             <ul>{heroes}</ul>
         )
     }
-}
+});
 
-var elem = document.getElementById("heroes-spinner");
-if(typeof elem !== "undefined" && elem) {
-    ReactDOM.render(<HeroSpinner heroes={ HEROES } activeHero={ HERO } heroDisplayCount={ 5 } />, elem);
-}
+var element = document.getElementById("heroes-spinner");
+if(element) ReactDOM.render(<HeroSpinner heroes={ HEROES } activeHero={ HERO } heroDisplayCount={ 5 } />, element);

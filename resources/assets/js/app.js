@@ -2,7 +2,7 @@
 require("../sass/app.scss");
 
 // Libraries
-require("./lib/particles.min.js");
+//require("./lib/particles.min.js");
 
 // Non React components
 require("./components/CardTooltip");
@@ -20,4 +20,3 @@ require("./components/CommentFeed");
 require("./components/HeroSpinner");
 require("./components/HeroStats");
 require("./components/AbilityFeed");
-

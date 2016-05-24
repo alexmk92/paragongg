@@ -1,11 +1,13 @@
-import { ajax } from '../helpers'
+var Helpers = require('../helpers');
 
-export function fetchNews(skip, callback) {
-    ajax({
-        type : "GET",
-        contentType : "application/json",
-        url : `/api/v1/news?skip=${ skip }`
-    }).then((payload) => {
-       callback(null, payload.data);
-    });
+module.exports = {
+    fetchNews: function(skip, callback) {
+        Helpers.ajax({
+            type : "GET",
+            contentType : "application/json",
+            url : `/api/v1/news?skip=${ skip }`
+        }).then(function(payload) {
+           callback(null, payload.data);
+        });
+    }
 }

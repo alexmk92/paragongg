@@ -1,20 +1,18 @@
-import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
-import FlipMove from 'react-flip-move'
+var React = require('react');
+var ReactDOM = require('react-dom');
+var FlipMove = require('react-flip-move');
 
-class JobsFeed extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
+var JobsFeed = React.createClass({
+    getInitialState: function () {
+        return {
             jobs: []
         }
-        this.getJobs = this.getJobs.bind(this)
-    }
-    componentDidMount() {
+    },
+    componentDidMount: function () {
         this.getJobs();
-        setInterval( this.getJobs.bind(this), 1000);
-    }
-    getJobs() {
+        setInterval(this.getJobs.bind(this), 1000);
+    },
+    getJobs: function () {
         var httpRequest;
 
         if (window.XMLHttpRequest) {
@@ -23,7 +21,7 @@ class JobsFeed extends Component {
             httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
         }
 
-        httpRequest.open("GET", '/admin/api/jobs?nocache='+Math.random(), true);
+        httpRequest.open("GET", '/admin/api/jobs?nocache=' + Math.random(), true);
 
         httpRequest.onreadystatechange = () => {
             if (httpRequest.readyState === XMLHttpRequest.DONE) {
@@ -37,22 +35,22 @@ class JobsFeed extends Component {
         };
 
         httpRequest.send();
-    }
-    render() {
+    },
+    render: function () {
         var jobs = [];
-        this.state.jobs.forEach(function(job) {
+        this.state.jobs.forEach(function (job) {
 
             jobs.push(<Job key={job.id}
-                id={job.id}
-                queue={job.queue}
-                payload={job.payload}
-                attempts={job.attempts}
-                reserved={job.reserved}
-                created_at={job.created_at}
+                           id={job.id}
+                           queue={job.queue}
+                           payload={job.payload}
+                           attempts={job.attempts}
+                           reserved={job.reserved}
+                           created_at={job.created_at}
             />);
 
         }, this);
-        return(
+        return (
             <div>
                 <h3>Queued jobs ({jobs.length}) </h3>
                 <div className="content-wrapper">
@@ -63,13 +61,10 @@ class JobsFeed extends Component {
             </div>
         )
     }
-}
+});
 
-class Job extends Component {
-    constructor(props) {
-        super(props)
-    }
-    render() {
+var Job = React.createClass({
+    render: function () {
         var divStyle = {
             backgroundImage: 'url(assets/images/cards/' + this.props.code + '/background.png)',
         }
@@ -81,11 +76,11 @@ class Job extends Component {
                 <div className="attempts"><strong>Attempts:</strong> {this.props.attempts}</div>
                 <div className="reserved"><strong>Reserved:</strong> {this.props.reserved}</div>
                 <div className="created_at"><strong>Created:</strong> {this.props.created_at}</div>
-                <div className="payload" title={this.props.payload}>{payload.data.command.substr(0,140)}</div>
+                <div className="payload" title={this.props.payload}>{payload.data.command.substr(0, 140)}</div>
             </div>
         )
     }
-}
+});
 
 var element = document.querySelector('#jobs-feed');
-if(element) ReactDOM.render(<JobsFeed/>, element);
+if (element) ReactDOM.render(<JobsFeed/>, element);

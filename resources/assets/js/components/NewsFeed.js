@@ -1,16 +1,16 @@
-import React, { Component } from 'react'
-import ReactDOM             from 'react-dom'
-import Masonry              from 'react-masonry-component'
-import { fetchNews }        from '../actions/news'
+var React     = require('react');
+var ReactDOM  = require('react-dom');
+var Masonry   = require('react-masonry-component');
+var Action = require('../actions/news');
 
-class NewsFeed extends Component {
-    constructor(props) {
-        super(props)
-
-        this.state = {
+var NewsFeed = React.createClass({
+    getInitialState: function() {
+        return {
             news: [],
             newsEnd: false
-        };
+        }
+    },
+    componentWillMount: function() {
         this.options = {
             stagger: true
         };
@@ -19,41 +19,37 @@ class NewsFeed extends Component {
             //transitionDuration: 0,
             gutter: 30,
         };
-
-        this.getResults = this.getResults.bind(this);
-        this.addResults = this.addResults.bind(this);
-        this.handleScroll = this.handleScroll.bind(this);
-    }
-    componentDidMount() {
+    },
+    componentDidMount: function() {
         this.getResults();
         window.addEventListener('scroll', this.handleScroll);
-    }
-    componentWillUnmount() {
+    },
+    componentWillUnmount: function() {
         window.removeEventListener('scroll', this.handleScroll);
-    }
-    handleScroll() {
+    },
+    handleScroll: function() {
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
             this.getResults();
         }
-    }
-    handleSelect(index, last) {
+    },
+    handleSelect: function(index, last) {
         console.log('Selected tab: ' + index + ', Last tab: ' + last);
-    }
-    getResults() {
-        fetchNews(this.state.news.length, (error, data) => {
+    },
+    getResults: function() {
+        var _this = this;
+        Action.fetchNews(this.state.news.length, function(error, data) {
             if(error === null && data !== null) {
                 console.log(data);
                 if(data.length > 0) {
-                    this.addResults(data);
+                    _this.addResults(data);
                 } else {
-                    this.setState({newsEnd: true});
+                    _this.setState({newsEnd: true});
                     console.log('END OF NEWS');
                 }
             }
         });
-    }
-    addResults(response) {
-        console.log("ADDING RESULTS");
+    },
+    addResults: function(response) {
         if(this.options.stagger) {
             response.forEach(function(post) {
                 this.setState({news: this.state.news.concat(post)}); // Stagger this somehow?
@@ -61,8 +57,8 @@ class NewsFeed extends Component {
         } else {
             this.setState({news: this.state.news.concat(response)});
         }
-    }
-    render() {
+    },
+    render: function() {
         const childElements = this.state.news.map(function(element){
             return (
                 <a className="article-preview" href={"/news/" + element.slug} key={element.slug}>
@@ -92,7 +88,7 @@ class NewsFeed extends Component {
             </div>
         );
     }
-}
+});
 
 var element = document.getElementById('news-feed');
 if(element) ReactDOM.render(<NewsFeed/>, element);

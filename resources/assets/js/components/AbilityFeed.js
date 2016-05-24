@@ -1,14 +1,13 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+var React = require('react');
+var ReactDOM = require('react-dom');
 
-class AbilityItem extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
+var AbilityItem = React.createClass({
+    getInitialState: function() {
+        return {
             playing: false
         }
-    }
-    render() {
+    },
+    render: function() {
         console.log(this.props.ability);
         return (
             <div className="ability-container">
@@ -21,16 +20,10 @@ class AbilityItem extends Component {
             </div>
         );
     }
-}
+});
 
-class AbilityFeed extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-
-        }
-    }
-    render() {
+var AbilityFeed = React.createClass({
+    render: function() {
         const abilities = this.props.abilities.map((ability) => {
             return (
                 <AbilityItem key={ ability.name } ability={ ability } />
@@ -43,9 +36,7 @@ class AbilityFeed extends Component {
             </div>
         );
     }
-}
+});
 
-const elem = document.getElementById("abilities-wrapper");
-if(typeof elem !== "undefined" && elem !== null) {
-    ReactDOM.render( <AbilityFeed abilities={ HERO.abilities } />, elem);
-}
+var element = document.getElementById("abilities-wrapper");
+if(element) ReactDOM.render( <AbilityFeed abilities={ HERO.abilities } />, element);

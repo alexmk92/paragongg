@@ -1,22 +1,18 @@
-import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
-import FlipMove from 'react-flip-move'
-import CardTooltip from './CardTooltip'
+var React = require('react');
+var ReactDOM = require('react-dom');
+var FlipMove = require('react-flip-move');
+var CardTooltip = require('./CardTooltip');
 
-class CardsFeed extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
+var CardsFeed = React.createClass({
+    getInitialState: function(){
+        return {
             filter_owned : false,
             filter_affinity : 'All',
             filter_type : 'All',
             search_term : ""
         }
-
-        this.filter = this.filter.bind(this);
-        this.inputChanged = this.inputChanged.bind(this);
-    }
-    filter(element) {
+    },
+    filter: function(element) {
         switch(element.target.name) {
             case 'owned':
                 this.setState({filter_owned: element.target.checked});
@@ -28,8 +24,8 @@ class CardsFeed extends Component {
                 this.setState({filter_type: element.target.value});
                 break;
         }
-    }
-    shouldBeVisible(card) {
+    },
+    shouldBeVisible: function(card) {
         if(this.state.filter_owned == true && card.owned == false) {
             return false;
         }
@@ -43,12 +39,12 @@ class CardsFeed extends Component {
             return true;
         }
         return false;
-    }
-    inputChanged(event) {
+    },
+    inputChanged: function(event) {
         event.preventDefault();
         this.setState({ search_term : event.target.value });
-    }
-    render() {
+    },
+    render: function() {
         var cards = [];
         this.props.cards.forEach(function(card) {
 
@@ -115,19 +111,15 @@ class CardsFeed extends Component {
             </div>
         )
     }
-}
+});
 
-class CardPreview extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
+var CardPreview = React.createClass({
+    getInitialState: function() {
+        return {
             tooltip : null
         }
-
-        this.focused = this.focused.bind(this)
-        this.blur = this.blur.bind(this)
-    }
-    focused(event) {
+    },
+    focused: function(event) {
         if(this.state.tooltip) {
             this.state.tooltip.abortClose()
         } else {
@@ -135,13 +127,13 @@ class CardPreview extends Component {
                 tooltip : new CardTooltip({ targetNode : event.target, parentNodeName : "card-preview", uniqueId : this.props.name, dataURL : `/api/v1/cards/find/${this.props.code}` })
             })
         }
-    }
-    blur(event) {
+    },
+    blur: function(event) {
         this.state.tooltip.destructor((payload) => {
             this.state.tooltip = payload.targetNode
         })
-    }
-    render() {
+    },
+    render: function() {
         var divStyle = {
             backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/' + this.props.code + '/background_small.png)',
         }
@@ -155,7 +147,7 @@ class CardPreview extends Component {
             </li>
         )
     }
-}
+});
 
 var element = document.querySelector('#cards-feed');
 if(element) ReactDOM.render(<CardsFeed cards={CARDS}/>, element);

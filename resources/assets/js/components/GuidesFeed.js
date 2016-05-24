@@ -1,22 +1,21 @@
-import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
-import ReactTabs from 'react-tabs'
-import FlipMove from 'react-flip-move'
+var React     = require('react');
+var ReactDOM  = require('react-dom');
+var ReactTabs = require('react-tabs');
+var FlipMove  = require('react-flip-move');
 
 const Tab       = ReactTabs.Tab
 const Tabs      = ReactTabs.Tabs
 const TabList   = ReactTabs.TabList
 const TabPanel  = ReactTabs.TabPanel
 
-class GuidesFeed extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            guides : props.guides,
-            heroes : props.heroes
+var GuidesFeed = React.createClass({
+    getInitialState: function() {
+        return {
+            guides : this.props.guides,
+            heroes : this.props.heroes
         }
-    }
-    render() {
+    },
+    render: function() {
         return(
             <div>
                 <GuideFilter heroes={this.state.heroes} />
@@ -24,13 +23,10 @@ class GuidesFeed extends Component {
             </div>
         )
     }
-}
+});
 
-class HeroListItem extends Component {
-    constructor(props) {
-        super(props);
-    }
-    render() {
+var HeroListItem = React.createClass({
+    render: function() {
         return (
             <li>
                 <a href={`/guides?hero=${this.props.hero.name}`}>
@@ -40,23 +36,19 @@ class HeroListItem extends Component {
             </li>
         );
     }
-}
+});
 
-class GuideFilter extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
+var GuideFilter = React.createClass({
+    getInitialState: function() {
+        return {
             search_term : ""
-        };
-
-        this.inputChanged = this.inputChanged.bind(this);
-    }
-
-    inputChanged(event) {
+        }
+    },
+    inputChanged: function(event) {
         event.preventDefault();
         this.setState({ search_term : event.target.value })
-    }
-    render() {
+    },
+    render: function() {
         var heroes = [];
         this.props.heroes.forEach((hero) => {
             if(hero.name.toLowerCase().indexOf(this.state.search_term.toLowerCase()) > -1) {
@@ -82,18 +74,15 @@ class GuideFilter extends Component {
             </div>
         )
     }
-}
+});
 
-class GuideResults extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
+var GuideResults = React.createClass({
+    getInitialState: function() {
+        return {
             guides : this.props.guides
         }
-    }
-    componentDidMount() {
-    }
-    render() {
+    },
+    render: function() {
         var guides = [];
         this.state.guides.forEach(function(guide) {
             guides.push(<GuidePreview key={guide.slug} slug={guide.slug} title={guide.title} created={guide.created} user_id={guide.user_id} />);
@@ -135,12 +124,10 @@ class GuideResults extends Component {
             </Tabs>
         );
     }
-}
+});
 
-class GuidePreview extends Component {
-    componentDidMount() {
-    }
-    render() {
+var GuidePreview = React.createClass({
+    render: function() {
         return(
             <a className="guide-preview cf" href={"/guides/" + this.props.slug}>
                 <div className="guide-hero">
@@ -153,7 +140,7 @@ class GuidePreview extends Component {
             </a>
         )
     }
-}
+});
 
 var element = document.getElementById('guides-feed');
 if(element) ReactDOM.render(<GuidesFeed guides={GUIDES} heroes={HEROES} />, element);

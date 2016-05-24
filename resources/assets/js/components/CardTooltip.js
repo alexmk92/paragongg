@@ -1,19 +1,18 @@
-import { uuid, ajax, hashCode } from '../helpers';
+require('../helpers');
 
-export default class CardTooltip {
-    constructor(props) {
-        if (typeof props.uniqueId === "undefined") props.uniqueId = uuid;
-        if (typeof props.tooltipInfo === "undefined") props.tooltipInfo = {};
+var CardTooltip = function() {
+    if (typeof props.uniqueId === "undefined") props.uniqueId = uuid;
+    if (typeof props.tooltipInfo === "undefined") props.tooltipInfo = {};
 
-        this.initialise({
-            targetNode: props.targetNode,
-            parentNodeName: props.parentNodeName,
-            uniqueId: props.uniqueId,
-            tooltipInfo: props.tooltipInfo,
-            dataURL: props.dataURL
-        });
-    }
-    initialise(data) {
+    this.initialise({
+        targetNode: props.targetNode,
+        parentNodeName: props.parentNodeName,
+        uniqueId: props.uniqueId,
+        tooltipInfo: props.tooltipInfo,
+        dataURL: props.dataURL
+    });
+
+    function initialise(data) {
         var card = this.getParentNode(data.targetNode, data.parentNodeName);
         var cardRect = card.getBoundingClientRect();
 
@@ -51,13 +50,13 @@ export default class CardTooltip {
         }
     }
 
-    abortClose() {
+    function abortClose() {
         this.state.isFadingOut = false;
         var tooltipNode = document.getElementById(this.state.uniqueId);
         tooltipNode.className = "tooltip-wrapper tooltip-fade-show";
     }
 
-    destructor(callback) {
+    function destructor(callback) {
         var tooltipNode = document.getElementById(this.state.uniqueId);
         if (tooltipNode) {
             this.state.isFadingOut = true;
@@ -76,7 +75,7 @@ export default class CardTooltip {
         }
     }
 
-    setPosition(node) {
+    function setPosition(node) {
         const bodyRect = document.body.getBoundingClientRect();
         const nodeRect = node.getBoundingClientRect();
 
@@ -125,7 +124,7 @@ export default class CardTooltip {
         }
     }
 
-    getParentNode(el, selector) {
+    function getParentNode(el, selector) {
         if (typeof selector === "undefined")
             selector = "card-preview";
 
@@ -145,7 +144,7 @@ export default class CardTooltip {
         return el;
     }
     
-    updateTooltipInfo() {
+    function updateTooltipInfo() {
         const data = this.state.tooltipInfo;
         const node = document.getElementById(this.state.uniqueId);
 
@@ -178,7 +177,7 @@ export default class CardTooltip {
         }
     }
 
-    render() {
+    function render() {
         if (!this.state.isRendered && !document.getElementById(this.state.uniqueId)) {
 
             ajax({
@@ -216,3 +215,5 @@ export default class CardTooltip {
         }
     }
 }
+
+module.exports = CardTooltip;

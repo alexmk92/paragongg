@@ -1,23 +1,22 @@
-import React, { Component } from 'react'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-import { prettyDate, uuid } from '../helpers'
+var React      = require('react');
+var Redux      = require('redux');
+var ReactRedux = require('react-redux');
+var Action     = require('../actions/comments');
+//import { postComment, upVoteComment, fetchComments } from '../actions/comments'
+// import { bindActionCreators } from 'redux'
+// import { connect } from 'react-redux'
+//import { prettyDate, uuid } from '../helpers'
 
 // Actions
-import { postComment, upVoteComment, fetchComments } from '../actions/comments'
 
-class CommentListItem extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
+var CommentListItem = React.createClass({
+    getInitialState: function() {
+        return {
             voted : false,
             isReplying : false
-        };
-
-        this.vote = this.vote.bind(this);
-        this.reply = this.reply.bind(this);
-    }
-    vote() {
+        }
+    },
+    vote: function() {
         if(!this.state.voted) {
             this.props.upVoteComment(this.props.comment);
             /*
@@ -27,18 +26,18 @@ class CommentListItem extends Component {
             });
             */
         }
-    }
-    report() {
-
-    }
-    reply(event) {
+    },
+    report: function() {
+        // TODO
+    },
+    reply: function(event) {
         event.preventDefault();
         this.setState({ isReplying : !this.state.isReplying });
-    }
-    getReplies() {
-
-    }
-    render() {
+    },
+    getReplies: function() {
+        // TODO
+    },
+    render: function() {
         const toggleClass = `fa fa-thumbs-up vote-button ${(this.state.voted ? "active" : "")}`;
         const commentClass = `comment-item ${this.props.comment.childComment ? "child-comment" : ""}`;
         const comments = this.props.childComments.map((comment) => {
@@ -63,28 +62,24 @@ class CommentListItem extends Component {
             </li>
         );
     }
-}
+});
 
-class CommentBox extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
+var CommentBox = React.createClass({
+    getInitialState: function() {
+        return {
             hasText : false,
             characterCount : 0,
             lineCount : 0,
             comment : "",
             posting : false,
             isFocused : false
-        };
-        this.post = this.post.bind(this);
-        this.inputChanged = this.inputChanged.bind(this);
-        this.cancelPost = this.cancelPost.bind(this);
-    }
-    post(event) {
+        }
+    },
+    post: function(event) {
         event.preventDefault();
         this.setState({ posting : true });
         if(this.state.hasText) {
-            postComment(this.state.comment, (payload) => {
+            Action.postComment(this.state.comment, (payload) => {
                 //this.props.onCommentRequestRefresh();
                 this.setState({ posting : false, comment : "" });
             })
@@ -92,12 +87,12 @@ class CommentBox extends Component {
             this.cancelPost(event);
             this.setState({ posting : false });
         }
-    }
-    cancelPost(event) {
+    },
+    cancelPost: function(event) {
         event.preventDefault();
         this.setState({ posting : false, comment : "" });
-    }
-    inputChanged(event) {
+    },
+    inputChanged: function(event) {
         const comment = event.target.value;
         this.setState({
             hasText : comment.trim().length > 0,
@@ -111,8 +106,8 @@ class CommentBox extends Component {
             var rect = event.target.getBoundingClientRect();
             event.target.style.height = rect.height + 17.5 + "px";
         }
-    }
-    render() {
+    },
+    render: function() {
         console.log("re-rendering comment")
         const buttonClass = (!this.state.isFocused && !this.state.posting) ? "hidden" : "";
         return(
@@ -140,16 +135,13 @@ class CommentBox extends Component {
             </div>
         )
     }
-}
+});
 
-class CommentFeed extends Component {
-    constructor(props) {
-        super(props);
-    }
-    componentWillMount() {
+var CommentFeed = React.createClass({
+    componentWillMount: function() {
         this.props.fetchComments(1);
-    }
-    render() {
+    },
+    render: function() {
         console.log("COMMENTS IS");
         console.log(this.props);
         const author = {
@@ -178,7 +170,7 @@ class CommentFeed extends Component {
             </div>
         );
     }
-}
+});
 
 // Connect to Redux, whatever is returned from here will show up as props within CommentFeed
 function mapStateToProps(state) {
@@ -190,10 +182,10 @@ function mapStateToProps(state) {
 // Anything returned from this will end up as props on CommentFeed container,
 // allowing us to call the action on our component
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({
-        upVoteComment : upVoteComment,
-        fetchComments : fetchComments
+    return Redux.bindActionCreators({
+        upVoteComment : Action.upVoteComment,
+        fetchComments : Action.fetchComments
     }, dispatch)
 }
 // Promote CommentFeed from a component to a container
-export default connect(mapStateToProps, mapDispatchToProps)(CommentFeed);
+module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(CommentFeed);

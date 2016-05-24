@@ -23,22 +23,19 @@ module.exports = {
             {
                 test: /onload.js?$/,
                 loader: 'babel-loader',
-                query: {
-                    presets: ['es2015'],
-                }
             },
             {
                 test: /\.js?$/,
                 loader: 'babel-loader',
                 query: {
-                    presets: ['react', 'es2015'],
+                    presets: ['react'],
                 }
             },
             {
                 test: /\.jsx?$/,
                 loader: 'babel-loader',
                 query: {
-                    presets: ['react', 'es2015'],
+                    presets: ['react'],
                 }
             },
             {

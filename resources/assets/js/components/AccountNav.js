@@ -1,32 +1,29 @@
-import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
+var React = require('react');
+var ReactDOM = require('react-dom');
 
-class AccountNav extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
+var AccountNav = React.createClass({
+    getInitialState: function() {
+        return {
             username: this.props.username,
             amber: this.props.amber,
             active: false,
             mod: this.props.mod,
             admin: this.props.admin
         }
-
-        this.showContent = this.showContent.bind(this)
-    }
-    showContent() {
+    },
+    showContent: function() {
         this.setState({active: !this.state.active})
-    }
-    isAdmin() {
+    },
+    isAdmin: function() {
         return (this.state.admin) ? true : false;
-    }
-    isMod() {
+    },
+    isMod: function() {
         return (this.state.mod) ? true : false;
-    }
-    isActive() {
+    },
+    isActive: function() {
         return (this.state.active) ? 'account-nav-panel active' : 'account-nav-panel inactive';
-    }
-    render() {
+    },
+    render: function() {
         //var user = this.props.user;
         var isAdmin, isMod = false;
         if(this.isMod()) {
@@ -59,7 +56,7 @@ class AccountNav extends Component {
             </div>
         )
     }
-}
+});
 
 var element = document.getElementById('account-nav');
 if(element) ReactDOM.render(<AccountNav username={element.dataset.username} amber={element.dataset.amber} mod={element.dataset.mod} admin={element.dataset.admin}/>, element);

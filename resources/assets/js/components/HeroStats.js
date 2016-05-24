@@ -1,14 +1,15 @@
+var React    = require('react');
+var ReactDOM = require('react-dom');
+var Rcslider = require('rc-slider');
+var Helpers  = require('../helpers');
+var ParticleTheme = require('../lib/ParticleThemes');
+
 require('rc-slider/assets/index.css');
+require('particles.js');
 
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import Rcslider from 'rc-slider';
-import { uuid, delimitNumbers } from '../helpers';
-
-class StatisticPanel extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
+var StatisticPanel = React.createClass({
+    getInitialState: function() {
+        return {
             multiplier : 1,
             stats : [
                 {
@@ -54,22 +55,22 @@ class StatisticPanel extends Component {
                     scaling : null
                 }
             ]
-        };
-
-        this.sliderChanged = this.sliderChanged.bind(this);
-    }
-    componentDidMount() {
+        }
+    },
+    componentDidMount: function() {
         this.sliderChanged(1);
-    }
-    sliderChanged(value) {
+
+        particlesJS('particle-layer', {particles: ParticleTheme.default()});
+    },
+    sliderChanged: function(value) {
         const domNode = `<p>RANK<br/><span>${ value }</span></p>`;
         const elem = document.querySelector(".rc-slider-handle");
         if(typeof elem !== "undefined" && elem !== null) {
             elem.innerHTML = domNode;
             this.setState({ multiplier : value });
         }
-    }
-    render() {
+    },
+    render: function() {
         /*
         const affinities = this.props.hero.affinities.map((affinity) => {
             return(
@@ -82,7 +83,7 @@ class StatisticPanel extends Component {
 
         const statistics = this.state.stats.map((stat) => {
             const scale = this.state.multiplier === 1 ? 0 : stat.scaling;
-            const value = isNaN(stat.value) ? stat.value : delimitNumbers((stat.value + ( scale* this.state.multiplier)).toFixed(1));
+            const value = isNaN(stat.value) ? stat.value : Helpers.delimitNumbers((stat.value + ( scale* this.state.multiplier)).toFixed(1));
             const scaling = stat.scaling !== null ? <span className="scaling">({ stat.scaling } per level)</span> : "";
             return (
                 <li key={stat.label}>
@@ -120,9 +121,7 @@ class StatisticPanel extends Component {
             </div>
         );
     }
-}
+});
 
-var elem = document.getElementById("hero-stats");
-if(typeof elem !== "undefined" && elem) {
-    ReactDOM.render(<StatisticPanel hero={ HERO } />, elem);
-}
+var element = document.getElementById("hero-stats");
+if(element) ReactDOM.render(<StatisticPanel hero={ HERO } />, element);
