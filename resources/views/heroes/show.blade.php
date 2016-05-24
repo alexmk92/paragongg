@@ -19,7 +19,11 @@
 @endsection
 @section('scripts')
     <script type="text/javascript">
-        var HEROES = {!! json_encode($heroes) !!}
+        var HEROES = {!! json_encode($heroes) !!};
         var HERO = {!! json_encode($hero) !!};
+
+        document.addEventListener( 'DOMContentLoaded', function () {
+            particlesJS('particle-layer', {});
+        }, false );
     </script>
 @endsection
