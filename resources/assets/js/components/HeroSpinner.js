@@ -1,30 +1,30 @@
-var React    = require('react');
+var React = require('react');
 var ReactDOM = require('react-dom');
-var Helpers  = require('../helpers');
+var Helpers = require('../helpers');
 
 var HeroSpinner = React.createClass({
-    getInitialState: function() {
+    getInitialState: function () {
         return {
             heroes: [],
-            activeIndex : 0
+            activeIndex: 0
         }
     },
-    componentDidMount: function() {
+    componentDidMount: function () {
         this.sortToMiddle();
     },
-    sortToMiddle: function() {
+    sortToMiddle: function () {
         // Sort alphabetically first
-        this.props.heroes.sort((a, b) => {
-            if(a.name < b.name) return -1;
-            if(a.name > b.name) return 1;
+        this.props.heroes.sort(function (a, b) {
+            if (a.name < b.name) return -1;
+            if (a.name > b.name) return 1;
             return 0;
         });
 
         // Now build a new array sorting to middle
-        const heroesLength = this.props.heroes.length;
-        const activeIndex = (() => {
+        var heroesLength = this.props.heroes.length;
+        var activeIndex = (function () {
             var index = -1;
-            this.props.heroes.every((hero, i) => {
+            this.props.heroes.every(function (hero, i) {
                 if (hero.name === this.props.activeHero.name) {
                     index = i;
                     return false;
@@ -34,28 +34,28 @@ var HeroSpinner = React.createClass({
             return index;
         })();
 
-        if(activeIndex > 0) {
-            const heroes = [];
+        if (activeIndex > 0) {
+            var heroes = [];
             var sampleSizePerSide = Math.floor(this.props.heroDisplayCount / 2);
-            if(sampleSizePerSide > Math.floor(heroesLength / 2)) {
+            if (sampleSizePerSide > Math.floor(heroesLength / 2)) {
                 sampleSizePerSide = 1;
             }
-            const middleIndex = Math.floor(this.props.heroDisplayCount / 2) + 1;
-            console.log(`middle index is ${middleIndex}`)
+            var middleIndex = Math.floor(this.props.heroDisplayCount / 2) + 1;
+            console.log("middle index is" + middleIndex);
             console.log(this.props.heroes);
 
-            const indexes = (() => {
-                const indexes = [];
+            var indexes = (function () {
+                var indexes = [];
                 var index = 0;
-                for(var i = sampleSizePerSide; i > 0; i--) {
+                for (var i = sampleSizePerSide; i > 0; i--) {
                     // Left hand indexes
-                    if(activeIndex - (i) < 0) indexes[index] = this.props.heroes.length - (i - 1);
+                    if (activeIndex - (i) < 0) indexes[index] = this.props.heroes.length - (i - 1);
                     else indexes[index] = activeIndex - (i);
                     index++;
                 }
-                for(var j = sampleSizePerSide; j > 0; j--) {
+                for (var j = sampleSizePerSide; j > 0; j--) {
                     // Right hand indexes
-                    if(activeIndex + (j) >= this.props.heroes.length) indexes[index] = j;
+                    if (activeIndex + (j) >= this.props.heroes.length) indexes[index] = j;
                     else indexes[index] = (activeIndex + (j));
                     index++;
                 }
@@ -63,22 +63,26 @@ var HeroSpinner = React.createClass({
             })();
 
             var middleInserted = false;
-            for(var i = 0; i < this.props.heroDisplayCount; i++) {
-                const index = middleInserted ? indexes[i-1] : indexes[i];
-                console.log(`hero at index ${i} in indexes is ${this.props.heroes[index].name}, its index in the master array is ${index}`);
-                if(i === middleIndex - 1) { heroes.push(this.props.heroes[activeIndex]); middleInserted = true; }
+            for (var i = 0; i < this.props.heroDisplayCount; i++) {
+                var index = middleInserted ? indexes[i - 1] : indexes[i];
+                console.log("hero at index" + i + "in indexes is " + this.props.heroes[index].name + ", its index in the master array is " + index);
+                if (i === middleIndex - 1) {
+                    heroes.push(this.props.heroes[activeIndex]);
+                    middleInserted = true;
+                }
                 else heroes.push(this.props.heroes[index]);
             }
 
-            this.setState({ heroes : heroes, activeIndex : middleIndex })
+            this.setState({heroes: heroes, activeIndex: middleIndex})
         }
     },
-    render: function() {
-        const heroes = this.state.heroes.map((hero, i) => {
+    render: function () {
+        var heroes = this.state.heroes.map(function (hero, i) {
             return (
                 <li className={ i === (this.state.activeIndex - 1) ? "active" : "" } key={ Helpers.uuid() }>
-                    <a href={`/heroes/${hero.name}`}>
-                        <img src={`https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/${hero.code}/portrait_small.png`} />
+                    <a href={"/heroes/" + hero.name }>
+                        <img
+                            src={"https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/" + hero.code + "/portrait_small.png"}/>
                         <span>{hero.name}</span>
                     </a>
                 </li>
@@ -91,4 +95,4 @@ var HeroSpinner = React.createClass({
 });
 
 var element = document.getElementById("heroes-spinner");
-if(element) ReactDOM.render(<HeroSpinner heroes={ HEROES } activeHero={ HERO } heroDisplayCount={ 5 } />, element);
+if (element) ReactDOM.render(<HeroSpinner heroes={ HEROES } activeHero={ HERO } heroDisplayCount={ 5 }/>, element);

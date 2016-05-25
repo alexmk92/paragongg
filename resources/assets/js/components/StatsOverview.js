@@ -2,10 +2,10 @@ var React     = require('react');
 var ReactDOM  = require('react-dom');
 var ReactTabs = require('react-tabs');
 
-const Tab       = ReactTabs.Tab
-const Tabs      = ReactTabs.Tabs
-const TabList   = ReactTabs.TabList
-const TabPanel  = ReactTabs.TabPanel
+var Tab       = ReactTabs.Tab
+var Tabs      = ReactTabs.Tabs
+var TabList   = ReactTabs.TabList
+var TabPanel  = ReactTabs.TabPanel
 
 var StatsOverview = React.createClass({
     handleSelect: function(index, last) {

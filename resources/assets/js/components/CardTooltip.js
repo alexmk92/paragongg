@@ -1,7 +1,8 @@
-require('../helpers');
+var Helpers = require('../helpers');
+// { uuid, ajax, hashCode } from '../helpers';
 
 var CardTooltip = function() {
-    if (typeof props.uniqueId === "undefined") props.uniqueId = uuid;
+    if (typeof props.uniqueId === "undefined") props.uniqueId = Helpers.uuid();
     if (typeof props.tooltipInfo === "undefined") props.tooltipInfo = {};
 
     this.initialise({
@@ -11,14 +12,14 @@ var CardTooltip = function() {
         tooltipInfo: props.tooltipInfo,
         dataURL: props.dataURL
     });
-
+    
     function initialise(data) {
         var card = this.getParentNode(data.targetNode, data.parentNodeName);
         var cardRect = card.getBoundingClientRect();
 
         if (cardRect) {
             this.state = {
-                uniqueId: hashCode(data.uniqueId),
+                uniqueId: Helpers.hashCode(data.uniqueId),
                 tooltipInfo: data.tooltipInfo,
                 isFadingOut: false,
                 dataURL: data.dataURL,
@@ -61,9 +62,9 @@ var CardTooltip = function() {
         if (tooltipNode) {
             this.state.isFadingOut = true;
             tooltipNode.className = "tooltip-wrapper";
-            setTimeout(() => {
+            setTimeout(function() {
                 if (this.state.isFadingOut) {
-                    const nodeAfterDelay = document.getElementById(this.state.uniqueId);
+                    var nodeAfterDelay = document.getElementById(this.state.uniqueId);
                     if (nodeAfterDelay) {
                         document.body.removeChild(nodeAfterDelay);
                         callback({node: null, error: null});
@@ -76,16 +77,16 @@ var CardTooltip = function() {
     }
 
     function setPosition(node) {
-        const bodyRect = document.body.getBoundingClientRect();
-        const nodeRect = node.getBoundingClientRect();
+        var bodyRect = document.body.getBoundingClientRect();
+        var nodeRect = node.getBoundingClientRect();
 
         var offsetTop = (this.state.bounds.distanceFromTopLayoutMargin - bodyRect.top) + this.state.frame.size.height;
         var offsetLeft = this.state.bounds.distanceFromLeftLayoutMargin + this.state.frame.size.width;
 
         // Balance both sides of the equation, we are adding height to our offsetTop so need to
         // that here to check bounds of off screen elements.
-        const viewPortOffsetToBottomMargin = ((bodyRect.top - window.innerHeight.height) + this.state.frame.size.height) * -1;
-        const viewPortOffsetToTopMargin = ((bodyRect.top) - this.state.frame.size.height) * -1;
+        var viewPortOffsetToBottomMargin = ((bodyRect.top - window.innerHeight.height) + this.state.frame.size.height) * -1;
+        var viewPortOffsetToTopMargin = ((bodyRect.top) - this.state.frame.size.height) * -1;
 
         if (node) {
             node.style.position = "absolute";
@@ -103,21 +104,21 @@ var CardTooltip = function() {
             if (rect.width === 0) rect.width = 400;
 
             // check for off top or bottom of page
-            if ((offsetTop + rect.height) > viewPortOffsetToTopMargin && (offsetTop) < (viewPortOffsetToTopMargin + rect.height)) {
-                offsetLeft = offsetLeft - (nodeRect.width / 2);
-                node.style.setProperty("top", `${(offsetTop + this.state.frame.size.height) - 20}px`);
-                node.style.setProperty("left", `${offsetLeft}px`);
+            if (offsetTop + rect.height > viewPortOffsetToTopMargin && offsetTop < viewPortOffsetToTopMargin + rect.height) {
+                offsetLeft = offsetLeft - nodeRect.width / 2;
+                node.style.setProperty("top", offsetTop + this.state.frame.size.height - 20 + "px");
+                node.style.setProperty("left", offsetLeft + "px");
             } else {
-                offsetLeft = offsetLeft - (rect.width / 2);
-                node.style.setProperty("top", `${(offsetTop - rect.height - 14) - this.state.frame.size.height / 4}px`);
-                node.style.setProperty("left", `${offsetLeft}px`);
+                offsetLeft = offsetLeft - rect.width / 2;
+                node.style.setProperty("top", offsetTop - rect.height - 14 - this.state.frame.size.height / 4 + "px");
+                node.style.setProperty("left", offsetLeft + "px");
             }
             // Check if the left or right margins are out of bounds
             if (offsetLeft < 0 || offsetLeft === 0) node.style.setProperty("left", "10px");
-            if ((offsetLeft + rect.width) > window.innerWidth) {
-                const overflow = (offsetLeft + rect.width) - window.innerWidth;
-                const newLeft = offsetLeft - overflow - 40 < 0 ? 10 : offsetLeft - overflow - 30;
-                node.style.setProperty("left", `${newLeft}px`);
+            if (offsetLeft + rect.width > window.innerWidth) {
+                var overflow = offsetLeft + rect.width - window.innerWidth;
+                var newLeft = offsetLeft - overflow - 40 < 0 ? 10 : offsetLeft - overflow - 30;
+                node.style.setProperty("left", newLeft + "px");
             }
 
             return node
@@ -145,30 +146,30 @@ var CardTooltip = function() {
     }
     
     function updateTooltipInfo() {
-        const data = this.state.tooltipInfo;
-        const node = document.getElementById(this.state.uniqueId);
+        var data = this.state.tooltipInfo;
+        var node = document.getElementById(this.state.uniqueId);
 
         if(node) {
-            const cardStats = data.effects.map((effect) => {
-                return `<p>${effect.attribute} [${effect.operation}]</p>`;
+            var cardStats = data.effects.map(function(effect) {
+                return "<p>" + effect.attribute + " [" + effect.operation + "]</p>";
             });
 
             var nodeContent = '';
             nodeContent += '<div class="card-tooltip">';
             nodeContent += '      <div class="head-bar">';
-            nodeContent += `          <span class="head-card-name">${data.name}</span>`;
+            nodeContent += "          <span class=\"head-card-name\">" + data.name + "</span>";
             nodeContent += '          <div class="head-card-row">';
-            nodeContent += `              <span class="head-card-type">Equipment</span>`;
-            nodeContent += `              <span class="head-card-cost">Cost: ${data.cost}</span>`;
+            nodeContent += "              <span class=\"head-card-type\">Equipment</span>";
+            nodeContent += "              <span class=\"head-card-cost\">Cost: " + data.cost + "</span>";
             nodeContent += '          </div>';
             nodeContent += '          <div class="head-card-row">';
-            nodeContent += `              <span class="head-card-affinity">${data.affinity}</span>`;
-            nodeContent += `              <span class="head-card-rarity">Common</span>`;
+            nodeContent += "              <span class=\"head-card-affinity\">" + data.affinity + "</span>";
+            nodeContent += "              <span class=\"head-card-rarity\">Common</span>";
             nodeContent += '          </div>';
             nodeContent += '      </div>';
             nodeContent += '      <div class="card-content">';
-            nodeContent += `          ${cardStats}`;
-            nodeContent += `          $Upgrade slots: {data.upgradeSlots}`;
+            nodeContent += "          " + cardStats;
+            nodeContent += "          $Upgrade slots: {data.upgradeSlots}";
             nodeContent += '      </div>';
             nodeContent += '</div>';
 
@@ -180,13 +181,13 @@ var CardTooltip = function() {
     function render() {
         if (!this.state.isRendered && !document.getElementById(this.state.uniqueId)) {
 
-            ajax({
+            Helpers.ajax({
                 contentType : "application/json",
                 returnType : "json",
                 type : "GET",
                 url : this.state.dataURL,
                 cache : true
-            }).then((payload) => {
+            }).then(function(payload) {
                 this.state.tooltipInfo = payload.data;
                 this.updateTooltipInfo();
             });
@@ -209,11 +210,11 @@ var CardTooltip = function() {
             this.state.isVisible = true;
 
             document.body.appendChild(this.setPosition(rootNode));
-            setTimeout(() => {
+            setTimeout(function() {
                 rootNode.className = "tooltip-wrapper tooltip-fade-show";
             }, 100);
         }
     }
 }
 
-module.exports = CardTooltip;
+exports.default = CardTooltip;
