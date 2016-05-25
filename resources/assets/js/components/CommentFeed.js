@@ -12,9 +12,7 @@ var reducers = require('../reducers/index');
 var element = document.querySelector('#comment-feed');
 
 if(element) {
-    console.log(reducers);
     var createStoreWithMiddleware = applyMiddleware(ReduxPromise)(createStore);
-    console.log("middleware store: ", createStoreWithMiddleware);
     ReactDOM.render(
         <Provider store={createStoreWithMiddleware(reducers)}>
             <CommentFeed />

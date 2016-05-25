@@ -3,13 +3,8 @@ var Redux      = require('redux');
 var ReactRedux = require('react-redux');
 var Action     = require('../actions/comments');
 var Helpers    = require('../helpers');
-//import { postComment, upVoteComment, fetchComments } from '../actions/comments'
-// import { bindActionCreators } from 'redux'
-// import { connect } from 'react-redux'
-//import { prettyDate, uuid } from '../helpers'
 
 // Actions
-
 var CommentListItem = React.createClass({
     getInitialState: function() {
         return {
@@ -39,11 +34,12 @@ var CommentListItem = React.createClass({
         // TODO
     },
     render: function() {
+        var _this = this;
         var toggleClass = 'fa fa-thumbs-up vote-button ' + (this.state.voted ? "active" : "");
         var commentClass = 'comment-item ' + (this.props.comment.childComment ? "child-comment" : "");
         var comments = this.props.childComments.map(function(comment) {
-            if(this.props.comment.id === comment.parent_id) {
-                return <CommentListItem childComment={true} key={Helpers.uuid()} comment={comment} childComments={this.props.childComments} author={ this.props.author } upVoteComment={this.props.upVoteComment} />
+            if(_this.props.comment.id === comment.parent_id) {
+                return <CommentListItem childComment={true} key={Helpers.uuid()} comment={comment} childComments={_this.props.childComments} author={ _this.props.author } upVoteComment={_this.props.upVoteComment} />
             }
         });
         return(
@@ -109,7 +105,6 @@ var CommentBox = React.createClass({
         }
     },
     render: function() {
-        console.log("re-rendering comment")
         var buttonClass = (!this.state.isFocused && !this.state.posting) ? "hidden" : "";
         return(
             <div id="comment-box">
@@ -143,11 +138,10 @@ var CommentFeed = React.createClass({
         this.props.fetchComments(1);
     },
     render: function() {
-        console.log("COMMENTS IS");
-        console.log(this.props);
+        var _this = this;
         var author = {
             name : "Alex Sims"
-        }
+        };
         var comments = [];
         this.props.comments.forEach(function(comment) {
             if(comment.parent_id === 0) {
@@ -156,8 +150,8 @@ var CommentFeed = React.createClass({
                         key={Helpers.uuid()}
                         comment={comment}
                         author={ author }
-                        childComments={ this.props.comments }
-                        upVoteComment={ this.props.upVoteComment }
+                        childComments={ _this.props.comments }
+                        upVoteComment={ _this.props.upVoteComment }
                     />
                 );
             }

@@ -50,8 +50,10 @@ var GuideFilter = React.createClass({
     },
     render: function() {
         var heroes = [];
+        var _this = this;
         this.props.heroes.forEach(function(hero) {
-            if(hero.name.toLowerCase().indexOf(this.state.search_term.toLowerCase()) > -1) {
+            console.log(hero);
+            if(hero.name.toLowerCase().indexOf(_this.state.search_term.toLowerCase()) > -1) {
                 heroes.push(
                     <HeroListItem
                         key={hero.name}

@@ -13,6 +13,9 @@ var HeroSpinner = React.createClass({
         this.sortToMiddle();
     },
     sortToMiddle: function () {
+
+        var _this = this;
+
         // Sort alphabetically first
         this.props.heroes.sort(function (a, b) {
             if (a.name < b.name) return -1;
@@ -24,8 +27,8 @@ var HeroSpinner = React.createClass({
         var heroesLength = this.props.heroes.length;
         var activeIndex = (function () {
             var index = -1;
-            this.props.heroes.every(function (hero, i) {
-                if (hero.name === this.props.activeHero.name) {
+            _this.props.heroes.every(function (hero, i) {
+                if (hero.name === _this.props.activeHero.name) {
                     index = i;
                     return false;
                 }
@@ -49,13 +52,13 @@ var HeroSpinner = React.createClass({
                 var index = 0;
                 for (var i = sampleSizePerSide; i > 0; i--) {
                     // Left hand indexes
-                    if (activeIndex - (i) < 0) indexes[index] = this.props.heroes.length - (i - 1);
+                    if (activeIndex - (i) < 0) indexes[index] = _this.props.heroes.length - (i - 1);
                     else indexes[index] = activeIndex - (i);
                     index++;
                 }
                 for (var j = sampleSizePerSide; j > 0; j--) {
                     // Right hand indexes
-                    if (activeIndex + (j) >= this.props.heroes.length) indexes[index] = j;
+                    if (activeIndex + (j) >= _this.props.heroes.length) indexes[index] = j;
                     else indexes[index] = (activeIndex + (j));
                     index++;
                 }
@@ -77,9 +80,10 @@ var HeroSpinner = React.createClass({
         }
     },
     render: function () {
+        var _this = this;
         var heroes = this.state.heroes.map(function (hero, i) {
             return (
-                <li className={ i === (this.state.activeIndex - 1) ? "active" : "" } key={ Helpers.uuid() }>
+                <li className={ i === (_this.state.activeIndex - 1) ? "active" : "" } key={ Helpers.uuid() }>
                     <a href={"/heroes/" + hero.name }>
                         <img
                             src={"https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/" + hero.code + "/portrait_small.png"}/>
