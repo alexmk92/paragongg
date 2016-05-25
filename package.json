@@ -1,6 +1,6 @@
 {
   "name": "ParagonGG",
-  "description": "Paragon GG is a news, strategy, and statistics website for Paragon by Epic Games",
+  "description": "Paragon GG is a news, strategy, and stats website for Paragon by Epic Games",
   "author": "Jamie Shepherd",
   "version": "2.0.0",
   "main": "webpack.config.js",
