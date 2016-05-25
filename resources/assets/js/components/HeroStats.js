@@ -71,6 +71,8 @@ var StatisticPanel = React.createClass({
         }
     },
     render: function() {
+
+        var _this = this;
         /*
         var affinities = this.props.hero.affinities.map(function(affinity) {
             return(
@@ -82,8 +84,8 @@ var StatisticPanel = React.createClass({
         var roles = <li>No suggested roles</li>;
 
         var statistics = this.state.stats.map(function(stat) {
-            var scale = this.state.multiplier === 1 ? 0 : stat.scaling;
-            var value = isNaN(stat.value) ? stat.value : Helpers.delimitNumbers((stat.value + ( scale* this.state.multiplier)).toFixed(1));
+            var scale = _this.state.multiplier === 1 ? 0 : stat.scaling;
+            var value = isNaN(stat.value) ? stat.value : Helpers.delimitNumbers((stat.value + ( scale * _this.state.multiplier)).toFixed(1));
             var scaling = stat.scaling !== null ? <span className="scaling">({ stat.scaling } per level)</span> : "";
             return (
                 <li key={stat.label}>
