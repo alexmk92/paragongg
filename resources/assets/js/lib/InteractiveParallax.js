@@ -43,19 +43,21 @@ InteractiveParallax.prototype.transitionElement = function() {
         var newY = ((strengthY * mouseY) * -1) * this.state.verticalMultiplier;
 
         // Use matrix to move the background
+        var repeat = !this.state.repeat ? 'no-repeat' : 'repeat-x';
+        var size = !this.state.cover ? 'inherit' : 'contain';
         var styleString = "";
-        styleString += `background-image : url(${this.state.backgroundURL});`;
-        styleString += ` background-repeat : ${!this.state.repeat ? "no-repeat" : "repeat-x"};`;
-        styleString += ` background-size : ${!this.state.cover ? "inherit" : "contain"};`;
+        styleString += "background-image : url(" + this.state.backgroundURL + ");";
+        styleString += " background-repeat : " + repeat + ";";
+        styleString += " background-size : " + size + ";";
 
-        styleString += ` -webkit-transform : matrix(${this.state.scale},0,0,${this.state.scale},${newX},${newY});`;
+        styleString += " -webkit-transform : matrix(" + this.state.scale + ",0,0," + this.state.scale + ", " + newX + "," + newY + ");";
             //"-moz-transform": "matrix(" + settings.scale + ",0,0," + settings.scale + "," + newX + "," + newY + ")"
             //"-o-transform": "matrix(" + settings.scale + ",0,0," + settings.scale + "," + newX + "," + newY + ")"
             //"transform": "matrix(" + settings.scale + ",0,0," + settings.scale + "," + newX + "," + newY + ")"
             //"-webkit-transition": "none"
             //"-moz-transition": "none"
             //"-o-transition": "none"
-        styleString += ` transition: ${this.state.animationSpeed}ms;`;
+        styleString += " transition: " + this.state.animationSpeed + "ms;";
         elem.setAttribute("style", styleString);
     }
 };

@@ -23,7 +23,7 @@ var HeroContainer = React.createClass({
                 animationSpeed : 350,
                 verticalMultiplier : 0,
                 horizontalMultiplier : 1,
-                backgroundURL : `/assets/hero/${ HERO.name.toLowerCase() }/terrain.jpg`
+                backgroundURL : "/assets/hero/" + HERO.name.toLowerCase() + "/terrain.jpg"
             }) })
         } else {
             console.log("Setting pos");
@@ -32,11 +32,11 @@ var HeroContainer = React.createClass({
     },
     render: function() {
         var styles = {
-            "backgroundImage" : `url('/assets/hero/${ HERO.name.toLowerCase() }/terrain.jpg')`,
+            "backgroundImage" : "url('/assets/hero/" + HERO.name.toLowerCase() + "/terrain.jpg')",
             "backgroundRepeat" : "no-repeat",
             "backgroundSize" : "contain"
         };
-        var modelURL = `/assets/hero/${HERO.name}/portrait.png`;
+        var modelURL = "/assets/hero/" + HERO.name + "/portrait.png";
         return(
             <div onMouseOver={this.updateParallax} className="hero-container">
                 <div id="hero-background" style={styles}></div>
