@@ -1,13 +1,12 @@
 var React    = require('react');
-var ReactDOM = require('react-dom');
 var Rcslider = require('rc-slider');
-var Helpers  = require('../helpers');
-var ParticleTheme = require('../lib/ParticleThemes');
+var Helpers  = require('../../helpers');
+var ParticleTheme = require('../../lib/ParticleThemes');
 
 require('rc-slider/assets/index.css');
 require('particles.js');
 
-var StatisticPanel = React.createClass({
+var HeroStats = React.createClass({
     getInitialState: function() {
         return {
             multiplier : 1,
@@ -125,5 +124,4 @@ var StatisticPanel = React.createClass({
     }
 });
 
-var element = document.getElementById("hero-stats");
-if(element) ReactDOM.render(<StatisticPanel hero={ HERO } />, element);
+module.exports = HeroStats;
