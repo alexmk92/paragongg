@@ -72,8 +72,6 @@ module.exports = {
             // we check for false here as the internal block fires a nocache url.
             if (payload.type === "GET" && !payload.cache) payload.url = payload.url + "?_=" + new Date().getTime();
 
-            console.log("URL IS " + payload.url);
-
             if (window.XMLHttpRequest) {
                 httpRequest = new XMLHttpRequest(); // code for IE7+, Firefox, Chrome, Opera, Safari
             } else {
@@ -86,8 +84,6 @@ module.exports = {
             payload.headers.map(function (object) {
                 Object.keys(object).forEach(function (key) {
                     httpRequest.setRequestHeader(key, object[key]);
-                    console.log("Added header:");
-                    console.log(key + " : " + object[key]);
                 });
             });
 
@@ -106,7 +102,6 @@ module.exports = {
             // Initialise the listener on request
             httpRequest.onreadystatechange = function () {
                 if (httpRequest.readyState === XMLHttpRequest.DONE) {
-                    //console.log(httpRequest);
                     if (httpRequest.status === 200) {
                         if (httpRequest.responseText === null) {
                             reject(Error(httpRequest.statusText));
@@ -118,9 +113,6 @@ module.exports = {
                 }
             };
 
-            console.log("Headers are ");
-            console.log("Request data is, now sending:");
-            console.log(requestData);
             httpRequest.send(requestData);
         });
     }

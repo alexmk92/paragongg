@@ -26,29 +26,34 @@ var CardsFeed = React.createClass({
         }
     },
     shouldBeVisible: function(card) {
-        if(this.state.filter_owned == true && card.owned == false) {
+        var _this = this;
+        if(_this.state.filter_owned == true && card.owned == false) {
             return false;
         }
-        if(this.state.filter_affinity != 'All' && this.state.filter_affinity != card.affinity) {
+        if(_this.state.filter_affinity != 'All' && _this.state.filter_affinity != card.affinity) {
             return false;
         }
-        if(this.state.filter_type != 'All' && this.state.filter_type != card.type) {
+        if(_this.state.filter_type != 'All' && _this.state.filter_type != card.type) {
             return false;
         }
-        if(card.name.toLowerCase().indexOf(this.state.search_term.toLowerCase()) > -1) {
+        if(card.name.toLowerCase().indexOf(_this.state.search_term.toLowerCase()) > -1) {
             return true;
         }
         return false;
     },
     inputChanged: function(event) {
+        var _this = this;
+
         event.preventDefault();
-        this.setState({ search_term : event.target.value });
+        _this.setState({ search_term : event.target.value });
     },
     render: function() {
+        var _this = this;
+
         var cards = [];
         this.props.cards.forEach(function(card) {
 
-            if(this.shouldBeVisible(card) == true) {
+            if(_this.shouldBeVisible(card) == true) {
                 cards.push(<CardPreview affinity={card.affinity}
                     key={card.code}
                     owned={card.owned}
@@ -57,7 +62,7 @@ var CardsFeed = React.createClass({
                     name={card.name}
                 />);
             }
-        }, this);
+        }, _this);
         // Sort by cost
         cards.sort(function(a,b) { return a.cost - b.cost; });
         return(
@@ -69,9 +74,9 @@ var CardsFeed = React.createClass({
                         <h4>Filter cards</h4>
                         <form>
                         <label>Search by name</label>
-                        <input onChange={this.inputChanged} type="text" placeholder="Card Name" />
+                        <input onChange={_this.inputChanged} type="text" placeholder="Card Name" />
                         <label>Affinity</label>
-                        <select name="affinity" onChange={this.filter} defaultValue="All">
+                        <select name="affinity" onChange={_this.filter} defaultValue="All">
                             <option value="All">All</option>
                             <option value="Affinity.Universal">Universal</option>
                             <option value="Affinity.Corruption">Corruption</option>
@@ -81,7 +86,7 @@ var CardsFeed = React.createClass({
                             <option value="Affinity.Order">Order</option>
                         </select>
                         <label>Type</label>
-                        <select name="type" onChange={this.filter} defaultValue="All">
+                        <select name="type" onChange={_this.filter} defaultValue="All">
                             <option value="All">All</option>
                             <option value="one">Equipment</option>
                             <option value="two">Upgrade</option>
@@ -89,15 +94,15 @@ var CardsFeed = React.createClass({
                             <option value="three">Prime Helix</option>
                         </select>
                         <label>Rarity</label>
-                        <select name="type" onChange={this.filter} defaultValue="All">
+                        <select name="type" onChange={_this.filter} defaultValue="All">
                             <option value="All">All</option>
                             <option value="Rarity.Common">Common</option>
                             <option value="Rarity.Uncommon">Uncommon</option>
                             <option value="Rarity.Rare">Rare</option>
                             <option value="Rarity.EpicRare">Epic Rare</option>
                         </select>
-                        { AUTHED ? <label><input name="owned" type="checkbox" onChange={this.filter} /> Show only cards I own</label> : ''}
-                        <label><input name="hasActive" type="checkbox" onChange={this.filter} /> Has active/passive</label>
+                        { AUTHED ? <label><input name="owned" type="checkbox" onChange={_this.filter} /> Show only cards I own</label> : ''}
+                        <label><input name="hasActive" type="checkbox" onChange={_this.filter} /> Has active/passive</label>
                         </form>
                     </div>
                 </div>
@@ -120,30 +125,38 @@ var CardPreview = React.createClass({
         }
     },
     focused: function(event) {
-        if(this.state.tooltip) {
-            this.state.tooltip.abortClose()
+        var _this = this;
+        if(_this.state.tooltip) {
+            _this.state.tooltip.abortClose()
         } else {
-            this.setState({
-                tooltip : new CardTooltip({ targetNode : event.target, parentNodeName : "card-preview", uniqueId : this.props.name, dataURL : "/api/v1/cards/find/"+ this.props.code })
-            })
+            _this.setState({
+                tooltip : new CardTooltip({ targetNode : event.target, parentNodeName : "card-preview", uniqueId : _this.props.name, dataURL : "/api/v1/cards/find/"+ _this.props.code })
+            });
         }
     },
     blur: function(event) {
-        this.state.tooltip.destructor(function(payload) {
-            this.state.tooltip = payload.targetNode
-        })
+        var _this = this;
+        if(_this.state.tooltip) {
+            _this.state.tooltip.destructor(function(payload) {
+                _this.state.tooltip = payload.targetNode
+            })
+        } else {
+            _this.state.tooltip = null;
+        }
     },
     render: function() {
+        var _this = this;
+
         var divStyle = {
-            backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/' + this.props.code + '/background_small.png)',
-        }
+            backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/' + _this.props.code + '/background_small.png)'
+        };
         var className = "card-preview ";
-        if(typeof this.props.owned !== 'undefined') {
-            className += (this.props.owned) ? "owned" : "missing";
+        if(typeof _this.props.owned !== 'undefined') {
+            className += (_this.props.owned) ? "owned" : "missing";
         }
         return (
-            <li onMouseOver={this.focused} onMouseLeave={this.blur} className={className} style={divStyle}>
-                <div className="card-name">{this.props.name}</div>
+            <li onMouseOver={_this.focused} onMouseLeave={_this.blur} className={className} style={divStyle}>
+                <div className="card-name">{_this.props.name}</div>
             </li>
         )
     }
