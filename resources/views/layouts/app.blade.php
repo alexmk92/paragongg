@@ -23,12 +23,9 @@
     <![endif]-->
 
     <!-- Scripts -->
-    {{--<script type="text/javascript" src="/build/js/helpers.min.js"></script>--}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.7/es5-shim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.7/es5-sham.min.js"></script>
     @yield('libraries')
-    {{--<script type="text/javascript" src="{{ url('/js/vendor/jquery-2.2.0.min.js') }}"></script>--}}
-    {{--<script type="text/javascript" src="{{ url('/js/vendor/jquery.tooltipster.min.js') }}"></script>--}}
-    {{--<script type="text/javascript" src="{{ url('/js/vendor/venobox.min.js') }}"></script>--}}
-    {{--<script type="text/javascript" src="{{ url('/js/vendor/jquery.timeago.js') }}"></script>--}}
 
 </head>
 <body @if(isset($customBackground)) style="background-image:url({{ $customBackground }});" @endif>
