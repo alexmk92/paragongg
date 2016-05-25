@@ -2,10 +2,10 @@ var React     = require('react');
 var ReactDOM  = require('react-dom');
 var ReactTabs = require('react-tabs');
 
-const Tab       = ReactTabs.Tab;
-const Tabs      = ReactTabs.Tabs;
-const TabList   = ReactTabs.TabList;
-const TabPanel  = ReactTabs.TabPanel;
+var Tab       = ReactTabs.Tab;
+var Tabs      = ReactTabs.Tabs;
+var TabList   = ReactTabs.TabList;
+var TabPanel  = ReactTabs.TabPanel;
 
 var PlayerStatsOverview = React.createClass({
     getInitialState: function() {
@@ -21,7 +21,7 @@ var PlayerStatsOverview = React.createClass({
             this.player.setMuted(false);
         }
     },
-    initTwitchEmbed: function(el) {
+    initTwitchEmbed: function() {
         console.log(this.state.twitchLive);
         console.log(this.state.twitchTV);
         if(this.state.twitchTV) {
@@ -35,7 +35,7 @@ var PlayerStatsOverview = React.createClass({
             this.player.setMuted(true);
         }
     },
-    initChartJs: function(el) {
+    initChartJs: function() {
 
     },
     render: function() {
@@ -73,7 +73,7 @@ var PlayerStatsOverview = React.createClass({
 
                 {/* Elo change */}
                 <TabPanel>
-                    <canvas id="eloChange" ref={el => this.initChartJs(el)}></canvas>
+                    <canvas id="eloChange" ref={this.initChartJs()}></canvas>
                 </TabPanel>
 
                 {/* Lifetime stats */}
@@ -88,7 +88,7 @@ var PlayerStatsOverview = React.createClass({
 
                 {/* Twitch TV stream */}
                 <TabPanel>
-                    <div id="twitchEmbed" ref={el => this.initTwitchEmbed(el)}></div>
+                    <div id="twitchEmbed" ref={this.initTwitchEmbed()}></div>
                 </TabPanel>
             </Tabs>
         )

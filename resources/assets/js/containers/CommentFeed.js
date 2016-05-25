@@ -39,9 +39,9 @@ var CommentListItem = React.createClass({
         // TODO
     },
     render: function() {
-        const toggleClass = `fa fa-thumbs-up vote-button ${(this.state.voted ? "active" : "")}`;
-        const commentClass = `comment-item ${this.props.comment.childComment ? "child-comment" : ""}`;
-        const comments = this.props.childComments.map((comment) => {
+        var toggleClass = 'fa fa-thumbs-up vote-button ' + (this.state.voted ? "active" : "");
+        var commentClass = 'comment-item ' + (this.props.comment.childComment ? "child-comment" : "");
+        var comments = this.props.childComments.map(function(comment) {
             if(this.props.comment.id === comment.parent_id) {
                 return <CommentListItem childComment={true} key={Helpers.uuid()} comment={comment} childComments={this.props.childComments} author={ this.props.author } upVoteComment={this.props.upVoteComment} />
             }
@@ -80,7 +80,7 @@ var CommentBox = React.createClass({
         event.preventDefault();
         this.setState({ posting : true });
         if(this.state.hasText) {
-            Action.postComment(this.state.comment, (payload) => {
+            Action.postComment(this.state.comment, function(payload) {
                 //this.props.onCommentRequestRefresh();
                 this.setState({ posting : false, comment : "" });
             })
@@ -94,7 +94,7 @@ var CommentBox = React.createClass({
         this.setState({ posting : false, comment : "" });
     },
     inputChanged: function(event) {
-        const comment = event.target.value;
+        var comment = event.target.value;
         this.setState({
             hasText : comment.trim().length > 0,
             lineCount : comment.split(/\r|\r\n|\n/).length,
@@ -110,14 +110,14 @@ var CommentBox = React.createClass({
     },
     render: function() {
         console.log("re-rendering comment")
-        const buttonClass = (!this.state.isFocused && !this.state.posting) ? "hidden" : "";
+        var buttonClass = (!this.state.isFocused && !this.state.posting) ? "hidden" : "";
         return(
             <div id="comment-box">
                 <form className={this.state.posting ? "disabled" : ""}>
                     <img className="comment-avatar" src="https://s.gravatar.com/avatar/bae38bd358b0325c7a3c049a4671a9cf?s=80" alt="Your avatar" />
                     <textarea
-                        onFocus={() => {this.setState({ isFocused : true })}}
-                        onBlur={() => {this.setState({ isFocused : false })}}
+                        onFocus={function() {this.setState({ isFocused : true })}}
+                        onBlur={function() {this.setState({ isFocused : false })}}
                         onChange={this.inputChanged}
                         id="body"
                         name="body"
@@ -145,11 +145,11 @@ var CommentFeed = React.createClass({
     render: function() {
         console.log("COMMENTS IS");
         console.log(this.props);
-        const author = {
+        var author = {
             name : "Alex Sims"
         }
-        const comments = [];
-        this.props.comments.forEach((comment) => {
+        var comments = [];
+        this.props.comments.forEach(function(comment) {
             if(comment.parent_id === 0) {
                 comments.push(
                     <CommentListItem

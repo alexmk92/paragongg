@@ -1,5 +1,5 @@
 (function() {
-    const background = document.querySelector(".interactive-background");
+    var background = document.querySelector(".interactive-background");
     if(typeof background !== "undefined" || background !== null) {
 
     }

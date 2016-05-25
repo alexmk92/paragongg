@@ -3,10 +3,10 @@ var ReactDOM  = require('react-dom');
 var ReactTabs = require('react-tabs');
 var FlipMove  = require('react-flip-move');
 
-const Tab       = ReactTabs.Tab
-const Tabs      = ReactTabs.Tabs
-const TabList   = ReactTabs.TabList
-const TabPanel  = ReactTabs.TabPanel
+var Tab       = ReactTabs.Tab
+var Tabs      = ReactTabs.Tabs
+var TabList   = ReactTabs.TabList
+var TabPanel  = ReactTabs.TabPanel
 
 var GuidesFeed = React.createClass({
     getInitialState: function() {
@@ -29,8 +29,8 @@ var HeroListItem = React.createClass({
     render: function() {
         return (
             <li>
-                <a href={`/guides?hero=${this.props.hero.name}`}>
-                    <img src={`https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/${this.props.hero.code}/portrait_small.png`} />
+                <a href={"/guides?hero=" +this.props.hero.name }>
+                    <img src={"https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/" + this.props.hero.code + "/portrait_small.png" } />
                     <span>{this.props.hero.name}</span>
                 </a>
             </li>
@@ -50,7 +50,7 @@ var GuideFilter = React.createClass({
     },
     render: function() {
         var heroes = [];
-        this.props.heroes.forEach((hero) => {
+        this.props.heroes.forEach(function(hero) {
             if(hero.name.toLowerCase().indexOf(this.state.search_term.toLowerCase()) > -1) {
                 heroes.push(
                     <HeroListItem

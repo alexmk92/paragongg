@@ -124,12 +124,12 @@ var CardPreview = React.createClass({
             this.state.tooltip.abortClose()
         } else {
             this.setState({
-                tooltip : new CardTooltip({ targetNode : event.target, parentNodeName : "card-preview", uniqueId : this.props.name, dataURL : `/api/v1/cards/find/${this.props.code}` })
+                tooltip : new CardTooltip({ targetNode : event.target, parentNodeName : "card-preview", uniqueId : this.props.name, dataURL : "/api/v1/cards/find/"+ this.props.code })
             })
         }
     },
     blur: function(event) {
-        this.state.tooltip.destructor((payload) => {
+        this.state.tooltip.destructor(function(payload) {
             this.state.tooltip = payload.targetNode
         })
     },

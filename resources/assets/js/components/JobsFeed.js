@@ -23,7 +23,7 @@ var JobsFeed = React.createClass({
 
         httpRequest.open("GET", '/admin/api/jobs?nocache=' + Math.random(), true);
 
-        httpRequest.onreadystatechange = () => {
+        httpRequest.onreadystatechange = function() {
             if (httpRequest.readyState === XMLHttpRequest.DONE) {
                 if (httpRequest.status === 200) {
                     this.setState({jobs: JSON.parse(httpRequest.responseText)});
@@ -65,9 +65,6 @@ var JobsFeed = React.createClass({
 
 var Job = React.createClass({
     render: function () {
-        var divStyle = {
-            backgroundImage: 'url(assets/images/cards/' + this.props.code + '/background.png)',
-        }
         var payload = JSON.parse(this.props.payload);
         return (
             <div className="job">

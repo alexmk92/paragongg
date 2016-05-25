@@ -3,9 +3,9 @@ var Helpers    = require('../helpers');
 
 module.exports = {
     fetchComments: function (threadId) {
-        const request = Helpers.ajax({
+        var request = Helpers.ajax({
             type: "GET",
-            url: `/api/v1/comments/thread/${threadId}`,
+            url: "/api/v1/comments/thread/" +threadId,
             contentType: "application/json",
             cache: true
         });
@@ -27,7 +27,7 @@ module.exports = {
             cache: false,
             returnType: "json",
             data: [{"body": comment, "thread_id": 1}]
-        }, (error, data) => {
+        }, function(error, data) {
             if (error === null && data !== null) {
                 callback(null, data);
             } else {
@@ -42,7 +42,7 @@ module.exports = {
     upVoteComment: function (comment) {
         // upVoteComment is an ActionCreator, it needs to return an action, an object with a type property
         // the type decribes the action
-        console.log(`A comment has been selected for up voting: ${comment.created_at}`);
+        console.log("A comment has been selected for up voting:" +comment.created_at);
         return {
             type: t.COMMENT_UP_VOTED,
             payload: comment

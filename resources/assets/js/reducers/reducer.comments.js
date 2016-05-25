@@ -2,7 +2,7 @@
 var t = require('../actions/types');
 
 // State is not the application state, only the state this reducer is responsible for
-module.exports = function(state = [], action) {
+module.exports = function(state, action) {
     console.log("Action received: ", action);
     console.log("I AM THE COMMENT REDUCER");
     switch(action.type) {

@@ -24,7 +24,7 @@ var AbilityItem = React.createClass({
 
 var AbilityFeed = React.createClass({
     render: function() {
-        const abilities = this.props.abilities.map((ability) => {
+        var abilities = this.props.abilities.map(function(ability) {
             return (
                 <AbilityItem key={ ability.name } ability={ ability } />
             );

@@ -63,8 +63,8 @@ var StatisticPanel = React.createClass({
         particlesJS('particle-layer', ParticleTheme.leaves());
     },
     sliderChanged: function(value) {
-        const domNode = `<p>RANK<br/><span>${ value }</span></p>`;
-        const elem = document.querySelector(".rc-slider-handle");
+        var domNode = "<p>RANK<br/><span>" + value + "</span></p>";
+        var elem = document.querySelector(".rc-slider-handle");
         if(typeof elem !== "undefined" && elem !== null) {
             elem.innerHTML = domNode;
             this.setState({ multiplier : value });
@@ -72,19 +72,19 @@ var StatisticPanel = React.createClass({
     },
     render: function() {
         /*
-        const affinities = this.props.hero.affinities.map((affinity) => {
+        var affinities = this.props.hero.affinities.map(function(affinity) {
             return(
                   <li><span>{ affinity }</span></li>
             );
         });
         */
-        const affinities = <li>No affinities</li>;
-        const roles = <li>No suggested roles</li>;
+        var affinities = <li>No affinities</li>;
+        var roles = <li>No suggested roles</li>;
 
-        const statistics = this.state.stats.map((stat) => {
-            const scale = this.state.multiplier === 1 ? 0 : stat.scaling;
-            const value = isNaN(stat.value) ? stat.value : Helpers.delimitNumbers((stat.value + ( scale* this.state.multiplier)).toFixed(1));
-            const scaling = stat.scaling !== null ? <span className="scaling">({ stat.scaling } per level)</span> : "";
+        var statistics = this.state.stats.map(function(stat) {
+            var scale = this.state.multiplier === 1 ? 0 : stat.scaling;
+            var value = isNaN(stat.value) ? stat.value : Helpers.delimitNumbers((stat.value + ( scale* this.state.multiplier)).toFixed(1));
+            var scaling = stat.scaling !== null ? <span className="scaling">({ stat.scaling } per level)</span> : "";
             return (
                 <li key={stat.label}>
                     <span>{ stat.label }</span>

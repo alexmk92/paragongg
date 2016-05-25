@@ -59,7 +59,7 @@ var NewsFeed = React.createClass({
         }
     },
     render: function() {
-        const childElements = this.state.news.map(function(element){
+        var childElements = this.state.news.map(function(element){
             return (
                 <a className="article-preview" href={"/news/" + element.slug} key={element.slug}>
                     <div className="article-image">
