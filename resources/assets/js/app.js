@@ -2,7 +2,7 @@
 require("../sass/app.scss");
 
 // Libraries
-//require("./lib/particles.min.js");
+require("./lib/InteractiveParallax");
 
 // Non React components
 require("./components/CardTooltip");
@@ -17,6 +17,5 @@ require("./components/NewsFeed");
 require("./components/JobsFeed");
 require("./containers/CommentFeed");
 require("./components/CommentFeed");
-require("./components/HeroSpinner");
-require("./components/HeroStats");
+require("./components/heroes/HeroContainer");
 require("./components/AbilityFeed");

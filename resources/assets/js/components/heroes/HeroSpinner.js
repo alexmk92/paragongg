@@ -1,6 +1,5 @@
 var React = require('react');
-var ReactDOM = require('react-dom');
-var Helpers = require('../helpers');
+var Helpers = require('../../helpers');
 
 var HeroSpinner = React.createClass({
     getInitialState: function () {
@@ -98,5 +97,4 @@ var HeroSpinner = React.createClass({
     }
 });
 
-var element = document.getElementById("heroes-spinner");
-if (element) ReactDOM.render(<HeroSpinner heroes={ HEROES } activeHero={ HERO } heroDisplayCount={ 5 }/>, element);
+module.exports = HeroSpinner;

@@ -1,0 +1,80 @@
+var InteractiveParallax = function(props)  {
+    this.initialise(props);
+};
+
+InteractiveParallax.prototype.initialise = function(props) {
+    this.state = {
+        type : props.type,
+        target : props.target,
+        strength : props.strength || 0,
+        mousePosition : { x : 0, y : 0 },
+        scale : props.scale || 1,
+        maxScaleFactor : 0.25,
+        horizontalMultiplier : props.horizontalMultiplier || 1,
+        verticalMultiplier : props.verticalMultiplier || 1,
+        backgroundURL : props.backgroundURL || "",
+        repeat : typeof props.repeat === "undefined" ? true : props.repeat,
+        cover : typeof props.cover === "undefined" ? true : props.cover,
+        animationSpeed : typeof props.animationSpeed === "undefined" ? 100 : props.animationSpeed,
+        startScale : props.scale
+    };
+
+    //window.addEventListener("scroll", this.zoomElement.bind(this));
+};
+
+InteractiveParallax.prototype.mousePositionChanged = function(e) {
+    this.state.mousePosition = { x : e.pageX || e.clientX, y : e.pageY || e.clientY };
+    this.transitionElement();
+};
+
+InteractiveParallax.prototype.transitionElement = function() {
+    var elem = document.querySelector(this.state.target);
+    if(elem) {
+        var bounds      = elem.getBoundingClientRect();
+        var strengthX   = (this.state.strength / bounds.width);
+        var strengthY   = (this.state.strength / bounds.height);
+        var mouseX      = this.state.mousePosition.x;
+        var mouseY      = this.state.mousePosition.y;
+
+        mouseX = (mouseX - bounds.left) - (bounds.width / 2);
+        mouseY = (mouseY - bounds.top) - (bounds.height / 2);
+
+        var newX = ((strengthX * mouseX) * -1) * this.state.horizontalMultiplier;
+        var newY = ((strengthY * mouseY) * -1) * this.state.verticalMultiplier;
+
+        // Use matrix to move the background
+        var styleString = "";
+        styleString += `background-image : url(${this.state.backgroundURL});`;
+        styleString += ` background-repeat : ${!this.state.repeat ? "no-repeat" : "repeat-x"};`;
+        styleString += ` background-size : ${!this.state.cover ? "inherit" : "contain"};`;
+
+        styleString += ` -webkit-transform : matrix(${this.state.scale},0,0,${this.state.scale},${newX},${newY});`;
+            //"-moz-transform": "matrix(" + settings.scale + ",0,0," + settings.scale + "," + newX + "," + newY + ")"
+            //"-o-transform": "matrix(" + settings.scale + ",0,0," + settings.scale + "," + newX + "," + newY + ")"
+            //"transform": "matrix(" + settings.scale + ",0,0," + settings.scale + "," + newX + "," + newY + ")"
+            //"-webkit-transition": "none"
+            //"-moz-transition": "none"
+            //"-o-transition": "none"
+        styleString += ` transition: ${this.state.animationSpeed}ms;`;
+        elem.setAttribute("style", styleString);
+    }
+};
+
+InteractiveParallax.prototype.zoomElement = function(e) {
+    e.preventDefault();
+    console.log(this.state);
+    var elem = document.querySelector(this.state.target);
+    if(elem) {
+        console.log(elem);
+        var offsetTop = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+        var totalHeight = elem.getBoundingClientRect().height;
+        var scalePercentage = parseFloat((offsetTop / totalHeight) * 100) > 1 ? 100 : parseFloat((offsetTop / totalHeight) * 100);
+
+        console.log(`${this.state.startScale} + ${this.state.maxScaleFactor} / ${scalePercentage} = ${this.state.startScale + (this.state.maxScaleFactor / scalePercentage)}`)
+        var newScale = parseFloat(this.state.startScale + (this.state.maxScaleFactor / scalePercentage));
+        this.state.scale = parseFloat((this.state.startScale + (this.state.maxScaleFactor / scalePercentage)));
+        this.transitionElement();
+    }
+};
+
+module.exports = InteractiveParallax;
