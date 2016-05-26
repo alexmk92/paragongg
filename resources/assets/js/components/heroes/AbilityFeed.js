@@ -1,5 +1,4 @@
 var React = require('react');
-var ReactDOM = require('react-dom');
 
 var AbilityItem = React.createClass({
     getInitialState: function() {
@@ -31,12 +30,13 @@ var AbilityFeed = React.createClass({
         });
         return (
             <div>
-                <h2>ABILITIES</h2>
+                <div id="ability-header">
+                    <h2>ABILITIES</h2>
+                </div>
                 { abilities }
             </div>
         );
     }
 });
 
-var element = document.getElementById("abilities-wrapper");
-if(element) ReactDOM.render( <AbilityFeed abilities={ HERO.abilities } />, element);
+module.exports = AbilityFeed;

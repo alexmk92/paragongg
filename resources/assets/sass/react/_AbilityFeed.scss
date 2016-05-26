@@ -1,28 +1,50 @@
-.ability-container {
-    border-left: 1px solid #13161f;
-    border-right: 1px solid #13161f;
-    background: #08090d;
+#abilities-wrapper {
+    background: #13161f;
 
-    &:nth-child(odd) {
-        background: #13161f;
+    #ability-header {
+        text-align: center;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-align: center;
+        align-items: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        height: 300px;
+        padding: 40px 20px;
+
+        h2 {
+            font-size: 3em;
+            background: -webkit-linear-gradient(#fff, #ccc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 500;
+        }
+    }
+
+    .ability-container {
+        background: #08090d;
+
+        &:nth-child(even) {
+            background: #13161f;
+            & .video-wrapper {
+                float: right;
+            }
+            &.text-wrapper {
+                float: right;
+            }
+        }
         & .video-wrapper {
-            float: right;
+            position: relative;
+            display: inline-block;
+            width: 49%;
+            min-height: 550px;
         }
-        &.text-wrapper {
-            float: right;
-        }
-    }
-    & .video-wrapper {
-        position: relative;
-        display: inline-block;
-        width: 49%;
-        min-height: 550px;
-    }
 
-    & .text-wrapper {
-        position: relative;
-        display: inline-block;
-        width: 49%;
-        min-height: 550px;
+        & .text-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 49%;
+            min-height: 550px;
+        }
     }
 }

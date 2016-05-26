@@ -1,8 +1,4 @@
 var InteractiveParallax = function(props)  {
-    this.initialise(props);
-};
-
-InteractiveParallax.prototype.initialise = function(props) {
     this.state = {
         type : props.type,
         target : props.target,
@@ -16,10 +12,13 @@ InteractiveParallax.prototype.initialise = function(props) {
         repeat : typeof props.repeat === "undefined" ? true : props.repeat,
         cover : typeof props.cover === "undefined" ? true : props.cover,
         animationSpeed : typeof props.animationSpeed === "undefined" ? 100 : props.animationSpeed,
-        startScale : props.scale
+        startScale : props.scale,
+        enableScrollZoom: !typeof props.scrollZoom === "undefined"
     };
 
-    //window.addEventListener("scroll", this.zoomElement.bind(this));
+    if(this.state.enableScrollZoom) {
+        window.addEventListener("scroll", this.zoomElement.bind(this));
+    }
 };
 
 InteractiveParallax.prototype.mousePositionChanged = function(e) {
@@ -62,7 +61,9 @@ InteractiveParallax.prototype.transitionElement = function() {
     }
 };
 
+// TODO Implement the scroll view event, the code below is very buggy!
 InteractiveParallax.prototype.zoomElement = function(e) {
+    /*
     e.preventDefault();
     console.log(this.state);
     var elem = document.querySelector(this.state.target);
@@ -77,6 +78,7 @@ InteractiveParallax.prototype.zoomElement = function(e) {
         this.state.scale = parseFloat((this.state.startScale + (this.state.maxScaleFactor / scalePercentage)));
         this.transitionElement();
     }
+    */
 };
 
 module.exports = InteractiveParallax;
