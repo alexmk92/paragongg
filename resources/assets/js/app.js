@@ -18,4 +18,4 @@ require("./components/JobsFeed");
 require("./containers/CommentFeed");
 require("./components/CommentFeed");
 require("./components/heroes/HeroContainer");
-require("./components/AbilityFeed");
+require("./components/heroes/AbilityFeed");

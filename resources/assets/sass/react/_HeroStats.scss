@@ -5,6 +5,77 @@ canvas {
     vertical-align: bottom;
 }
 
+#top-content-wrapper {
+
+    height: 350px;
+    width: 100%;
+    margin-top: -24px;
+
+    .hero-stat-summary {
+        height: 100%;
+        display: inline-flex;
+        align-items : center;
+        justify-content: center;
+        width: 33%;
+        text-align: center;
+        padding: 20px;
+
+        &:nth-child(even) {
+            background: #10131B;
+        }
+
+        span {
+            font-family: "Roboto Condensed", sans-serif, Arial;
+            font-weight: 100;
+            color: #5a606f;
+        }
+
+        p {
+            line-height: 1.2em;
+            margin-top: 5px;
+            color: #fff;
+            font-weight: 400;
+            font-size: 2.5em;
+            padding: 0px 20px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            & a:hover {
+                cursor: pointer;
+            }
+
+            &.stat-link {
+                font-size: 1em;
+                font-weight: 100;
+                font-family: "Roboto Condensed", sans-serif, Arial;
+                color: #5a606f;
+                padding: 0px;
+                margin-top: -12px;
+            }
+        }
+    }
+}
+
+#gauge-container {
+    width: 49%;
+    float: right;
+    max-height: 350px;
+    overflow: hidden;
+    position: relative;
+
+    .gauge {
+        width: 300px;
+        height: 350px;
+        pointer-events: none;
+        position: relative;
+        display: inline-block;
+
+        div:first-child {
+            top: -50px;
+        }
+    }
+}
+
 #particle-layer {
     top: 0;
     position: absolute;

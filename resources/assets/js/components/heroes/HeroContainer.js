@@ -3,6 +3,8 @@ var ReactDOM = require("react-dom");
 var InteractiveParallax = require("../../lib/InteractiveParallax");
 var HeroSpinner = require("./HeroSpinner");
 var HeroStats = require("./HeroStats");
+var HeroGraph = require("./HeroGraph");
+var AbilityFeed = require("./AbilityFeed");
 
 var HeroContainer = React.createClass({
     getInitialState : function() {
@@ -16,7 +18,7 @@ var HeroContainer = React.createClass({
             this.setState({ backgroundParallax : new InteractiveParallax({
                 type : "background-image",
                 target : "#hero-background",
-                strength : 4,
+                strength : 2,
                 scale : 1,
                 repeat : true,
                 cover : true,
@@ -26,7 +28,6 @@ var HeroContainer = React.createClass({
                 backgroundURL : "/assets/hero/" + HERO.name.toLowerCase() + "/terrain.jpg"
             }) })
         } else {
-            console.log("Setting pos");
             this.state.backgroundParallax.mousePositionChanged(e);
         }
     },
@@ -38,23 +39,31 @@ var HeroContainer = React.createClass({
         };
         var modelURL = "/assets/hero/" + HERO.name + "/portrait.png";
         return(
-            <div onMouseOver={this.updateParallax} className="hero-container">
-                <div id="hero-background" style={styles}></div>
-                <div id="heroes-spinner">
-                    <HeroSpinner heroes={ HEROES } activeHero={ HERO } heroDisplayCount={ 5 }/>
-                </div>
-                <div id="left-wrapper">
-                    <div id="hero-stats">
-                        <HeroStats hero={ HERO } />
+            <div>
+                <div onMouseOver={this.updateParallax} className="hero-container">
+                    <div id="hero-background" style={styles}></div>
+                    <div id="heroes-spinner">
+                        <HeroSpinner heroes={ HEROES } activeHero={ HERO } heroDisplayCount={ 5 }/>
                     </div>
-                    <div id="blur-layer"></div>
-                </div>
-                <div id="particle-layer"></div>
-                <div className="anim-fadeIn" id="hero-model-wrapper">
-                    <div id="hero-model" className="anim-flicker">
-                        <img src={modelURL} />
-                        <div id="blur"></div>
+                    <div id="left-wrapper">
+                        <div id="hero-stats">
+                            <HeroStats hero={ HERO } />
+                        </div>
+                        <div id="blur-layer"></div>
                     </div>
+                    <div id="particle-layer"></div>
+                    <div className="anim-fadeIn" id="hero-model-wrapper">
+                        <div id="hero-model" className="anim-flicker">
+                            <img src={modelURL} />
+                            <div id="blur"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="graph-wrapper">
+                    <HeroGraph />
+                </div>
+                <div id="abilities-wrapper">
+                    <AbilityFeed abilities={ HERO.abilities } />
                 </div>
             </div>
         );
