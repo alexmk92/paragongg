@@ -138,7 +138,7 @@ module.exports = {
                     image: {
                         src: '/assets/images/particles/spark.png',
                         width: 100,
-                        height: 100
+                        height: 150
                     }
                 },
                 opacity: {
@@ -152,7 +152,7 @@ module.exports = {
                     }
                 },
                 size: {
-                    value: 7,
+                    value: 6,
                     random: true,
                     anim: {
                         enable: false,

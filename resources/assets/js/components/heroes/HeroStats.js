@@ -59,7 +59,7 @@ var HeroStats = React.createClass({
     componentDidMount: function() {
         this.sliderChanged(1);
 
-        particlesJS('particle-layer', ParticleTheme.leaves());
+        particlesJS('particle-layer', ParticleTheme.sparks());
     },
     sliderChanged: function(value) {
         var domNode = "<p>RANK<br/><span>" + value + "</span></p>";

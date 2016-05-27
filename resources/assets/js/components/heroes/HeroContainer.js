@@ -37,7 +37,7 @@ var HeroContainer = React.createClass({
             "backgroundRepeat" : "no-repeat",
             "backgroundSize" : "contain"
         };
-        var modelURL = "/assets/hero/" + HERO.name + "/portrait.png";
+        var modelURL = "/assets/hero/" + HERO.name.toLowerCase() + "/portrait.png";
         return(
             <div>
                 <div onMouseOver={this.updateParallax} className="hero-container">
