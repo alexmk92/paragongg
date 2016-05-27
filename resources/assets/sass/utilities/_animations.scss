@@ -14,6 +14,9 @@
     animation: flicker 10s normal infinite;
 }
 
+.anim-slowZoom {
+    animation: slowZoom 20s alternate infinite;
+}
 
 @keyframes fadeIn {
     0% { opacity: 0; }
@@ -80,5 +83,14 @@
     100%,
     10.75% {
         opacity: 1
+    }
+}
+
+@keyframes slowZoom {
+    from   {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.1);
     }
 }
