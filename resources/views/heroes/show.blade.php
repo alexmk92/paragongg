@@ -2,8 +2,6 @@
 @section('body')
     <div id="hero-wrapper">
     </div>
-    <div id="graph-wrapper">GRAPH COMPONENT HERE</div>
-    <div id="abilities-wrapper">ABILITY COMPONENT HERE</div>
 @endsection
 @section('scripts')
     <script type="text/javascript">
