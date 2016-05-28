@@ -5,6 +5,7 @@
     right: 20px;
     width: 100%;
     max-width: 350px;
+    z-index: 1337;
 }
 .notification {
     font-size: 14px;
@@ -15,7 +16,6 @@
     opacity: 1;
     cursor: pointer;
     animation: fadeOut 5s linear forwards;
-    z-index: 1337;
     background: $panel-color;
     &.notification-success {
         border-left: 5px solid $green;

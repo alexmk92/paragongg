@@ -1,7 +1,12 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
 body {
     background: #08090d url('/assets/background.jpg') top right no-repeat;
     background-size: 100%;
-    animation: fadeIn 500ms;
+    animation: fadeIn 1000ms;
+    margin: 0 0 150px;
 }
 #page {
     margin: 100px auto 0;
