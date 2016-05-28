@@ -67,6 +67,16 @@
                     <span class="details highlight">Question</span><span class="details">0 Responses</span>
                     <span class="content">What is the respawn time for jungle monsters?</span>
                 </a></li>
+                <li><a href="" class="cf">
+                    <img src="https://randomuser.me/api/portraits/men/76.jpg" class="user-avatar"/>
+                    <span class="details highlight">Question</span><span class="details">0 Responses</span>
+                    <span class="content">What is the respawn time for jungle monsters?</span>
+                </a></li>
+                <li><a href="" class="cf">
+                    <img src="https://randomuser.me/api/portraits/women/78.jpg" class="user-avatar"/>
+                    <span class="details highlight">Question</span><span class="details">0 Responses</span>
+                    <span class="content">What is the respawn time for jungle monsters?</span>
+                </a></li>
             </ul>
         </div>
         <div class="summary-info-guides">

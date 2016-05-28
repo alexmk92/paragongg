@@ -35,6 +35,16 @@
         right: 15px;
     }
 }
+.global-notification {
+    background: $panel-color;
+    border-left: 5px solid $primary-highlight;
+    padding: 20px;
+    width: 100%;
+    margin-bottom: 50px;
+    .fa {
+        margin-right: 10px;
+    }
+}
 
 @keyframes fadeOut {
     0% {
