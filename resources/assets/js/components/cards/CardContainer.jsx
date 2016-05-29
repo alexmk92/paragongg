@@ -24,7 +24,7 @@ var CardContainer = React.createClass({
             return rarityDetails;
         })();
         var modelStyles = {
-            boxShadow : "0px 0px 500px " + rarity.color,
+            boxShadow : "0px 0px 250px " + rarity.color,
             opacity : 0.65
         };
         return (
@@ -41,6 +41,7 @@ var CardContainer = React.createClass({
                         <div id="card-model" className="anim-flicker">
                             <div id="card-model-container">
                                 <img src={cardModelURL} />
+                                <span>{ card.name }</span>
                             </div>
                             <div id="card-glow-layer" style={modelStyles}></div>
                         </div>

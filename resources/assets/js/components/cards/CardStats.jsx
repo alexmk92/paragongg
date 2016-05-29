@@ -89,7 +89,7 @@ var CardStats = React.createClass({
         console.log(passives);
         if(passives.length > 0) {
             jsx = <div className="top-spacer">
-                <span className="stat-header">PASSIVES</span>
+                <span className="stat-header">EFFECTS</span>
                 <ul id="passive-container" className="stat-container">
                     { passives }
                 </ul>
