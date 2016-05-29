@@ -24,7 +24,7 @@ var CardContainer = React.createClass({
             return rarityDetails;
         })();
         var modelStyles = {
-            boxShadow : "0px 0px 500px " + rarity.color,
+            boxShadow : "0px 0px 250px " + rarity.color,
             opacity : 0.65
         };
         return (
