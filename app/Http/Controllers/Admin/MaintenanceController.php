@@ -24,9 +24,9 @@ class MaintenanceController extends Controller
         $updateImages = false;
         if(isset($_GET['update_images']) && $_GET['update_images'] == true) $updateImages = true;
 
-        // Get latest card list
+        // Get latest cards list
         $client = new Client();
-        $res = $client->request('GET', 'https://developer-paragon.epicgames.com/v1/card/list', [
+        $res = $client->request('GET', 'https://developer-paragon.epicgames.com/v1/cards/list', [
             'headers' => [
                 'Accept'        => 'application/json',
                 'Authorization' => 'Bearer '.APIToken(),
@@ -36,7 +36,7 @@ class MaintenanceController extends Controller
 
         $response = json_decode($res);
 
-        // Run through each card returned
+        // Run through each cards returned
         foreach($response as $object) {
             $this->dispatch(new UpdateCardObject($object, $updateImages));
         }
@@ -64,7 +64,7 @@ class MaintenanceController extends Controller
 
         $response = json_decode($res);
 
-        // Run through each card returned
+        // Run through each cards returned
         foreach($response as $object) {
             $this->dispatch(new UpdateHeroObject($object, $updateImages));
         }

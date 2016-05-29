@@ -57,7 +57,7 @@ CardTooltip.prototype.abortClose = function() {
     this.state.isFadingOut = false;
     var tooltipNode = document.getElementById(this.state.uniqueId);
     //if(typeof tooltipNode !== "undefined" && tooltipNode)
-        tooltipNode.className = "tooltip-wrapper tooltip-fade-show";
+    tooltipNode.className = "tooltip-wrapper tooltip-fade-show";
 };
 
 CardTooltip.prototype.destructor = function(callback) {

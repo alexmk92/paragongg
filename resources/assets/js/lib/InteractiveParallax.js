@@ -44,19 +44,23 @@ InteractiveParallax.prototype.transitionElement = function() {
         // Use matrix to move the background
         var repeat = !this.state.repeat ? 'no-repeat' : 'repeat-x';
         var size = !this.state.cover ? 'inherit' : 'contain';
+        
         var styleString = "";
         styleString += "background-image : url(" + this.state.backgroundURL + ");";
         styleString += " background-repeat : " + repeat + ";";
         styleString += " background-size : " + size + ";";
 
+        newY = 0;
+
         styleString += " -webkit-transform : matrix(" + this.state.scale + ",0,0," + this.state.scale + ", " + newX + "," + newY + ");";
-            //"-moz-transform": "matrix(" + settings.scale + ",0,0," + settings.scale + "," + newX + "," + newY + ")"
-            //"-o-transform": "matrix(" + settings.scale + ",0,0," + settings.scale + "," + newX + "," + newY + ")"
-            //"transform": "matrix(" + settings.scale + ",0,0," + settings.scale + "," + newX + "," + newY + ")"
-            //"-webkit-transition": "none"
-            //"-moz-transition": "none"
-            //"-o-transition": "none"
+        styleString += "-moz-transform: matrix(" + this.state.scale + ",0,0," + this.state.scale + "," + newX + "," + newY + ")";
+        styleString += "-o-transform: matrix(" + this.state.scale + ",0,0," + this.state.scale + "," + newX + "," + newY + ")";
+        styleString += "transform: matrix(" + this.state.scale + ",0,0," + this.state.scale + "," + newX + "," + newY + ")";
+        styleString += "-webkit-transition: " + this.state.animationSpeed + "ms;";
+        styleString += "-moz-transition: " + this.state.animationSpeed + "ms;";
+        styleString += "-o-transition: " + this.state.animationSpeed + "ms;";
         styleString += " transition: " + this.state.animationSpeed + "ms;";
+
         elem.setAttribute("style", styleString);
     }
 };
