@@ -1,7 +1,7 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var FlipMove = require('react-flip-move');
-var CardTooltip = require('./CardTooltip');
+var CardTooltip = require('../CardTooltip');
 
 var CardsFeed = React.createClass({
     getInitialState: function(){
@@ -55,11 +55,11 @@ var CardsFeed = React.createClass({
 
             if(_this.shouldBeVisible(card) == true) {
                 cards.push(<CardPreview affinity={card.affinity}
-                    key={card.code}
-                    owned={card.owned}
-                    code={card.code}
-                    cost={card.cost}
-                    name={card.name}
+                                        key={card.code}
+                                        owned={card.owned}
+                                        code={card.code}
+                                        cost={card.cost}
+                                        name={card.name}
                 />);
             }
         }, _this);
@@ -73,43 +73,43 @@ var CardsFeed = React.createClass({
                     <div className="sidebox panel cf">
                         <h4>Filter cards</h4>
                         <form>
-                        <label>Search by name</label>
-                        <input onChange={_this.inputChanged} type="text" placeholder="Card Name" />
-                        <label>Affinity</label>
-                        <select name="affinity" onChange={_this.filter} defaultValue="All">
-                            <option value="All">All</option>
-                            <option value="Affinity.Universal">Universal</option>
-                            <option value="Affinity.Corruption">Corruption</option>
-                            <option value="Affinity.Fury">Fury</option>
-                            <option value="Affinity.Growth">Growth</option>
-                            <option value="Affinity.Intellect">Intellect</option>
-                            <option value="Affinity.Order">Order</option>
-                        </select>
-                        <label>Type</label>
-                        <select name="type" onChange={_this.filter} defaultValue="All">
-                            <option value="All">All</option>
-                            <option value="one">Equipment</option>
-                            <option value="two">Upgrade</option>
-                            <option value="zero">Token</option>
-                            <option value="three">Prime Helix</option>
-                        </select>
-                        <label>Rarity</label>
-                        <select name="type" onChange={_this.filter} defaultValue="All">
-                            <option value="All">All</option>
-                            <option value="Rarity.Common">Common</option>
-                            <option value="Rarity.Uncommon">Uncommon</option>
-                            <option value="Rarity.Rare">Rare</option>
-                            <option value="Rarity.EpicRare">Epic Rare</option>
-                        </select>
-                        { AUTHED ? <label><input name="owned" type="checkbox" onChange={_this.filter} /> Show only cards I own</label> : ''}
-                        <label><input name="hasActive" type="checkbox" onChange={_this.filter} /> Has active/passive</label>
+                            <label>Search by name</label>
+                            <input onChange={_this.inputChanged} type="text" placeholder="Card Name" />
+                            <label>Affinity</label>
+                            <select name="affinity" onChange={_this.filter} defaultValue="All">
+                                <option value="All">All</option>
+                                <option value="Affinity.Universal">Universal</option>
+                                <option value="Affinity.Corruption">Corruption</option>
+                                <option value="Affinity.Fury">Fury</option>
+                                <option value="Affinity.Growth">Growth</option>
+                                <option value="Affinity.Intellect">Intellect</option>
+                                <option value="Affinity.Order">Order</option>
+                            </select>
+                            <label>Type</label>
+                            <select name="type" onChange={_this.filter} defaultValue="All">
+                                <option value="All">All</option>
+                                <option value="one">Equipment</option>
+                                <option value="two">Upgrade</option>
+                                <option value="zero">Token</option>
+                                <option value="three">Prime Helix</option>
+                            </select>
+                            <label>Rarity</label>
+                            <select name="type" onChange={_this.filter} defaultValue="All">
+                                <option value="All">All</option>
+                                <option value="Rarity.Common">Common</option>
+                                <option value="Rarity.Uncommon">Uncommon</option>
+                                <option value="Rarity.Rare">Rare</option>
+                                <option value="Rarity.EpicRare">Epic Rare</option>
+                            </select>
+                            { AUTHED ? <label><input name="owned" type="checkbox" onChange={_this.filter} /> Show only cards I own</label> : ''}
+                            <label><input name="hasActive" type="checkbox" onChange={_this.filter} /> Has active/passive</label>
                         </form>
                     </div>
                 </div>
                 <div className="wrapper">
                     <ul className="card-list">
                         <FlipMove>
-                        {cards}
+                            {cards}
                         </FlipMove>
                     </ul>
                 </div>
@@ -145,19 +145,19 @@ var CardPreview = React.createClass({
         }
     },
     render: function() {
-        var _this = this;
-
         var divStyle = {
-            backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/' + _this.props.code + '/background_small.png)'
+            backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/' + this.props.code + '/background_small.png)'
         };
         var className = "card-preview ";
-        if(typeof _this.props.owned !== 'undefined') {
-            className += (_this.props.owned) ? "owned" : "missing";
+        if(typeof this.props.owned !== 'undefined') {
+            className += (this.props.owned) ? "owned" : "missing";
         }
         return (
-            <li onMouseOver={_this.focused} onMouseLeave={_this.blur} className={className} style={divStyle}>
-                <div className="card-name">{_this.props.name}</div>
-            </li>
+            <a href={ "/cards/" + this.props.name }>
+                <li onMouseOver={this.focused} onMouseLeave={this.blur} className={className} style={divStyle}>
+                    <div className="card-name">{this.props.name}</div>
+                </li>
+            </a>
         )
     }
 });

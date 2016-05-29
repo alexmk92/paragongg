@@ -36,7 +36,7 @@ class CardController extends Controller
         return view('cards.index')->with('cards', $cards);
     }
     
-    // Get a user's card collection
+    // Get a user's cards collection
     private function cardCollection()
     {
         $user = Auth::user();
@@ -67,7 +67,7 @@ class CardController extends Controller
     // Create
     public function create()
     {
-        //$card = new Card();
+        //$cards = new Card();
         
         return view('cards.create');
     }
@@ -75,7 +75,7 @@ class CardController extends Controller
     // Store
     public function store()
     {
-        //$card = new Card();
+        //$cards = new Card();
 
         return view('cards.create');
     }
@@ -102,15 +102,16 @@ class CardController extends Controller
         $card = Card::where('slug', $slug)->firstOrFail();
         $card->delete();
 
-        return view('guides.delete');
+        return view('cards.delete');
     }
 
     // Show
     public function show($slug)
     {
-        $card = Card::where('slug', $slug)->firstOrFail();
+        //$cards = Card::where('slug', $slug)->firstOrFail();    WE NEED TO IMPLEMENT SLUGS
+        $card = Card::where('name', $slug)->firstOrFail();
 
-        return view('guides.edit')->with('card', $card);
+        return view('cards.show')->with('card', $card);
     }
     
 }
