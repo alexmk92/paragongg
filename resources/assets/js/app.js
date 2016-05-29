@@ -19,3 +19,4 @@ require("./containers/CommentFeed");
 require("./components/CommentFeed");
 require("./components/heroes/HeroContainer");
 require("./components/heroes/AbilityFeed");
+require("./components/decks/DeckBuilder");
