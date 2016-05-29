@@ -14,6 +14,9 @@ module.exports = {
     entry: {
         "app" : "./js/app.js",
     },
+    resolve: {
+        extensions: ['', '.js', '.jsx']
+    },
     output: {
         path: __dirname + "/public/build/",
         filename: "js/[name].min.js"
