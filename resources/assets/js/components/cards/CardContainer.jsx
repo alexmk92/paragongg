@@ -41,6 +41,7 @@ var CardContainer = React.createClass({
                         <div id="card-model" className="anim-flicker">
                             <div id="card-model-container">
                                 <img src={cardModelURL} />
+                                <span>{ card.name }</span>
                             </div>
                             <div id="card-glow-layer" style={modelStyles}></div>
                         </div>
