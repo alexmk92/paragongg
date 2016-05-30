@@ -6,6 +6,7 @@ var InteractiveParallax = function(props)  {
         mousePosition : { x : 0, y : 0 },
         scale : props.scale || 1,
         maxScaleFactor : 0.25,
+        disableY : typeof props.disableY === "undefined",
         horizontalMultiplier : props.horizontalMultiplier || 1,
         verticalMultiplier : props.verticalMultiplier || 1,
         backgroundURL : props.backgroundURL || "",
@@ -15,6 +16,7 @@ var InteractiveParallax = function(props)  {
         startScale : props.scale,
         enableScrollZoom: !typeof props.scrollZoom === "undefined"
     };
+    console.log("Parallax state is: ", this.state);
 
     if(this.state.enableScrollZoom) {
         window.addEventListener("scroll", this.zoomElement.bind(this));
@@ -40,17 +42,18 @@ InteractiveParallax.prototype.transitionElement = function() {
 
         var newX = ((strengthX * mouseX) * -1) * this.state.horizontalMultiplier;
         var newY = ((strengthY * mouseY) * -1) * this.state.verticalMultiplier;
+        if(!this.state.disableY) newY = 0;
 
         // Use matrix to move the background
         var repeat = !this.state.repeat ? 'no-repeat' : 'repeat-x';
         var size = !this.state.cover ? 'inherit' : 'contain';
         
         var styleString = "";
-        styleString += "background-image : url(" + this.state.backgroundURL + ");";
-        styleString += " background-repeat : " + repeat + ";";
-        styleString += " background-size : " + size + ";";
-
-        newY = 0;
+        if(this.state.backgroundURL !== "") {
+            styleString += "background-image : url(" + this.state.backgroundURL + ");";
+            styleString += " background-repeat : " + repeat + ";";
+            styleString += " background-size : " + size + ";";
+        }
 
         styleString += " -webkit-transform : matrix(" + this.state.scale + ",0,0," + this.state.scale + ", " + newX + "," + newY + ");";
         styleString += "-moz-transform: matrix(" + this.state.scale + ",0,0," + this.state.scale + "," + newX + "," + newY + ")";

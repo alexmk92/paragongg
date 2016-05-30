@@ -1,11 +1,25 @@
 var React = require("react");
 var ReactDOM = require("react-dom");
 var CardStats = require("./CardStats");
+//var ContentFlipper = require("../../lib/ContentFlipper");   EVENTUALLY USE THE FLIPPER
+var InteractiveParallax = require("../../lib/InteractiveParallax");
 
 var CardContainer = React.createClass({
     getInitialState: function() {
         return {
-            card : CARD || null
+            card : CARD || null,
+            flipper : null
+        }
+    },
+    flipCard: function(event) {
+        if(typeof this.state.flipper === "undefined" || this.state.flipper === null) {
+            this.state.flipper = new InteractiveParallax({
+                target : "#card-model-wrapper",
+                strength: 2,
+                animationSpeed : 150
+            });
+        } else {
+            this.state.flipper.mousePositionChanged(event);
         }
     },
     render: function() {
@@ -28,7 +42,7 @@ var CardContainer = React.createClass({
             opacity : 0.65
         };
         return (
-            <div>
+            <div onMouseMove={this.flipCard}>
                 <div className="card-container">
                     <div id="particle-layer"></div>
                     <div id="left-wrapper">

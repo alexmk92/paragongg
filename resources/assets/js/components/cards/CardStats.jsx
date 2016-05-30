@@ -34,7 +34,8 @@ var CardStats = React.createClass({
         }
     },
     componentDidMount: function() {
-        particlesJS('particle-layer', ParticleTheme.sparks());
+        console.log("COLOR: ", this.props.rarity.color);
+        particlesJS('particle-layer', ParticleTheme.embers());
     },
     getAffinity: function(str) {
         return str.replace("Affinity.", "");

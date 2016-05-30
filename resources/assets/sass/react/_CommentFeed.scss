@@ -1,4 +1,4 @@
-$avatar-width : 60px;
+$avatar-width : 40px;
 $avatar-height : $avatar-width;
 $avatar-radius : calc(#{$avatar-width} / 2);
 
@@ -6,6 +6,7 @@ $avatar-radius : calc(#{$avatar-width} / 2);
     margin-right: 400px;
     background: none;
     border-right: 1px solid #343a4a;
+    font-weight: 100;
 
     &:before {
         content : "Comments";
@@ -42,6 +43,7 @@ $avatar-radius : calc(#{$avatar-width} / 2);
                 max-width: 100%;
                 min-height: 75px;
                 padding: 13px;
+                border: 1px solid #151922;
             }
 
             button {
@@ -76,17 +78,17 @@ $avatar-radius : calc(#{$avatar-width} / 2);
 
             img.comment-avatar {
                 position: absolute;
-                left: 0px;
+                left: 20px;
                 width: $avatar-width;
                 height: $avatar-height;
                 border-radius: $avatar-radius;
-                border: 2px solid #585858;
             }
         }
     }
 
     #comment-list {
         padding-top: 20px;
+        font-weight: 100;
 
         .comment-item {
             position: relative;
@@ -116,14 +118,13 @@ $avatar-radius : calc(#{$avatar-width} / 2);
 
             img.comment-avatar {
                 position: absolute;
-                left: 0px;
+                left: 20px;
                 width: $avatar-width;
                 height: $avatar-height;
                 border-radius: $avatar-radius;
-                border: 2px solid #585858;
             }
             span.author-name {
-                font-size: 1.2em;
+                font-size: 1em;
                 color: $primary-highlight;
             }
             i.vote-button {
@@ -145,7 +146,7 @@ $avatar-radius : calc(#{$avatar-width} / 2);
             }
             span.created-at {
                 font-size: 0.8em;
-                color: #9A9A9A;
+                color: #5a606f;
 
                 &:before {
                     content : " -  "
