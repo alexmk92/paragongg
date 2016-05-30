@@ -15,6 +15,13 @@ class CardController extends Controller
     // Index
     public function index()
     {
+        $cards = getCards();
+
+        return view('cards.index')->with('cards', $cards);
+    }
+
+    public function getCards()
+    {
         $cards = Card::all('name', 'code', 'cost', 'type', 'affinity', 'rarity');
         $cardsOwned = null;
 
@@ -33,7 +40,7 @@ class CardController extends Controller
             }
         }
 
-        return view('cards.index')->with('cards', $cards);
+        return $cards;
     }
     
     // Get a user's cards collection

@@ -17,7 +17,8 @@ class DeckController extends Controller
     // Create
     public function create()
     {
-        return view('decks.create');
+        $cards = app('App\Http\Controllers\CardController')->getCards();
+        return view('decks.create')->with('cards', $cards);
     }
 
     // Store

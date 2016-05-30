@@ -2,22 +2,37 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 
 var DeckBuilderBuilds = require("./DeckBuilderBuilds");
+var CardModal         = require("../cards/CardModal");
 
 var DeckBuilder = React.createClass({
     getInitialState: function(){
         return {
             deck: [],
             builds: [],
+            modal: false
         }
     },
+    addCard: function(e) {
+        console.log("adding card");
+        console.log(e.currentTarget);
+    },
+    toggleModal: function() {
+        var modal = this.state.modal ? false : true;
+        this.setState({modal: modal});
+    },
     render: function() {
+        var cardList = [];
+        this.state.deck.forEach(function(card) {
+            console.log(card);
+        });
         return (
             <div>
+                <CardModal visible={this.state.modal} toggleModal={this.toggleModal} addCard={this.addCard} cards={CARDS}/>
                 <div id="sidebar">
                     <div className="sidebox panel cf">
                         <ul className="deck-list">
                             <div className="deck-list-actions">
-                                <a className="btn btn-primary"><i className="fa fa-plus" aria-hidden="true"></i> Add card to deck</a>
+                                <a className="btn btn-primary" onClick={this.toggleModal}><i className="fa fa-plus" aria-hidden="true"></i> Add card to deck</a>
                                 <span className="deck-total">39/40 Cards</span>
                             </div>
                             <li style={{backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/Beta_S_U_02/icon.png)'}}>
@@ -25,125 +40,6 @@ var DeckBuilder = React.createClass({
                                     <span className="count">1x</span>
                                     <span className="name">The Archmagus</span>
                                     <span className="cost"></span>
-                                </div>
-                            </li>
-                            <li style={{backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/Beta_S_U_06/icon.png)'}}>
-                                <div className="wrapper">
-                                    <span className="count">1x</span>
-                                    <span className="name">Health Potion</span>
-                                    <span className="cost">1CP</span>
-                                </div>
-                            </li>
-                            <li style={{backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/Beta_C_F_02/icon.png)'}}>
-                                <div className="wrapper">
-                                    <span className="count">1x</span>
-                                    <span className="name">Madstone Gem</span>
-                                    <span className="cost">2CP</span>
-                                </div>
-                            </li>
-                            <li style={{backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/Beta_C_U_24/icon.png)'}}>
-                                <div className="wrapper">
-                                    <span className="count">1x</span>
-                                    <span className="name">Agoran Scepter</span>
-                                    <span className="cost">3CP</span>
-                                </div>
-                            </li>
-                            <li style={{backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/Beta_C_F_13/icon.png)'}}>
-                                <div className="wrapper">
-                                    <span className="count">1x</span>
-                                    <span className="name">Brand of the Ironeater</span>
-                                    <span className="cost">3CP</span>
-                                </div>
-                            </li>
-                            <li style={{backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/Beta_C_F_04/icon.png)'}}>
-                                <div className="wrapper">
-                                    <span className="count">1x</span>
-                                    <span className="name">Meltdown</span>
-                                    <span className="cost">3CP</span>
-                                </div>
-                            </li>
-                            <li style={{backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/Beta_C_F_06/icon.png)'}}>
-                                <div className="wrapper">
-                                    <span className="count">1x</span>
-                                    <span className="name">Micro-Nuke</span>
-                                    <span className="cost">3CP</span>
-                                </div>
-                            </li>
-                            <li style={{backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/Beta_C_U_02/icon.png)'}}>
-                                <div className="wrapper">
-                                    <span className="count">3x</span>
-                                    <span className="name">Riftmagus Scepter</span>
-                                    <span className="cost">3CP</span>
-                                </div>
-                            </li>
-                            <li style={{backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/Beta_C_U_29/icon.png)'}}>
-                                <div className="wrapper">
-                                    <span className="count">1x</span>
-                                    <span className="name">Staff of Adamant</span>
-                                    <span className="cost">3CP</span>
-                                </div>
-                            </li>
-                            <li style={{backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/Beta_C_U_18/icon.png)'}}>
-                                <div className="wrapper">
-                                    <span className="count">1x</span>
-                                    <span className="name">Whirling Wand</span>
-                                    <span className="cost">3CP</span>
-                                </div>
-                            </li>
-                            <li style={{backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/Beta_C_U_05/icon.png)'}}>
-                                <div className="wrapper">
-                                    <span className="count">1x</span>
-                                    <span className="name">Minor Kinetic</span>
-                                    <span className="cost">1CP</span>
-                                </div>
-                            </li>
-                            <li style={{backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/Beta_C_U_04/icon.png)'}}>
-                                <div className="wrapper">
-                                    <span className="count">6x</span>
-                                    <span className="name">Cast</span>
-                                    <span className="cost">2CP</span>
-                                </div>
-                            </li>
-                            <li style={{backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/Beta_C_U_06/icon.png)'}}>
-                                <div className="wrapper">
-                                    <span className="count">4x</span>
-                                    <span className="name">Kinetic</span>
-                                    <span className="cost">2CP</span>
-                                </div>
-                            </li>
-                            <li style={{backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/Beta_C_U_55/icon.png)'}}>
-                                <div className="wrapper">
-                                    <span className="count">1x</span>
-                                    <span className="name">Shock</span>
-                                    <span className="cost">2CP</span>
-                                </div>
-                            </li>
-                            <li style={{backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/Beta_C_U_47/icon.png)'}}>
-                                <div className="wrapper">
-                                    <span className="count">5x</span>
-                                    <span className="name">Wound</span>
-                                    <span className="cost">2CP</span>
-                                </div>
-                            </li>
-                            <li style={{backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/Beta_C_I_16/icon.png)'}}>
-                                <div className="wrapper">
-                                    <span className="count">2x</span>
-                                    <span className="name">Focused Shock</span>
-                                    <span className="cost">3CP</span>
-                                </div>
-                            </li>
-                            <li style={{backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/Beta_U_U_14/icon.png)'}}>
-                                <div className="wrapper">
-                                    <span className="count">1x</span>
-                                    <span className="name">Greater Drain</span>
-                                    <span className="cost">3CP</span>
-                                </div>
-                            </li>
-                            <li style={{backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/Beta_U_U_02/icon.png)'}}>
-                                <div className="wrapper">
-                                    <span className="count">8x</span>
-                                    <span className="name">Major Cast</span>
-                                    <span className="cost">3CP</span>
                                 </div>
                             </li>
                         </ul>
