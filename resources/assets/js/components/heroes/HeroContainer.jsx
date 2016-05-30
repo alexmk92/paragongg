@@ -22,6 +22,7 @@ var HeroContainer = React.createClass({
                 scale : 1,
                 repeat : true,
                 cover : true,
+                disableY : true,
                 animationSpeed : 350,
                 verticalMultiplier : 0,
                 horizontalMultiplier : 1,
