@@ -15,7 +15,7 @@ class CardController extends Controller
     // Index
     public function index()
     {
-        $cards = getCards();
+        $cards = $this->getCards();
 
         return view('cards.index')->with('cards', $cards);
     }
