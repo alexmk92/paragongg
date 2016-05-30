@@ -1,0 +1,32 @@
+.build-list {
+    padding-top: 30px;
+    li {
+        display: inline-block;
+        width: 113px;
+        height: 150px;
+        background: url('/assets/images/cards/card-placeholder.png') no-repeat;
+        background-size: 113px 150px;
+        opacity: 0.3;
+        margin-bottom: 0;
+        margin-right: 10px;
+        padding-top: 30px;
+        position: relative;
+        cursor: pointer;
+        .slot-label {
+            position: absolute;
+            top: -30px;
+            text-align: center;
+            left: 0;
+            right: 0;
+            font-family: $font-condensed;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+        &:hover {
+            opacity: 0.5;
+        }
+        &.filled {
+            opacity: 1;
+        }
+    }
+}

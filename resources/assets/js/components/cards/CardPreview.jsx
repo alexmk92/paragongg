@@ -30,18 +30,16 @@ var CardPreview = React.createClass({
         }
     },
     render: function() {
-        var _this = this;
-
         var divStyle = {
-            backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/' + _this.props.code + '/background_small.png)'
+            backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/' + this.props.code + '/background_small.png)'
         };
         var className = "card-preview ";
-        if(typeof _this.props.owned !== 'undefined') {
-            className += (_this.props.owned) ? "owned" : "missing";
+        if(typeof this.props.owned !== 'undefined') {
+            className += (this.props.owned) ? "owned" : "missing";
         }
         return (
-            <li onClick={this.props.onSelect} onMouseOver={_this.focused} onMouseLeave={_this.blur} className={className} style={divStyle}>
-                <div className="card-name">{_this.props.name}</div>
+            <li onClick={this.props.onSelect} onMouseOver={this.focused} onMouseLeave={this.blur} className={className} style={divStyle}>
+                <div className="card-name">{this.props.name}</div>
             </li>
         )
     }

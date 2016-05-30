@@ -61,7 +61,7 @@ var CardModal = React.createClass({
                                         code={card.code}
                                         cost={card.cost}
                                         name={card.name}
-                                        onSelect={this.props.addCard}
+                                        onSelect={this.props.addCard.bind(null, card)}
                 />);
             }
         }, _this);

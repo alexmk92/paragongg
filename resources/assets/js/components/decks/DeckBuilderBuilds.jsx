@@ -12,10 +12,19 @@ var DeckBuilderBuilds = React.createClass({
         }
     },
     render: function() {
+
         return (
             <Tabs defaultSelected={0}>
-                <TabPanel title="Early Game">Lorem ipsum dolor sit amet, consectetur adipisicing elit. A architecto aspernatur debitis, eaque explicabo facere ipsam ipsum itaque iusto laboriosam natus non nostrum placeat quo repudiandae, saepe sapiente tempora voluptate!</TabPanel>
-                <TabPanel title="Late Game">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam consectetur ex laudantium magnam maxime nulla omnis? Deserunt dicta eum incidunt inventore iure, nesciunt repellendus reprehenderit sed temporibus veniam voluptates, voluptatum.</TabPanel>
+                <TabPanel title="Early Game">
+                    <ul className="build-list">
+                        <li id="c1" className="active"><span className="slot-label">Active</span></li>
+                        <li id="c2" className="active"><span className="slot-label">Active</span></li>
+                        <li id="c3" className="active"><span className="slot-label">Active</span></li>
+                        <li id="c4" className="active"><span className="slot-label">Active</span></li>
+                        <li id="c5" className="passive"><span className="slot-label">Passive</span></li>
+                        <li id="c6" className="passive"><span className="slot-label">Passive</span></li>
+                    </ul>
+                </TabPanel>
             </Tabs>
         )
     }

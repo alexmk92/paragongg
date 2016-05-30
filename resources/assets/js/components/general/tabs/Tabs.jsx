@@ -6,23 +6,34 @@ var Tabs = React.createClass({
     getInitialState: function() {
         return {
             selected: this.props.defaultSelected,
-            tabs: this.props.children
+            tabs: [this.props.children]
         }
     },
     componentWillMount: function() {
+        console.log("count: " + React.Children.count(this.state.tabs));
         this.setState({tabCount: React.Children.count(this.state.tabs)});
     },
     getTabs: function() {
         var tabs = [];
-        for(var i = 0; i < this.state.tabCount; i++) {
-            tabs.push(<Tab key={i} reactKey={i} selected={this.state.selected} title={this.state.tabs[i].props.title} onSelect={this.setSelected.bind(this, i)}/>);
+        if(this.state.tabCount > 0) {
+            for(var i = 0; i < this.state.tabCount; i++) {
+                tabs.push(<Tab key={i}
+                               reactKey={i}
+                               selected={this.state.selected}
+                               title={this.state.tabs[i].props.title}
+                               onSelect={this.setSelected.bind(this, i)}/>);
+            }
         }
         return tabs;
     },
     getPanels: function() {
         var panels = [];
-        for(var i = 0; i < this.state.tabCount; i++) {
-            panels.push(<TabPanel key={i} reactKey={i} selected={this.state.selected}>{this.state.tabs[i].props.children}</TabPanel>)
+        if(this.state.tabCount > 0) {
+            for (var i = 0; i < this.state.tabCount; i++) {
+                panels.push(<TabPanel key={i}
+                                      reactKey={i}
+                                      selected={this.state.selected}>{this.state.tabs[i].props.children}</TabPanel>)
+            }
         }
         return panels;
     },
@@ -30,7 +41,17 @@ var Tabs = React.createClass({
         this.setState({selected: tab});
     },
     createTab: function() {
-        var newTab = <TabPanel title="New build">Example new tab</TabPanel>;
+        var newTab =
+            <TabPanel title="New build">
+                <ul className="build-list">
+                    <li id="c1" className="active"><span className="slot-label">Active</span></li>
+                    <li id="c2" className="active"><span className="slot-label">Active</span></li>
+                    <li id="c3" className="active"><span className="slot-label">Active</span></li>
+                    <li id="c4" className="active"><span className="slot-label">Active</span></li>
+                    <li id="c5" className="passive"><span className="slot-label">Passive</span></li>
+                    <li id="c6" className="passive"><span className="slot-label">Passive</span></li>
+                </ul>
+            </TabPanel>;
         this.setState({
             tabs: this.state.tabs.concat(newTab),
             tabCount: this.state.tabCount+1
