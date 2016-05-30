@@ -105,11 +105,14 @@ var CommentBox = React.createClass({
         }
     },
     render: function() {
-        var buttonClass = (!this.state.isFocused && !this.state.posting) ? "hidden" : "";
-        return(
-            <div id="comment-box">
-                <form className={this.state.posting ? "disabled" : ""}>
-                    <img className="comment-avatar" src="https://s.gravatar.com/avatar/bae38bd358b0325c7a3c049a4671a9cf?s=80" alt="Your avatar" />
+        if(AUTHED) {
+            var buttonClass = (!this.state.isFocused && !this.state.posting) ? "hidden" : "";
+            return (
+                <div id="comment-box">
+                    <form className={this.state.posting ? "disabled" : ""}>
+                        <img className="comment-avatar"
+                             src="https://s.gravatar.com/avatar/bae38bd358b0325c7a3c049a4671a9cf?s=80"
+                             alt="Your avatar"/>
                     <textarea
                         onFocus={function() {this.setState({ isFocused : true })}}
                         onBlur={function() {this.setState({ isFocused : false })}}
@@ -119,17 +122,22 @@ var CommentBox = React.createClass({
                         placeholder="Enter your comment"
                         value={this.state.comment}>
                     </textarea>
-                    <button
-                        className={ buttonClass }
-                        onClick={this.post}>Post
-                    </button>
-                    <button
-                        className={ buttonClass }
-                        onClick={this.cancelPost}>Cancel
-                    </button>
-                </form>
-            </div>
-        )
+                        <button
+                            className={ buttonClass }
+                            onClick={this.post}>Post
+                        </button>
+                        <button
+                            className={ buttonClass }
+                            onClick={this.cancelPost}>Cancel
+                        </button>
+                    </form>
+                </div>
+            )
+        } else {
+            return (
+                <p id="login">Please <a href="/login">login</a> or <a href="/register">sign up</a> to post your own responses.</p>
+            )
+        }
     }
 });
 

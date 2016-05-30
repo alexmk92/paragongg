@@ -3,6 +3,12 @@ $avatar-height : $avatar-width;
 $avatar-radius : calc(#{$avatar-width} / 2);
 
 #comment-feed {
+
+    #login {
+        padding-top: 15px;
+        font-style: italic;
+    }
+
     margin-right: 400px;
     background: none;
     border-right: 1px solid #343a4a;
