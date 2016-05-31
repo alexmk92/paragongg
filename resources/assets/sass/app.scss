@@ -11,6 +11,7 @@
 "utilities/typography",
 "utilities/animations",
 "utilities/media",
+"utilities/_affinities",
 "utilities/fonts";
 
 // Layout
@@ -35,6 +36,7 @@
 // React components
 @import
 "react/Tabbable",
+"react/Filter",
 "react/AccountNav",
 "react/StatsOverview",
 "react/PlayerStatsOverview",
