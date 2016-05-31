@@ -1,5 +1,5 @@
-$card-width : 113px;
-$card-height : 150px;
+$card-width : 146.9px;
+$card-height : 195px;
 #cards-feed {
     h2 {
         margin-bottom: 0px;
@@ -11,8 +11,8 @@ $card-height : 150px;
     .card-preview {
         z-index: 1;
         display: inline-block;
-        margin-right: 10px;
-        margin-bottom: 10px;
+        margin-right: 20px;
+        margin-bottom: 20px;
         width: $card-width;
         height: $card-height;
         background-size: $card-width $card-height;
