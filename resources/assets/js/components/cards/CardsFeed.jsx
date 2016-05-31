@@ -28,7 +28,9 @@ var CardsFeed = React.createClass({
         return(
             <div>
                 <h2>Paragon Cards</h2>
-                <CardFilter cards={this.props.cards} onFilterChanged={this.renderCards} />
+                <div id="filter">
+                    <CardFilter cards={this.props.cards} onFilterChanged={this.renderCards} />
+                </div>
                 <div className="wrapper">
                     <ul className="card-list">
                         <FlipMove>

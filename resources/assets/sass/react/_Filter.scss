@@ -3,6 +3,16 @@
     margin-right: 15px;
     text-align: center;
     width: 34px;
+
+    &:hover .underline {
+        margin-top: 8px;
+        opacity: 0.6;
+
+        &.active {
+            margin-top: 6px;
+        }
+    }
+
     i {
         margin: 0 auto;
         font-size: 34px;
