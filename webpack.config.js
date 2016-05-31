@@ -12,7 +12,7 @@ const sassLoaders = [
 module.exports = {
     context: path.join(__dirname, "resources/assets"),
     entry: {
-        "app" : "./js/app.js",
+        "app" : "./js/app.js"
     },
     resolve: {
         extensions: ['', '.js', '.jsx']
@@ -25,14 +25,14 @@ module.exports = {
         loaders: [
             {
                 test: /onload.js?$/,
-                loader: 'babel-loader',
+                loader: 'babel-loader'
             },
             {
                 test: /\.js?$/,
                 exclude: /node_modules/,
                 loader: 'babel-loader',
                 query: {
-                    presets: ['react'],
+                    presets: ['react']
                 }
             },
             {
@@ -40,7 +40,7 @@ module.exports = {
                 exclude: /node_modules/,
                 loader: 'babel-loader',
                 query: {
-                    presets: ['react'],
+                    presets: ['react']
                 }
             },
             {

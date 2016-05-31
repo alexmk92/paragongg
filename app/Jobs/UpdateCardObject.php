@@ -46,7 +46,7 @@ class UpdateCardObject extends Job implements ShouldQueue
             $this->updateImages = true;
         }
 
-        $cardDetails = $client->request('GET', 'https://oriondata-public-service-prod09.ol.epicgames.com/v1/cards/' . $this->object->id, [
+        $cardDetails = $client->request('GET', 'https://oriondata-public-service-prod09.ol.epicgames.com/v1/card/' . $this->object->id, [
             'headers' => [
                 'Accept' => 'application/json',
                 'Authorization' => 'Bearer ' . APIToken(),
@@ -68,7 +68,7 @@ class UpdateCardObject extends Job implements ShouldQueue
         if ($this->updateImages) {
 
             // BACKGROUND
-            $background = $client->request('GET', 'https://oriondata-public-service-prod09.ol.epicgames.com/v1/cards/' . $this->object->id . '/image/background.png', [
+            $background = $client->request('GET', 'https://oriondata-public-service-prod09.ol.epicgames.com/v1/card/' . $this->object->id . '/image/background.png', [
                 'headers' => [
                     'Accept' => 'image/png',
                     'Authorization' => 'Bearer ' . APIToken(),
@@ -83,7 +83,7 @@ class UpdateCardObject extends Job implements ShouldQueue
             $storage->getDriver()->put('images/cards/' . $this->object->id . '/background_small.png', $background_small, ["CacheControl" => "max-age=3600"]);
 
             // ICON
-            $icon = $client->request('GET', 'https://oriondata-public-service-prod09.ol.epicgames.com/v1/cards/' . $this->object->id . '/image/icon.png', [
+            $icon = $client->request('GET', 'https://oriondata-public-service-prod09.ol.epicgames.com/v1/card/' . $this->object->id . '/image/icon.png', [
                 'headers' => [
                     'Accept' => 'image/png',
                     'Authorization' => 'Bearer ' . APIToken(),

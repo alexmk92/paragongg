@@ -26,7 +26,7 @@ class MaintenanceController extends Controller
 
         // Get latest cards list
         $client = new Client();
-        $res = $client->request('GET', 'https://developer-paragon.epicgames.com/v1/cards/list', [
+        $res = $client->request('GET', 'https://developer-paragon.epicgames.com/v1/card/list', [
             'headers' => [
                 'Accept'        => 'application/json',
                 'Authorization' => 'Bearer '.APIToken(),
