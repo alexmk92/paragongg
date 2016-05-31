@@ -48,7 +48,13 @@ var CardsFilter = React.createClass({
     getInitialState: function(){
         return {
             filter_owned : false,
-            filter_affinities : [],
+            filter_affinities : [
+                { "type" : "Fury" },
+                { "type" : "Order" },
+                { "type" : "Growth" },
+                { "type" : "Intellect" },
+                { "type" : "Corruption" }
+            ],
             filter_type : 'All',
             search_term : "",
             affinities : [
@@ -96,6 +102,7 @@ var CardsFilter = React.createClass({
             });
             return matches;
         }
+        /*
         if(_this.state.filter_owned == true && card.owned == false) {
             return false;
         }
@@ -105,6 +112,7 @@ var CardsFilter = React.createClass({
         if(card.name.toLowerCase().indexOf(_this.state.search_term.toLowerCase()) > -1) {
             return true;
         }
+        */
         return false;
     },
     shouldComponentUpdate: function(nextProps, nextState) {
@@ -154,9 +162,10 @@ var CardsFilter = React.createClass({
     },
     render: function() {
         var _this = this;
-        var affinityFilters = this.state.affinities.map(function(affinity) {
+        var affinityFilters = this.state.affinities.map(function(affinity, i) {
             return <ToggleFilter key={ "affinity_toggle_" + affinity.name.toLowerCase() }
                                  affinity={affinity}
+                                 label={ i === 0 ? "AFFINITIES" : "" }
                                  onToggleFilterChanged={_this.affinityFilterChanged}
             />
         });
