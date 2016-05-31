@@ -1,0 +1,52 @@
+$pgg-version: "1.0.0";
+
+@font-face {
+    font-family: 'ParagonGG';
+    src: url('/assets/fonts/paragongg-webfont.eot?v=#{$pgg-version}');
+    src: url('/assets/fonts/paragongg-webfont.eot?#iefix&v=#{$pgg-version}') format('embedded-opentype'),
+    url('/assets/fonts/paragongg-webfont.woff2?v=#{$pgg-version}') format('woff2'),
+    url('/assets/fonts/paragongg-webfont.woff?v=#{$pgg-version}') format('woff'),
+    url('/assets/fonts/paragongg-webfont.ttf?v=#{$pgg-version}') format('truetype'),
+    url('/assets/fonts/paragongg-webfont.svg?v=#{$pgg-version}#paragonggregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.pgg {
+    display: inline-block;
+    font-size: inherit; // can't have font-size inherit on line above, so need to override
+    text-rendering: auto; // optimizelegibility throws things off #1094
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: "ParagonGG";
+    &.pgg-amber {
+        &:before { content: '\f000'; }
+    }
+    &.pgg-epic {
+        &:before { content: '\f001'; }
+    }
+    &.pgg-affinity-order {
+        &:before { content: '\f002'; }
+    }
+    &.pgg-affinity-intellect {
+        &:before { content: '\f003'; }
+    }
+    &.pgg-affinity-growth {
+        &:before { content: '\f004'; }
+    }
+    &.pgg-affinity-fury {
+        &:before { content: '\f005'; }
+    }
+    &.pgg-affinity-corruption {
+        &:before { content: '\f006'; }
+    }
+    &.pgg-affinity-order {
+        &:before { content: '\f007'; }
+    }
+    &.pgg-arrow-left {
+        &:before { content: '\f008'; }
+    }
+    &.pgg-arrow-right {
+        &:before { content: '\f009'; }
+    }
+}

@@ -1,9 +1,9 @@
 @extends('layouts/app')
 @section('body')
-    <h2>Heroes</h2>
-    @foreach($heroes as $hero)
-        <img src="https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/{{ $hero->code }}/portrait.png"/>
-         <p>{{ $hero->toJson() }}</p>
-        <hr>
-    @endforeach
+    <div id="heroes-feed"></div>
+@endsection
+@section('scripts')
+    <script>
+        var HEROES = {!! json_encode($heroes) !!};
+    </script>
 @endsection

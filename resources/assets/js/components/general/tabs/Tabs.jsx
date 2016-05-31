@@ -10,7 +10,6 @@ var Tabs = React.createClass({
         }
     },
     componentWillMount: function() {
-        console.log("count: " + React.Children.count(this.state.tabs));
         this.setState({tabCount: React.Children.count(this.state.tabs)});
     },
     getTabs: function() {

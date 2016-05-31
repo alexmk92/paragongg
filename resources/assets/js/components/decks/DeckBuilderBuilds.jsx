@@ -12,7 +12,10 @@ var DeckBuilderBuilds = React.createClass({
         }
     },
     render: function() {
-
+        var showAvailableSlots = "";
+        if(this.props.cardSelected) {
+            showAvailableSlots = <i className="available-slot fa fa-arrow-circle-o-up" aria-hidden="true"></i>;
+        }
         return (
             <Tabs defaultSelected={0}>
                 <TabPanel title="Early Game">

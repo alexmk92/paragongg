@@ -9,7 +9,8 @@ var DeckBuilder = React.createClass({
         return {
             deck: [],
             builds: [],
-            modal: false
+            modal: false,
+            cardSelected: false
         }
     },
     addCard: function(card) {
@@ -19,18 +20,29 @@ var DeckBuilder = React.createClass({
         this.toggleModal();
     },
     deckCount: function() {
-        console.log(this.state.deck.length)
         return this.state.deck.length;
     },
     toggleModal: function() {
         var modal = this.state.modal ? false : true;
         this.setState({modal: modal});
     },
+    selectCard: function(card) {
+        if(this.state.cardSelected && this.state.cardSelected.code == card.code) {
+            this.setState({cardSelected: false});
+        } else {
+            this.setState({cardSelected: card});
+        }
+    },
     render: function() {
         var cardList = [];
+        var _this = this;
         this.state.deck.forEach(function(card) {
+            var className = "";
+            if(_this.state.cardSelected.code == card.code) {
+                className += " selected";
+            }
             var card = (
-                <li key={card.code} style={{backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/'+card.code+'/icon.png)'}}>
+                <li className={className} key={card.code} style={{backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/'+card.code+'/icon.png)'}} onClick={_this.selectCard.bind(_this, card)}>
                     <div className="wrapper">
                         <span className="count">1x</span>
                         <span className="name">{card.name}</span>
@@ -59,8 +71,8 @@ var DeckBuilder = React.createClass({
                     <div className="content-wrapper">
                         <span className="breadcrumb">Build a deck</span>
                         <input className="h2" defaultValue="My new deck" />
-                        <div className="p" contentEditable="true">Write a short description about your deck. What team compositions might you use this deck against? Under what situations would you use the different builds? Click here to edit the description text.</div>
-                        <DeckBuilderBuilds builds={this.state.builds}/>
+                        <div className="p">Write a short description about your deck. What team compositions might you use this deck against? Under what situations would you use the different builds? Click here to edit the description text.</div>
+                        <DeckBuilderBuilds builds={this.state.builds} cardSelected={this.state.cardSelected}/>
                         <form>
                             <label><input type="checkbox" defaultChecked /> Make this deck public</label>
                             <button name="publish" type="submit" className="btn"><i className="fa fa-check" aria-hidden="true"></i> Save this deck</button>

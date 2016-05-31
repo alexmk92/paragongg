@@ -1,0 +1,39 @@
+#heroes-feed {
+    .wrapper {
+        margin: 0 -15px;
+    }
+    .hero-list {
+        .hero-preview {
+            position: relative;
+            display: inline-block;
+            max-width: 244px;
+            max-height: 244px;
+            width: 244px;
+            height: 244px;
+            background-size: 244px 244px;
+            margin: 15px;
+            border: 1px solid #222222;
+            transition: all 0.2s;
+            .hero-preview-title {
+                position: absolute;
+                bottom: 0;
+                padding: 30px 20px 15px;
+                width: 100%;
+                text-align: center;
+                background: -moz-linear-gradient(top,  rgba(17,17,17,0) 0%, rgba(15,17,20,0.9) 50%, rgba(13,16,22,0.9) 100%); /* FF3.6-15 */
+                background: -webkit-linear-gradient(top,  rgba(17,17,17,0) 0%,rgba(15,17,20,0.9) 50%,rgba(13,16,22,0.9) 100%); /* Chrome10-25,Safari5.1-6 */
+                background: linear-gradient(to bottom,  rgba(17,17,17,0) 0%,rgba(15,17,20,0.9) 50%,rgba(13,16,22,0.9) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00111111', endColorstr='#e60d1016',GradientType=0 ); /* IE6-9 */
+                span {
+                    font-size: 16px;
+                    font-weight: 500;
+                    text-transform: uppercase;
+                }
+            }
+            &:hover {
+                border: 1px solid $faded-line;
+                filter: brightness(130%);
+            }
+        }
+    }
+}

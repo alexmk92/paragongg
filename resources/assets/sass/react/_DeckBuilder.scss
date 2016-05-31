@@ -22,6 +22,14 @@
             text-transform: uppercase;
             font-size: 14px;
         }
+        .available-slot {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            animation: flash 1s infinite linear;
+            color: $tertiary-highlight;
+        }
         &:hover {
             opacity: 0.5;
         }
