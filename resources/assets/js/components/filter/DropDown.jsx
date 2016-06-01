@@ -3,12 +3,46 @@ var React = require('react');
 var DropDown = React.createClass({
     getInitialState: function() {
         return {
-            isVisible: false
+            isVisible: false,
+            hasDismissEventListener: false
         };
     },
     optionClicked: function(option) {
         option.checked = !option.checked;
         this.props.onOptionChanged(option);
+    },
+    // If the body is clicked anywhere but this element, then dismiss
+    dismissMenuOnElementClick: function(event) {
+        var elem = event.target;
+        // Throttle the recursiveness so we dont need to traverse the entire tree
+        var iterations = 6;
+        var isDropDownMenu = false;
+        while(elem.parentNode && iterations > 0) {
+            // Check root node first
+            if(elem.className === "menu" || elem.className === "menu active" || elem.className === "button") {
+                isDropDownMenu = true;
+            } else {
+                // Traverse to child node and check for match
+                elem = elem.parentNode;
+                if(elem.className === "menu" || elem.className === "menu active" || elem.className === "button") {
+                    isDropDownMenu = true;
+                }
+            }
+            iterations--;
+        }
+        this.setState({ isVisible : isDropDownMenu });
+    },
+    shouldComponentUpdate: function(nextProps, nextState) {
+       return this.state !== nextState;
+    },
+    componentDidUpdate: function() {
+        if(this.state.isVisible) {
+            console.log("Bound event listener");
+            window.addEventListener('click', this.dismissMenuOnElementClick);
+        } else {
+            console.log("Removed event listener");
+            window.removeEventListener('click', this.dismissMenuOnElementClick);
+        }
     },
     // Update the visibility of the component
     dropDownClicked: function() {
@@ -39,6 +73,7 @@ var DropDown = React.createClass({
                     <span>S</span>
                 </div>
                 <div className={ "menu " + active }>
+                    <div className="tooltip-triangle"></div>
                     <div className="title">
                         <span>{ this.props.title }</span>
                         <div className="divider"></div>

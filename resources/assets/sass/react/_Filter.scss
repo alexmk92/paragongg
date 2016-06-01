@@ -64,10 +64,11 @@
     }
 
     .menu {
-        margin-top: 15px;
-        left: -149px; // (width / 2) - (button width / 2)
+        display: none;
+        margin-top: 25px;
+        left: -204px; // (width / 2) - (button width / 2)
         width: 450px;
-        max-height: 0;
+        max-height: 500px;
         min-width: 300px;
         position: absolute;
         background: #0d1016;
@@ -75,8 +76,21 @@
         z-index: 100;
         padding: 20px;
         opacity: 0;
-        overflow: hidden;
-        transition: max-height 300ms;
+
+        &.active {
+            display: block;
+            opacity: 1.0;
+        }
+
+        .tooltip-triangle {
+            top: -15px;
+            left: 215px;
+            position: absolute;
+            width: 22px;
+            height: 15px;
+            //background: black;
+            background: url("/assets/images/tooltip-triangle.png");
+        }
 
         & .title {
             text-align: center;
@@ -88,11 +102,6 @@
                 background: #5a606f;
                 margin: 20px auto;
             }
-        }
-
-        &.active {
-            max-height: 500px;
-            opacity: 1.0;
         }
 
         ul {
