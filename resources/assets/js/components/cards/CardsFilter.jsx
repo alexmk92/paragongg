@@ -1,6 +1,7 @@
 var React = require('react');
 var SearchBar = require('../filter/SearchBar');
 var ToggleFilter = require('../filter/ToggleFilter');
+var DropDown = require('../filter/DropDown');
 var CardPreview = require('./CardPreview');
 
 /* OLD FILTER
@@ -63,6 +64,25 @@ var CardsFilter = React.createClass({
                 { "name" : "Growth" },
                 { "name" : "Intellect" },
                 { "name" : "Corruption" }
+            ],
+            statistics : [
+                { "name" : "Energy Damage", "iconName" : "pgg-energy-damage", "checked" : true },
+                { "name" : "Physical Damage", "iconName" : "pgg-physical-damage", "checked" : true },
+                { "name" : "Energy Pen", "iconName" : "pgg-armor-penetration", "checked" : true },
+                { "name" : "Physical Pen", "iconName" : "pgg-physical-penetration", "checked" : true },
+                { "name" : "Energy Armor", "iconName" : "pgg-energy-armor", "checked" : true },
+                { "name" : "Physical Armor", "iconName" : "pgg-physical-armor-2", "checked" : true },
+                { "name" : "Crit Chance", "iconName" : "pgg-critical-strike-chance", "checked" : true },
+                { "name" : "Bonus Crit Damage", "iconName" : "pgg-critical-strike-damage", "checked" : true },
+                { "name" : "Max Mana", "iconName" : "pgg-max-mana", "checked" : true },
+                { "name" : "Max Health", "iconName" : "pgg-max-health", "checked" : true },
+                { "name" : "Mana Regen", "iconName" : "pgg-mana-regeneration", "checked" : true },
+                { "name" : "Health Regen", "iconName" : "pgg-health-regeneration", "checked" : true },
+                { "name" : "Max Movement Speed", "iconName" : "pgg-movement-speed", "checked" : true },
+                { "name" : "Cooldown Reduction", "iconName" : "pgg-cooldown-reduction", "checked" : true },
+                { "name" : "Lifesteal", "iconName" : "pgg-lifesteal", "checked" : true },
+                { "name" : "Attack Speed", "iconName" : "pgg-attack-speed", "checked" : true },
+                { "name" : "Harvester Placement Time", "iconName" : "pgg-harvester-placement-time", "checked" : true }
             ],
             types : [
                 { "name" : "Prime Helix" },
@@ -144,6 +164,17 @@ var CardsFilter = React.createClass({
     inputChanged: function(searchTerm) {
         this.setState({ search_term : searchTerm });
     },
+    dropDownChanged: function(newOption) {
+        console.log(this.props.cards);
+        var newStats = this.state.statistics.map(function(statistic) {
+            if(newOption === statistic)
+                return newOption;
+            return statistic;
+        }.bind(this));
+        this.setState({
+            statistics : newStats
+        });
+    },
     updateCards: function() {
         var _this = this;
         var cards = [];
@@ -171,12 +202,18 @@ var CardsFilter = React.createClass({
         });
 
         return(
-            <div>
+            <div className="filter-wrapper">
                 <SearchBar label="SEARCH BY NAME"
                            placeholder="Enter card name..."
                            onSearchTermChanged={this.inputChanged}
                 />
                 { affinityFilters }
+                <DropDown label="STATS"
+                          columns={ 2 }
+                          title="SELECT STATISTIC TYPES"
+                          options={ this.state.statistics }
+                          onOptionChanged={this.dropDownChanged}
+                />
             </div>
         )
     }

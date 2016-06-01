@@ -42,7 +42,6 @@ var CardPreview = React.createClass({
             className += (this.props.owned) ? "owned" : "missing";
         }
         return (
-
                 <li onClick={this.showDetail} onMouseOver={this.focused} onMouseLeave={this.blur} className={className} style={divStyle}>
                     <a href={ "/cards/" + this.props.name }>
                     <div className="card-name">{this.props.name}</div>
