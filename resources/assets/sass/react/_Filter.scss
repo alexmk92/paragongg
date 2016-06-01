@@ -16,6 +16,23 @@
     i {
         margin: 0 auto;
         font-size: 34px;
+        &.pgg {
+            &.pgg-affinity-universal {
+                color: $color-universal;
+            }
+            &.pgg-affinity-fury {
+                color: $color-fury;
+            }
+            &.pgg-affinity-intellect {
+                color: $color-intellect;
+            }
+            &.pgg-affinity-order {
+                color: $color-order;
+            }
+            &.pgg-affinity-corruption {
+                color: $color-corruption;
+            }
+        }
     }
     .underline {
         display: block;

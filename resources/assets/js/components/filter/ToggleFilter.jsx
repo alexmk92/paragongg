@@ -15,7 +15,7 @@ var ToggleFilter = React.createClass({
         return(
             <div className="toggle-filter" onClick={this.toggled}>
                 <label>{ this.props.label }</label>
-                <i className={ "fa fa-trophy affinity-" + this.props.affinity.name.toLowerCase() }></i>
+                <i className={ "pgg pgg-affinity-" + this.props.affinity.name.toLowerCase() }></i>
                 <div className={ "underline " + active }></div>
             </div>
         );
