@@ -8,8 +8,6 @@
 
 article {
     margin-right: 400px;
-    border-right: 1px solid $faded-line;
-    padding-right: 30px;
     padding-bottom: 50px;
     .article-header {
         margin-bottom: 30px;
@@ -38,6 +36,28 @@ article {
                 border-bottom: 1px dotted $secondary-highlight;
             }
         }
+    }
+}
+
+.toc {
+    font-size: 14px;
+    li {
+        margin-bottom: 0;
+    }
+    a {
+        display: block;
+        margin-bottom: 10px;
+        padding-left: 10px;
+    }
+    ul {
+        border-left: 1px solid $faded-line;
+    }
+    li {
+        list-style-type: decimal-leading-zero;
+        list-style-position: inside;
+    }
+    ul ul {
+        margin-left: 10px;
     }
 }
 

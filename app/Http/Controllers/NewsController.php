@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Article;
 use App\Http\Requests;
+use Parsedown;
+use TOC;
 use Illuminate\Http\Request;
 
 class NewsController extends Controller
@@ -33,12 +35,20 @@ class NewsController extends Controller
     public function show(Request $request, $slug)
     {
         $article = Article::where('slug', $slug)->firstOrFail();
-
         $thread = findOrCreateThread($request->path());
         $comments = $thread->comments;
 
+
+        $articleBody = (new Parsedown())->text($article->body);
+        $articleBody = (new TOC\MarkupFixer())->fix($articleBody);
+        $articleTOC  = (new TOC\TocGenerator())->getHtmlMenu($articleBody,2);
+
         $recent  = Article::where('slug', '!=', $slug)->take('10')->get();
-        return view('articles.show')->with('article', $article)->with('recent', $recent)->with('comments', $comments);
+        return view('articles.show')->with('article', $article)
+            ->with('articleBody', $articleBody)
+            ->with('articleTOC', $articleTOC)
+            ->with('recent', $recent)
+            ->with('comments', $comments);
     }
 
     // Edit

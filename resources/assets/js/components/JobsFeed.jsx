@@ -10,10 +10,11 @@ var JobsFeed = React.createClass({
     },
     componentDidMount: function () {
         this.getJobs();
-        setInterval(this.getJobs.bind(this), 1000);
+        setInterval(this.getJobs, 1000);
     },
     getJobs: function () {
         var httpRequest;
+        var _this = this;
 
         if (window.XMLHttpRequest) {
             httpRequest = new XMLHttpRequest();
@@ -26,12 +27,9 @@ var JobsFeed = React.createClass({
         httpRequest.onreadystatechange = function() {
             if (httpRequest.readyState === XMLHttpRequest.DONE) {
                 if (httpRequest.status === 200) {
-                    this.setState({jobs: JSON.parse(httpRequest.responseText)});
-                } else {
-                    // Log error
+                    _this.setState({jobs: JSON.parse(httpRequest.responseText)});
                 }
             }
-
         };
 
         httpRequest.send();

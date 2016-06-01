@@ -15,16 +15,15 @@
             <li><a href="/heroes" {{ Request::is( 'heroes*') ? 'class=active' : '' }}>Heroes</a></li>
              <li><a href="/community" {{ Request::is( 'community*') ? 'class=active' : '' }}>Community</a></li>
         </ul>
-        @if(Auth::user())
+        @if(auth()->check())
         <div id="account-nav"
-             @if(Auth::check()) data-username="{{ Auth::user()->username }}" data-amber="{{ Auth::user()->amber }}"
-                 @if(Auth::user()->isMod())
+              data-username="{{ auth()->user()->username }}" data-amber="{{ auth()->user()->amber }}"
+                @if(auth()->user()->isMod())
                     data-mod=true
-                 @endif
-                @if(Auth::user()->isAdmin())
-                    data-admin=true
                 @endif
-             @endif>
+                @if(auth()->user()->isAdmin())
+                    data-admin=true
+                @endif>
 
         </div>
         @else
