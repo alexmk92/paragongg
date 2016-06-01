@@ -1,52 +1,141 @@
 $pgg-version: "1.0.0";
 
 @font-face {
-    font-family: 'ParagonGG';
-    src: url('/assets/fonts/paragongg-webfont.eot?v=#{$pgg-version}');
-    src: url('/assets/fonts/paragongg-webfont.eot?#iefix&v=#{$pgg-version}') format('embedded-opentype'),
-    url('/assets/fonts/paragongg-webfont.woff2?v=#{$pgg-version}') format('woff2'),
-    url('/assets/fonts/paragongg-webfont.woff?v=#{$pgg-version}') format('woff'),
-    url('/assets/fonts/paragongg-webfont.ttf?v=#{$pgg-version}') format('truetype'),
-    url('/assets/fonts/paragongg-webfont.svg?v=#{$pgg-version}#paragonggregular') format('svg');
+    font-family: "paragongg";
+    src:url("/assets/fonts/paragongg.eot");
+    src:url("/assets/fonts/paragongg.eot?#iefix") format("embedded-opentype"),
+    url("/assets/fonts/paragongg.woff") format("woff"),
+    url("/assets/fonts/paragongg.ttf") format("truetype"),
+    url("/assets/fonts/paragongg.svg#paragongg") format("svg");
     font-weight: normal;
     font-style: normal;
 }
 
-.pgg {
-    display: inline-block;
-    font-size: inherit; // can't have font-size inherit on line above, so need to override
-    text-rendering: auto; // optimizelegibility throws things off #1094
+[data-icon]:before {
+    font-family: "paragongg" !important;
+    content: attr(data-icon);
+    font-style: normal !important;
+    font-weight: normal !important;
+    font-variant: normal !important;
+    text-transform: none !important;
+    speak: none;
+    line-height: 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-family: "ParagonGG";
-    &.pgg-amber {
-        &:before { content: '\f000'; }
+}
+
+[class^="pgg-"]:before,
+[class*=" pgg-"]:before {
+    font-family: "paragongg" !important;
+    font-style: normal !important;
+    font-weight: normal !important;
+    font-variant: normal !important;
+    text-transform: none !important;
+    speak: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.pgg {
+    //display: inline-block;
+    //font-size: inherit; // can't have font-size inherit on line above, so need to override
+    //text-rendering: auto; // optimizelegibility throws things off #1094
+    //-webkit-font-smoothing: antialiased;
+    //-moz-osx-font-smoothing: grayscale;
+    //font-family: "ParagonGG";
+
+    &.pgg-energy-damage:before {
+        content: "\61";
     }
-    &.pgg-epic {
-        &:before { content: '\f001'; }
+    &.pgg-amber:before {
+        content: "\62";
     }
-    &.pgg-affinity-order {
-        &:before { content: '\f002'; }
+    &.pgg-affinity-order:before {
+        content: "\63";
     }
-    &.pgg-affinity-intellect {
-        &:before { content: '\f003'; }
+    &.pgg-affinity-intellect:before {
+        content: "\64";
     }
-    &.pgg-affinity-growth {
-        &:before { content: '\f004'; }
+    &.pgg-affinity-growth:before {
+        content: "\65";
     }
-    &.pgg-affinity-fury {
-        &:before { content: '\f005'; }
+    &.pgg-affinity-fury:before {
+        content: "\66";
     }
-    &.pgg-affinity-corruption {
-        &:before { content: '\f006'; }
+    &.pgg-affinity-corruption:before {
+        content: "\67";
     }
-    &.pgg-affinity-order {
-        &:before { content: '\f007'; }
+    &.pgg-physical-armor-2:before {
+        content: "\68";
     }
-    &.pgg-arrow-left {
-        &:before { content: '\f008'; }
+    &.pgg-affinity-universal:before {
+        content: "\69";
     }
-    &.pgg-arrow-right {
-        &:before { content: '\f009'; }
+    &.pgg-star:before {
+        content: "\6a";
+    }
+    &.pgg-badge:before {
+        content: "\6b";
+    }
+    &.pgg-armor-penetration:before {
+        content: "\6c";
+    }
+    &.pgg-epic-games:before {
+        content: "\6d";
+    }
+    &.pgg-save:before {
+        content: "\6e";
+    }
+    &.pgg-movement-speed:before {
+        content: "\6f";
+    }
+    &.pgg-energy-armor:before {
+        content: "\70";
+    }
+    &.pgg-cleave:before {
+        content: "\71";
+    }
+    &.pgg-max-health:before {
+        content: "\72";
+    }
+    &.pgg-physical-damage:before {
+        content: "\73";
+    }
+    &.pgg-arrow-left:before {
+        content: "\74";
+    }
+    &.pgg-physical-penetration:before {
+        content: "\75";
+    }
+    &.pgg-arrow-right:before {
+        content: "\76";
+    }
+    &.pgg-max-mana:before {
+        content: "\77";
+    }
+    &.pgg-attack-speed:before {
+        content: "\78";
+    }
+    &.pgg-harvester-placement-time:before {
+        content: "\79";
+    }
+    &.pgg-health-regeneration:before {
+        content: "\7a";
+    }
+    &.pgg-cooldown-reduction:before {
+        content: "\41";
+    }
+    &.pgg-critical-strike-damage:before {
+        content: "\42";
+    }
+    &.pgg-lifesteal:before {
+        content: "\43";
+    }
+    &.pgg-mana-regeneration:before {
+        content: "\44";
+    }
+    &.pgg-critical-strike-chance:before {
+        content: "\45";
     }
 }
