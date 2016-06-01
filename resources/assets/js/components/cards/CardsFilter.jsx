@@ -66,23 +66,23 @@ var CardsFilter = React.createClass({
                 { "name" : "Corruption" }
             ],
             statistics : [
-                { "name" : "Energy Damage", "iconName" : "pgg-energy-damage", "checked" : true },
-                { "name" : "Physical Damage", "iconName" : "pgg-physical-damage", "checked" : true },
-                { "name" : "Energy Pen", "iconName" : "pgg-armor-penetration", "checked" : true },
-                { "name" : "Physical Pen", "iconName" : "pgg-physical-penetration", "checked" : true },
-                { "name" : "Energy Armor", "iconName" : "pgg-energy-armor", "checked" : true },
-                { "name" : "Physical Armor", "iconName" : "pgg-physical-armor-2", "checked" : true },
-                { "name" : "Crit Chance", "iconName" : "pgg-critical-strike-chance", "checked" : true },
-                { "name" : "Bonus Crit Damage", "iconName" : "pgg-critical-strike-damage", "checked" : true },
-                { "name" : "Max Mana", "iconName" : "pgg-max-mana", "checked" : true },
-                { "name" : "Max Health", "iconName" : "pgg-max-health", "checked" : true },
-                { "name" : "Mana Regen", "iconName" : "pgg-mana-regeneration", "checked" : true },
-                { "name" : "Health Regen", "iconName" : "pgg-health-regeneration", "checked" : true },
-                { "name" : "Max Movement Speed", "iconName" : "pgg-movement-speed", "checked" : true },
-                { "name" : "Cooldown Reduction", "iconName" : "pgg-cooldown-reduction", "checked" : true },
-                { "name" : "Lifesteal", "iconName" : "pgg-lifesteal", "checked" : true },
-                { "name" : "Attack Speed", "iconName" : "pgg-attack-speed", "checked" : true },
-                { "name" : "Harvester Placement Time", "iconName" : "pgg-harvester-placement-time", "checked" : true }
+                { "name" : "Energy Damage", "iconName" : "pgg-energy-damage", "checked" : false },
+                { "name" : "Physical Damage", "iconName" : "pgg-physical-damage", "checked" : false },
+                { "name" : "Energy Pen", "iconName" : "pgg-armor-penetration", "checked" : false },
+                { "name" : "Physical Pen", "iconName" : "pgg-physical-penetration", "checked" : false },
+                { "name" : "Energy Armor", "iconName" : "pgg-energy-armor", "checked" : false },
+                { "name" : "Physical Armor", "iconName" : "pgg-physical-armor-2", "checked" : false },
+                { "name" : "Crit Chance", "iconName" : "pgg-critical-strike-chance", "checked" : false },
+                { "name" : "Bonus Crit Damage", "iconName" : "pgg-critical-strike-damage", "checked" : false },
+                { "name" : "Max Mana", "iconName" : "pgg-max-mana", "checked" : false },
+                { "name" : "Max Health", "iconName" : "pgg-max-health", "checked" : false },
+                { "name" : "Mana Regen", "iconName" : "pgg-mana-regeneration", "checked" : false },
+                { "name" : "Health Regen", "iconName" : "pgg-health-regeneration", "checked" : false },
+                { "name" : "Max Movement Speed", "iconName" : "pgg-movement-speed", "checked" : false },
+                { "name" : "Cooldown Reduction", "iconName" : "pgg-cooldown-reduction", "checked" : false },
+                { "name" : "Lifesteal", "iconName" : "pgg-lifesteal", "checked" : false },
+                { "name" : "Attack Speed", "iconName" : "pgg-attack-speed", "checked" : false },
+                { "name" : "Harvester Placement Time", "iconName" : "pgg-harvester-placement-time", "checked" : false }
             ],
             types : [
                 { "name" : "Prime Helix" },
@@ -210,7 +210,7 @@ var CardsFilter = React.createClass({
                 { affinityFilters }
                 <DropDown label="STATS"
                           columns={ 2 }
-                          title="SELECT STATISTIC TYPES"
+                          title="FILTER BY STATS"
                           options={ this.state.statistics }
                           onOptionChanged={this.dropDownChanged}
                 />

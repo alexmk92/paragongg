@@ -32,15 +32,14 @@ var DropDown = React.createClass({
         }
         this.setState({ isVisible : isDropDownMenu });
     },
+    // Prevent the component re-rendering in an infinite loop.
     shouldComponentUpdate: function(nextProps, nextState) {
        return this.state !== nextState;
     },
     componentDidUpdate: function() {
         if(this.state.isVisible) {
-            console.log("Bound event listener");
             window.addEventListener('click', this.dismissMenuOnElementClick);
         } else {
-            console.log("Removed event listener");
             window.removeEventListener('click', this.dismissMenuOnElementClick);
         }
     },
