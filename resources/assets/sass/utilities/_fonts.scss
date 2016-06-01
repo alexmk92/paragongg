@@ -139,3 +139,24 @@ $pgg-version: "1.0.0";
         content: "\45";
     }
 }
+
+&.pgg.affinity-color {
+    &.pgg-affinity-universal {
+        color: $color-universal;
+    }
+    &.pgg-affinity-fury {
+        color: $color-fury;
+    }
+    &.pgg-affinity-intellect {
+        color: $color-intellect;
+    }
+    &.pgg-affinity-order {
+        color: $color-order;
+    }
+    &.pgg-affinity-corruption {
+        color: $color-corruption;
+    }
+    &.pgg-affinity-growth {
+        color: $color-growth;
+    }
+}

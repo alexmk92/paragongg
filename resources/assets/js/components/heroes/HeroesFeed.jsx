@@ -39,9 +39,8 @@ var HeroesFeed = React.createClass({
 
         var heroes = [];
         this.props.heroes.forEach(function(hero) {
-
             if(_this.shouldBeVisible(hero) == true) {
-                heroes.push(<HeroPreview affinity={hero.affinities}
+                heroes.push(<HeroPreview affinities={hero.affinities}
                                         key={hero.code}
                                         code={hero.code}
                                         hero={hero.roles}
@@ -54,7 +53,6 @@ var HeroesFeed = React.createClass({
         return(
             <div>
                 <h1>Paragon Heroes</h1>
-                <i className="pgg pgg-affinity-corruption"></i>
                 <h5>{heroes.length} total heroes</h5>
                 <div className="wrapper">
                     <ul className="hero-list">
@@ -69,6 +67,19 @@ var HeroesFeed = React.createClass({
 });
 
 var HeroPreview = React.createClass({
+    getInitialState: function() {
+        return {
+            affinities: this.props.affinities
+        }
+    },
+    getAffinities: function() {
+        var affinities = [];
+        this.state.affinities.forEach(function (affinity) {
+            affinity = affinity.substring(9).toLowerCase();
+            affinities.push(<i key={affinity} className={"pgg pgg-affinity-" + affinity + " affinity-color"} ></i>);
+        });
+        return affinities;
+    },
     render: function() {
         var divStyle = {
             backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/' + this.props.code + '/portrait.png)'
@@ -77,6 +88,9 @@ var HeroPreview = React.createClass({
             <a href={ "/heroes/" + this.props.name.toLowerCase() }>
                 <li className="hero-preview" style={divStyle}>
                     <div className="hero-preview-title">
+                        <div className="hero-affinities">
+                            {this.getAffinities()}
+                        </div>
                         <span className="title">{this.props.name}</span>
                     </div>
                 </li>

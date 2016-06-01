@@ -40,7 +40,7 @@ var AccountNav = React.createClass({
                     <img className="account-avatar" src="https://www.gravatar.com/avatar/d5d3310834b43c6f96e200339734c949?s=20&amp;d=https%3A%2F%2Fparagon.gg%2Fimages%2Fdefault-avatar.png" alt="Your avatar" />
                     <span>{this.state.username}</span>
                     <span className="account-achievements"><i className="fa fa-trophy" aria-hidden="true"></i>{this.state.achievements}</span>
-                    <span className="account-amber"><i className="amber-icon" aria-hidden="true"></i>{this.state.amber}</span>
+                    <span className="account-amber"><i className="pgg pgg-amber" aria-hidden="true"></i>{this.state.amber}</span>
                     <i className="fa fa-caret-down" aria-hidden="true"></i>
 
                 </div>
@@ -49,7 +49,7 @@ var AccountNav = React.createClass({
                         <li><a href="/users/jamieshepherd"><i className="fa fa-user" aria-hidden="true"></i>View profile</a></li>
                         <li><a href="/account/decks"><i className="fa fa-book" aria-hidden="true"></i>Your decks</a></li>
                         <li><a href="/account/achievements"><i className="fa fa-trophy" aria-hidden="true"></i>Achievements</a></li>
-                        <li><a href="/account/store"><i className="amber-icon" aria-hidden="true"></i>Store</a></li>
+                        <li><a href="/account/store"><i className="pgg pgg-amber" aria-hidden="true"></i>Store</a></li>
                         <li><a href="/account"><i className="fa fa-cog" aria-hidden="true"></i>Account settings</a></li>
                         {isMod}
                         {isAdmin}
