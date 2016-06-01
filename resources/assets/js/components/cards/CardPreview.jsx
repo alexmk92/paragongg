@@ -29,6 +29,10 @@ var CardPreview = React.createClass({
             _this.state.tooltip = null;
         }
     },
+    showDetail: function(event) {
+        event.preventDefault();
+        window.location = "/cards/" + this.props.name;
+    },
     render: function() {
         var divStyle = {
             backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/' + this.props.code + '/background_small.png)'
@@ -38,13 +42,16 @@ var CardPreview = React.createClass({
             className += (this.props.owned) ? "owned" : "missing";
         }
         return (
-            <a href={ "/cards/" + this.props.name }>
-                <li onMouseOver={this.focused} onMouseLeave={this.blur} className={className} style={divStyle}>
+
+                <li onClick={this.showDetail} onMouseOver={this.focused} onMouseLeave={this.blur} className={className} style={divStyle}>
+                    <a href={ "/cards/" + this.props.name }>
                     <div className="card-name">{this.props.name}</div>
+                    </a>
                 </li>
-            </a>
+
         )
     }
 });
 
 module.exports = CardPreview;
+
