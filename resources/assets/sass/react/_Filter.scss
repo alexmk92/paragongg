@@ -38,9 +38,9 @@
 }
 
 .drop-down-menu {
-    position: absolute;
+    position: relative;
     z-index: 100;
-    top: 0;
+    top: -5px;
     display: inline-block;
     margin-left: 30px;
     width: 34px;
