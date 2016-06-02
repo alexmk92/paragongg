@@ -60,10 +60,13 @@ var DeckBuilder = React.createClass({
     selectCard: function(card, event) {
         event.preventDefault();
 
-        if(this.state.cardSelected && this.state.cardSelected.code == card.code) {
-            this.setState({cardSelected: false, playFlashAnimation: false});
-        } else {
-            this.setState({cardSelected: card, playFlashAnimation: false});
+        var elem = event.target;
+        if(elem.className !== "fa fa-trash" && elem.className !== "delete-icon") {
+            if(this.state.cardSelected && this.state.cardSelected.code == card.code) {
+                this.setState({cardSelected: false, playFlashAnimation: false});
+            } else {
+                this.setState({cardSelected: card, playFlashAnimation: false});
+            }
         }
     },
     deleteCardFromDeck : function(selectedCard, event) {
