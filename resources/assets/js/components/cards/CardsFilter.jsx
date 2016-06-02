@@ -180,12 +180,9 @@ var CardsFilter = React.createClass({
         var cards = [];
         this.props.cards.forEach(function(card) {
             if(_this.shouldBeVisible(card) === true) {
-                cards.push(<CardPreview affinity={card.affinity}
-                                        key={card.code}
-                                        owned={card.owned}
-                                        code={card.code}
-                                        cost={card.cost}
-                                        name={card.name}
+                cards.push(<CardPreview card={card}
+                                        redirectsOnClick={this.props.cardsRedirectOnClick}
+                                        onCardClicked={this.props.onCardClicked}
                 />);
             }
         }, _this);

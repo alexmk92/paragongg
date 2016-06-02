@@ -41,6 +41,40 @@
     100% { opacity: 1; }
 }
 
+@keyframes pulse-card-with-inner-glow {
+    0%   {
+        opacity: 0.9;
+        box-shadow: inset 0px 0px 5px #00aaee;
+    }
+    30% {
+        box-shadow: inset 0px 0px 40px #00aaee;
+    }
+    60% {
+        box-shadow: inset 0px 0px 5px #00aaee;
+    }
+    100% {
+        opacity: 1;
+        box-shadow: none;
+    }
+}
+@keyframes pulse-card-with-outer-glow {
+    0%   {
+        opacity: 0.9;
+        border: 1px solid #00aaee;
+        box-shadow: 0px 0px 5px #00aaee;
+    }
+    30% {
+        box-shadow: 0px 0px 20px #00aaee;
+    }
+    60% {
+        box-shadow: 0px 0px 5px #00aaee;
+    }
+    100% {
+        opacity: 1;
+        box-shadow: none;
+    }
+}
+
 @keyframes flicker {
     0.0% {
         transform: translateX(0);

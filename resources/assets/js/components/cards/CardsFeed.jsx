@@ -14,22 +14,22 @@ var CardsFeed = React.createClass({
             cards : []
         }
     },
-    /*
-    shouldComponentUpdate: function(nextProps, nextState) {
-        console.log("Should we update? " + nextState.cards === this.state.cards);
-        return nextState.cards === this.state.cards;
-    },
-    */
     renderCards : function(newCards) {
         this.setState({cards: newCards});
     },
+    onCardClicked : function(card) {
+        this.props.onCardClicked(card);
+    },
     render: function() {
+        var title = this.props.showTitle ? <h2>Paragon Cards</h2> : "";
         return(
             <div>
-                <h2>Paragon Cards</h2>
+                { title }
                 <div id="filter">
                     <CardsFilter cards={this.props.cards}
                                  onFilterChanged={this.renderCards}
+                                 cardsRedirectOnClick={ this.props.cardsRedirectOnClick }
+                                 onCardClicked={this.onCardClicked}
                     />
                 </div>
                 <div className="wrapper">
@@ -44,5 +44,7 @@ var CardsFeed = React.createClass({
     }
 });
 
+module.exports = CardsFeed;
+
 var element = document.querySelector('#cards-feed');
-if(element) ReactDOM.render(<CardsFeed cards={CARDS}/>, element);
+if(element) ReactDOM.render(<CardsFeed cards={CARDS} showTitle={true} cardsRedirectOnClick={true} />, element);

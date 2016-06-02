@@ -17,6 +17,10 @@
         }
     }
     li {
+        &.pulse-card-outer {
+            animation: pulse-card-with-outer-glow 500ms linear;
+        }
+
         margin-bottom: 0;
         background: $panel-color-dark no-repeat;
         background-position-y: -80px;
@@ -38,6 +42,10 @@
         background: rgba($panel-color-dark,0.7);
         padding: 13px 10px;
         transition: background 0.1s;
+
+        &.pulse-card-inner {
+            animation: pulse-card-with-inner-glow 500ms linear;
+        }
     }
     .count, .cost {
         color: $font-color-faded;
