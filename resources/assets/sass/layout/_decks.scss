@@ -4,6 +4,8 @@
     border-top: 1px solid $faded-line;
 }
 .deck-list {
+    overflow-x: hidden;
+    position: relative;
     margin-top: 20px;
     font-family: $font-condensed;
     font-size: 14px;
@@ -17,6 +19,27 @@
         }
     }
     li {
+        position: relative;
+        z-index: 10;
+        &.pulse-card-outer {
+            animation: pulse-card-with-outer-glow 500ms linear;
+        }
+
+        .delete-icon {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 100%;
+            position: absolute;
+            right: 0;
+            top: 0;
+            z-index: 1;
+            transition: opacity 250ms;
+            opacity: 0;
+            font-size: 16px;
+        }
+
         margin-bottom: 0;
         background: $panel-color-dark no-repeat;
         background-position-y: -80px;
@@ -24,9 +47,15 @@
         cursor: pointer;
         user-select: none;
         border: 1px solid $panel-color-dark;
-        transition: border-color 100ms;
+        transition: border 200ms;
+        left: 0;
         &.selected {
+            .delete-icon {
+                right: -40px;
+                opacity: 1;
+            }
             border: 1px solid $tertiary-highlight;
+            left: -40px;
         }
         &:hover {
             .wrapper {
@@ -35,9 +64,15 @@
         }
     }
     .wrapper {
+        position: relative;
+        z-index: 10;
         background: rgba($panel-color-dark,0.7);
         padding: 13px 10px;
         transition: background 0.1s;
+
+        &.pulse-card-inner {
+            animation: pulse-card-with-inner-glow 500ms linear;
+        }
     }
     .count, .cost {
         color: $font-color-faded;

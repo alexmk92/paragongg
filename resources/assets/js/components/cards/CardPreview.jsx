@@ -8,12 +8,11 @@ var CardPreview = React.createClass({
         }
     },
     focused: function(event) {
-        var _this = this;
-        if(_this.state.tooltip) {
-            _this.state.tooltip.abortClose()
+        if(this.state.tooltip) {
+            this.state.tooltip.abortClose()
         } else {
-            _this.setState({
-                tooltip : new CardTooltip({ targetNode : event.target, parentNodeName : "card-preview", uniqueId : _this.props.name, dataURL : "/api/v1/cards/find/"+ _this.props.code })
+            this.setState({
+                tooltip : new CardTooltip({ targetNode : event.target, parentNodeName : "card-preview", uniqueId : this.props.card.name, dataURL : "/api/v1/cards/find/"+ this.props.card.code })
             });
         }
     },
@@ -29,20 +28,24 @@ var CardPreview = React.createClass({
     },
     showDetail: function(event) {
         event.preventDefault();
-        window.location = "/cards/" + this.props.name;
+        if(this.props.redirectsOnClick)
+            window.location = "/cards/" + this.props.card.name;
+        else {
+            this.props.onCardClicked(this.props.card);
+        }
     },
     render: function() {
         var divStyle = {
-            backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/' + this.props.code + '/background_small.png)'
+            backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/' + this.props.card.code + '/background_small.png)'
         };
         var className = "card-preview ";
-        if(typeof this.props.owned !== 'undefined') {
-            className += (this.props.owned) ? "owned" : "missing";
+        if(typeof this.props.card.owned !== 'undefined') {
+            className += (this.props.card.owned) ? "owned" : "missing";
         }
         return (
                 <li onClick={this.showDetail} onMouseOver={this.focused} onMouseLeave={this.blur} className={className} style={divStyle}>
-                    <a href={ "/cards/" + this.props.name }>
-                    <div className="card-name">{this.props.name}</div>
+                    <a href={ "/cards/" + this.props.card.name }>
+                    <div className="card-name">{this.props.card.name}</div>
                     </a>
                 </li>
 

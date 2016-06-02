@@ -1,3 +1,4 @@
+
 .build-list {
     padding-top: 30px;
     li {
@@ -35,6 +36,49 @@
         }
         &.filled {
             opacity: 1;
+        }
+    }
+}
+
+#deck-builder {
+
+    #sidebar {
+        width: 29%;
+        max-width: 400px;
+
+        .sidebox {
+            &.panel {
+                h4 {
+                    .deck-total {
+                        font-size: 14px;
+                        color: #5a606f;
+                        float: right;
+                        font-weight: 400;
+                    }
+                }
+            }
+        }
+    }
+
+    .deck-builder {
+        border-top: none;
+        margin-top: 0px;
+        padding-top: 0px;
+        width: 70%;
+
+        .content-wrapper {
+            max-width: 100%;
+
+            .deck-title {
+                & input.h2 {
+                    display: inline-block;
+                    min-width: 85%;
+                    width: auto;
+                }
+                button {
+                    display: inline-block;
+                }
+            }
         }
     }
 }
