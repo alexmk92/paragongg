@@ -59,7 +59,6 @@ var DeckBuilder = React.createClass({
     },
     selectCard: function(card, event) {
         event.preventDefault();
-        console.log(event.target);
 
         var elem = event.target;
         if(elem.className !== "fa fa-trash" && elem.className !== "delete-icon") {
