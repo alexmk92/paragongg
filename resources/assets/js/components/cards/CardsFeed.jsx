@@ -1,7 +1,6 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var FlipMove = require('react-flip-move');
-var CardTooltip = require('../CardTooltip');
 var CardsFilter = require('./CardsFilter');
 var CardPreview = require('./CardPreview');
 
@@ -29,7 +28,9 @@ var CardsFeed = React.createClass({
             <div>
                 <h2>Paragon Cards</h2>
                 <div id="filter">
-                    <CardsFilter cards={this.props.cards} onFilterChanged={this.renderCards} />
+                    <CardsFilter cards={this.props.cards}
+                                 onFilterChanged={this.renderCards}
+                    />
                 </div>
                 <div className="wrapper">
                     <ul className="card-list">

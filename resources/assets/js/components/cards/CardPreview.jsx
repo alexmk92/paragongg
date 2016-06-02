@@ -1,7 +1,5 @@
 var React = require('react');
-var ReactDOM = require('react-dom');
-var FlipMove = require('react-flip-move');
-var CardTooltip = require('../CardTooltip');
+var CardTooltip = require('../Tooltip');
 
 var CardPreview = React.createClass({
     getInitialState: function() {
