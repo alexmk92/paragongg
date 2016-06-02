@@ -13,7 +13,8 @@ var DeckBuilder = React.createClass({
             builds: [],
             modal: false,
             cardSelected: false,
-            lastSelectedCard: null
+            lastSelectedCard: null,
+            playFlashAnimation: false
         }
     },
     addCard: function(selectedCard) {
@@ -34,7 +35,8 @@ var DeckBuilder = React.createClass({
             }
             this.setState({
                 deck : newDeck,
-                lastSelectedCard : selectedCard
+                lastSelectedCard : selectedCard,
+                playFlashAnimation: true
             });
         }
     },
@@ -54,16 +56,16 @@ var DeckBuilder = React.createClass({
     },
     selectCard: function(card) {
         if(this.state.cardSelected && this.state.cardSelected.code == card.code) {
-            this.setState({cardSelected: false});
+            this.setState({cardSelected: false, playFlashAnimation: false});
         } else {
-            this.setState({cardSelected: card});
+            this.setState({cardSelected: card, playFlashAnimation: false});
         }
     },
     render: function() {
         var cardList = this.state.deck.map(function(card) {
             var className = "";
             var childClassName = "";
-            if(this.state.lastSelectedCard.code === card.code) {
+            if(this.state.lastSelectedCard.code === card.code && this.state.playFlashAnimation) {
                 className += "pulse-card-outer";
                 childClassName += "pulse-card-inner";
             }
