@@ -6,7 +6,8 @@ var Tabs = React.createClass({
     getInitialState: function() {
         return {
             selected: this.props.defaultSelected,
-            tabs: [this.props.children]
+            tabs: this.props.children,
+            expandable: this.props.expandable
         }
     },
     componentWillMount: function() {
@@ -24,6 +25,13 @@ var Tabs = React.createClass({
             }
         }
         return tabs;
+    },
+    getExpandable: function() {
+        if(this.state.expandable) {
+            return <li className="Tabbable__Tab create" onClick={this.createTab}>+</li>
+        } else {
+            return false;
+        }
     },
     getPanels: function() {
         var panels = [];
@@ -61,7 +69,7 @@ var Tabs = React.createClass({
             <div className="Tabbable">
                 <ul>
                     {this.getTabs()}
-                    <li className="Tabbable__Tab create" onClick={this.createTab}>+</li>
+                    {this.getExpandable()}
                 </ul>
                 {this.getPanels()}
             </div>

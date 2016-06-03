@@ -1,12 +1,10 @@
 var React     = require('react');
 var ReactDOM  = require('react-dom');
-var ReactTabs = require('react-tabs');
 var FlipMove  = require('react-flip-move');
+var Tabbable  = require('./general/tabs/Tabbable');
 
-var Tab       = ReactTabs.Tab
-var Tabs      = ReactTabs.Tabs
-var TabList   = ReactTabs.TabList
-var TabPanel  = ReactTabs.TabPanel
+var Tabs      = Tabbable.Tabs;
+var TabPanel  = Tabbable.TabPanel;
 
 var GuidesFeed = React.createClass({
     getInitialState: function() {
@@ -90,37 +88,26 @@ var GuideResults = React.createClass({
             guides.push(<GuidePreview key={guide.slug} slug={guide.slug} title={guide.title} created={guide.created} user_id={guide.user_id} />);
         });
         return (
-            <Tabs onSelect={this.handleSelect} selectedIndex={0} className="padless">
-                <TabList>
-                    <Tab>Featured</Tab>
-                    <Tab>Recently updated</Tab>
-                    <Tab>Top rated</Tab>
-                    <Tab>Most views</Tab>
-                    <Tab>Newest</Tab>
-                </TabList>
+            <Tabs defaultSelected={0} expandable={false} className="padless">
 
                 {/* Featured */}
-                <TabPanel>
+                <TabPanel title="Featured">
                     {guides}
                 </TabPanel>
-
                 {/* Recently updated */}
-                <TabPanel>
+                <TabPanel title="Recently updated">
                     {guides}
                 </TabPanel>
-
                 {/* Top rated */}
-                <TabPanel>
+                <TabPanel title="Top rated">
                     {guides}
                 </TabPanel>
-
                 {/* Most views */}
-                <TabPanel>
+                <TabPanel title="Most views">
                     {guides}
                 </TabPanel>
-
                 {/* Newest */}
-                <TabPanel>
+                <TabPanel title="Newest">
                     {guides}
                 </TabPanel>
             </Tabs>

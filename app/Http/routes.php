@@ -86,6 +86,7 @@ Route::group(['prefix' => 'account', 'middleware' => 'auth'], function () {
 /* Moderation */
 Route::group(['prefix' => 'moderation', 'namespace' => 'Moderation', 'middleware' => ['auth', 'mod', 'cors']], function () {
     Route::get('/', 'ModerationController@index');
+    Route::get('/reports', 'ModerationController@reports');
 });
 
 /* Administration */
