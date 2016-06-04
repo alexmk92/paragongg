@@ -12,12 +12,13 @@ var NewsFeed = React.createClass({
     },
     componentWillMount: function() {
         this.options = {
-            stagger: true
+            stagger: true,
+            staggerAmount: 50
         };
         this.masonryOptions = {
             percentPosition: true,
             //transitionDuration: 0,
-            gutter: 30,
+            gutter: 30
         };
     },
     componentDidMount: function() {
@@ -39,7 +40,6 @@ var NewsFeed = React.createClass({
         var _this = this;
         Action.fetchNews(this.state.news.length, function(error, data) {
             if(error === null && data !== null) {
-                console.log(data);
                 if(data.length > 0) {
                     _this.addResults(data);
                 } else {
@@ -51,9 +51,13 @@ var NewsFeed = React.createClass({
     },
     addResults: function(response) {
         if(this.options.stagger) {
-            response.forEach(function(post) {
-                this.setState({news: this.state.news.concat(post)}); // Stagger this somehow?
-            }, this);
+            var _this = this;
+            var i = 0;
+            var interval = setInterval(function() {
+                _this.setState({news: _this.state.news.concat(response[i])}); // Stagger this somehow?
+                i++;
+                if(i >= response.length) clearInterval(interval);
+            }, _this.options.staggerAmount);
         } else {
             this.setState({news: this.state.news.concat(response)});
         }

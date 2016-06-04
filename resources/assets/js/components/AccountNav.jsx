@@ -6,7 +6,7 @@ var AccountNav = React.createClass({
         return {
             username: this.props.username,
             amber: this.props.amber,
-            achievements: 1800,
+            achievements: 1365,
             active: false,
             mod: this.props.mod,
             admin: this.props.admin
@@ -25,7 +25,6 @@ var AccountNav = React.createClass({
         return (this.state.active) ? 'account-nav-panel active' : 'account-nav-panel inactive';
     },
     render: function() {
-        //var user = this.props.user;
         var isAdmin, isMod = false;
         if(this.isMod()) {
             isMod = <li><a href="/moderation"><i className="fa fa-check-square" aria-hidden="true"></i>Moderation</a></li>;
@@ -46,7 +45,7 @@ var AccountNav = React.createClass({
                 </div>
                 <div className={this.isActive()}>
                     <ul className="account-properties">
-                        <li><a href="/users/jamieshepherd"><i className="fa fa-user" aria-hidden="true"></i>View profile</a></li>
+                        <li><a href={"/users/" + this.state.username.toLowerCase()}><i className="fa fa-user" aria-hidden="true"></i>View profile</a></li>
                         <li><a href="/account/decks"><i className="fa fa-book" aria-hidden="true"></i>Your decks</a></li>
                         <li><a href="/account/achievements"><i className="fa fa-trophy" aria-hidden="true"></i>Achievements</a></li>
                         <li><a href="/account/store"><i className="pgg pgg-amber" aria-hidden="true"></i>Store</a></li>

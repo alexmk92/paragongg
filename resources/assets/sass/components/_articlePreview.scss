@@ -16,7 +16,7 @@
     margin-bottom: 30px;
     position: relative;
     border: 1px solid #222222;
-    transition: all 0.3s;
+    transition: filter 0.2s, border-color 0.3s;
     &:hover {
         filter: brightness(120%);
         border: 1px solid $faded-line;
