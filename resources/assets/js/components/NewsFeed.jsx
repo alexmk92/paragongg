@@ -83,7 +83,7 @@ var NewsFeed = React.createClass({
                     { childElements }
                 </Masonry>
                 <div>
-                    <p id="end-of-news-label" className={this.state.newsEnd ? "" : "hidden"}>No more news!</p>
+                    <p id="end-of-news-label" className={this.state.newsEnd ? "" : "hidden"}><i className="fa fa-thumbs-up"></i>You've reached the end</p>
                 </div>
             </div>
         );
