@@ -11,43 +11,37 @@
 }
 .article-preview {
     display: inline-block;
-    max-width: 430px;;
+    max-width: 430px;
+    min-height: 200px;
     margin-bottom: 30px;
-    transition: filter 0.2s;
+    position: relative;
+    border: 1px solid #222222;
+    transition: all 0.3s;
     &:hover {
         filter: brightness(120%);
+        border: 1px solid $faded-line;
     }
-    &.large {
-        float: left;
-        width: 430px;
-        height: 517px;
-        background-size: cover;
-        .preview-details {
-            .heading h2 {
-                font-size: 28px;
-                line-height: 34px;
-            }
-        }
-    }
-    //position: absolute;
-    //padding: 20px;
-    overflow: hidden;
-    .date {
-        font-size: 12px;
-        text-transform: uppercase;
-        margin-bottom: 5px;
-    }
-    .article-image {
+
+    .preview-image {
         img {
-            width: auto;
-            height: auto;
             vertical-align: top;
+            width: 100%;
         }
     }
-    .heading {
-        background: $panel-color;
+
+    .preview-title {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        padding: 40px 20px 15px;
+
+        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#111111+0,111111+100,0d1016+100&0+0,0.9+50,0.9+100 */
+        background: -moz-linear-gradient(top,  rgba(17,17,17,0) 0%, rgba(15,17,20,0.9) 50%, rgba(13,16,22,0.9) 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(top,  rgba(17,17,17,0) 0%,rgba(15,17,20,0.9) 50%,rgba(13,16,22,0.9) 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom,  rgba(17,17,17,0) 0%,rgba(15,17,20,0.9) 50%,rgba(13,16,22,0.9) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00111111', endColorstr='#e60d1016',GradientType=0 ); /* IE6-9 */
+
         h2 {
-            padding: 20px;
             font-size: 20px;
             line-height: 24px;
         }

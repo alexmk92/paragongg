@@ -59,13 +59,16 @@ var NewsFeed = React.createClass({
         }
     },
     render: function() {
+
         var childElements = this.state.news.map(function(element){
             return (
-                <a className="article-preview" href={"/news/" + element.slug} key={element.slug}>
-                    <div className="article-image">
+                <a className="article-preview"
+                   href={"/news/" + element.slug}
+                   key={element.slug}>
+                    <div className="preview-image">
                         <img src="/assets/images/example-preview.jpg"/>
                     </div>
-                    <div className="heading">
+                    <div className="preview-title">
                         <h2>{element.title}</h2>
                     </div>
                 </a>
@@ -83,7 +86,7 @@ var NewsFeed = React.createClass({
                     { childElements }
                 </Masonry>
                 <div>
-                    <p id="end-of-news-label" className={this.state.newsEnd ? "" : "hidden"}><i className="fa fa-thumbs-up"></i>You've reached the end</p>
+                    <p id="end-of-news-label" className={this.state.newsEnd ? "" : "hidden"}><i className="fa fa-check"></i>You've reached the end of the page</p>
                 </div>
             </div>
         );
