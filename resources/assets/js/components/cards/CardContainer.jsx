@@ -38,8 +38,8 @@ var CardContainer = React.createClass({
             return rarityDetails;
         })();
         var modelStyles = {
-            boxShadow : "0px 0px 250px " + rarity.color,
-            opacity : 0.65
+            boxShadow : "0px 0px 150px " + rarity.color,
+            opacity : 1.00
         };
         return (
             <div onMouseMove={this.flipCard}>
