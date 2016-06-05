@@ -69,7 +69,7 @@ var DropDown = React.createClass({
                 <label>{ this.props.label }</label>
                 <div className="button"
                      onClick={ this.dropDownClicked }>
-                    <span>S</span>
+                    <i className="pgg pgg-armor-penetration" aria-hidden="true"></i>
                 </div>
                 <div className={ "menu " + active }>
                     <div className="tooltip-triangle"></div>

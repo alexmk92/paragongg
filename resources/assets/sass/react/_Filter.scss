@@ -3,6 +3,7 @@
     margin-right: 15px;
     text-align: center;
     width: 34px;
+    cursor: pointer;
 
     &:hover .underline {
         margin-top: 8px;
@@ -43,23 +44,15 @@
     top: -5px;
     display: inline-block;
     margin-left: 30px;
-    width: 34px;
+    vertical-align: top;
 
     .button {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: #040405;
-        font-weight: 600;
-        width: 42px;
-        height: 42px;
-        border-radius: 21px;
-        transition: background 300ms;
-        background: rgba(0, 170, 238, 1.0);
-
+        font-size: 48px;
+        display: inline-block;
+        margin-top: -10px;
+        cursor: pointer;
         &:hover {
-            cursor: pointer;
-            background: rgba(0, 170, 238, 0.9);
+            color: $secondary-highlight;
         }
     }
 

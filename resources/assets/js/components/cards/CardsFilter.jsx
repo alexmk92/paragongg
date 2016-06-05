@@ -205,7 +205,7 @@ var CardsFilter = React.createClass({
                            onSearchTermChanged={this.inputChanged}
                 />
                 { affinityFilters }
-                <DropDown label="STATS"
+                <DropDown label="Stats"
                           columns={ 2 }
                           title="FILTER BY STATS"
                           options={ this.state.statistics }

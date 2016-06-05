@@ -40,4 +40,10 @@ body {
     font-size: 14px;
     text-transform: uppercase;
     color: $font-color-faded;
+    a {
+        color: $font-color-faded;
+        &:hover {
+            color: $secondary-highlight;
+        }
+    }
 }
