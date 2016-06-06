@@ -15,7 +15,7 @@ var CardContainer = React.createClass({
         if(typeof this.state.flipper === "undefined" || this.state.flipper === null) {
             this.state.flipper = new InteractiveParallax({
                 target : "#card-model-wrapper",
-                strength: 2,
+                strength: 4,
                 animationSpeed : 150
             });
         } else {
