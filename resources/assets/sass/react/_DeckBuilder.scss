@@ -1,4 +1,45 @@
+.dual-tab-wrapper {
+    position: absolute;
+    width: 100%;
+    .dual-tab-tabs {
+        width: 100%;
+        text-align: center;
+        color: #fff;
 
+        div {
+            display: inline-block;
+            width: 50%;
+            padding: 15px 20px;
+            background: #0d1016;
+            cursor: pointer;
+
+            &.active {
+                background: #181d27;
+            }
+
+            span {
+                cursor: pointer;
+                display: inline-block;
+                vertical-align: top;
+            }
+        }
+    }
+
+    .dual-tab-panel {
+        position: relative;
+        top: 0;
+        width: 100%;
+
+        .panel {
+            display: none;
+            background: #181d27 !important;
+            border: none !important;
+            &.active {
+                display: block;
+            }
+        }
+    }
+}
 .build-list {
     padding-top: 30px;
     li {
