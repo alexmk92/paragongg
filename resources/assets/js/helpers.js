@@ -115,5 +115,21 @@ module.exports = {
 
             httpRequest.send(requestData);
         });
+    },
+    heroOrGameplay: function(element) {
+        if(element.value == "gameplay") {
+            document.getElementById('hero-form').style.display = 'none';
+        } else {
+            document.getElementById('hero-form').style.display = 'block';
+        }
+    },
+    generateSlug: function(element) {
+        return document.getElementById('url-slug').value = this.convertToSlug(element.value);
+    },
+    convertToSlug: function(Text) {
+        return Text
+            .toLowerCase()
+            .replace(/[^\w ]+/g,'')
+            .replace(/ +/g,'-');
     }
 };

@@ -56,8 +56,8 @@ var CardContainer = React.createClass({
                             <div id="card-model-container">
                                 <img src={cardModelURL} />
                                 <span>{ card.name }</span>
+                                <div id="card-glow-layer" style={modelStyles}></div>
                             </div>
-                            <div id="card-glow-layer" style={modelStyles}></div>
                         </div>
                     </div>
                 </div>
@@ -68,8 +68,7 @@ var CardContainer = React.createClass({
 
 module.exports = CardContainer;
 
-var elem = document.querySelector("#card-detail-container");
-if(typeof elem !== "undefined" && elem) {
-    console.log("FOUND ELEM");
-    ReactDOM.render( <CardContainer />, elem);
+var element = document.querySelector("#card-detail-container");
+if(typeof element !== "undefined" && element) {
+    ReactDOM.render( <CardContainer />, element);
 }

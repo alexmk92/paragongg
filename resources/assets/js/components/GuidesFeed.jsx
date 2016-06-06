@@ -85,7 +85,13 @@ var GuideResults = React.createClass({
     render: function() {
         var guides = [];
         this.state.guides.forEach(function(guide) {
-            guides.push(<GuidePreview key={guide.slug} slug={guide.slug} title={guide.title} created={guide.created} user_id={guide.user_id} />);
+            guides.push(<GuidePreview key={guide.slug}
+                                      slug={guide.slug}
+                                      title={guide.title}
+                                      created={guide.created}
+                                      user_id={guide.user_id}
+                                      hero={guide.hero}
+            />);
         });
         return (
             <Tabs defaultSelected={0} expandable={false} className="padless">
@@ -116,11 +122,18 @@ var GuideResults = React.createClass({
 });
 
 var GuidePreview = React.createClass({
+    getPortrait: function() {
+        if(this.props.hero) {
+            return <img src={"https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/"+ this.props.hero.code +"/portrait_small.png"}/>
+        } else {
+            return <img src="/assets/images/heroes/null.png"/>
+        }
+    },
     render: function() {
         return(
             <a className="guide-preview cf" href={"/guides/" + this.props.slug}>
                 <div className="guide-hero">
-                    <img src="/assets/images/heroes/dekker/portrait.jpg"/>
+                    {this.getPortrait()}
                 </div>
                 <div className="guide-details">
                     <div class="title"><h3>{ this.props.title }</h3></div>

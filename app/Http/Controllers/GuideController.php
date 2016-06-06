@@ -12,8 +12,11 @@ class GuideController extends Controller
     // Create
     public function index()
     {
-        $guides = Guide::all();
-        $heroes = Hero::all();
+        $guides = Guide::select('type', 'title', 'user_id', 'created_at', 'votes', 'hero', 'slug')
+            ->where('status', 'published')
+            ->get();
+        $heroes = Hero::select('name', 'code')
+            ->get();
 
         return view('guides.index')->with('guides', $guides)->with('heroes', $heroes);
     }

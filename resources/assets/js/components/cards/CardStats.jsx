@@ -125,9 +125,9 @@ var CardStats = React.createClass({
                         { this.props.card.name.toUpperCase() }
                     </a>
                 </span>
-                <span id="name">
+                <h1 id="name">
                     { this.props.card.name.toUpperCase() }
-                </span>
+                </h1>
                 <div id="divider"></div>
                 <div id="attribute-container">
                     <div id="cost-container">
