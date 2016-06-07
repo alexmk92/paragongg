@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 class NewsController extends Controller
 {
-    // Create
+    // Index
     public function index()
     {
         return view('news.index');
@@ -33,7 +33,6 @@ class NewsController extends Controller
         $news->title  = $request->title;
         $news->slug   = $request->slug;
         $news->type   = $request->type;
-        $news->header = $request->title;
         $news->body   = $request->body;
         if(isset($_POST['draft'])) {
             $news->status = 'draft';
@@ -86,9 +85,42 @@ class NewsController extends Controller
     }
 
     // Update
-    public function update($id)
+    public function update($id, Requests\News\UpdateNewsRequest $request)
     {
+        $storage = Storage::disk('s3');
+
         $news = News::findOrFail($id);
+        $news->title  = $request->title;
+        $news->slug   = $request->slug;
+        $news->type   = $request->type;
+        $news->body   = $request->body;
+        if(isset($_POST['draft'])) {
+            $news->status = 'draft';
+        } else {
+            $news->status = 'published';
+        }
+
+        if($request->has('header')) {
+            // HEADER TO S3
+            $image = $request->file('header');
+            $filename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+            $path = uniqid(base64_encode($filename).'-',false).'.'.$image->getClientOriginalExtension();
+            $storage->getDriver()->put('images/news/headers/'.$path, fopen($image, 'r+'));
+            $news->header = $path;
+        }
+
+        if($request->has('thumbnail')) {
+            // THUMBNAIL TO S3
+            $image = $request->file('thumbnail');
+            $filename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+            $path = uniqid(base64_encode($filename) . '-', false) . '.' . $image->getClientOriginalExtension();
+            $storage->getDriver()->put('images/news/thumbnails/' . $path, fopen($image, 'r+'));
+            $news->thumbnail = $path;
+        }
+
+        $news->save();
+
+        session()->flash('notification', 'success|News updated.');
         return view('news.edit')->with('news', $news);
     }
 
@@ -97,6 +129,7 @@ class NewsController extends Controller
     {
         $news = News::findOrFail($id);
         $news->delete();
-        return view('home');
+        session()->flash('notification', 'success|Post deleted successfully.');
+        return redirect()->back();
     }
 }

@@ -16,7 +16,10 @@ class NewsController extends Controller
         if(isset($_GET['skip'])) {
             $skip = $_GET['skip'];
         }
-        $news = News::orderBy('created_at', 'DESC')->skip($skip)->take(12)->get();
+        $news = News::where('status', 'published')
+            ->orderBy('created_at', 'DESC')
+            ->skip($skip)->take(12)
+            ->get();
 
         return response()->json($news);
     }

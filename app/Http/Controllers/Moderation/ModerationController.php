@@ -16,7 +16,9 @@ class ModerationController extends Controller
     }
     public function news()
     {
-        $news = News::all();
+        $news = News::where('status', 'published')
+            ->orderBy('created_at', 'DESC')
+            ->get();
         return view('moderation.news')->with('news', $news);
     }
 }

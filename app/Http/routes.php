@@ -30,7 +30,7 @@ Route::get('/news/create', 'NewsController@create')->middleware('mod');
 Route::post('/news/create', 'NewsController@store')->middleware('mod');
 Route::get('/news/edit/{id}', 'NewsController@edit')->middleware('mod');
 Route::post('/news/edit/{id}', 'NewsController@update')->middleware('mod');
-Route::get('/news/delete/{id}', 'NewsController@delete')->middleware('admin');
+Route::get('/news/delete/{id}', 'NewsController@delete')->middleware('mod');
 Route::get('/news/{slug}', 'NewsController@show');
 
 /* USERS */
@@ -84,7 +84,7 @@ Route::group(['prefix' => 'account', 'middleware' => 'auth'], function () {
 });
 
 /* Moderation */
-Route::group(['prefix' => 'moderation', 'namespace' => 'Moderation', 'middleware' => ['auth', 'mod', 'cors']], function () {
+Route::group(['prefix' => 'moderation', 'namespace' => 'Moderation', 'middleware' => ['auth', 'mod']], function () {
     Route::get('/', 'ModerationController@index');
     Route::get('/news', 'ModerationController@news');
     Route::get('/reports', 'ModerationController@reports');
