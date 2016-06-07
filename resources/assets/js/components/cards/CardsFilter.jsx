@@ -157,7 +157,7 @@ var CardsFilter = React.createClass({
     setTooltipContent: function(card) {
         var content = (
             <div className="pgg-tooltip pgg-tooltip-card">
-                <div className="head">{card.name}</div>
+                <div className={"head affinity-" + card.affinity.substring(9).toLowerCase()}>{card.name}</div>
                 <div className="content">Description about the card</div>
             </div>
         );

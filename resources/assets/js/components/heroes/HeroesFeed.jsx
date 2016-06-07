@@ -1,7 +1,6 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var FlipMove = require('react-flip-move');
-var CardTooltip = require('../CardTooltip');
 
 var HeroesFeed = React.createClass({
     getInitialState: function(){
@@ -54,7 +53,7 @@ var HeroesFeed = React.createClass({
             <div>
                 <h1>Paragon Heroes</h1>
                 <h5>{heroes.length} total heroes</h5>
-                <div className="wrapper">
+                <div className="wrapper"> 
                     <ul className="hero-list">
                         <FlipMove>
                             {heroes}

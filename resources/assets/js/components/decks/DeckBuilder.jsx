@@ -4,7 +4,6 @@ var CardsFeed = require('../cards/CardsFeed');
 var Helpers = require('../../helpers');
 
 var DeckBuilderBuilds = require("./DeckBuilderBuilds");
-var CardModal         = require("../cards/CardModal");
 
 var DeckBuilder = React.createClass({
     getInitialState: function(){

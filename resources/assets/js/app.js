@@ -4,9 +4,6 @@ require("../sass/app.scss");
 // Libraries
 require("./lib/InteractiveParallax");
 
-// Non React components
-require("./components/CardTooltip");
-
 // React react
 require("./components/StatsOverview");
 require("./components/PlayerStatsOverview");
