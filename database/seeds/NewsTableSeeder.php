@@ -1,9 +1,9 @@
 <?php
 
-use App\Article;
+use App\News;
 use Illuminate\Database\Seeder;
 
-class ArticlesTableSeeder extends Seeder
+class NewsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,7 +12,7 @@ class ArticlesTableSeeder extends Seeder
      */
     public function run()
     {
-        $news = new Article();
+        $news = new News();
         $news->type     = 'news';
         $news->user_id  = 1;
         $news->status   = 'published';
@@ -27,7 +27,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 This is something else. Paragraph section.";
         $news->save();
 
-        $news = new Article();
+        $news = new News();
         $news->type     = 'news';
         $news->user_id  = 1;
         $news->status   = 'published';
@@ -36,7 +36,7 @@ This is something else. Paragraph section.";
         $news->body     = "The release date for Iggy & Scorch was just announced. Turns out it's already out and I've just been pretty lazy making the ParagonGG website.";
         $news->save();
 
-        $news = new Article();
+        $news = new News();
         $news->type     = 'news';
         $news->user_id  = 1;
         $news->status   = 'published';
@@ -45,7 +45,7 @@ This is something else. Paragraph section.";
         $news->body     = "The release date for Iggy & Scorch was just announced. Turns out it's already out and I've just been pretty lazy making the ParagonGG website. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci amet commodi cumque eligendi iure labore neque non quasi qui quibusdam. Alias asperiores deserunt dolores exercitationem minus, optio tempore velit voluptas. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci amet commodi cumque eligendi iure labore neque non quasi qui quibusdam. Alias asperiores deserunt dolores exercitationem minus, optio tempore velit voluptas. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci amet commodi cumque eligendi iure labore neque non quasi qui quibusdam. Alias asperiores deserunt dolores exercitationem minus, optio tempore velit voluptas.";
         $news->save();
 
-        $news = new Article();
+        $news = new News();
         $news->type     = 'news';
         $news->user_id  = 1;
         $news->status   = 'published';
@@ -54,7 +54,7 @@ This is something else. Paragraph section.";
         $news->body     = "The release date for Iggy & Scorch was just announced. Turns out it's already out and I've just been pretty lazy making the ParagonGG website.";
         $news->save();
 
-        $news = new Article();
+        $news = new News();
         $news->type     = 'news';
         $news->user_id  = 1;
         $news->status   = 'published';
@@ -65,7 +65,7 @@ This is something else. Paragraph section.";
 
         //
 
-        $news = new Article();
+        $news = new News();
         $news->type     = 'news';
         $news->user_id  = 1;
         $news->status   = 'published';
@@ -74,7 +74,7 @@ This is something else. Paragraph section.";
         $news->body     = "The release date for Iggy & Scorch was just announced. Turns out it's already out and I've just been pretty lazy making the ParagonGG website.";
         $news->save();
 
-        $news = new Article();
+        $news = new News();
         $news->type     = 'news';
         $news->user_id  = 1;
         $news->status   = 'published';
@@ -83,7 +83,7 @@ This is something else. Paragraph section.";
         $news->body     = "The release date for Iggy & Scorch was just announced. Turns out it's already out and I've just been pretty lazy making the ParagonGG website.";
         $news->save();
 
-        $news = new Article();
+        $news = new News();
         $news->type     = 'news';
         $news->user_id  = 1;
         $news->status   = 'published';
@@ -92,7 +92,7 @@ This is something else. Paragraph section.";
         $news->body     = "The release date for Iggy & Scorch was just announced. Turns out it's already out and I've just been pretty lazy making the ParagonGG website. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci amet commodi cumque eligendi iure labore neque non quasi qui quibusdam. Alias asperiores deserunt dolores exercitationem minus, optio tempore velit voluptas. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci amet commodi cumque eligendi iure labore neque non quasi qui quibusdam. Alias asperiores deserunt dolores exercitationem minus, optio tempore velit voluptas. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci amet commodi cumque eligendi iure labore neque non quasi qui quibusdam. Alias asperiores deserunt dolores exercitationem minus, optio tempore velit voluptas.";
         $news->save();
 
-        $news = new Article();
+        $news = new News();
         $news->type     = 'news';
         $news->user_id  = 1;
         $news->status   = 'published';
@@ -101,7 +101,7 @@ This is something else. Paragraph section.";
         $news->body     = "The release date for Iggy & Scorch was just announced. Turns out it's already out and I've just been pretty lazy making the ParagonGG website.";
         $news->save();
 
-        $news = new Article();
+        $news = new News();
         $news->type     = 'news';
         $news->user_id  = 1;
         $news->status   = 'published';
