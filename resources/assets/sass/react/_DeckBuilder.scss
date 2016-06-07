@@ -113,6 +113,51 @@
             .deck-title {
                 position: relative;
 
+                .hero-portrait-container {
+                    border-radius: 50%;
+                    display: inline-block;
+                    width: 65px;
+                    height: 65px;
+                    overflow: hidden;
+                    position: relative;
+
+                    &:hover {
+                        pointer: cursor;
+
+                        .hero-portrait {
+                            transform: scale(1.1);
+                        }
+                    }
+
+                    .glow-wrapper {
+                        z-index: 2;
+                        position: absolute;
+                        width: inherit;
+                        height: inherit;
+                        border-radius: 50%;
+                        &.updated {
+                            animation: pulse-card-with-inner-glow 750ms linear;
+                        }
+                    }
+
+                    .hero-portrait {
+                        transition: all 300ms ease-in-out;
+                        z-index: 1;
+                        border-radius: 50%;
+                        position: absolute;
+                        width: inherit;
+                        height: inherit;
+
+                        &.updating {
+                            animation: flash 2s infinite linear;
+                        }
+
+                        &:hover {
+                            pointer: cursor;
+                        }
+                    }
+                }
+
                 & input.h2 {
                     display: inline-block;
                     min-width: 85%;
@@ -125,6 +170,79 @@
                     display: inline-block;
                 }
             }
+        }
+    }
+}
+
+.hero-panel {
+    height: 0;
+    opacity: 0;
+    position: relative;
+    overflow-y: scroll;
+    background: #222;
+    transition: all 250ms ease-in-out;
+
+    .list-wrapper {
+        margin-top: 100px;
+    }
+    .filter-wrapper {
+        width: 100%;
+        position: absolute;
+        background: #000;
+        z-index: 2;
+    }
+
+    &.visible {
+        margin-bottom: 20px;
+        height: 350px;
+        opacity: 1;
+    }
+
+    .hero-row {
+        text-align: center;
+        display: inline-block;
+        width: 80px;
+        height: 80px;
+        overflow: hidden;
+        margin: 15px;
+        position: relative;
+        padding: 4px;
+        border: 1px solid rgba(0,0,0,0);
+        transition: all 500ms ease-in-out;
+
+        &:hover {
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            span {
+                bottom: 0px;
+            }
+            img {
+                opacity: 0.8;
+                transform: scale(1.1);
+            }
+        }
+
+        img {
+            transition: all 600ms;
+            position: absolute;
+            width: 80px;
+            top: 0;
+            left: 0;
+            transform: scale(1);
+        }
+        span {
+            color: #fff;
+            font-family: "Roboto Condensed", sans-Arial, Arial;
+            padding: 5px;
+            font-size: 10px;
+            font-weight: 100;
+            background: rgba(0,0,0,0.75);
+            border-top: 1px solid rgba(255, 255, 255, 0.5);
+            transition: all 300ms;
+            position: absolute;
+            display: block;
+            width: 80px;
+            left: 0;
+            bottom: -50px;
         }
     }
 }

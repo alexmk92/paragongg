@@ -9,6 +9,24 @@
     margin-top: 20px;
     font-family: $font-condensed;
     font-size: 14px;
+
+    .create-build {
+        margin-top: 20px;
+
+        .dotted-button {
+            text-align: center;
+            overflow: hidden;
+            padding: 15px;
+            border: 1px dashed #fff;
+            color: #fff;
+            transition: all 100ms ease-in-out;
+
+            &:hover {
+                background: #181d27;
+            }
+        }
+    }
+
     .deck-list-actions {
         margin-bottom: 20px;
         .deck-total {

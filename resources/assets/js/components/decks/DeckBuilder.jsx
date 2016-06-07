@@ -3,8 +3,29 @@ var ReactDOM = require('react-dom');
 var CardsFeed = require('../cards/CardsFeed');
 var Helpers = require('../../helpers');
 var Tooltip = require('../libraries/tooltip/Toptip');
+var HeroPanel = require('../heroes/HeroPanel.jsx');
+var DeckBuilderBuilds = require('./DeckBuilderBuilds');
 
-var DeckBuilderBuilds = require("./DeckBuilderBuilds");
+/*
+ window.onscroll = function(event) {
+ var sidebar = document.querySelector(".dual-tab-wrapper");
+ if(typeof sidebar !== "undefined" && sidebar) {
+ var bodyRect = { width: window.innerWidth, height: window.innerHeight };
+ var sidebarRect = sidebar.getBoundingClientRect();
+
+ var offsetTop = (typeof window.pageYOffset !== "undefined") ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+
+ // Check if we can see the sidebar
+ if((sidebarRect.top + sidebarRect.height) < 0) {
+ sidebar = document.getElementById("sidebar");
+ var oldTop = Number(sidebar.style.top.replace("px", ""));
+ sidebar.style.top = (oldTop + (sidebarRect.height + 100)) + "px";
+ } else {
+ sidebar.style.top = 0 + "px";
+ }
+ }
+ };
+ */
 
 var DeckBuilder = React.createClass({
     getInitialState: function(){
@@ -14,8 +35,12 @@ var DeckBuilder = React.createClass({
             builds: [],
             modal: false,
             cardSelected: false,
+            buildSelected : false,
             lastSelectedCard: null,
+            lastSelectedBuild: null,
             playFlashAnimation: false,
+            heroPanelActive: false,
+            selectedHeroURL : "",
             activeTab: 0  // 0 decks, 1 builds
         }
     },
@@ -63,7 +88,6 @@ var DeckBuilder = React.createClass({
         event.preventDefault();
 
         var elem = event.target;
-        console.log(elem.className.trim())
         if(elem.className !== "fa fa-trash" && elem.className !== "delete-icon") {
             if(this.state.cardSelected && this.state.cardSelected.code == card.code) {
                 this.setState({cardSelected: false, playFlashAnimation: false});
@@ -150,24 +174,23 @@ var DeckBuilder = React.createClass({
         var buildList = this.state.builds.map(function(build) {
             var className = "";
             var childClassName = "";
-            if(this.state.lastSelectedCard.code === card.code && this.state.playFlashAnimation) {
+            console.log("Build: ", build);
+            if(this.state.lastSelectedBuild.code === build.code && this.state.playFlashAnimation) {
                 className += "pulse-card-outer";
                 childClassName += "pulse-card-inner";
             }
-            if(this.state.cardSelected.code == card.code) {
+            if(this.state.buildSelected.code === build.code) {
                 className += " selected";
             }
             return (
                 <li className={className}
-                    key={card.code + "_" + Helpers.uuid() }
-                    style={{backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/'+card.code+'/icon.png)'}}
-                    onClick={this.selectCard.bind(this, card)}
-
+                    key={build.code + "_" + Helpers.uuid() }
+                    onClick={this.selectCard.bind(this, build)}
                 >
                     <div className={ "wrapper " + childClassName }>
-                        <span className="count">{card.quantity }x</span>
-                        <span className="name">{card.name}</span>
-                        <span className="cost">{card.cost} CP</span>
+                        <span className="count">{build.quantity }x</span>
+                        <span className="name">{build.name}</span>
+                        <span className="cost">{build.cost} CP</span>
                     </div>
                 </li>
             );
@@ -182,7 +205,19 @@ var DeckBuilder = React.createClass({
                 </li>
             );
         }
+        buildList.push(
+            <li key="add_build" className="create-build" onClick={this.addBuild}>
+                <div className="dotted-button">
+                    <span>ADD A NEW BUILD</span>
+                </div>
+            </li>
+        );
         return buildList;
+    },
+    addBuild: function() {
+        this.setState({
+            builds : this.state.builds.concat()
+        })
     },
     setActiveTab: function(index) {
         this.setState({ activeTab : index, playFlashAnimation: false })
@@ -193,8 +228,16 @@ var DeckBuilder = React.createClass({
         }
         return "";
     },
+    toggleHeroPanel: function() {
+        this.setState({ heroPanelActive : !this.state.heroPanelActive })
+    },
+    onHeroPanelSelectedHero: function(hero) {
+        this.setState({
+            heroPanelActive : !this.state.heroPanelActive,
+            selectedHeroURL : "https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/" + hero.code + "/portrait_small.png"
+        });
+    },
     render: function() {
-        console.log("Tooltip: ", this.tooltip);
         return (
             <div>
                 <div id="sidebar">
@@ -203,7 +246,7 @@ var DeckBuilder = React.createClass({
                             <div onClick={this.setActiveTab.bind(this, 0)}
                                  className={this.isActiveTab(0)}
                             >
-                                <span>DECKS</span>
+                                <span>DECK</span>
                             </div>
                             <div onClick={this.setActiveTab.bind(this, 1)}
                                  className={this.isActiveTab(1) }
@@ -233,15 +276,31 @@ var DeckBuilder = React.createClass({
                     <div className="content-wrapper">
                         <span className="breadcrumb">Build a deck</span>
                         <div className="deck-title">
+                            <div className="hero-portrait-container"
+                                 onClick={this.toggleHeroPanel}
+                            >
+                                <div className={ this.state.heroPanelActive ? "glow-wrapper" : "glow-wrapper updated"}></div>
+                                <img className={ this.state.heroPanelActive ? "hero-portrait updating" : "hero-portrait"}
+                                     src={this.state.selectedHeroURL}
+                                     alt="click me"
+                                />
+                            </div>
                             <input className="h2" placeholder="Enter deck name..." />
                             <button name="publish" type="submit" className="btn"><i className="fa fa-check" aria-hidden="true"></i> SAVE DECK</button>
                         </div>
+                        <HeroPanel showAffinityFilter={false} heroes={HEROES} isActive={this.state.heroPanelActive} onHeroSelected={this.onHeroPanelSelectedHero} />
                         <div className="p">
                             Write a short description about your deck. What team compositions might you use this deck against? Under what situations would you use the different builds? Click here to edit the description text.
                         </div>
                         <div id="cards-feed">
                             <CardsFeed tooltip={this.tooltip} cards={CARDS} cardsRedirectOnClick={false} onCardClicked={this.addCard} />
                         </div>
+                    </div>
+                </div>
+                <div className="build-builder wrapper">
+                    <div id="back-button"></div>
+                    <div id="builds-wrapper">
+                        <DeckBuilderBuilds deck={this.state.deck} />
                     </div>
                 </div>
             </div>
