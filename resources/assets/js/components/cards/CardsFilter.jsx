@@ -1,52 +1,14 @@
 var React = require('react');
+var ReactDOM = require('react-dom')
 var SearchBar = require('../filter/SearchBar');
 var ToggleFilter = require('../filter/ToggleFilter');
 var DropDown = require('../filter/DropDown');
 var CardPreview = require('./CardPreview');
-
-/* OLD FILTER
- <h5>{this.state.cards.length} cards found</h5>
- <div id="sidebar">
- <div className="sidebox panel cf">
- <h4>Filter cards</h4>
- <form>
- <label>Search by name</label>
- <input onChange={this.inputChanged} type="text" placeholder="Card Name" />
- <label>Affinity</label>
- <select name="affinity" onChange={this.filter} defaultValue="All">
- <option value="All">All</option>
- <option value="Affinity.Universal">Universal</option>
- <option value="Affinity.Corruption">Corruption</option>
- <option value="Affinity.Fury">Fury</option>
- <option value="Affinity.Growth">Growth</option>
- <option value="Affinity.Intellect">Intellect</option>
- <option value="Affinity.Order">Order</option>
- </select>
- <label>Type</label>
- <select name="type" onChange={this.filter} defaultValue="All">
- <option value="All">All</option>
- <option value="one">Equipment</option>
- <option value="two">Upgrade</option>
- <option value="zero">Token</option>
- <option value="three">Prime Helix</option>
- </select>
- <label>Rarity</label>
- <select name="type" onChange={this.filter} defaultValue="All">
- <option value="All">All</option>
- <option value="Rarity.Common">Common</option>
- <option value="Rarity.Uncommon">Uncommon</option>
- <option value="Rarity.Rare">Rare</option>
- <option value="Rarity.EpicRare">Epic Rare</option>
- </select>
- { AUTHED ? <label><input name="owned" type="checkbox" onChange={this.filter} /> Show only cards I own</label> : '' }
- <label><input name="hasActive" type="checkbox" onChange={this.filter} /> Has active/passive</label>
- </form>
- </div>
- </div>
- */
+var Tooltip = require('../libraries/tooltip/Toptip');
 
 var CardsFilter = React.createClass({
     getInitialState: function(){
+        this.tooltip = new Tooltip();
         return {
             filter_owned : false,
             filter_affinities : [
@@ -181,12 +143,32 @@ var CardsFilter = React.createClass({
         this.props.cards.forEach(function(card) {
             if(_this.shouldBeVisible(card) === true) {
                 cards.push(<CardPreview card={card}
+                                        key={card.code}
                                         redirectsOnClick={this.props.cardsRedirectOnClick}
                                         onCardClicked={this.props.onCardClicked}
+                                        onMouseEnter={this.setTooltipContent.bind(this, card)}
+                                        onMouseOver={this.showTooltip}
+                                        onMouseLeave={this.hideTooltip}
                 />);
             }
         }, _this);
         this.props.onFilterChanged(cards);
+    },
+    setTooltipContent: function(card) {
+        var content = (
+            <div className="pgg-tooltip pgg-tooltip-card">
+                <div className="head">{card.name}</div>
+                <div className="content">Description about the card</div>
+            </div>
+        );
+        var tooltip = document.getElementById("toptip");
+        ReactDOM.render(content, tooltip);
+    },
+    showTooltip: function() {
+        this.tooltip.showTooltip();
+    },
+    hideTooltip: function() {
+        this.tooltip.hideTooltip();
     },
     render: function() {
         var _this = this;

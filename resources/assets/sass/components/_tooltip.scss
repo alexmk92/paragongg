@@ -1,0 +1,13 @@
+.pgg-tooltip {
+    &.pgg-tooltip-card {
+        background: $panel-color-dark;
+        min-width: 300px;
+        .head {
+            background: $panel-color;
+            padding: 20px;
+        }
+        .content {
+            padding: 20px;
+        }
+    }
+}

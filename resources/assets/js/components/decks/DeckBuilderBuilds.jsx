@@ -1,5 +1,5 @@
 var React     = require('react');
-var Tabbable  = require('../general/tabs/Tabbable');
+var Tabbable  = require('../libraries/tabs/Tabbable');
 
 var Tabs     = Tabbable.Tabs;
 var TabPanel = Tabbable.TabPanel;

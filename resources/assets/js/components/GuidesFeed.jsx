@@ -1,7 +1,7 @@
 var React     = require('react');
 var ReactDOM  = require('react-dom');
 var FlipMove  = require('react-flip-move');
-var Tabbable  = require('./general/tabs/Tabbable');
+var Tabbable  = require('./libraries/tabs/Tabbable');
 
 var Tabs      = Tabbable.Tabs;
 var TabPanel  = Tabbable.TabPanel;
