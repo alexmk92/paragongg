@@ -127,7 +127,6 @@ var CardsFilter = React.createClass({
         this.setState({ search_term : searchTerm });
     },
     dropDownChanged: function(newOption) {
-        console.log(this.props.cards);
         var newStats = this.state.statistics.map(function(statistic) {
             if(newOption === statistic)
                 return newOption;
@@ -177,7 +176,7 @@ var CardsFilter = React.createClass({
                                  affinity={affinity}
                                  label={ i === 0 ? "AFFINITIES" : "" }
                                  onToggleFilterChanged={_this.affinityFilterChanged}
-            />
+                    />
         });
 
         return(

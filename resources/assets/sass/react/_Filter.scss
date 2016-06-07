@@ -5,6 +5,17 @@
     width: 34px;
     cursor: pointer;
 
+    label {
+        text-transform: uppercase;
+        color: #5a606f;
+        display: block;
+        margin-bottom: 8px;
+        position: relative;
+        font-size: 13px;
+        min-width: 200px;
+        text-align: left;
+    }
+
     &:hover .underline {
         margin-top: 8px;
         opacity: 0.6;

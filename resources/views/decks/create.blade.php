@@ -10,7 +10,6 @@
             var AUTHED = true;
         @else
             var AUTHED = false;
-        console.log("heroes", HEROES);
         @endif
     </script>
 @endsection

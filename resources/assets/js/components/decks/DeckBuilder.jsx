@@ -3,6 +3,7 @@ var ReactDOM = require('react-dom');
 var CardsFeed = require('../cards/CardsFeed');
 var Helpers = require('../../helpers');
 var Tooltip = require('../libraries/tooltip/Toptip');
+var HeroPanel = require('../heroes/HeroPanel.jsx');
 
 var DeckBuilderBuilds = require("./DeckBuilderBuilds");
 
@@ -16,6 +17,8 @@ var DeckBuilder = React.createClass({
             cardSelected: false,
             lastSelectedCard: null,
             playFlashAnimation: false,
+            heroPanelActive: false,
+            selectedHeroURL : "",
             activeTab: 0  // 0 decks, 1 builds
         }
     },
@@ -63,7 +66,6 @@ var DeckBuilder = React.createClass({
         event.preventDefault();
 
         var elem = event.target;
-        console.log(elem.className.trim())
         if(elem.className !== "fa fa-trash" && elem.className !== "delete-icon") {
             if(this.state.cardSelected && this.state.cardSelected.code == card.code) {
                 this.setState({cardSelected: false, playFlashAnimation: false});
@@ -193,8 +195,16 @@ var DeckBuilder = React.createClass({
         }
         return "";
     },
+    toggleHeroPanel: function() {
+        this.setState({ heroPanelActive : !this.state.heroPanelActive })
+    },
+    onHeroPanelSelectedHero: function(hero) {
+        this.setState({
+            heroPanelActive : !this.state.heroPanelActive,
+            selectedHeroURL : "https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/" + hero.code + "/portrait_small.png"
+        });
+    },
     render: function() {
-        console.log("Tooltip: ", this.tooltip);
         return (
             <div>
                 <div id="sidebar">
@@ -233,9 +243,19 @@ var DeckBuilder = React.createClass({
                     <div className="content-wrapper">
                         <span className="breadcrumb">Build a deck</span>
                         <div className="deck-title">
+                            <div className="hero-portrait-container"
+                                 onClick={this.toggleHeroPanel}
+                            >
+                                <div className={ this.state.heroPanelActive ? "glow-wrapper" : "glow-wrapper updated"}></div>
+                                <img className={ this.state.heroPanelActive ? "hero-portrait updating" : "hero-portrait"}
+                                     src={this.state.selectedHeroURL}
+                                     alt="click me"
+                                />
+                            </div>
                             <input className="h2" placeholder="Enter deck name..." />
                             <button name="publish" type="submit" className="btn"><i className="fa fa-check" aria-hidden="true"></i> SAVE DECK</button>
                         </div>
+                        <HeroPanel showAffinityFilter={false} heroes={HEROES} isActive={this.state.heroPanelActive} onHeroSelected={this.onHeroPanelSelectedHero} />
                         <div className="p">
                             Write a short description about your deck. What team compositions might you use this deck against? Under what situations would you use the different builds? Click here to edit the description text.
                         </div>
