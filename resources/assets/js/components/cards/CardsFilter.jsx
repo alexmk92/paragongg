@@ -8,7 +8,7 @@ var Tooltip = require('../libraries/tooltip/Toptip');
 
 var CardsFilter = React.createClass({
     getInitialState: function(){
-        this.tooltip = new Tooltip();
+        this.tooltip = this.props.tooltip || new Tooltip();
         return {
             filter_owned : false,
             filter_affinities : [

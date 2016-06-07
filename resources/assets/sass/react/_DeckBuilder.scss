@@ -111,12 +111,17 @@
             max-width: 100%;
 
             .deck-title {
+                position: relative;
+
                 & input.h2 {
                     display: inline-block;
                     min-width: 85%;
                     width: auto;
                 }
                 button {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
                     display: inline-block;
                 }
             }
