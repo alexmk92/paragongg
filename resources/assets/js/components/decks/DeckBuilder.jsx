@@ -14,7 +14,8 @@ var DeckBuilder = React.createClass({
             modal: false,
             cardSelected: false,
             lastSelectedCard: null,
-            playFlashAnimation: false
+            playFlashAnimation: false,
+            activeTab: 0  // 0 decks, 1 builds
         }
     },
     addCard: function(selectedCard) {
@@ -61,6 +62,7 @@ var DeckBuilder = React.createClass({
         event.preventDefault();
 
         var elem = event.target;
+        console.log(elem.className.trim())
         if(elem.className !== "fa fa-trash" && elem.className !== "delete-icon") {
             if(this.state.cardSelected && this.state.cardSelected.code == card.code) {
                 this.setState({cardSelected: false, playFlashAnimation: false});
@@ -159,21 +161,48 @@ var DeckBuilder = React.createClass({
         }
         return buildList;
     },
+    setActiveTab: function(index) {
+        this.setState({ activeTab : index, playFlashAnimation: false })
+    },
+    isActiveTab: function(index) {
+        if(this.state.activeTab === index) {
+            return " active "
+        }
+        return "";
+    },
     render: function() {
         return (
             <div>
                 <div id="sidebar">
-                    <div className="sidebox panel cf">
-                        <h4>Builds <span className="deck-total">{this.buildCount()}/40 Cards</span></h4>
-                        <ul className="deck-list">
-                            {this.getBuilds()}
-                        </ul>
-                    </div>
-                    <div className="sidebox panel cf">
-                        <h4>Current Deck <span className="deck-total">{this.deckCount()}/40 Cards</span></h4>
-                        <ul className="deck-list">
-                            {this.getCardsInDeck()}
-                        </ul>
+                    <div className="dual-tab-wrapper">
+                        <div className="dual-tab-tabs">
+                            <div onClick={this.setActiveTab.bind(this, 0)}
+                                 className={this.isActiveTab(0)}
+                            >
+                                <span>DECKS</span>
+                            </div>
+                            <div onClick={this.setActiveTab.bind(this, 1)}
+                                 className={this.isActiveTab(1) }
+                            >
+                                <span>BUILDS</span>
+                            </div>
+                        </div>
+                        <div className="dual-tab-panel">
+                            <div className={ "sidebox panel cf" + this.isActiveTab(0) }>
+                                <h4>Current Deck <span className="deck-total">{this.deckCount()}/40 Cards</span></h4>
+                                <ul className="deck-list">
+                                    {this.getCardsInDeck()}
+                                </ul>
+                            </div>
+                        </div>
+                        <div className="dual-tab-panel">
+                            <div className={ "sidebox panel cf" + this.isActiveTab(1) }>
+                                <h4>Builds <span className="deck-total">{this.buildCount()}/40 Cards</span></h4>
+                                <ul className="deck-list">
+                                    {this.getBuilds()}
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div className="deck-builder wrapper">
