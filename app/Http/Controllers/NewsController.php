@@ -15,20 +15,20 @@ class NewsController extends Controller
     {
         $articles = Article::all();
 
-        return view('articles.index')->with('articles', $articles);
+        return view('news.index')->with('news', $articles);
     }
 
     // Create
     public function create()
     {
-        return view('articles.create');
+        return view('news.create');
     }
 
     // Store
     public function store()
     {
         // Store item
-        return view('articles.create');
+        return view('news.create');
     }
 
     // Read
@@ -44,7 +44,7 @@ class NewsController extends Controller
         $articleTOC  = (new TOC\TocGenerator())->getHtmlMenu($articleBody,2);
 
         $recent  = Article::where('slug', '!=', $slug)->take('10')->get();
-        return view('articles.show')->with('article', $article)
+        return view('news.show')->with('article', $article)
             ->with('articleBody', $articleBody)
             ->with('articleTOC', $articleTOC)
             ->with('recent', $recent)
@@ -55,14 +55,14 @@ class NewsController extends Controller
     public function edit($id)
     {
         $article = Article::findOrFail($id);
-        return view('articles.edit')->with('article', $article);
+        return view('news.edit')->with('article', $article);
     }
 
     // Update
     public function update($id)
     {
         $article = Article::findOrFail($id);
-        return view('articles.edit')->with('article', $article);
+        return view('news.edit')->with('article', $article);
     }
 
     // Delete
