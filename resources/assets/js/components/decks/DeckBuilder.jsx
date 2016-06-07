@@ -42,7 +42,7 @@ var DeckBuilder = React.createClass({
             });
         }
     },
-    shouldComponentUpdate(nextProps, nextState) {
+    shouldComponentUpdate: function(nextProps, nextState) {
         return this.state !== nextState;
     },
     deckCount: function() {
