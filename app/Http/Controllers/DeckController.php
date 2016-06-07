@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Deck;
+use App\Hero;
 use App\Http\Requests;
 
 class DeckController extends Controller
@@ -17,8 +18,9 @@ class DeckController extends Controller
     // Create
     public function create()
     {
+        $heroes = Hero::select('affinities', 'code', 'name')->get();
         $cards = app('App\Http\Controllers\CardController')->getCards();
-        return view('decks.create')->with('cards', $cards);
+        return view('decks.create')->with('cards', $cards)->with('heroes', $heroes);
     }
 
     // Store

@@ -27,7 +27,9 @@ var CardsFeed = React.createClass({
             <div>
                 { title }
                 <div id="filter">
-                    <CardsFilter cards={this.props.cards}
+                    <CardsFilter
+                                 tooltip={this.props.tooltip || null}
+                                 cards={this.props.cards}
                                  onFilterChanged={this.renderCards}
                                  cardsRedirectOnClick={ this.props.cardsRedirectOnClick }
                                  onCardClicked={this.onCardClicked}

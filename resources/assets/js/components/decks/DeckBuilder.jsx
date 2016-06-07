@@ -2,11 +2,13 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var CardsFeed = require('../cards/CardsFeed');
 var Helpers = require('../../helpers');
+var Tooltip = require('../libraries/tooltip/Toptip');
 
 var DeckBuilderBuilds = require("./DeckBuilderBuilds");
 
 var DeckBuilder = React.createClass({
     getInitialState: function(){
+        this.tooltip = new Tooltip();
         return {
             deck: [],
             builds: [],
@@ -84,6 +86,22 @@ var DeckBuilder = React.createClass({
         });
         this.setState({ deck : newDeck, playFlashAnimation: false });
     },
+    setTooltipContent: function(card) {
+        var content = (
+            <div className="pgg-tooltip pgg-tooltip-card">
+                <div className={"head affinity-" + card.affinity.substring(9).toLowerCase()}>{card.name}</div>
+                <div className="content">Description about the card</div>
+            </div>
+        );
+        var tooltip = document.getElementById("toptip");
+        ReactDOM.render(content, tooltip);
+    },
+    showTooltip: function() {
+        this.tooltip.showTooltip();
+    },
+    hideTooltip: function() {
+        this.tooltip.hideTooltip();
+    },
     getCardsInDeck : function() {
         var cardList = this.state.deck.map(function(card) {
             var className = "";
@@ -100,7 +118,11 @@ var DeckBuilder = React.createClass({
                     key={card.code + "_" + Helpers.uuid() }
                     style={{backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/'+card.code+'/icon.png)'}}
                     onContextMenu={this.deleteCardFromDeck.bind(this, card)}
-                    onClick={this.selectCard.bind(this, card)}>
+                    onClick={this.selectCard.bind(this, card)}
+                    onMouseEnter={this.setTooltipContent.bind(this, card)}
+                    onMouseOver={this.showTooltip}
+                    onMouseLeave={this.hideTooltip}
+                >
                     <div className={ "wrapper " + childClassName }>
                         <span className="count">{card.quantity }x</span>
                         <span className="name">{card.name}</span>
@@ -139,7 +161,9 @@ var DeckBuilder = React.createClass({
                 <li className={className}
                     key={card.code + "_" + Helpers.uuid() }
                     style={{backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/'+card.code+'/icon.png)'}}
-                    onClick={this.selectCard.bind(this, card)}>
+                    onClick={this.selectCard.bind(this, card)}
+
+                >
                     <div className={ "wrapper " + childClassName }>
                         <span className="count">{card.quantity }x</span>
                         <span className="name">{card.name}</span>
@@ -170,6 +194,7 @@ var DeckBuilder = React.createClass({
         return "";
     },
     render: function() {
+        console.log("Tooltip: ", this.tooltip);
         return (
             <div>
                 <div id="sidebar">
@@ -215,7 +240,7 @@ var DeckBuilder = React.createClass({
                             Write a short description about your deck. What team compositions might you use this deck against? Under what situations would you use the different builds? Click here to edit the description text.
                         </div>
                         <div id="cards-feed">
-                            <CardsFeed cards={CARDS} cardsRedirectOnClick={false} onCardClicked={this.addCard} />
+                            <CardsFeed tooltip={this.tooltip} cards={CARDS} cardsRedirectOnClick={false} onCardClicked={this.addCard} />
                         </div>
                     </div>
                 </div>
