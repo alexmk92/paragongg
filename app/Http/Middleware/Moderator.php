@@ -16,7 +16,7 @@ class Moderator
      */
     public function handle($request, Closure $next)
     {
-        if(!Auth::user()->isMod()) {
+        if(!Auth::check() || !Auth::user()->isMod()) {
             abort(403);
         }
         return $next($request);

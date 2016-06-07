@@ -12,4 +12,8 @@ class News extends Model
      * @var string
      */
     protected $table = 'news';
+
+    public function author() {
+        return $this->belongsTo('App\User', 'user_id');
+    }
 }

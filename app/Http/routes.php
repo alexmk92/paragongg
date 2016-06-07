@@ -26,10 +26,10 @@ Route::get('/privacy', function(){ return view('static.privacy'); });
 
 /* NEWS */
 Route::get('/news', 'NewsController@index');
-Route::get('/news/create', 'NewsController@create')->middleware('admin');
-Route::post('/news/create', 'NewsController@store')->middleware('admin');
-Route::get('/news/edit/{id}', 'NewsController@edit')->middleware('admin');
-Route::post('/news/edit/{id}', 'NewsController@update')->middleware('admin');
+Route::get('/news/create', 'NewsController@create')->middleware('mod');
+Route::post('/news/create', 'NewsController@store')->middleware('mod');
+Route::get('/news/edit/{id}', 'NewsController@edit')->middleware('mod');
+Route::post('/news/edit/{id}', 'NewsController@update')->middleware('mod');
 Route::get('/news/delete/{id}', 'NewsController@delete')->middleware('admin');
 Route::get('/news/{slug}', 'NewsController@show');
 
@@ -86,6 +86,7 @@ Route::group(['prefix' => 'account', 'middleware' => 'auth'], function () {
 /* Moderation */
 Route::group(['prefix' => 'moderation', 'namespace' => 'Moderation', 'middleware' => ['auth', 'mod', 'cors']], function () {
     Route::get('/', 'ModerationController@index');
+    Route::get('/news', 'ModerationController@news');
     Route::get('/reports', 'ModerationController@reports');
 });
 

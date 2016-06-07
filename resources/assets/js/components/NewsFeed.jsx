@@ -33,9 +33,6 @@ var NewsFeed = React.createClass({
             this.getResults();
         }
     },
-    handleSelect: function(index, last) {
-        console.log('Selected tab: ' + index + ', Last tab: ' + last);
-    },
     getResults: function() {
         var _this = this;
         Action.fetchNews(this.state.news.length, function(error, data) {
@@ -70,7 +67,7 @@ var NewsFeed = React.createClass({
                    href={"/news/" + element.slug}
                    key={element.slug}>
                     <div className="preview-image">
-                        <img src="/assets/images/example-preview.jpg"/>
+                        <img src={"https://s3-eu-west-1.amazonaws.com/paragon.gg/images/news/thumbnails/" + element.thumbnail}/>
                     </div>
                     <div className="preview-title">
                         <h2>{element.title}</h2>
@@ -82,11 +79,9 @@ var NewsFeed = React.createClass({
         return (
             <div>
                 <Masonry
-                    className={'my-gallery-class'} // default ''
-                    //elementType={'ul'} // default 'div'
-                    options={this.masonryOptions} // default {}
-                    disableImagesLoaded={false} // default false
-                >
+                    className={'my-gallery-class'}
+                    options={this.masonryOptions}
+                    disableImagesLoaded={false}>
                     { childElements }
                 </Masonry>
                 <div>

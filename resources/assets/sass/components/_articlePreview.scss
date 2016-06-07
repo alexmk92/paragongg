@@ -3,7 +3,7 @@
         margin: 0 0 20px;
         background: url('/assets/example-article-background.jpg');
         background-size: cover;
-        min-height: 150px;
+        min-height: 10px;
         .preview-details {
             padding: 10px 15px;
         }
@@ -12,7 +12,7 @@
 .article-preview {
     display: inline-block;
     max-width: 430px;
-    min-height: 200px;
+    min-height: 150px;
     margin-bottom: 30px;
     position: relative;
     border: 1px solid #222222;
@@ -24,7 +24,7 @@
 
     .preview-image {
         img {
-            vertical-align: top;
+            vertical-align: middle;
             width: 100%;
         }
     }
