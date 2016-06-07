@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 
-use App\Article;
+use App\News;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -16,8 +16,8 @@ class NewsController extends Controller
         if(isset($_GET['skip'])) {
             $skip = $_GET['skip'];
         }
-        $articles = Article::orderBy('created_at', 'DESC')->skip($skip)->take(4)->get();
+        $news = News::orderBy('created_at', 'DESC')->skip($skip)->take(4)->get();
 
-        return response()->json($articles);
+        return response()->json($news);
     }
 }

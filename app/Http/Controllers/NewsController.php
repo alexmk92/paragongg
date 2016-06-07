@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Article;
+use App\News;
 use App\Http\Requests;
 use Parsedown;
 use TOC;
@@ -13,9 +13,9 @@ class NewsController extends Controller
     // Create
     public function index()
     {
-        $articles = Article::all();
+        $news = News::all();
 
-        return view('news.index')->with('news', $articles);
+        return view('news.index')->with('news', $news);
     }
 
     // Create
@@ -34,17 +34,17 @@ class NewsController extends Controller
     // Read
     public function show(Request $request, $slug)
     {
-        $article = Article::where('slug', $slug)->firstOrFail();
+        $news = News::where('slug', $slug)->firstOrFail();
         $thread = findOrCreateThread($request->path());
         $comments = $thread->comments;
 
 
-        $articleBody = (new Parsedown())->text($article->body);
+        $articleBody = (new Parsedown())->text($news->body);
         $articleBody = (new TOC\MarkupFixer())->fix($articleBody);
         $articleTOC  = (new TOC\TocGenerator())->getHtmlMenu($articleBody,2);
 
         $recent  = Article::where('slug', '!=', $slug)->take('10')->get();
-        return view('news.show')->with('article', $article)
+        return view('news.show')->with('news', $news)
             ->with('articleBody', $articleBody)
             ->with('articleTOC', $articleTOC)
             ->with('recent', $recent)
@@ -54,22 +54,22 @@ class NewsController extends Controller
     // Edit
     public function edit($id)
     {
-        $article = Article::findOrFail($id);
-        return view('news.edit')->with('article', $article);
+        $news = News::findOrFail($id);
+        return view('news.edit')->with('news', $news);
     }
 
     // Update
     public function update($id)
     {
-        $article = Article::findOrFail($id);
-        return view('news.edit')->with('article', $article);
+        $news = News::findOrFail($id);
+        return view('news.edit')->with('news', $news);
     }
 
     // Delete
     public function delete($id)
     {
-        $article = Article::findOrFail($id);
-        $article->delete();
+        $news = News::findOrFail($id);
+        $news->delete();
         return view('home');
     }
 }
