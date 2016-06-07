@@ -16,12 +16,24 @@ var Tabs = React.createClass({
     getTabs: function() {
         var tabs = [];
         if(this.state.tabCount > 0) {
-            for(var i = 0; i < this.state.tabCount; i++) {
-                tabs.push(<Tab key={i}
-                               reactKey={i}
+
+            if(Object.prototype.toString.call(this.state.tabs) === '[object Array]') {
+                console.log("Is an array");
+                this.state.tabs.forEach(function(tab, i) {
+                    tabs.push(<Tab key={"tab_" + i}
+                                   reactKey={i}
+                                   selected={this.state.selected}
+                                   title={tab.props.title}
+                                   onSelect={this.setSelected.bind(this, i)}/>
+                    );
+                }.bind(this));
+            } else {
+                tabs.push(<Tab key={"tab_" + 0}
+                               reactKey={0}
                                selected={this.state.selected}
-                               title={this.state.tabs[i].props.title}
-                               onSelect={this.setSelected.bind(this, i)}/>);
+                               title={this.state.tabs.props.title}
+                               onSelect={this.setSelected.bind(this, 0)}/>
+                );
             }
         }
         return tabs;
@@ -36,10 +48,16 @@ var Tabs = React.createClass({
     getPanels: function() {
         var panels = [];
         if(this.state.tabCount > 0) {
-            for (var i = 0; i < this.state.tabCount; i++) {
-                panels.push(<TabPanel key={i}
-                                      reactKey={i}
-                                      selected={this.state.selected}>{this.state.tabs[i].props.children}</TabPanel>)
+            if(Object.prototype.toString.call(this.state.tabs) === '[object Array]') {
+                for (var i = 0; i < this.state.tabCount; i++) {
+                    panels.push(<TabPanel key={i}
+                                          reactKey={i}
+                                          selected={this.state.selected}>{this.state.tabs[i].props.children}</TabPanel>)
+                }
+            } else {
+                panels.push(<TabPanel key={0}
+                                      reactKey={0}
+                                      selected={this.state.selected}>{this.state.tabs.props.children}</TabPanel>)
             }
         }
         return panels;
