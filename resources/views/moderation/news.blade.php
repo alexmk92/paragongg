@@ -3,7 +3,7 @@
     @include('moderation.nav')
     <div class="wrapper">
         <span class="breadcrumb"><a href="/moderation">Moderation</a> / <a href="/moderation/news">News</a></span>
-        <h2>News</h2>
+        <h1>News</h1>
         <a class="btn btn-primary btn-margin" href="/news/create">Create post</a>
         <hr>
         <table class="minimal">
@@ -20,8 +20,8 @@
                 @foreach($news as $post)
                     <tr>
                         <td>{{ $post->id }}</td>
-                        <td>{{ $post->author->username }}</td>
-                        <td>{{ $post->title }}</td>
+                        <td><a href="/users/{{ $post->author->username }}">{{ $post->author->username }}</a></td>
+                        <td><a href="/news/{{ $post->slug }}">{{ $post->title }}</a></td>
                         <td>{{ $post->status }}</td>
                         <td><a class="btn btn-faded" href="/news/edit/{{ $post->id }}"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a> <a class="btn btn-faded btn-warning-hover" href="/news/delete/{{ $post->id }}" onclick="return confirm('Are you sure you would like to delete this?');"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a></td>
                     </tr>

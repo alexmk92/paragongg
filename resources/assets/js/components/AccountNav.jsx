@@ -27,10 +27,10 @@ var AccountNav = React.createClass({
     render: function() {
         var isAdmin, isMod = false;
         if(this.isMod()) {
-            isMod = <li><a href="/moderation"><i className="fa fa-check-square" aria-hidden="true"></i>Moderation</a></li>;
+            isMod = <li><hr className="slim"/><a href="/moderation"><i className="fa fa-gavel" aria-hidden="true"></i>Moderation</a></li>;
         }
         if(this.isAdmin()) {
-            isAdmin = <li><a href="/admin"><i className="fa fa-lock" aria-hidden="true"></i>Administration</a></li>;
+            isAdmin = <li><a href="/admin"><i className="fa fa-wrench" aria-hidden="true"></i>Administration</a></li>;
         }
         return(
             <div className="account-dropdown">
@@ -49,7 +49,7 @@ var AccountNav = React.createClass({
                         <li><a href="/account/decks"><i className="fa fa-book" aria-hidden="true"></i>Your decks</a></li>
                         <li><a href="/account/achievements"><i className="fa fa-trophy" aria-hidden="true"></i>Achievements</a></li>
                         <li><a href="/account/store"><i className="pgg pgg-amber" aria-hidden="true"></i>Store</a></li>
-                        <li><a href="/account"><i className="fa fa-cog" aria-hidden="true"></i>Account settings</a></li>
+                        <li><a href="/account"><i className="fa fa-cog" aria-hidden="true"></i>Settings</a></li>
                         {isMod}
                         {isAdmin}
                     </ul>

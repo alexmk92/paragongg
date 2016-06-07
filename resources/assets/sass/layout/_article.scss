@@ -1,17 +1,15 @@
 .article-header {
-    background: #333;
-    background: url('/assets/images/example2.jpg');
-    background-size: cover;
-    height: 300px;
     width: 100%;
+    margin-bottom: 30px;
+    img {
+        width: 100%;
+        vertical-align: middle;
+    }
 }
 
 article {
     margin-right: 400px;
     padding-bottom: 50px;
-    .article-header {
-        margin-bottom: 30px;
-    }
     .article-details {
         color: $font-color-faded;
         font-size: 14px;
