@@ -192,12 +192,14 @@ var DeckBuilder = React.createClass({
         var buildList = this.state.builds.map(function(build) {
             var className = "";
             var childClassName = "";
-            if(this.state.lastSelectedBuild && (this.state.lastSelectedBuild.code === build.code && this.state.playFlashAnimation)) {
-                className += "pulse-card-outer";
-                childClassName += "pulse-card-inner";
-            }
-            if(this.state.selectedBuild.code === build.code) {
-                className += " selected";
+            if(this.state.selectedBuild !== null) {
+                if(this.state.lastSelectedBuild !== null && (this.state.lastSelectedBuild.code === build.code && this.state.playFlashAnimation)) {
+                    className += "pulse-card-outer";
+                    childClassName += "pulse-card-inner";
+                }
+                if(this.state.selectedBuild.code === build.code) {
+                    className += " selected";
+                }
             }
             return (
                 <li className={className}

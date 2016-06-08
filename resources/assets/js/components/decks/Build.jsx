@@ -4,7 +4,7 @@ var Build = React.createClass({
    render: function() {
        return (
             <div>
-                <h2>BUILD: { this.props.build.code || "" }</h2>
+                <h2>{ this.props.build.code || "" }</h2>
                 <ul className="build-list">
                     <li id="c1" className="active"><span className="slot-label">Active</span></li>
                     <li id="c2" className="active"><span className="slot-label">Active</span></li>
