@@ -12,6 +12,9 @@
     @yield('meta_description')
     @yield('meta_thumbnail')
 
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.3.15/slick.css" />
+
+
     <!-- Favicon -->
     <link rel="shortcut icon" href="/assets/images/favicon.ico" />
 

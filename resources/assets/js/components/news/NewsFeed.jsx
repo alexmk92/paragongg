@@ -1,7 +1,8 @@
 var React     = require('react');
 var ReactDOM  = require('react-dom');
 var Masonry   = require('react-masonry-component');
-var Action = require('../actions/news');
+var Action    = require('../../actions/news');
+var Helpers   = require('../../helpers');
 
 var NewsFeed = React.createClass({
     getInitialState: function() {
@@ -70,6 +71,7 @@ var NewsFeed = React.createClass({
                         <img src={"https://s3-eu-west-1.amazonaws.com/paragon.gg/images/news/thumbnails/" + element.thumbnail}/>
                     </div>
                     <div className="preview-title">
+                        <span>{Helpers.prettyDate(element.created_at)}</span>
                         <h2>{element.title}</h2>
                     </div>
                 </a>
