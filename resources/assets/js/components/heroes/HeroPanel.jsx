@@ -88,7 +88,6 @@ var HeroPanel = React.createClass({
         if(heroes.length === 0) {
             heroes.push(<li className="hero-row"><span>We're sorry, no heroe's match the search term {this.state.searchTerm}</span></li>)
         }
-        console.log(heroes);
         return heroes;
     },
     render: function() {
