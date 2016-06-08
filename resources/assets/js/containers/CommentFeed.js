@@ -109,6 +109,7 @@ var CommentBox = React.createClass({
             var buttonClass = (!this.state.isFocused && !this.state.posting) ? "hidden" : "";
             return (
                 <div id="comment-box">
+                    <h3>Discussion</h3>
                     <form className={this.state.posting ? "disabled" : ""}>
                         <img className="comment-avatar"
                              src="https://s.gravatar.com/avatar/bae38bd358b0325c7a3c049a4671a9cf?s=80"

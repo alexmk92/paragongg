@@ -260,16 +260,8 @@ canvas {
     #comment-feed {
         text-align: center;
         border-right: none;
-        margin: 0 auto;
         max-width: 900px;
-        margin-bottom: 50px;
-
-        &:before {
-            content: "DISCUSS THIS CARD";
-            font-weight: 100;
-            font-family: "Roboto", sans-serif, Arial;
-            font-size: 1.4em;
-        }
+        margin: 0 auto 50px;
 
         #comment-list {
             .comment-item {
@@ -278,7 +270,20 @@ canvas {
         }
 
         #comments-wrapper {
-            padding-top: 40px;
+            h3 {
+                color: $font-color-base;
+                font-weight: 500;
+                text-align: center;
+                margin-bottom: 50px;
+                &:after {
+                    content: '';
+                    display: block;
+                    width: 70px;
+                    margin: 20px auto;
+                    height: 1px;
+                    border-top: 1px solid $faded-line;
+                }
+            }
             text-align: left;
         }
 
