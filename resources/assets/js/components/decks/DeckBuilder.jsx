@@ -16,7 +16,7 @@ var Build = require('./Build');
          var offsetTop = (typeof window.pageYOffset !== "undefined") ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
 
          // Check if we can see the sidebar
-         sidebar.style.top = offsetTop + "px";
+         //sidebar.style.top = offsetTop + "px";
          if((sidebarRect.top + sidebarRect.height) < 0) {
              sidebar.style.top = (oldTop + (sidebarRect.height + 100)) + "px";
          } else {
@@ -280,6 +280,7 @@ var DeckBuilder = React.createClass({
         return (
             <div>
                 <div id="sidebar">
+                    <button name="publish" type="submit" className="btn wide"><i className="fa fa-check" aria-hidden="true"></i> SAVE DECK</button>
                     <div className="dual-tab-wrapper">
                         <div className="dual-tab-tabs">
                             <div onClick={this.setActiveTab.bind(this, 0)}
@@ -295,7 +296,9 @@ var DeckBuilder = React.createClass({
                         </div>
                         <div className="dual-tab-panel">
                             <div className={ "sidebox panel cf" + this.isActiveTab(0) }>
-                                <h4>Current Deck <span className="deck-total">{this.deckCount()}/40 Cards</span></h4>
+                                <div className="title-wrapper">
+                                    <button name="publish" type="submit" className="btn"><i className="fa fa-pencil" aria-hidden="true"></i> EDIT DECK</button>
+                                </div>
                                 <ul className="deck-list">
                                     {this.getCardsInDeck()}
                                 </ul>
@@ -325,7 +328,6 @@ var DeckBuilder = React.createClass({
                                 />
                             </div>
                             <input className="h2" placeholder="Enter deck name..." ref="deckNameInput" />
-                            <button name="publish" type="submit" className="btn"><i className="fa fa-check" aria-hidden="true"></i> SAVE DECK</button>
                         </div>
                         <HeroPanel showAffinityFilter={false} heroes={HEROES} isActive={this.state.heroPanelActive} onHeroSelected={this.onHeroPanelSelectedHero} />
                         <div className="p">
