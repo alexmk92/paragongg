@@ -4,28 +4,28 @@ var CardsFeed = require('../cards/CardsFeed');
 var Helpers = require('../../helpers');
 var Tooltip = require('../libraries/tooltip/Toptip');
 var HeroPanel = require('../heroes/HeroPanel.jsx');
-var DeckBuilderBuilds = require('./DeckBuilderBuilds');
+var Build = require('./Build');
 
 /*
  window.onscroll = function(event) {
- var sidebar = document.querySelector(".dual-tab-wrapper");
- if(typeof sidebar !== "undefined" && sidebar) {
- var bodyRect = { width: window.innerWidth, height: window.innerHeight };
- var sidebarRect = sidebar.getBoundingClientRect();
+     var sidebar = document.querySelector(".dual-tab-wrapper");
+     if(typeof sidebar !== "undefined" && sidebar) {
+         var bodyRect = { width: window.innerWidth, height: window.innerHeight };
+         var sidebarRect = sidebar.getBoundingClientRect();
 
- var offsetTop = (typeof window.pageYOffset !== "undefined") ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+         var offsetTop = (typeof window.pageYOffset !== "undefined") ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
 
- // Check if we can see the sidebar
- if((sidebarRect.top + sidebarRect.height) < 0) {
- sidebar = document.getElementById("sidebar");
- var oldTop = Number(sidebar.style.top.replace("px", ""));
- sidebar.style.top = (oldTop + (sidebarRect.height + 100)) + "px";
- } else {
- sidebar.style.top = 0 + "px";
- }
- }
+         // Check if we can see the sidebar
+         sidebar.style.top = offsetTop + "px";
+         if((sidebarRect.top + sidebarRect.height) < 0) {
+             sidebar.style.top = (oldTop + (sidebarRect.height + 100)) + "px";
+         } else {
+            sidebar.style.top = 0 + "px";
+         }
+     }
  };
- */
+*/
+
 
 var DeckBuilder = React.createClass({
     getInitialState: function(){
@@ -35,14 +35,50 @@ var DeckBuilder = React.createClass({
             builds: [],
             modal: false,
             cardSelected: false,
-            buildSelected : false,
+            selectedBuild : null,
             lastSelectedCard: null,
             lastSelectedBuild: null,
             playFlashAnimation: false,
-            heroPanelActive: false,
-            selectedHeroURL : "",
+            heroPanelActive: true,
+            selectedHeroURL : "https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/" + HEROES[0].code + "/portrait_small.png",
+            isBuildsPanelShowing : false,
             activeTab: 0  // 0 decks, 1 builds
         }
+    },
+    componentDidMount: function() {
+        this.refs.deckNameInput.focus();
+    },
+    shouldComponentUpdate: function(nextProps, nextState) {
+        return this.state !== nextState;
+    },
+    toggleModal: function() {
+        var modal = this.state.modal ? false : true;
+        this.setState({modal: modal});
+    },
+    /** TOOLTIP FUNCTIONS **/
+    setTooltipContent: function(card) {
+        var content = (
+            <div className="pgg-tooltip pgg-tooltip-card">
+                <div className={"head affinity-" + card.affinity.substring(9).toLowerCase()}>{card.name}</div>
+                <div className="content">Description about the card</div>
+            </div>
+        );
+        var tooltip = document.getElementById("toptip");
+        ReactDOM.render(content, tooltip);
+    },
+    showTooltip: function() {
+        this.tooltip.showTooltip();
+    },
+    hideTooltip: function() {
+        this.tooltip.hideTooltip();
+    },
+    /** CARD FUNCTIONS **/
+    deckCount: function() {
+        var count = 0;
+        this.state.deck.forEach(function(card) {
+            count += card.quantity;
+        });
+        return count;
     },
     addCard: function(selectedCard) {
         if(this.deckCount() < 40) {
@@ -66,23 +102,6 @@ var DeckBuilder = React.createClass({
                 playFlashAnimation: true
             });
         }
-    },
-    shouldComponentUpdate: function(nextProps, nextState) {
-        return this.state !== nextState;
-    },
-    deckCount: function() {
-        var count = 0;
-        this.state.deck.forEach(function(card) {
-            count += card.quantity;
-        });
-        return count;
-    },
-    buildCount: function() {
-        return this.state.builds.count;
-    },
-    toggleModal: function() {
-        var modal = this.state.modal ? false : true;
-        this.setState({modal: modal});
     },
     selectCard: function(card, event) {
         event.preventDefault();
@@ -109,22 +128,6 @@ var DeckBuilder = React.createClass({
             }
         });
         this.setState({ deck : newDeck, playFlashAnimation: false });
-    },
-    setTooltipContent: function(card) {
-        var content = (
-            <div className="pgg-tooltip pgg-tooltip-card">
-                <div className={"head affinity-" + card.affinity.substring(9).toLowerCase()}>{card.name}</div>
-                <div className="content">Description about the card</div>
-            </div>
-        );
-        var tooltip = document.getElementById("toptip");
-        ReactDOM.render(content, tooltip);
-    },
-    showTooltip: function() {
-        this.tooltip.showTooltip();
-    },
-    hideTooltip: function() {
-        this.tooltip.hideTooltip();
     },
     getCardsInDeck : function() {
         var cardList = this.state.deck.map(function(card) {
@@ -170,22 +173,36 @@ var DeckBuilder = React.createClass({
         }
         return cardList;
     },
+    /** BUILD FUNCTIONS **/
+    buildCount: function() {
+        return this.state.builds.count;
+    },
+    selectBuild: function(build, event) {
+        event.preventDefault();
+        var elem = event.target;
+        if(elem.className !== "fa fa-trash" && elem.className !== "delete-icon") {
+            if(this.state.selectedBuild && this.state.selectedBuild.code == build.code) {
+                this.setState({selectedBuild: null, playFlashAnimation: false, isBuildsPanelShowing: true });
+            } else {
+                this.setState({selectedBuild: build, playFlashAnimation: false, isBuildsPanelShowing: true });
+            }
+        }
+    },
     getBuilds: function() {
         var buildList = this.state.builds.map(function(build) {
             var className = "";
             var childClassName = "";
-            console.log("Build: ", build);
-            if(this.state.lastSelectedBuild.code === build.code && this.state.playFlashAnimation) {
+            if(this.state.lastSelectedBuild && (this.state.lastSelectedBuild.code === build.code && this.state.playFlashAnimation)) {
                 className += "pulse-card-outer";
                 childClassName += "pulse-card-inner";
             }
-            if(this.state.buildSelected.code === build.code) {
+            if(this.state.selectedBuild.code === build.code) {
                 className += " selected";
             }
             return (
                 <li className={className}
-                    key={build.code + "_" + Helpers.uuid() }
-                    onClick={this.selectCard.bind(this, build)}
+                    key={build.code}
+                    onClick={this.selectBuild.bind(this, build)}
                 >
                     <div className={ "wrapper " + childClassName }>
                         <span className="count">{build.quantity }x</span>
@@ -215,10 +232,24 @@ var DeckBuilder = React.createClass({
         return buildList;
     },
     addBuild: function() {
+        var build = {
+            code : "build_" + Helpers.uuid(),
+            title : "",
+            cards: [],
+            cost: 0
+        };
         this.setState({
-            builds : this.state.builds.concat()
-        })
+            builds : this.state.builds.concat(build),
+            activeTab : 0,
+            selectedBuild: build,
+            playFlashAnimation: false
+        });
+        this.toggleBuildView();
     },
+    toggleBuildView: function(dismiss = true) {
+        this.setState({ isBuildsPanelShowing : dismiss })
+    },
+    /** TAB PANEL FUNCTIONS **/
     setActiveTab: function(index) {
         this.setState({ activeTab : index, playFlashAnimation: false })
     },
@@ -231,13 +262,19 @@ var DeckBuilder = React.createClass({
     toggleHeroPanel: function() {
         this.setState({ heroPanelActive : !this.state.heroPanelActive })
     },
+    /** HERO PANEL DROP DOWN FUNCTIONS **/
     onHeroPanelSelectedHero: function(hero) {
+        if(this.refs.deckNameInput.value === "") {
+            this.refs.deckNameInput.focus();
+        }
         this.setState({
             heroPanelActive : !this.state.heroPanelActive,
             selectedHeroURL : "https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/" + hero.code + "/portrait_small.png"
         });
     },
+    /** END OF FUNCTIONS **/
     render: function() {
+        console.log("BUILDS PANEL IS SHOWING? " + this.state.isBuildsPanelShowing);
         return (
             <div>
                 <div id="sidebar">
@@ -246,12 +283,12 @@ var DeckBuilder = React.createClass({
                             <div onClick={this.setActiveTab.bind(this, 0)}
                                  className={this.isActiveTab(0)}
                             >
-                                <span>DECK</span>
+                                <span>MY DECK <span className="subtext"> ( {this.deckCount()}/40 )</span></span>
                             </div>
                             <div onClick={this.setActiveTab.bind(this, 1)}
                                  className={this.isActiveTab(1) }
                             >
-                                <span>BUILDS</span>
+                                <span>MY BUILDS</span>
                             </div>
                         </div>
                         <div className="dual-tab-panel">
@@ -272,7 +309,7 @@ var DeckBuilder = React.createClass({
                         </div>
                     </div>
                 </div>
-                <div className="deck-builder wrapper">
+                <div className={"deck-builder wrapper " + (this.state.isBuildsPanelShowing ? "hidden" : "")}>
                     <div className="content-wrapper">
                         <span className="breadcrumb">Build a deck</span>
                         <div className="deck-title">
@@ -285,7 +322,7 @@ var DeckBuilder = React.createClass({
                                      alt="click me"
                                 />
                             </div>
-                            <input className="h2" placeholder="Enter deck name..." />
+                            <input className="h2" placeholder="Enter deck name..." ref="deckNameInput" />
                             <button name="publish" type="submit" className="btn"><i className="fa fa-check" aria-hidden="true"></i> SAVE DECK</button>
                         </div>
                         <HeroPanel showAffinityFilter={false} heroes={HEROES} isActive={this.state.heroPanelActive} onHeroSelected={this.onHeroPanelSelectedHero} />
@@ -297,10 +334,14 @@ var DeckBuilder = React.createClass({
                         </div>
                     </div>
                 </div>
-                <div className="build-builder wrapper">
-                    <div id="back-button"></div>
+                <div className={"build-builder wrapper " + (this.state.isBuildsPanelShowing ? "" : "hidden")}>
+                    <div id="back-button" onClick={this.toggleBuildView.bind(this, false)}>
+                        <i className="fa fa-angle-left" aria-hidden="true"></i> BACK TO DECK BUILDER
+                    </div>
                     <div id="builds-wrapper">
-                        <DeckBuilderBuilds deck={this.state.deck} />
+                        {
+                            this.state.selectedBuild ? <Build build={this.state.selectedBuild} /> : ""
+                        }
                     </div>
                 </div>
             </div>

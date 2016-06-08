@@ -83,7 +83,16 @@
 
 #deck-builder {
 
+    position: relative;
+
+    .subtext {
+        color: #5a606f;
+        font-family: "Roboto Condensed", sans-serif, Arial;
+    }
+
     #sidebar {
+        position: relative;
+        z-index: 10;
         width: 29%;
         max-width: 400px;
 
@@ -101,11 +110,56 @@
         }
     }
 
+    .build-builder {
+        margin-top: 0px;
+        padding-top: 0px;
+        width: 70%;
+        left: 0;
+        top: 0;
+        opacity: 1;
+        position: absolute;
+        z-index: 0;
+        transition: all 300ms ease-in-out;
+
+        #back-button {
+            font-size: 16px;
+            font-weight: 100;
+            cursor: pointer;
+            margin-bottom: 20px;
+
+            &:hover {
+                color: $secondary-highlight;
+            }
+
+            i {
+                font-size: 28px;
+                position: relative;
+                top: 3px;
+                margin-right: 5px;
+            }
+        }
+
+        &.hidden {
+            left: 50%;
+            opacity: 0;
+        }
+    }
+
     .deck-builder {
         border-top: none;
         margin-top: 0px;
         padding-top: 0px;
         width: 70%;
+        left: 0;
+        top: 0;
+        opacity: 1;
+        position: relative;
+        transition: all 300ms ease-in-out;
+
+        &.hidden {
+            left: -50%;
+            opacity: 0;
+        }
 
         .content-wrapper {
             max-width: 100%;
@@ -122,11 +176,7 @@
                     position: relative;
 
                     &:hover {
-                        pointer: cursor;
-
-                        .hero-portrait {
-                            transform: scale(1.1);
-                        }
+                        cursor: pointer;
                     }
 
                     .glow-wrapper {
