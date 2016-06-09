@@ -1,0 +1,130 @@
+.build-list {
+    margin-top: 50px;
+    li {
+        opacity: 0.4;
+        transition: all 250ms ease-in-out;
+
+        &:hover {
+            opacity: 0.6;
+        }
+
+        &.active-slot {
+            opacity:0.75;
+            //animation: pulse-card-with-inner-glow 2000ms infinite;
+            &:hover {
+                opacity: 0.9;
+            }
+        }
+
+        &.active-placed {
+            opacity:1;
+            //animation: pulse-card-with-inner-glow 2000ms infinite;
+            &:hover {
+                opacity: 0.9;
+            }
+        }
+
+        .glow-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            z-index: 2;
+
+            &.pulse-glow-inner {
+                animation: pulse-card-with-inner-glow 500ms linear
+            }
+            &.pulse-glow-outer {
+                animation: pulse-card-with-outer-glow 750ms linear;
+            }
+        }
+
+        .upgrade-slot-wrapper {
+            position: relative;
+            bottom: -100%;
+            left: 0;
+            height: 100%;
+            right: 0;
+            margin-top: 10px;
+
+            .upgrade-slot {
+                font-size: 12px;
+                background: #181d27;
+                line-height: 14px;
+                margin-bottom: 5px;
+                font-weight: 600;
+                width: 100%;
+                text-align: center;
+                padding: 10px 5px;
+                border: 1px solid #232a38;
+                transition: all 250ms ease-in-out;
+                background-size: 100%;
+                position: relative;
+                background-position-y: -15px;
+
+                &:hover {
+                    .overlay {
+                        opacity: 0.2;
+                    }
+                }
+
+                .upgrade-label {
+                    position: relative;
+                    z-index: 5;
+                    text-transform: uppercase;
+                }
+
+                .overlay {
+                    position: absolute;
+                    background: black;
+                    opacity: 0.7;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    z-index: 2;
+                    transition: all 250ms ease-in-out;
+                }
+
+                &:hover {
+                    border: 1px solid $tertiary-highlight;
+                }
+            }
+        }
+
+        .placed-card {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            top: 0;
+
+            .card-title {
+                position: absolute;
+                bottom: 20px;
+                display: block;
+                width: 100%;
+                padding: 0px 10px;
+                font-size: 12px;
+                text-align: center;
+            }
+        }
+
+        .pulsing-arrow {
+            opacity: 0;
+            position: absolute;
+            text-align: center;
+            bottom: 22px;
+            left: 0;
+            right: 0;
+            font-size: 34px;
+            color: #fff;
+            &.active-slot {
+                opacity: 1;
+            }
+        }
+    }
+
+}

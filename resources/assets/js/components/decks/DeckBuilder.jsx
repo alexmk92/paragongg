@@ -8,23 +8,23 @@ var Build = require('./Build');
 
 /*
  window.onscroll = function(event) {
-     var sidebar = document.querySelector(".dual-tab-wrapper");
-     if(typeof sidebar !== "undefined" && sidebar) {
-         var bodyRect = { width: window.innerWidth, height: window.innerHeight };
-         var sidebarRect = sidebar.getBoundingClientRect();
+ var sidebar = document.querySelector(".dual-tab-wrapper");
+ if(typeof sidebar !== "undefined" && sidebar) {
+ var bodyRect = { width: window.innerWidth, height: window.innerHeight };
+ var sidebarRect = sidebar.getBoundingClientRect();
 
-         var offsetTop = (typeof window.pageYOffset !== "undefined") ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+ var offsetTop = (typeof window.pageYOffset !== "undefined") ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
 
-         // Check if we can see the sidebar
-         //sidebar.style.top = offsetTop + "px";
-         if((sidebarRect.top + sidebarRect.height) < 0) {
-             sidebar.style.top = (oldTop + (sidebarRect.height + 100)) + "px";
-         } else {
-            sidebar.style.top = 0 + "px";
-         }
-     }
+ // Check if we can see the sidebar
+ //sidebar.style.top = offsetTop + "px";
+ if((sidebarRect.top + sidebarRect.height) < 0) {
+ sidebar.style.top = (oldTop + (sidebarRect.height + 100)) + "px";
+ } else {
+ sidebar.style.top = 0 + "px";
+ }
+ }
  };
-*/
+ */
 
 
 var DeckBuilder = React.createClass({
@@ -34,12 +34,13 @@ var DeckBuilder = React.createClass({
             deck: [],
             builds: [],
             modal: false,
-            cardSelected: false,
+            selectedCard: null,
             selectedBuild : null,
             lastSelectedCard: null,
             lastSelectedBuild: null,
             playFlashAnimation: false,
             heroPanelActive: true,
+            lastModifiedSlot: null,
             selectedHeroURL : "https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/" + HEROES[0].code + "/portrait_small.png",
             isBuildsPanelShowing : false,
             activeTab: 0  // 0 decks, 1 builds
@@ -108,10 +109,10 @@ var DeckBuilder = React.createClass({
 
         var elem = event.target;
         if(elem.className !== "fa fa-trash" && elem.className !== "delete-icon") {
-            if(this.state.cardSelected && this.state.cardSelected.code == card.code) {
-                this.setState({cardSelected: false, playFlashAnimation: false});
+            if(this.state.selectedCard && this.state.selectedCard.code == card.code) {
+                this.setState({selectedCard: null, playFlashAnimation: false});
             } else {
-                this.setState({cardSelected: card, playFlashAnimation: false});
+                this.setState({selectedCard: card, playFlashAnimation: false});
             }
         }
     },
@@ -137,7 +138,7 @@ var DeckBuilder = React.createClass({
                 className += "pulse-card-outer";
                 childClassName += "pulse-card-inner";
             }
-            if(this.state.cardSelected.code == card.code) {
+            if(this.state.selectedCard && (this.state.selectedCard.code == card.code)) {
                 className += " selected";
             }
             return (
@@ -181,11 +182,7 @@ var DeckBuilder = React.createClass({
         event.preventDefault();
         var elem = event.target;
         if(elem.className !== "fa fa-trash" && elem.className !== "delete-icon") {
-            if(this.state.selectedBuild && this.state.selectedBuild.code == build.code) {
-                this.setState({selectedBuild: null, playFlashAnimation: false, isBuildsPanelShowing: true });
-            } else {
-                this.setState({selectedBuild: build, playFlashAnimation: false, isBuildsPanelShowing: true });
-            }
+            this.setState({selectedBuild: build, playFlashAnimation: false, isBuildsPanelShowing: true });
         }
     },
     getBuilds: function() {
@@ -234,26 +231,59 @@ var DeckBuilder = React.createClass({
         return buildList;
     },
     addBuild: function() {
-        var build = {
+        var newBuild = {
             code : "build_" + Helpers.uuid(),
             title : "",
-            cards: [],
+            slots: [
+                { type: "Active",  card : null, upgrades : [], occupied: false },
+                { type: "Active",  card : null, upgrades : [], occupied: false },
+                { type: "Active",  card : null, upgrades : [], occupied: false },
+                { type: "Active",  card : null, upgrades : [], occupied: false },
+                { type: "Passive", card : null, upgrades : [], occupied: false },
+                { type: "Passive", card : null, upgrades : [], occupied: false }
+            ],
             cost: 0
         };
         this.setState({
-            builds : this.state.builds.concat(build),
+            builds : this.state.builds.concat(newBuild),
             activeTab : 0,
-            selectedBuild: build,
+            selectedBuild: newBuild,
             playFlashAnimation: false
         });
         this.toggleBuildView();
     },
     toggleBuildView: function(dismiss = true) {
-        this.setState({ isBuildsPanelShowing : dismiss })
+        var showDeckTab = this.state.activeTab;
+        /*
+        if(dismiss === false) {
+            showDeckTab = 0;
+        }
+        */
+        this.setState({ isBuildsPanelShowing : dismiss, activeTab: showDeckTab })
+    },
+    buildUpdated: function(newBuild, lastModifiedSlot) {
+        var newBuilds = this.state.builds.map(function(oldBuild) {
+            if(oldBuild.code === newBuild.code) {
+                oldBuild = newBuild;
+            }
+            return oldBuild;
+        });
+        this.setState({ builds : newBuilds, lastModifiedSlot: lastModifiedSlot });
     },
     /** TAB PANEL FUNCTIONS **/
     setActiveTab: function(index) {
-        this.setState({ activeTab : index, playFlashAnimation: false })
+        var showBuildsPanel = this.state.isBuildsPanelShowing;
+        /*
+        if(!this.state.isBuildsPanelShowing && index === 1 && this.state.builds.length > 0) {
+            showBuildsPanel = true;
+            index = 0;
+        }
+        */
+        this.setState({
+            activeTab : index,
+            playFlashAnimation: false,
+            isBuildsPanelShowing: showBuildsPanel
+        })
     },
     isActiveTab: function(index) {
         if(this.state.activeTab === index) {
@@ -276,7 +306,6 @@ var DeckBuilder = React.createClass({
     },
     /** END OF FUNCTIONS **/
     render: function() {
-        console.log("BUILDS PANEL IS SHOWING? " + this.state.isBuildsPanelShowing);
         return (
             <div>
                 <div id="sidebar">
@@ -297,7 +326,8 @@ var DeckBuilder = React.createClass({
                         <div className="dual-tab-panel">
                             <div className={ "sidebox panel cf" + this.isActiveTab(0) }>
                                 <div className="title-wrapper">
-                                    <button name="publish" type="submit" className="btn"><i className="fa fa-pencil" aria-hidden="true"></i> EDIT DECK</button>
+                                    <h4>CURRENT DECK</h4>
+                                    <button onClick={this.toggleBuildView.bind(this, false)} name="publish" type="submit" className={"btn " + (!this.state.isBuildsPanelShowing ? "hidden" : "")}><i className="fa fa-pencil" aria-hidden="true"></i> EDIT DECK</button>
                                 </div>
                                 <ul className="deck-list">
                                     {this.getCardsInDeck()}
@@ -342,11 +372,16 @@ var DeckBuilder = React.createClass({
                     <div id="back-button" onClick={this.toggleBuildView.bind(this, false)}>
                         <i className="fa fa-angle-left" aria-hidden="true"></i> BACK TO DECK BUILDER
                     </div>
-                    <div id="builds-wrapper">
-                        {
-                            this.state.selectedBuild ? <Build build={this.state.selectedBuild} /> : ""
-                        }
-                    </div>
+                    {
+                        this.state.selectedBuild ? (
+                            <Build
+                                selectedCard ={this.state.selectedCard}
+                                build={this.state.selectedBuild}
+                                lastModifiedSlot={this.state.lastModifiedSlot}
+                                onBuildChanged={this.buildUpdated}
+                            />
+                        ) : ""
+                    }
                 </div>
             </div>
         )
