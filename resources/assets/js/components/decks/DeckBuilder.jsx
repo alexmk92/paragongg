@@ -260,7 +260,7 @@ var DeckBuilder = React.createClass({
 
                 return (
                     <div key={ "slot-" + i + "-icon" }
-                         className="slot-icon"
+                         className={"slot-icon" + (slot.card !== null ? " active" : "")}
                          style={{ backgroundImage : "url(" + imageURL + ")" }}
                          onMouseEnter={this.setTooltipContent.bind(this, slot.card)}
                          onMouseOver={this.showTooltip.bind(this, slot.card)}
@@ -275,7 +275,7 @@ var DeckBuilder = React.createClass({
                     onClick={this.selectBuild.bind(this, build)}
                 >
                     <div className={ "wrapper with-background " + childClassName } style={{ backgroundImage : "url(" + wrapperBackgroundImageURL + ")" }}>
-                        <span className="title">{build.title} <span className="subtext">{build.cost}CP</span></span>
+                        <span className="title">{build.title === "" ? "UNTITLED DECK" : build.title} <span className="subtext">{build.cost}CP</span></span>
                         <div className="slot-icon-container">
                             { slotIcons }
                         </div>

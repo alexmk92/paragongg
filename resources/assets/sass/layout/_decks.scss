@@ -58,7 +58,13 @@
             background-position-x: 50%;
             position: relative;
             top: 10px;
+            opacity: 0.3;
             box-shadow: 0 0 5px #000;
+            transition: all 300ms ease-in-out;
+
+            &.active {
+                opacity: 1.0;
+            }
         }
     }
 
