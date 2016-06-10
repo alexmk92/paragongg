@@ -27,6 +27,7 @@ var Build = require('./Build');
  */
 
 
+
 var DeckBuilder = React.createClass({
     getInitialState: function(){
         this.tooltip = new Tooltip();
@@ -34,20 +35,27 @@ var DeckBuilder = React.createClass({
             deck: [],
             builds: [],
             modal: false,
+            showCardSection: false,
             selectedCard: null,
             selectedBuild : null,
             lastSelectedCard: null,
             lastSelectedBuild: null,
             playFlashAnimation: false,
+            playFlashTabAnimation: false,
             heroPanelActive: true,
             lastModifiedSlot: null,
-            selectedHeroURL : "https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/" + HEROES[0].code + "/portrait_small.png",
+            selectedHero : HEROES[0],
             isBuildsPanelShowing : false,
-            activeTab: 0  // 0 decks, 1 builds
+            activeTab: 0
         }
     },
     componentDidMount: function() {
         this.refs.deckNameInput.focus();
+    },
+    componentWillUpdate: function(nextProps, nextState) {
+        if((nextState.deck.length > this.state.deck.length) && nextState.activeTab === 1) {
+            this.setState({ playFlashTabAnimation: true })
+        }
     },
     shouldComponentUpdate: function(nextProps, nextState) {
         return this.state !== nextState;
@@ -81,7 +89,7 @@ var DeckBuilder = React.createClass({
         });
         return count;
     },
-    addCard: function(selectedCard) {
+    addCard: function(selectedCard, event) {
         if(this.deckCount() < 40) {
             if(!selectedCard.quantity)
                 selectedCard.quantity = 1;
@@ -96,6 +104,9 @@ var DeckBuilder = React.createClass({
             }.bind(this));
             if(newDeck.length === 0 || !foundCard) {
                 newDeck.push(selectedCard);
+            }
+            if(this.state.activeTab === 1) {
+                this.animateFlashTab(event);
             }
             this.setState({
                 deck : newDeck,
@@ -254,12 +265,15 @@ var DeckBuilder = React.createClass({
     },
     toggleBuildView: function(dismiss = true) {
         var showDeckTab = this.state.activeTab;
+        var flashTab = this.state.playFlashTabAnimation;
+        if(this.state.activeTab === 1) flashTab = true;
         /*
         if(dismiss === false) {
             showDeckTab = 0;
         }
         */
-        this.setState({ isBuildsPanelShowing : dismiss, activeTab: showDeckTab })
+
+        this.setState({ isBuildsPanelShowing : dismiss, activeTab: showDeckTab, playFlashTabAnimation: flashTab })
     },
     buildUpdated: function(newBuild, lastModifiedSlot) {
         var newBuilds = this.state.builds.map(function(oldBuild) {
@@ -271,8 +285,20 @@ var DeckBuilder = React.createClass({
         this.setState({ builds : newBuilds, lastModifiedSlot: lastModifiedSlot });
     },
     /** TAB PANEL FUNCTIONS **/
+    animateFlashTab: function(event) {
+        console.log("Looking for flash tab");
+        var flashTab = document.querySelector(".flash-tab");
+        if(flashTab) {
+            flashTab.className = "";
+            setTimeout(function() {
+                flashTab.className = "flash-tab";
+            }, 50);
+        }
+    },
     setActiveTab: function(index) {
         var showBuildsPanel = this.state.isBuildsPanelShowing;
+        //var flashTab = this.state.activeTab === 0;
+
         /*
         if(!this.state.isBuildsPanelShowing && index === 1 && this.state.builds.length > 0) {
             showBuildsPanel = true;
@@ -282,14 +308,18 @@ var DeckBuilder = React.createClass({
         this.setState({
             activeTab : index,
             playFlashAnimation: false,
+            //playFlashTabAnimation: flashTab,
             isBuildsPanelShowing: showBuildsPanel
         })
     },
     isActiveTab: function(index) {
+        var className = "";
         if(this.state.activeTab === index) {
-            return " active "
+            className += " active";
         }
-        return "";
+        if(index === 0 && this.state.playFlashTabAnimation)
+            className += " flash-tab";
+        return className;
     },
     toggleHeroPanel: function() {
         this.setState({ heroPanelActive : !this.state.heroPanelActive })
@@ -301,7 +331,8 @@ var DeckBuilder = React.createClass({
         }
         this.setState({
             heroPanelActive : !this.state.heroPanelActive,
-            selectedHeroURL : "https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/" + hero.code + "/portrait_small.png"
+            selectedHero    : hero,
+            showCardSection : true
         });
     },
     /** END OF FUNCTIONS **/
@@ -309,13 +340,14 @@ var DeckBuilder = React.createClass({
         return (
             <div>
                 <div id="sidebar">
-                    <button name="publish" type="submit" className="btn wide"><i className="fa fa-check" aria-hidden="true"></i> SAVE DECK</button>
+                    <button name="publish" type="submit" className="btn inline wide"><i className="fa fa-check" aria-hidden="true"></i> SAVE DECK</button>
+                    <button onClick={this.toggleBuildView.bind(this, false)} name="publish" type="submit" className={"btn inline narrow"}><i className="fa fa-pencil" aria-hidden="true"></i> EDIT DECK</button>
                     <div className="dual-tab-wrapper">
                         <div className="dual-tab-tabs">
                             <div onClick={this.setActiveTab.bind(this, 0)}
                                  className={this.isActiveTab(0)}
                             >
-                                <span>MY DECK <span className="subtext"> ( {this.deckCount()}/40 )</span></span>
+                                <span>MY DECK <span className={"subtext " + (this.deckCount() >= 40 ? "max-capacity" : "") }> ( {this.deckCount()}/40 )</span></span>
                             </div>
                             <div onClick={this.setActiveTab.bind(this, 1)}
                                  className={this.isActiveTab(1) }
@@ -325,10 +357,6 @@ var DeckBuilder = React.createClass({
                         </div>
                         <div className="dual-tab-panel">
                             <div className={ "sidebox panel cf" + this.isActiveTab(0) }>
-                                <div className="title-wrapper">
-                                    <h4>CURRENT DECK</h4>
-                                    <button onClick={this.toggleBuildView.bind(this, false)} name="publish" type="submit" className={"btn " + (!this.state.isBuildsPanelShowing ? "hidden" : "")}><i className="fa fa-pencil" aria-hidden="true"></i> EDIT DECK</button>
-                                </div>
                                 <ul className="deck-list">
                                     {this.getCardsInDeck()}
                                 </ul>
@@ -346,14 +374,14 @@ var DeckBuilder = React.createClass({
                 </div>
                 <div className={"deck-builder wrapper " + (this.state.isBuildsPanelShowing ? "hidden" : "")}>
                     <div className="content-wrapper">
-                        <span className="breadcrumb">Build a deck</span>
+                        <span className="breadcrumb">Building a <strong>{ this.state.selectedHero.name }</strong> deck</span>
                         <div className="deck-title">
                             <div className="hero-portrait-container"
                                  onClick={this.toggleHeroPanel}
                             >
                                 <div className={ this.state.heroPanelActive ? "glow-wrapper" : "glow-wrapper updated"}></div>
                                 <img className={ this.state.heroPanelActive ? "hero-portrait updating" : "hero-portrait"}
-                                     src={this.state.selectedHeroURL}
+                                     src={ "https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/" + this.state.selectedHero.code + "/portrait_small.png" }
                                      alt="click me"
                                 />
                             </div>
@@ -363,7 +391,7 @@ var DeckBuilder = React.createClass({
                         <div className="p">
                             Write a short description about your deck. What team compositions might you use this deck against? Under what situations would you use the different builds? Click here to edit the description text.
                         </div>
-                        <div id="cards-feed">
+                        <div id="cards-feed" className={ this.state.showCardSection ? "" : "hidden" }>
                             <CardsFeed tooltip={this.tooltip} cards={CARDS} cardsRedirectOnClick={false} onCardClicked={this.addCard} />
                         </div>
                     </div>

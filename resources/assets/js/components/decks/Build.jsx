@@ -21,26 +21,29 @@ var Build = React.createClass({
         if(typeof slot.upgrades === "undefined" || slot.upgrades.length === 0) {
             return <div className="upgrade-slot"><span>NO UPGRADE SLOTS</span></div>
         } else {
-            return slot.upgrades.map(function(upgrade, i) {
-                var label = "";
-                var slotStyle = {};
-                if(upgrade.card === null) {
-                    label = <span className="upgrade-label">EMPTY SLOT</span>;
-                } else {
-                    label = <span className="upgrade-label"><span className="subtext">{upgrade.card.cost}CP </span>{upgrade.card.name}</span>;
-                    slotStyle = { backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/'+upgrade.card.code+'/icon.png)' }
-                }
+            return slot.upgrades.map(function(upgrade) {
+                if(upgrade) {
+                    var label = "";
+                    var slotStyle = { backgroundImage : "" };
+                    console.log(upgrade);
+                    if(upgrade.card === null) {
+                        label = <span className="upgrade-label">EMPTY SLOT</span>;
+                    } else {
+                        label = <span className="upgrade-label"><span className="subtext">{upgrade.card.cost}CP </span>{upgrade.card.name}</span>;
+                        slotStyle = { backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/'+upgrade.card.code+'/icon.png)' }
+                    }
 
-                return (
-                    <div className="upgrade-slot"
-                         onContextMenu={this.removeUpgradeFromCard.bind(this, upgrade, slot.card)}
-                         onClick={this.bindUpgradeToCard.bind(this, upgrade, slot.card)}
-                         style={ slotStyle }
-                    >
-                        { label }
-                        <div className="overlay"></div>
-                    </div>
-                )
+                    return (
+                        <div className="upgrade-slot"
+                             onContextMenu={this.removeUpgradeFromCard.bind(this, upgrade, slot.card)}
+                             onClick={this.bindUpgradeToCard.bind(this, upgrade, slot.card)}
+                             style={ slotStyle }
+                        >
+                            { label }
+                            <div className="overlay"></div>
+                        </div>
+                    )
+                }
             }.bind(this));
         }
     },
@@ -58,6 +61,7 @@ var Build = React.createClass({
         }.bind(this));
         this.buildUpdated(newBuild);
     },
+    // TODO FIXED
     removeUpgradeFromCard: function(upgradeSlot, card, event) {
         event.preventDefault();
         var newBuild = this.props.build;
@@ -65,7 +69,7 @@ var Build = React.createClass({
             if(oldSlot.card !== null && (oldSlot.card.code === card.code)) {
                 var oldUpgradeIndex = oldSlot.upgrades.indexOf(upgradeSlot);
                 if(oldUpgradeIndex > -1) {
-                    oldSlot.upgrades[oldUpgradeIndex] = null;
+                    oldSlot.upgrades[oldUpgradeIndex].card = null;
                 }
             }
             return oldSlot;
