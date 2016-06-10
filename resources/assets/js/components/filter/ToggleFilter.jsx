@@ -3,7 +3,7 @@ var React = require('react');
 var ToggleFilter = React.createClass({
     getInitialState: function() {
         return {
-            isActive: true
+            isActive: this.props.active
         }
     },
     toggled: function() {

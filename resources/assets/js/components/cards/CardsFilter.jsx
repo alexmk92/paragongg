@@ -11,21 +11,16 @@ var CardsFilter = React.createClass({
         this.tooltip = this.props.tooltip || new Tooltip();
         return {
             filter_owned : false,
-            filter_affinities : [
-                { "type" : "Fury" },
-                { "type" : "Order" },
-                { "type" : "Growth" },
-                { "type" : "Intellect" },
-                { "type" : "Corruption" }
-            ],
+            filter_affinities : [],
             filter_type : 'All',
             search_term : "",
-            affinities : [
+            affinities : this.props.affinities || [
                 { "name" : "Fury" },
                 { "name" : "Order" },
                 { "name" : "Growth" },
                 { "name" : "Intellect" },
-                { "name" : "Corruption" }
+                { "name" : "Corruption" },
+                { "name" : "Universal" }
             ],
             statistics : [
                 { "name" : "Energy Damage", "iconName" : "pgg-energy-damage", "checked" : false },
@@ -83,6 +78,8 @@ var CardsFilter = React.createClass({
                 }
             });
             return matches;
+        } else {
+            return true;
         }
         /*
         if(_this.state.filter_owned == true && card.owned == false) {
@@ -174,6 +171,7 @@ var CardsFilter = React.createClass({
         var affinityFilters = this.state.affinities.map(function(affinity, i) {
             return <ToggleFilter key={ "affinity_toggle_" + affinity.name.toLowerCase() }
                                  affinity={affinity}
+                                 active={false}
                                  label={ i === 0 ? "AFFINITIES" : "" }
                                  onToggleFilterChanged={_this.affinityFilterChanged}
                     />
