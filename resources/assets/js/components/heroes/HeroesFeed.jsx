@@ -92,6 +92,9 @@ var HeroPreview = React.createClass({
                         </div>
                         <span className="title">{this.props.name}</span>
                     </div>
+                    <div className="winrate-wrapper">
+                        <div className="winrate-bar"></div>
+                    </div>
                 </li>
             </a>
         )

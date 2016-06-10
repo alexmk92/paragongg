@@ -2,7 +2,6 @@
     .account-nav-trigger {
         cursor: pointer;
         text-align: right;
-        color: $font-color-emphasis;
     }
     .account-nav-panel {
         position: relative;
@@ -10,17 +9,13 @@
         background: $panel-color;
         border: 1px solid $faded-line;
         box-shadow: 0px 0px 3px #000;
-        min-width: 200px;
+        min-width: 250px;
         transition: opacity 0.2s linear, height 0.2s step-start;
         &.active {
-            height: auto;
-            opacity: 1;
+            display: block;
         }
         &.inactive {
-            opacity: 0;
-            height: 0;
-            overflow: hidden;
-            transition-timing-function: linear, step-end;
+            display: none;
         }
     }
     .account-avatar {

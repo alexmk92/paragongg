@@ -18,7 +18,7 @@
             .hero-preview-title {
                 position: absolute;
                 bottom: 0;
-                padding: 30px 20px 15px;
+                padding: 30px 20px 20px;
                 width: 100%;
                 text-align: center;
                 background: -moz-linear-gradient(top,  rgba(17,17,17,0) 0%, rgba(15,17,20,0.9) 50%, rgba(13,16,22,0.9) 100%); /* FF3.6-15 */
@@ -41,6 +41,18 @@
             &:hover {
                 border: 1px solid $faded-line;
                 filter: brightness(130%);
+            }
+        }
+        .winrate-wrapper {
+            position: absolute;
+            bottom: -1px;
+            height: 1px;
+            width: 100%;
+            background: #222;
+            .winrate-bar {
+                height: 1px;
+                width: 67%;
+                background: $green;
             }
         }
     }
