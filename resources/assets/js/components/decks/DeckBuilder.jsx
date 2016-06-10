@@ -141,44 +141,83 @@ var DeckBuilder = React.createClass({
         });
         this.setState({ deck : newDeck, playFlashAnimation: false });
     },
-    getCardsInDeck : function() {
-        var cardList = this.state.deck.map(function(card) {
-            var className = "";
-            var childClassName = "";
-            if(this.state.lastSelectedCard.code === card.code && this.state.playFlashAnimation) {
-                className += "pulse-card-outer";
-                childClassName += "pulse-card-inner";
-            }
-            if(this.state.selectedCard && (this.state.selectedCard.code == card.code)) {
-                className += " selected";
-            }
+    renderDeckList: function() {
+        if(this.state.deck.length === 0) {
             return (
-                <li className={className}
-                    key={card.code + "_" + Helpers.uuid() }
-                    style={{backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/'+card.code+'/icon.png)'}}
-                    onContextMenu={this.deleteCardFromDeck.bind(this, card)}
-                    onClick={this.selectCard.bind(this, card)}
-                    onMouseEnter={this.setTooltipContent.bind(this, card)}
-                    onMouseOver={this.showTooltip.bind(this, card)}
-                    onMouseLeave={this.hideTooltip}
-                >
-                    <div className={ "wrapper " + childClassName }>
-                        <span className="count">{card.quantity }x</span>
-                        <span className="name">{card.name}</span>
-                        <span className="cost">{card.cost} CP</span>
-                    </div>
-                    <div className="delete-icon" onClick={this.deleteCardFromDeck.bind(this, card)}>
-                        <i className="fa fa-trash" aria-hidden="true" />
-                    </div>
-                </li>
-            );
+                <div className={ "sidebox panel cf" + this.isActiveTab(0) }>
+                    <ul className="deck-list">
+                        <li key="no_cards">
+                            <div className="wrapper">
+                                <span>To get started, select a card from the cards menu</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            )
+        }
+        return(
+            <div className={ "sidebox panel cf" + this.isActiveTab(0) }>
+                <span className="subtext">PRIME HELIX</span>
+                <ul className="deck-list">
+                    {this.getCardsInDeck(["three"])}
+                </ul>
+                <span className="subtext">ACTIVE / PASSIVE</span>
+                <ul className="deck-list">
+                    {this.getCardsInDeck(["zero", "one"])}
+                </ul>
+                <span className="subtext">UPGRADE</span>
+                <ul className="deck-list">
+                    {this.getCardsInDeck(["two"])}
+                </ul>
+            </div>
+        );
+    },
+    getCardsInDeck : function(types) {
+        var cardList = [];
+        this.state.deck.forEach(function(card) {
+            var hasType = false;
+            types.forEach(function(type) {
+                if(!hasType) hasType = card.type === type;
+            });
+            console.log(hasType);
+            if(hasType) {
+                var className = "";
+                var childClassName = "";
+                if(this.state.lastSelectedCard.code === card.code && this.state.playFlashAnimation) {
+                    className += "pulse-card-outer";
+                    childClassName += "pulse-card-inner";
+                }
+                if(this.state.selectedCard && (this.state.selectedCard.code == card.code)) {
+                    className += " selected";
+                }
 
+                cardList.push(
+                    <li className={className}
+                        key={card.code + "_" + Helpers.uuid() }
+                        style={{backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/'+card.code+'/icon.png)'}}
+                        onContextMenu={this.deleteCardFromDeck.bind(this, card)}
+                        onClick={this.selectCard.bind(this, card)}
+                        onMouseEnter={this.setTooltipContent.bind(this, card)}
+                        onMouseOver={this.showTooltip.bind(this, card)}
+                        onMouseLeave={this.hideTooltip}
+                    >
+                        <div className={ "wrapper " + childClassName }>
+                            <span className="count">{card.quantity }x</span>
+                            <span className="name">{card.name}</span>
+                            <span className="cost">{card.cost} CP</span>
+                        </div>
+                        <div className="delete-icon" onClick={this.deleteCardFromDeck.bind(this, card)}>
+                            <i className="fa fa-trash" aria-hidden="true" />
+                        </div>
+                    </li>
+                );
+            }
         }.bind(this));
         if(cardList.length === 0) {
             cardList.push(
                 <li key="no_cards">
                     <div className="wrapper">
-                        <span>To get started, select a card from the cards menu</span>
+                        <span>No cards of this type have been added.</span>
                     </div>
                 </li>
             );
@@ -389,11 +428,7 @@ var DeckBuilder = React.createClass({
                             </div>
                         </div>
                         <div className="dual-tab-panel">
-                            <div className={ "sidebox panel cf" + this.isActiveTab(0) }>
-                                <ul className="deck-list">
-                                    {this.getCardsInDeck()}
-                                </ul>
-                            </div>
+                            {this.renderDeckList()}
                         </div>
                         <div className="dual-tab-panel">
                             <div className={ "sidebox panel cf" + this.isActiveTab(1) }>
@@ -427,7 +462,7 @@ var DeckBuilder = React.createClass({
                             Write a short description about your deck. What team compositions might you use this deck against? Under what situations would you use the different builds? Click here to edit the description text.
                         </div>
                         <div id="cards-feed" className={ this.state.showCardSection ? "" : "hidden" }>
-                            <CardsFeed forceRedraw={true} affinities={this.getAffinities()} tooltip={this.tooltip} cards={CARDS} cardsRedirectOnClick={false} onCardClicked={this.addCard} />
+                            <CardsFeed forceRedraw={true} affinities={this.getAffinities()} tooltip={this.tooltip} cards={CARDS.allCards} cardsRedirectOnClick={false} onCardClicked={this.addCard} />
                         </div>
                     </div>
                 </div>
