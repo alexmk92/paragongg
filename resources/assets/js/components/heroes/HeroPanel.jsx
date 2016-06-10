@@ -8,6 +8,7 @@ var HeroPanel = React.createClass({
         return {
             heroes : [],
             searchTerm : "",
+            heroPanelInputFocused: false,
             filter_affinities : [
                 { "type" : "Fury" },
                 { "type" : "Order" },
@@ -86,15 +87,23 @@ var HeroPanel = React.createClass({
             }
         }.bind(this));
         if(heroes.length === 0) {
-            heroes.push(<li className="hero-row"><span>We're sorry, no heroe's match the search term {this.state.searchTerm}</span></li>)
+            heroes.push(<li className="no-result"><span><i className="fa fa-info-circle" aria-hidden="true"/>  We're sorry, no hero matches the search term <span className="search-term">{this.state.searchTerm}</span>, please try again.</span></li>)
         }
         return heroes;
+    },
+    searchBarFocused: function() {
+        this.setState({ heroPanelInputFocused : true });
+    },
+    searchBarLostFocus: function() {
+        this.setState({ heroPanelInputFocused : false });
     },
     render: function() {
         return (
             <div className={this.props.isActive ? "hero-panel visible " : "hero-panel"}>
                 <div className="filter-wrapper">
-                    <SearchBar label="HERO NAME" placeholder="Enter hero name..." onSearchTermChanged={this.onSearchTermChanged} />
+                    <span className="panel-title">{ this.props.title || "HERO NAME" }</span>
+                    <div className={"glow-separator " + (this.state.heroPanelInputFocused ? "active" : "")}></div>
+                    <SearchBar searchBarRef="heroSearchInput" placeholder="Enter hero name..." onSearchTermChanged={this.onSearchTermChanged} onGotFocus={this.searchBarFocused} onLostFocus={this.searchBarLostFocus} />
                     { this.getAffinityFilters() }
                 </div>
                 <div className="list-wrapper">

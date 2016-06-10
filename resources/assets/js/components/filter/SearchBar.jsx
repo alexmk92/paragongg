@@ -19,11 +19,13 @@ var SearchBar = React.createClass({
             <div className="search-bar-wrapper">
                 <label>{ this.props.label }</label>
                 <input placeholder={this.props.placeholder || "Enter search term..."}
-                       ref="searchBarInput"
+                       ref={"searchBarInput"}
                        className="search-bar"
                        type="text"
                        value={this.state.searchTerm}
                        onChange={this.updateSearchTerm}
+                       onFocus={this.props.onGotFocus}
+                       onBlur={this.props.onLostFocus}
                 />
             </div>
         );
