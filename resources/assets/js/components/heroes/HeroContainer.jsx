@@ -1,7 +1,6 @@
 var React = require("react");
 var ReactDOM = require("react-dom");
 var InteractiveParallax = require("../../lib/InteractiveParallax");
-var HeroSpinner = require("./HeroSpinner");
 var HeroStats = require("./HeroStats");
 var HeroGraph = require("./HeroGraph");
 var AbilityFeed = require("./AbilityFeed");
@@ -43,9 +42,6 @@ var HeroContainer = React.createClass({
             <div>
                 <div onMouseOver={this.updateParallax} className="hero-container">
                     <div id="hero-background" style={styles}></div>
-                    <div id="heroes-spinner">
-                        <HeroSpinner heroes={ HEROES } activeHero={ HERO } heroDisplayCount={ 5 }/>
-                    </div>
                     <div id="left-wrapper">
                         <div id="hero-stats">
                             <HeroStats hero={ HERO } />

@@ -95,7 +95,10 @@ var HeroStats = React.createClass({
         });
         return (
             <div>
-                <span id="name">{ this.props.hero.name.toUpperCase() }</span>
+                <span className="breadcrumb">
+                    <a href="/heroes">HEROES</a> / <a href={ "/heroes/" + this.props.hero.name }>{ this.props.hero.name }</a>
+                </span>
+                <h1 id="name">{ this.props.hero.name.toUpperCase() }</h1>
                 <div id="divider"></div>
                 <ul id="overview">
                     <li className="parent-list">

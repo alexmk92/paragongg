@@ -90,8 +90,6 @@ canvas {
 .hero-container {
     width: 1350px;
     min-height: 800px;
-    margin-top: -42px;
-    padding-top: 42px;
     position: relative;
 
     #hero-background {
@@ -166,7 +164,7 @@ canvas {
             padding: 20px 5px;
             max-width: 450px;
             position: relative;
-            top: 150px;
+            top: 50px;
             z-index: 10;
 
             #overview {

@@ -118,12 +118,7 @@ var CardStats = React.createClass({
         return (
             <div>
                 <span className="breadcrumb">
-                    <a href="/cards">
-                        CARDS
-                    </a> /&nbsp;
-                    <a href={ "/cards/" + this.props.card.name }>
-                        { this.props.card.name.toUpperCase() }
-                    </a>
+                    <a href="/cards">CARDS</a> / <a href={ "/cards/" + this.props.card.name }>{ this.props.card.name }</a>
                 </span>
                 <h1 id="name">
                     { this.props.card.name.toUpperCase() }
