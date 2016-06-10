@@ -1,14 +1,12 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
+var Helpers = require('../../helpers');
+var Tooltip = require('../libraries/tooltip/Toptip');
 
 var Build = React.createClass({
-    /*
-    shouldComponentUpdate: function(nextProps, nextState) {
-        if(nextProps.build.code !== this.state.code) {
-            return true;
-        }
-        return this.state !== nextState
+    componentWillMount: function() {
+        this.tooltip = this.props.tooltip || new Tooltip();
     },
-    */
     buildUpdated: function(newBuild, lastModifiedSlot = this.props.lastModifiedSlot) {
         this.props.onBuildChanged(newBuild, lastModifiedSlot);
     },
@@ -25,7 +23,6 @@ var Build = React.createClass({
                 if(upgrade) {
                     var label = "";
                     var slotStyle = { backgroundImage : "" };
-                    console.log(upgrade);
                     if(upgrade.card === null) {
                         label = <span className="upgrade-label">EMPTY SLOT</span>;
                     } else {
@@ -38,6 +35,9 @@ var Build = React.createClass({
                              onContextMenu={this.removeUpgradeFromCard.bind(this, upgrade, slot.card)}
                              onClick={this.bindUpgradeToCard.bind(this, upgrade, slot.card)}
                              style={ slotStyle }
+                             onMouseEnter={this.setTooltipContent.bind(this, upgrade.card)}
+                             onMouseOver={this.showTooltip.bind(this, upgrade.card, "upgrade-label")}
+                             onMouseLeave={this.hideTooltip}
                         >
                             { label }
                             <div className="overlay"></div>
@@ -93,7 +93,9 @@ var Build = React.createClass({
                 activeClass = "active-placed";
                 var cardStyles = { backgroundImage : "url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/" + slot.card.code + "/background_small.png)"}
                 card = (
-                    <div style={cardStyles} className="placed-card">
+                    <div style={cardStyles}
+                         className="placed-card"
+                    >
                         <span className="card-title">{ slot.card.name }</span>
                         <div className="upgrade-slot-wrapper">
                             { this.getUpgradeSlots( slot ) }
@@ -102,7 +104,15 @@ var Build = React.createClass({
                 );
             }
             return (
-                <li id={"c_" + i} onContextMenu={this.removeCardFromSlot.bind(this, i)} onClick={this.bindCardToSlot.bind(this, i)} className={slot.type + " " + activeClass} key={"slot_" + i}>
+                <li id={"c_" + i}
+                    onContextMenu={this.removeCardFromSlot.bind(this, i)}
+                    onClick={this.bindCardToSlot.bind(this, i)}
+                    className={slot.type + " " + activeClass}
+                    key={"slot_" + i}
+                    onMouseEnter={this.setTooltipContent.bind(this, slot.card)}
+                    onMouseOver={this.showTooltip.bind(this, slot.card, "glow-layer")}
+                    onMouseLeave={this.hideTooltip}
+                >
                     <div className={"glow-layer " + cardPulse + "-inner"}></div>
                     <div className={"glow-layer " + cardPulse + "-outer"}></div>
                     <span className="slot-label">{slot.type}</span>
@@ -152,9 +162,7 @@ var Build = React.createClass({
         var points = 0;
         if(this.props.build !== null) {
             this.props.build.slots.forEach(function(slot) {
-                console.log("THE SLOT: ", slot);
                 if(typeof slot.card !== "undefined" && slot.card !== null) {
-                    console.log("SLOT CARD: ", slot.card);
                     points += slot.card.cost;
                 }
             });
@@ -179,28 +187,50 @@ var Build = React.createClass({
             this.buildUpdated(newBuild, null);
         }
     },
+    // TODO THROTTLE THE UPDATE LIMIT SOME HOW
     titleChanged: function(event) {
         var value = event.target.value;
-        if(value) {
+        if(typeof value !== "undefined" && value.length < 60) {
             var newBuild = this.props.build;
-            newBuild.title = value.trim();
+            newBuild.title = value;
 
             this.buildUpdated(newBuild);
         }
     },
-   render: function() {
-       return (
-           <div id="builds-wrapper">
-               <input onChange={this.titleChanged} className="h2" placeholder="ENTER BUILD TITLE" ref="buildTitleInput" value={ this.props.build.title } />
-               <span className="build-cost">{ this.getBuildPoints() }/40 <span>CARD POINTS</span></span>
+    /* TOOLTIP METHODS */
+    setTooltipContent: function(card) {
+        if(card !== null) {
+            var content = (
+                <div className="pgg-tooltip pgg-tooltip-card">
+                    <div className={"head affinity-" + card.affinity.substring(9).toLowerCase()}>{card.name}</div>
+                    <div className="content">Description about the card</div>
+                </div>
+            );
+            var tooltip = document.getElementById("toptip");
+            ReactDOM.render(content, tooltip);
+        }
+    },
+    showTooltip: function(card, selector, event) {
+        if(event.target.className.toLowerCase().indexOf(selector.toLowerCase()) > -1) {
+            if(card) this.tooltip.showTooltip();
+        }
+    },
+    hideTooltip: function() {
+        this.tooltip.hideTooltip();
+    },
+    render: function() {
+        return (
+            <div id="builds-wrapper">
+                <input onChange={this.titleChanged} className="h2" placeholder="ENTER BUILD TITLE" ref="buildTitleInput" value={ this.props.build.title } />
+                <span className="build-cost">{ this.getBuildPoints() }/40 <span>CARD POINTS</span></span>
                 <div>
                     <ul className="build-list">
                         { this.getBuildSlots() }
                     </ul>
                 </div>
-           </div>
-       )
-   }
+            </div>
+        )
+    }
 });
 
 module.exports = Build;

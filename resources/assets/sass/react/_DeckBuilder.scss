@@ -44,6 +44,7 @@
 }
 .build-list {
     padding-top: 30px;
+
     li {
         display: inline-block;
         width: 141px;
@@ -56,6 +57,7 @@
         padding-top: 30px;
         position: relative;
         cursor: pointer;
+
         .slot-label {
             position: absolute;
             top: -30px;

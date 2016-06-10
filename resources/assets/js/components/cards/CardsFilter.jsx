@@ -101,7 +101,6 @@ var CardsFilter = React.createClass({
             return true;
         }
         if(this.props.forceRedraw) {
-            console.log("UPDATING")
             this.forceUpdate();
         }
         return nextState !== this.state;
@@ -199,7 +198,7 @@ var CardsFilter = React.createClass({
 
         return(
             <div className="filter-wrapper">
-                <SearchBar label={ "DISPLAYING " + this.props.visibleCardCount + "/" + this.props.totalCardCount + " CARDS" }
+                <SearchBar label={ "DISPLAYING " + this.props.visibleCardCount + " OF " + this.props.totalCardCount + " CARDS" }
                            placeholder="Enter card name..."
                            onSearchTermChanged={this.inputChanged}
                 />
