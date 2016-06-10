@@ -11,6 +11,7 @@
         height: 250px;
         background-size: cover;
         position: relative;
+        border: 1px solid #222;
         .text-wrapper {
             position: absolute;
             bottom: 0;
@@ -24,8 +25,45 @@
             filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00111111', endColorstr='#e60d1016',GradientType=0 ); /* IE6-9 */
         }
         .profile-username {
+            h3 {
+                text-transform: none;
+            }
             img {
                 vertical-align: middle;
+            }
+        }
+        .profile-player {
+            margin-top: 3px;
+            .fa-gamepad {
+                font-size: 16px;
+            }
+            .fa-check-circle {
+                color: $secondary-highlight;
+            }
+        }
+    }
+    .profile-bio {
+        margin: 50px 0;
+        h4 {
+            margin-bottom: 20px;
+        }
+    }
+    .profile-achievements {
+        background: $panel-color-dark;
+        padding: 20px;
+        h3 {
+            margin: 0 10px 10px;
+        }
+        .achievements-grid {
+            .achievement-preview {
+                display: inline-block;
+                width: 90px;
+                height: 90px;
+                margin: 10px;
+                background: $panel-color;
+                &.locked {
+                    opacity: 0.5;
+                }
             }
         }
     }

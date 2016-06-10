@@ -65,30 +65,48 @@
         }
     }
 }
-.summary-info-wrapper {
-    margin-bottom: 50px;
-    .summary-info-discussions {
-        float: right;
-        width: 430px;
-        margin-left: 30px;
-        .user-avatar {
-            width: 32px;
-            height: 32px;
-        }
-        li {
-            margin-bottom: 0;
-        }
-        a {
-            display: block;
-            padding: 20px 0;
-            border-top: 1px solid $faded-line;
-            transition: all linear 0.1s;
-            &:hover {
-                padding: 20px 10px;
-                background: rgba($panel-color-dark,0.5);
-            }
+.summary-info-discussions {
+    float: right;
+    width: 430px;
+    margin-left: 30px;
+}
+.summary-info-discussions, .listbox {
+    .user-avatar {
+        width: 32px;
+        height: 32px;
+    }
+    li {
+        margin-bottom: 0;
+    }
+    a {
+        display: block;
+        padding: 20px 0;
+        border-top: 1px solid $faded-line;
+        transition: all linear 0.1s;
+        &:hover {
+            padding: 20px 10px;
+            background: rgba($panel-color-dark,0.5);
         }
     }
+    .content {
+        margin-top: 5px;
+        display: block;
+        color: $font-color-base;
+    }
+    .details {
+        font-family: $font-condensed;
+        font-size: 11px;
+        text-transform: uppercase;
+        margin-right: 5px;
+        color: $font-color-faded;
+        &.highlight {
+            color: $primary-highlight;
+        }
+    }
+
+}
+.summary-info-wrapper {
+    margin-bottom: 50px;
     .summary-info-decks, .summary-info-guides {
         width: 430px;
         display: inline-block;
