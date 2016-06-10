@@ -255,20 +255,21 @@ var DeckBuilder = React.createClass({
             ],
             cost: 0
         };
+        this.toggleBuildView(true, "add-build-button");
         this.setState({
             builds : this.state.builds.concat(newBuild),
             activeTab : 0,
             selectedBuild: newBuild,
-            playFlashAnimation: false
+            playFlashAnimation: false,
+            playFlashTabAnimation: false
         });
-        this.toggleBuildView();
     },
     toggleBuildView: function(dismiss = true, sender) {
         var showDeckTab = this.state.activeTab;
         var flashTab = this.state.playFlashTabAnimation;
         if(this.state.activeTab === 1) flashTab = true;
 
-        if(dismiss === false && sender === "edit-button") {
+        if(dismiss === false && (sender === "edit-button" || sender === "add-build-button")) {
             showDeckTab = 0;
             flashTab = false;
         }
@@ -350,8 +351,8 @@ var DeckBuilder = React.createClass({
         return (
             <div>
                 <div id="sidebar">
-                    <button name="publish" type="submit" className="btn inline wide"><i className="fa fa-check" aria-hidden="true"></i> SAVE DECK</button>
                     <button onClick={this.toggleBuildView.bind(this, false, "edit-button")} name="publish" type="submit" className={"btn inline narrow"}><i className="fa fa-pencil" aria-hidden="true"></i> EDIT DECK</button>
+                    <button name="publish" type="submit" className="btn inline wide"><i className="fa fa-check" aria-hidden="true"></i> SAVE DECK</button>
                     <div className="dual-tab-wrapper">
                         <div className="dual-tab-tabs">
                             <div onClick={this.setActiveTab.bind(this, 0)}
@@ -384,7 +385,6 @@ var DeckBuilder = React.createClass({
                 </div>
                 <div className={"deck-builder wrapper " + (this.state.isBuildsPanelShowing ? "hidden" : "")}>
                     <div className="content-wrapper">
-                        <span className="breadcrumb">Building a <strong>{ this.state.selectedHero.name }</strong> deck</span>
                         <div className="deck-title">
                             <div className="hero-portrait-container"
                                  onClick={this.toggleHeroPanel}
@@ -395,7 +395,10 @@ var DeckBuilder = React.createClass({
                                      alt="click me"
                                 />
                             </div>
-                            <input className="h2" placeholder="Enter deck name..." ref="deckNameInput" />
+                            <div className="title-container">
+                                <span className="breadcrumb">Building a <strong>{ this.state.selectedHero.name }</strong> deck</span>
+                                <input className="h2" placeholder="Enter deck name..." ref="deckNameInput" />
+                            </div>
                         </div>
                         <HeroPanel showAffinityFilter={false} heroes={HEROES} isActive={this.state.heroPanelActive} onHeroSelected={this.onHeroPanelSelectedHero} />
                         <div className="p">

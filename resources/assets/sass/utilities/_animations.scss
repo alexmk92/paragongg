@@ -18,6 +18,11 @@
     animation: slowZoom 20s alternate infinite;
 }
 
+@keyframes brighten {
+    0% { filter: brightness(100%) }
+    50% { filter: brightness(140%) }
+    100% { filter: brightness(100%) }
+}
 @keyframes fadeIn {
     0% { opacity: 0; }
     100% { opacity: 1; }

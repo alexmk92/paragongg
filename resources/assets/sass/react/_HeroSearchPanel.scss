@@ -1,0 +1,122 @@
+.hero-panel {
+    height: 0;
+    opacity: 0;
+    width: 100%;
+    position: relative;
+    overflow-y: hidden;
+    background: #181d27;
+    transition: all 250ms ease-in-out;
+    border-radius: 3px;
+    font-size: 1em;
+
+    .list-wrapper {
+        margin-top: 55px;
+        padding: 28px;
+    }
+    .panel-title {
+        display: inline-block;
+        font-weight: 600;
+        font-size: 1.2em;
+    }
+    .glow-separator {
+        display: inline-block;
+        width: 3px;
+        height: 25px;
+        background: $faded-line;
+        position: relative;
+        left: 25px;
+        top: 5px;
+        transition: all 250ms ease-in-out;
+
+        &.active {
+            background: $secondary-highlight;
+        }
+    }
+    .filter-wrapper {
+        width: 95%;
+        position: absolute;
+        z-index: 2;
+        border-bottom: 1px solid $faded-line;
+        margin: 0 auto;
+        left: 0;
+        right: 0;
+
+        input {
+            width: 100%;
+            border: none;
+            font-size: 1.2em;
+            padding: 12.5px 0px 20px 0px;
+            margin-bottom: 0;
+            margin-left: 50px;
+        }
+    }
+
+    &.visible {
+        margin-bottom: 20px;
+        height: auto;
+        opacity: 1;
+    }
+
+    .hero-row {
+        box-shadow: 0px 0px 5px rgba(0,0,0,0.5);
+        text-align: center;
+        display: inline-block;
+        width: 80px;
+        height: 80px;
+        overflow: hidden;
+        margin: 15px;
+        position: relative;
+        padding: 4px;
+        border: 1px solid rgba(0,0,0,0);
+        transition: all 500ms ease-in-out;
+
+        &:hover {
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            span {
+                bottom: 0px;
+            }
+            img {
+                opacity: 0.8;
+                transform: scale(1.1);
+            }
+        }
+
+        img {
+            transition: all 600ms;
+            position: absolute;
+            width: 80px;
+            top: 0;
+            left: 0;
+            transform: scale(1);
+        }
+        span {
+            color: #fff;
+            font-family: "Roboto Condensed", sans-Arial, Arial;
+            padding: 5px;
+            font-size: 10px;
+            font-weight: 100;
+            background: rgba(0,0,0,0.75);
+            border-top: 1px solid rgba(255, 255, 255, 0.5);
+            transition: all 300ms;
+            position: absolute;
+            display: block;
+            width: 80px;
+            left: 0;
+            bottom: -50px;
+        }
+    }
+    .no-result {
+        margin-bottom: 0;
+        font-size: 1.4em;
+        color: white;
+        margin-top: 15px;
+
+        i {
+            margin-right: 5px;
+        }
+
+        .search-term {
+            color: $secondary-highlight;
+        }
+    }
+}
