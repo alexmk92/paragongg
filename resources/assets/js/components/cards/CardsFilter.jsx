@@ -14,32 +14,32 @@ var CardsFilter = React.createClass({
             filter_affinities : [],
             filter_type : 'All',
             search_term : "",
-            affinities : this.props.affinities || [
-                { "name" : "Fury" },
-                { "name" : "Order" },
-                { "name" : "Growth" },
-                { "name" : "Intellect" },
-                { "name" : "Corruption" },
-                { "name" : "Universal" }
+            affinities : [
+                { name : "Fury" },
+                { name : "Order" },
+                { name : "Growth" },
+                { name : "Intellect" },
+                { name : "Corruption" },
+                { name : "Universal" }
             ],
             statistics : [
-                { "name" : "Energy Damage", "iconName" : "pgg-energy-damage", "checked" : false },
-                { "name" : "Physical Damage", "iconName" : "pgg-physical-damage", "checked" : false },
-                { "name" : "Energy Pen", "iconName" : "pgg-armor-penetration", "checked" : false },
-                { "name" : "Physical Pen", "iconName" : "pgg-physical-penetration", "checked" : false },
-                { "name" : "Energy Armor", "iconName" : "pgg-energy-armor", "checked" : false },
-                { "name" : "Physical Armor", "iconName" : "pgg-physical-armor-2", "checked" : false },
-                { "name" : "Crit Chance", "iconName" : "pgg-critical-strike-chance", "checked" : false },
-                { "name" : "Bonus Crit Damage", "iconName" : "pgg-critical-strike-damage", "checked" : false },
-                { "name" : "Max Mana", "iconName" : "pgg-max-mana", "checked" : false },
-                { "name" : "Max Health", "iconName" : "pgg-max-health", "checked" : false },
-                { "name" : "Mana Regen", "iconName" : "pgg-mana-regeneration", "checked" : false },
-                { "name" : "Health Regen", "iconName" : "pgg-health-regeneration", "checked" : false },
-                { "name" : "Max Movement Speed", "iconName" : "pgg-movement-speed", "checked" : false },
-                { "name" : "Cooldown Reduction", "iconName" : "pgg-cooldown-reduction", "checked" : false },
-                { "name" : "Lifesteal", "iconName" : "pgg-lifesteal", "checked" : false },
-                { "name" : "Attack Speed", "iconName" : "pgg-attack-speed", "checked" : false },
-                { "name" : "Harvester Placement Time", "iconName" : "pgg-harvester-placement-time", "checked" : false }
+                { name : "Energy Damage", iconName : "pgg-energy-damage", checked : false },
+                { name : "Physical Damage", iconName : "pgg-physical-damage", checked : false },
+                { name : "Energy Pen", iconName : "pgg-armor-penetration", checked : false },
+                { name : "Physical Pen", iconName : "pgg-physical-penetration", checked : false },
+                { name : "Energy Armor", iconName : "pgg-energy-armor", checked : false },
+                { name : "Physical Armor", iconName : "pgg-physical-armor-2", checked : false },
+                { name : "Crit Chance", iconName : "pgg-critical-strike-chance", checked : false },
+                { name : "Bonus Crit Damage", iconName : "pgg-critical-strike-damage", checked : false },
+                { name : "Max Mana", iconName : "pgg-max-mana", checked : false },
+                { name : "Max Health", iconName : "pgg-max-health", checked : false },
+                { name : "Mana Regen", iconName : "pgg-mana-regeneration", checked : false },
+                { name : "Health Regen", iconName : "pgg-health-regeneration", checked : false },
+                { name : "Max Movement Speed", iconName : "pgg-movement-speed", checked : false },
+                { name : "Cooldown Reduction", iconName : "pgg-cooldown-reduction", checked : false },
+                { name : "Lifesteal", iconName : "pgg-lifesteal", checked : false },
+                { name : "Attack Speed", iconName : "pgg-attack-speed", checked : false },
+                { name : "Harvester Placement Time", iconName : "pgg-harvester-placement-time", checked : false }
             ],
             types : [
                 { "name" : "Prime Helix" },
@@ -63,38 +63,47 @@ var CardsFilter = React.createClass({
         }
     },
     shouldBeVisible: function(card) {
-        var _this = this;
-        // CASE WHEN WE ARE USING THE SEARCH FILTER
-        if(_this.state.filter_affinities.length !== 0) {
-            var matches = false;
-            _this.state.filter_affinities.forEach(function(affinityFilter) {
-                var cardAffinity = card.affinity.replace("Affinity.", "").toLowerCase();
+        var cardAffinity = card.affinity.replace("Affinity.", "").toLowerCase();
+        var hasSearchTerm = this.state.search_term.length > 0;
+        var matches = false;
+
+        // TODO REFACTOR COMPONENT TO USE STATIC FILTERS ONLY PASSED THROUGH PROPS, NOT SET IN STATE
+        // SEARCH TERM AND AFFINITIES FOR DYNAMIC FILTERS
+        if(this.state.filter_affinities.length !== 0) {
+            this.state.filter_affinities.forEach(function(affinityFilter) {
                 var affinity = affinityFilter.type.toLowerCase();
-                var hasSearchTerm = _this.state.search_term.length > 0;
 
                 if(cardAffinity === affinity) {
-                    if((hasSearchTerm && card.name.toLowerCase().indexOf(_this.state.search_term.toLowerCase()) > -1) || !hasSearchTerm)
+                    if((hasSearchTerm && card.name.toLowerCase().indexOf(this.state.search_term.toLowerCase()) > -1) || !hasSearchTerm)
                         matches = true;
                 }
-            });
-            return matches;
-        } else {
-            return true;
+            }.bind(this));
         }
-        /*
-        if(_this.state.filter_owned == true && card.owned == false) {
-            return false;
+        // SEARCH TERM AND AFFINITIES FOR PROPS (OTHERWISE BREAK ON CARDS PAGE) - USES STATIC FILTERS
+        else if(this.props.affinities) {
+            this.props.affinities.forEach(function(affinityFilter) {
+                var affinity = affinityFilter.name.toLowerCase();
+                if(cardAffinity === affinity) {
+                    if((hasSearchTerm && card.name.toLowerCase().indexOf(this.state.search_term.toLowerCase()) > -1) || !hasSearchTerm)
+                        matches = true;
+                }
+            }.bind(this));
         }
-        if(_this.state.filter_type != 'All' && _this.state.filter_type != card.type) {
-            return false;
+        // SEARCH TERM ONLY
+        else if((hasSearchTerm && card.name.toLowerCase().indexOf(this.state.search_term.toLowerCase()) > -1) || !hasSearchTerm) {
+            matches = true;
         }
-        if(card.name.toLowerCase().indexOf(_this.state.search_term.toLowerCase()) > -1) {
-            return true;
-        }
-        */
-        return false;
+
+        return matches;
     },
     shouldComponentUpdate: function(nextProps, nextState) {
+        if(nextProps.visibleCardCount !== this.props.visibleCardCount) {
+            return true;
+        }
+        if(this.props.forceRedraw) {
+            console.log("UPDATING")
+            this.forceUpdate();
+        }
         return nextState !== this.state;
     },
     componentDidUpdate: function() {
@@ -134,10 +143,9 @@ var CardsFilter = React.createClass({
         });
     },
     updateCards: function() {
-        var _this = this;
         var cards = [];
         this.props.cards.forEach(function(card) {
-            if(_this.shouldBeVisible(card) === true) {
+            if(this.shouldBeVisible(card) === true) {
                 cards.push(<CardPreview card={card}
                                         key={card.code}
                                         redirectsOnClick={this.props.cardsRedirectOnClick}
@@ -147,7 +155,7 @@ var CardsFilter = React.createClass({
                                         onMouseLeave={this.hideTooltip}
                 />);
             }
-        }, _this);
+        }.bind(this));
         this.props.onFilterChanged(cards);
     },
     setTooltipContent: function(card) {
@@ -168,18 +176,30 @@ var CardsFilter = React.createClass({
     },
     render: function() {
         var _this = this;
-        var affinityFilters = this.state.affinities.map(function(affinity, i) {
-            return <ToggleFilter key={ "affinity_toggle_" + affinity.name.toLowerCase() }
-                                 affinity={affinity}
-                                 active={false}
-                                 label={ i === 0 ? "AFFINITIES" : "" }
-                                 onToggleFilterChanged={_this.affinityFilterChanged}
+        var affinityFilters = [];
+        if(this.props.affinities) {
+            affinityFilters = this.props.affinities.map(function(affinity, i) {
+                    return <ToggleFilter key={ "affinity_toggle_" + affinity.name.toLowerCase() }
+                                         affinity={affinity}
+                                         active={false}
+                                         label={ i === 0 ? "AFFINITIES" : "" }
+                                         onToggleFilterChanged={_this.affinityFilterChanged}
                     />
-        });
+                });
+        } else {
+            affinityFilters = this.state.affinities.map(function(affinity, i) {
+                return <ToggleFilter key={ "affinity_toggle_" + affinity.name.toLowerCase() }
+                                     affinity={affinity}
+                                     active={false}
+                                     label={ i === 0 ? "AFFINITIES" : "" }
+                                     onToggleFilterChanged={_this.affinityFilterChanged}
+                />
+            });
+        }
 
         return(
             <div className="filter-wrapper">
-                <SearchBar label="SEARCH BY NAME"
+                <SearchBar label={ "DISPLAYING " + this.props.visibleCardCount + "/" + this.props.totalCardCount + " CARDS" }
                            placeholder="Enter card name..."
                            onSearchTermChanged={this.inputChanged}
                 />

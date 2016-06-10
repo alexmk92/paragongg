@@ -263,15 +263,15 @@ var DeckBuilder = React.createClass({
         });
         this.toggleBuildView();
     },
-    toggleBuildView: function(dismiss = true) {
+    toggleBuildView: function(dismiss = true, sender) {
         var showDeckTab = this.state.activeTab;
         var flashTab = this.state.playFlashTabAnimation;
         if(this.state.activeTab === 1) flashTab = true;
-        /*
-        if(dismiss === false) {
+
+        if(dismiss === false && sender === "edit-button") {
             showDeckTab = 0;
+            flashTab = false;
         }
-        */
 
         this.setState({ isBuildsPanelShowing : dismiss, activeTab: showDeckTab, playFlashTabAnimation: flashTab })
     },
@@ -335,13 +335,23 @@ var DeckBuilder = React.createClass({
             showCardSection : true
         });
     },
+    getAffinities: function() {
+        var affinities = [];
+        if(this.state.selectedHero) {
+            affinities = this.state.selectedHero.affinities.map(function(affinity) {
+                return { name : affinity.replace("Affinity.", "") }
+            });
+        }
+        affinities.push({ name : "Universal" });
+        return affinities;
+    },
     /** END OF FUNCTIONS **/
     render: function() {
         return (
             <div>
                 <div id="sidebar">
                     <button name="publish" type="submit" className="btn inline wide"><i className="fa fa-check" aria-hidden="true"></i> SAVE DECK</button>
-                    <button onClick={this.toggleBuildView.bind(this, false)} name="publish" type="submit" className={"btn inline narrow"}><i className="fa fa-pencil" aria-hidden="true"></i> EDIT DECK</button>
+                    <button onClick={this.toggleBuildView.bind(this, false, "edit-button")} name="publish" type="submit" className={"btn inline narrow"}><i className="fa fa-pencil" aria-hidden="true"></i> EDIT DECK</button>
                     <div className="dual-tab-wrapper">
                         <div className="dual-tab-tabs">
                             <div onClick={this.setActiveTab.bind(this, 0)}
@@ -392,7 +402,7 @@ var DeckBuilder = React.createClass({
                             Write a short description about your deck. What team compositions might you use this deck against? Under what situations would you use the different builds? Click here to edit the description text.
                         </div>
                         <div id="cards-feed" className={ this.state.showCardSection ? "" : "hidden" }>
-                            <CardsFeed tooltip={this.tooltip} cards={CARDS} cardsRedirectOnClick={false} onCardClicked={this.addCard} />
+                            <CardsFeed forceRedraw={true} affinities={this.getAffinities()} tooltip={this.tooltip} cards={CARDS} cardsRedirectOnClick={false} onCardClicked={this.addCard} />
                         </div>
                     </div>
                 </div>
