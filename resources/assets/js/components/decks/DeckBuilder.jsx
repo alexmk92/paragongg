@@ -75,8 +75,8 @@ var DeckBuilder = React.createClass({
         var tooltip = document.getElementById("toptip");
         ReactDOM.render(content, tooltip);
     },
-    showTooltip: function() {
-        this.tooltip.showTooltip();
+    showTooltip: function(card) {
+        if(card) this.tooltip.showTooltip();
     },
     hideTooltip: function() {
         this.tooltip.hideTooltip();
@@ -159,7 +159,7 @@ var DeckBuilder = React.createClass({
                     onContextMenu={this.deleteCardFromDeck.bind(this, card)}
                     onClick={this.selectCard.bind(this, card)}
                     onMouseEnter={this.setTooltipContent.bind(this, card)}
-                    onMouseOver={this.showTooltip}
+                    onMouseOver={this.showTooltip.bind(this, card)}
                     onMouseLeave={this.hideTooltip}
                 >
                     <div className={ "wrapper " + childClassName }>
@@ -201,23 +201,45 @@ var DeckBuilder = React.createClass({
             var className = "";
             var childClassName = "";
             if(this.state.selectedBuild !== null) {
+                /*
                 if(this.state.lastSelectedBuild !== null && (this.state.lastSelectedBuild.code === build.code && this.state.playFlashAnimation)) {
                     className += "pulse-card-outer";
                     childClassName += "pulse-card-inner";
                 }
+                */
                 if(this.state.selectedBuild.code === build.code) {
                     className += " selected";
                 }
             }
+            var wrapperBackgroundImageURL = "";
+            var slotIcons = build.slots.map(function(slot, i) {
+                var imageURL = "/assets/images/cards/card-placeholder.png";
+                if(slot.card !== null)
+                    imageURL = "https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/" + slot.card.code + "/icon.png";
+
+                if(i === 0) wrapperBackgroundImageURL = imageURL;
+
+                return (
+                    <div key={ "slot-" + i + "-icon" }
+                         className="slot-icon"
+                         style={{ backgroundImage : "url(" + imageURL + ")" }}
+                         onMouseEnter={this.setTooltipContent.bind(this, slot.card)}
+                         onMouseOver={this.showTooltip.bind(this, slot.card)}
+                         onMouseLeave={this.hideTooltip}
+                    ></div>
+                )
+            }.bind(this));
+
             return (
                 <li className={className}
                     key={build.code}
                     onClick={this.selectBuild.bind(this, build)}
                 >
-                    <div className={ "wrapper " + childClassName }>
-                        <span className="count">{build.quantity }x</span>
-                        <span className="name">{build.name}</span>
-                        <span className="cost">{build.cost} CP</span>
+                    <div className={ "wrapper with-background " + childClassName } style={{ backgroundImage : "url(" + wrapperBackgroundImageURL + ")" }}>
+                        <span className="title">{build.title} <span className="subtext">{build.cost}CP</span></span>
+                        <div className="slot-icon-container">
+                            { slotIcons }
+                        </div>
                     </div>
                 </li>
             );
@@ -277,17 +299,14 @@ var DeckBuilder = React.createClass({
         this.setState({ isBuildsPanelShowing : dismiss, activeTab: showDeckTab, playFlashTabAnimation: flashTab })
     },
     buildUpdated: function(newBuild, lastModifiedSlot) {
-        var newBuilds = this.state.builds.map(function(oldBuild) {
-            if(oldBuild.code === newBuild.code) {
-                oldBuild = newBuild;
-            }
-            return oldBuild;
-        });
+        var buildIndex = this.state.builds.indexOf(newBuild);
+        var newBuilds = this.state.builds;
+        newBuilds[buildIndex] = newBuild;
+
         this.setState({ builds : newBuilds, lastModifiedSlot: lastModifiedSlot });
     },
     /** TAB PANEL FUNCTIONS **/
     animateFlashTab: function(event) {
-        console.log("Looking for flash tab");
         var flashTab = document.querySelector(".flash-tab");
         if(flashTab) {
             flashTab.className = "";
@@ -298,18 +317,21 @@ var DeckBuilder = React.createClass({
     },
     setActiveTab: function(index) {
         var showBuildsPanel = this.state.isBuildsPanelShowing;
-        //var flashTab = this.state.activeTab === 0;
+        var flashTab = this.state.activeTab === 0;
 
         /*
-        if(!this.state.isBuildsPanelShowing && index === 1 && this.state.builds.length > 0) {
-            showBuildsPanel = true;
-            index = 0;
-        }
-        */
+        // TODO: COMMENT THIS OUT IF WE DONT WANT THE VIEW TO SWAP WHEN CLICKING BUILDS TAB
+        // AND WE HAVE AN ACTIVE BUILD
+         if(!this.state.isBuildsPanelShowing && index === 1 && this.state.builds.length > 0) {
+             showBuildsPanel = true;
+             flashTab = false;
+         }
+         */
+
         this.setState({
             activeTab : index,
             playFlashAnimation: false,
-            //playFlashTabAnimation: flashTab,
+            playFlashTabAnimation: flashTab,
             isBuildsPanelShowing: showBuildsPanel
         })
     },
@@ -416,6 +438,7 @@ var DeckBuilder = React.createClass({
                     {
                         this.state.selectedBuild ? (
                             <Build
+                                tooltip={this.tooltip}
                                 selectedCard ={this.state.selectedCard}
                                 build={this.state.selectedBuild}
                                 lastModifiedSlot={this.state.lastModifiedSlot}

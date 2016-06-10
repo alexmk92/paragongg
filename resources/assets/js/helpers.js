@@ -1,4 +1,14 @@
 module.exports = {
+    debounce: function(fn, delay) {
+        var timer = null;
+        return function () {
+            var context = this, args = arguments;
+            clearTimeout(timer);
+            timer = setTimeout(function () {
+                fn.apply(context, args);
+            }, delay);
+        };
+    },
     prettyDate : function(time)
     {
         var system_date = new Date(Date.parse(time));

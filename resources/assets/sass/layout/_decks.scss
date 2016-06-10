@@ -10,6 +10,58 @@
     font-family: $font-condensed;
     font-size: 14px;
 
+    .wrapper {
+        &.with-background {
+            background-size: 110%;
+            background-repeat: no-repeat;
+            background-position-x: 50%;
+            background-position-y: 20%;
+            padding: 15px 20px;
+
+            &:hover {
+                background-size: 110%;
+                background-repeat: no-repeat;
+                background-position-x: 50%;
+                background-position-y: 20%;
+
+                &:before {
+                    background: rgba(0, 0, 0, 0.5);
+                }
+            }
+
+            &:before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.75);
+                transition: background 250ms ease-in-out;
+            }
+        }
+    }
+
+    .slot-icon-container {
+        height: 50px;
+        position: relative;
+
+        .slot-icon {
+            display: inline-block;
+            width: 34px;
+            height: 34px;
+            margin-right: 10px;
+            background-size: 150% auto;
+            overflow: hidden;
+            border-radius: 50%;
+            background-position-y: 5%;
+            background-position-x: 50%;
+            position: relative;
+            top: 10px;
+            box-shadow: 0 0 5px #000;
+        }
+    }
+
     .create-build {
         margin-top: 20px;
 
@@ -68,6 +120,16 @@
         border: 1px solid $panel-color-dark;
         transition: border 200ms;
         left: 0;
+
+        .title {
+            text-transform: uppercase;
+            position: relative;
+            z-index: 2;
+            background: rgba(0,0,0,0.4);
+            padding: 4px 10px;
+            left: -20px;
+            top: -2px;
+        }
 
         &.selected {
             border: 1px solid $tertiary-highlight;
