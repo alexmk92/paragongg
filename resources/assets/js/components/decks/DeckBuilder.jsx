@@ -3,8 +3,9 @@ var ReactDOM = require('react-dom');
 var CardsFeed = require('../cards/CardsFeed');
 var Helpers = require('../../helpers');
 var Tooltip = require('../libraries/tooltip/Toptip');
-var HeroPanel = require('../heroes/HeroPanel.jsx');
+var HeroPanel = require('../heroes/HeroPanel');
 var Build = require('./Build');
+var ConfirmModal = require('../ConfirmModal');
 
 /*
  window.onscroll = function(event) {
@@ -404,14 +405,20 @@ var DeckBuilder = React.createClass({
 
         // PROMPT USER IF THEY WANT TO DO THIS
         if(hero.code !== currentHero.code && (deck.length > 0 || builds.length > 0)) {
-            var confirm = window.confirm("Changing hero will permanently any existing builds and this deck, are you sure you want to continue?");
-            if(confirm) {
-                this.setState({
-                    heroPanelActive : !this.state.heroPanelActive,
-                    selectedHero    : hero,
-                    showCardSection : true,
-                    deck : [],
-                    builds : []
+            var confirmNode = document.body.appendChild(document.createElement('div'));
+            if(confirmNode) {
+                var confirm = ReactDOM.render(<ConfirmModal titleIcon="fa-info-circle" title="ATTENTION!" description="Changing your hero will permanently delete any existing builds and this deck, are you sure you want to continue?" cancelText="CANCEL" confirmText="YES CHANGE MY HERO" />, confirmNode);
+                confirm.deferred.promise.then(function(resolvedMessage) {
+                    this.setState({
+                        heroPanelActive : !this.state.heroPanelActive,
+                        selectedHero    : hero,
+                        showCardSection : true,
+                        deck : [],
+                        builds : []
+                    });
+                    ReactDOM.unmountComponentAtNode(confirmNode);
+                }.bind(this), function(rejectedMessage) {
+                    ReactDOM.unmountComponentAtNode(confirmNode);
                 });
             }
         } else {
