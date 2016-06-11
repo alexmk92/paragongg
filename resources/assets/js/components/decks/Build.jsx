@@ -7,8 +7,52 @@ var Build = React.createClass({
     componentWillMount: function() {
         this.tooltip = this.props.tooltip || new Tooltip();
     },
+    componentDidUpdate: function() {
+        this.updateBuildsWithNewDeck();
+    },
     buildUpdated: function(newBuild, lastModifiedSlot = this.props.lastModifiedSlot) {
         this.props.onBuildChanged(newBuild, lastModifiedSlot);
+    },
+    updateBuildsWithNewDeck: function() {
+        this.props.build.slots.forEach(function(slot, index) {
+             if(slot.card) {
+                 if(this.props.deck.indexOf(slot.card) < 0) {
+                     var newSlots = this.props.build.slots;
+                     newSlots.forEach(function(slot, i) {
+                         if(index === i) {
+                             slot.occupied = false;
+                             slot.card = null;
+                             newSlots[i] = slot;
+                         }
+                     }.bind(this));
+
+                     var newBuild = this.props.build;
+                     newBuild.slots = newSlots;
+
+                     this.buildUpdated(newBuild, null);
+                 }
+                 slot.upgrades.forEach(function(upgradeSlot) {
+                     if(upgradeSlot.card) {
+                         if(this.props.deck.indexOf(upgradeSlot.card) < 0) {
+
+                             /*
+                             var newBuild = this.props.build;
+                             newBuild.slots = this.props.build.slots.map(function(oldSlot) {
+                                 if(oldSlot.card !== null && (oldSlot.card.code === upgradeSlot.card.code)) {
+                                     var oldUpgradeIndex = oldSlot.upgrades.indexOf(upgradeSlot);
+                                     if(oldUpgradeIndex > -1) {
+                                         oldSlot.upgrades[oldUpgradeIndex].card = null;
+                                     }
+                                 }
+                                 return oldSlot;
+                             }.bind(this));
+                             */
+                             this.buildUpdated(newBuild);
+                         }
+                     }
+                 }.bind(this))
+             }
+        }.bind(this));
     },
     getUpgradeSlots: function(slot) {
         // Dont show this section on unplaced cards
@@ -47,19 +91,49 @@ var Build = React.createClass({
             }.bind(this));
         }
     },
-    bindUpgradeToCard: function(upgradeSlot, card) {
-        var newBuild = this.props.build;
-        newBuild.slots = this.props.build.slots.map(function(oldSlot) {
-            if(oldSlot.card !== null && (oldSlot.card.code === card.code)) {
-                var oldUpgradeIndex = oldSlot.upgrades.indexOf(upgradeSlot);
-                if(oldUpgradeIndex > -1) {
-                    upgradeSlot.card = this.props.selectedCard;
-                    oldSlot.upgrades[oldUpgradeIndex] = upgradeSlot;
-                }
+    validateAffinity: function(upgradeSlot) {
+        var affinityMatches = false;
+        if(upgradeSlot && this.props.selectedCard) {
+            if(upgradeSlot.requiredAffinity.toLowerCase().indexOf(this.props.selectedCard.affinity.toLowerCase()) > -1)
+                affinityMatches = true;
+            if(this.props.selectedCard.affinity.toLowerCase().indexOf("universal") > -1)
+                affinityMatches = true;
+            // MUST BE AN UPGRADE
+            if(this.props.selectedCard.type !== "two")
+                affinityMatches = false;
+        }
+        return affinityMatches;
+    },
+    validateSlot: function(slotIndex) {
+        console.log("BINDING SLOT AT INDEX: "+ slotIndex )
+        var valid = false;
+        if(this.props.selectedCard) {
+            switch(this.props.selectedCard.type) {
+                case "zero" : valid = slotIndex > 3; break;
+                case "one" : valid = slotIndex <= 3; break;
+                case "two": valid = false; break;
+                case "three": valid = false; break;
+                default: break;
             }
-            return oldSlot;
-        }.bind(this));
-        this.buildUpdated(newBuild);
+        }
+        console.log("VALID IS: " + valid);
+        return valid;
+    },
+    bindUpgradeToCard: function(upgradeSlot, card) {
+        if(this.validateQuantity() && this.validateAffinity(upgradeSlot)) {
+            var newBuild = this.props.build;
+            newBuild.slots = this.props.build.slots.map(function(oldSlot) {
+                if(oldSlot.card !== null && (oldSlot.card.code === card.code)) {
+                    var oldUpgradeIndex = oldSlot.upgrades.indexOf(upgradeSlot);
+                    if(oldUpgradeIndex > -1) {
+                        upgradeSlot.card = this.props.selectedCard;
+                        oldSlot.upgrades[oldUpgradeIndex] = upgradeSlot;
+                    }
+                }
+                return oldSlot;
+            }.bind(this));
+            this.buildUpdated(newBuild);
+        }
     },
     // TODO FIXED
     removeUpgradeFromCard: function(upgradeSlot, card, event) {
@@ -82,11 +156,16 @@ var Build = React.createClass({
             var card = "";
             var cardPulse = "";
 
-            if(this.props.selectedCard && typeof this.props.selectedCard !== "undefined") {
-                activeClass = (slot.card === null) ? "active-slot" : "";
+            // IS THIS AN ACTIVE OR PASSIVE SLOT (ACTIVE = ONE)
+            var type = (i < 4) ? "one" : "zero" ;
 
-                if(this.props.lastModifiedSlot === i) {
-                    cardPulse = "pulse-glow";
+            if(this.props.selectedCard && typeof this.props.selectedCard !== "undefined") {
+                if(type === this.props.selectedCard.type) {
+                    activeClass = (slot.card === null) ? "active-slot " : "";
+
+                    if (this.props.lastModifiedSlot === i) {
+                        cardPulse = "pulse-glow";
+                    }
                 }
             }
             if(slot.card !== null) {
@@ -124,10 +203,35 @@ var Build = React.createClass({
             );
         }.bind(this));
     },
+    validateQuantity: function() {
+        if(this.props.deck && this.props.selectedCard) {
+            // CANT ADD A PRIME HELIX
+            if(this.props.selectedCard.type === "three") {
+                return false;
+            }
+            // MAKE SURE WE HAVE ENOUGH CARDS IN THE DECK
+            var cardWithQuantity = this.props.deck[this.props.deck.indexOf(this.props.selectedCard)];
+            if(cardWithQuantity) {
+                var cardsOfTypeFound = 0;
+                this.props.build.slots.forEach(function(slot) {
+                    if(slot.card !== null && slot.card.code === this.props.selectedCard.code) {
+                        cardsOfTypeFound += 1;
+                    }
+                    slot.upgrades.forEach(function(slot) {
+                        if(slot.card !== null && slot.card.code === this.props.selectedCard.code) {
+                            cardsOfTypeFound += 1;
+                        }
+                    }.bind(this))
+                }.bind(this));
+                return ((cardWithQuantity.quantity - cardsOfTypeFound) > 0)
+            }
+        }
+        return false;
+    },
     bindCardToSlot: function(index, event) {
         event.preventDefault();
 
-        if(event.target.className.indexOf("glow-layer") > -1) {
+        if((event.target.className.indexOf("glow-layer") > -1 && this.validateQuantity()) && this.validateSlot(index)) {
             var newSlots = this.props.build.slots;
             var moddedSlot = null;
 

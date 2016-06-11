@@ -66,6 +66,7 @@ var DeckBuilder = React.createClass({
     },
     /** TOOLTIP FUNCTIONS **/
     setTooltipContent: function(card) {
+        console.log(card.affinity.substring(9).toLowerCase());
         var content = (
             <div className="pgg-tooltip pgg-tooltip-card">
                 <div className={"head affinity-" + card.affinity.substring(9).toLowerCase()}>{card.name}</div>
@@ -120,26 +121,28 @@ var DeckBuilder = React.createClass({
 
         var elem = event.target;
         if(elem.className !== "fa fa-trash" && elem.className !== "delete-icon") {
-            if(this.state.selectedCard && this.state.selectedCard.code == card.code) {
+            if((this.state.selectedCard && this.state.selectedCard.code == card.code) || card.type === "three") {
                 this.setState({selectedCard: null, playFlashAnimation: false});
             } else {
                 this.setState({selectedCard: card, playFlashAnimation: false});
             }
         }
     },
-    deleteCardFromDeck : function(selectedCard, event) {
+    deleteCardFromDeck : function(cardToDelete, event) {
         event.preventDefault();
+
+        var newSelectedCard = (this.state.selectedCard === cardToDelete) ? null : this.state.selectedCard;
 
         var newDeck = [];
         this.state.deck.forEach(function(card) {
-            if(card.code !== selectedCard.code)
+            if(card.code !== cardToDelete.code)
                 newDeck.push(card);
             else if(card.quantity > 1) {
                 card.quantity--;
                 newDeck.push(card);
             }
         });
-        this.setState({ deck : newDeck, playFlashAnimation: false });
+        this.setState({ deck : newDeck, playFlashAnimation: false, selectedCard : newSelectedCard });
     },
     renderDeckList: function() {
         if(this.state.deck.length === 0) {
@@ -161,7 +164,7 @@ var DeckBuilder = React.createClass({
                 <ul className="deck-list">
                     {this.getCardsInDeck(["three"])}
                 </ul>
-                <span className="subtext">ACTIVE / PASSIVE</span>
+                <span className="subtext">EQUIPMENT</span>
                 <ul className="deck-list">
                     {this.getCardsInDeck(["zero", "one"])}
                 </ul>
@@ -179,7 +182,6 @@ var DeckBuilder = React.createClass({
             types.forEach(function(type) {
                 if(!hasType) hasType = card.type === type;
             });
-            console.log(hasType);
             if(hasType) {
                 var className = "";
                 var childClassName = "";
@@ -357,18 +359,21 @@ var DeckBuilder = React.createClass({
     setActiveTab: function(index) {
         var showBuildsPanel = this.state.isBuildsPanelShowing;
         var flashTab = this.state.activeTab === 0;
+        var selectedCard = this.state.selectedCard;
 
-        /*
-        // TODO: COMMENT THIS OUT IF WE DONT WANT THE VIEW TO SWAP WHEN CLICKING BUILDS TAB
-        // AND WE HAVE AN ACTIVE BUILD
          if(!this.state.isBuildsPanelShowing && index === 1 && this.state.builds.length > 0) {
-             showBuildsPanel = true;
+             //showBuildsPanel = true;
              flashTab = false;
          }
-         */
+        /* DESELECT ACTIVE CARD IF SWAPPING TABS?
+        if(index === 0) {
+            selectedCard = null;
+        }
+        */
 
         this.setState({
             activeTab : index,
+            selectedCard : selectedCard,
             playFlashAnimation: false,
             playFlashTabAnimation: flashTab,
             isBuildsPanelShowing: showBuildsPanel
@@ -388,14 +393,35 @@ var DeckBuilder = React.createClass({
     },
     /** HERO PANEL DROP DOWN FUNCTIONS **/
     onHeroPanelSelectedHero: function(hero) {
+        var currentHero = this.state.selectedHero;
+        var deck = this.state.deck;
+        var builds = this.state.builds;
+
         if(this.refs.deckNameInput.value === "") {
             this.refs.deckNameInput.focus();
         }
-        this.setState({
-            heroPanelActive : !this.state.heroPanelActive,
-            selectedHero    : hero,
-            showCardSection : true
-        });
+
+        // PROMPT USER IF THEY WANT TO DO THIS
+        if(hero.code !== currentHero.code && (deck.length > 0 || builds.length > 0)) {
+            var confirm = window.confirm("Changing hero will permanently any existing builds and this deck, are you sure you want to continue?");
+            if(confirm) {
+                this.setState({
+                    heroPanelActive : !this.state.heroPanelActive,
+                    selectedHero    : hero,
+                    showCardSection : true,
+                    deck : [],
+                    builds : []
+                });
+            }
+        } else {
+            this.setState({
+                heroPanelActive : !this.state.heroPanelActive,
+                selectedHero    : hero,
+                showCardSection : true,
+                deck : deck,
+                builds : builds
+            });
+        }
     },
     getAffinities: function() {
         var affinities = [];
@@ -473,6 +499,7 @@ var DeckBuilder = React.createClass({
                     {
                         this.state.selectedBuild ? (
                             <Build
+                                deck={this.state.deck}
                                 tooltip={this.tooltip}
                                 selectedCard ={this.state.selectedCard}
                                 build={this.state.selectedBuild}
