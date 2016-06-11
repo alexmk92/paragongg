@@ -14,12 +14,12 @@ var Build = React.createClass({
         this.props.onBuildChanged(newBuild, lastModifiedSlot);
     },
     updateBuildsWithNewDeck: function() {
-        this.props.build.slots.forEach(function(slot, index) {
+        this.props.build.slots.forEach(function(slot, slotIndex) {
              if(slot.card) {
                  if(this.props.deck.indexOf(slot.card) < 0) {
                      var newSlots = this.props.build.slots;
                      newSlots.forEach(function(slot, i) {
-                         if(index === i) {
+                         if(slotIndex === i) {
                              slot.occupied = false;
                              slot.card = null;
                              newSlots[i] = slot;
@@ -31,26 +31,27 @@ var Build = React.createClass({
 
                      this.buildUpdated(newBuild, null);
                  }
-                 slot.upgrades.forEach(function(upgradeSlot) {
-                     if(upgradeSlot.card) {
-                         if(this.props.deck.indexOf(upgradeSlot.card) < 0) {
+                 else {
+                     // Then delete any missing children
+                     var deletedSlot = null;
+                     var deletedSlotIndex = null;
 
-                             /*
-                             var newBuild = this.props.build;
-                             newBuild.slots = this.props.build.slots.map(function(oldSlot) {
-                                 if(oldSlot.card !== null && (oldSlot.card.code === upgradeSlot.card.code)) {
-                                     var oldUpgradeIndex = oldSlot.upgrades.indexOf(upgradeSlot);
-                                     if(oldUpgradeIndex > -1) {
-                                         oldSlot.upgrades[oldUpgradeIndex].card = null;
-                                     }
-                                 }
-                                 return oldSlot;
-                             }.bind(this));
-                             */
+                     slot.upgrades.forEach(function(upgradeSlot, index) {
+                         if(upgradeSlot.card) {
+                             if(this.props.deck.indexOf(upgradeSlot.card) < 0) {
+                                 deletedSlotIndex = index;
+                                 deletedSlot = upgradeSlot;
+                             }
+                         }
+                     }.bind(this));
+                     if(deletedSlot !== null && deletedSlotIndex !== null) {
+                         newBuild = this.props.build;
+                         if(newBuild.slots.indexOf(slot) > -1) {
+                             newBuild.slots[newBuild.slots.indexOf(slot)].upgrades[deletedSlotIndex].card = null;
                              this.buildUpdated(newBuild);
                          }
                      }
-                 }.bind(this))
+                 }
              }
         }.bind(this));
     },
@@ -77,7 +78,7 @@ var Build = React.createClass({
                     return (
                         <div className="upgrade-slot"
                              onContextMenu={this.removeUpgradeFromCard.bind(this, upgrade, slot.card)}
-                             onClick={this.bindUpgradeToCard.bind(this, upgrade, slot.card)}
+                             onClick={this.bindUpgradeToCard.bind(this, upgrade, slot.card, false)}
                              style={ slotStyle }
                              onMouseEnter={this.setTooltipContent.bind(this, upgrade.card)}
                              onMouseOver={this.showTooltip.bind(this, upgrade.card, "upgrade-label")}
@@ -105,34 +106,53 @@ var Build = React.createClass({
         return affinityMatches;
     },
     validateSlot: function(slotIndex) {
-        console.log("BINDING SLOT AT INDEX: "+ slotIndex )
         var valid = false;
         if(this.props.selectedCard) {
             switch(this.props.selectedCard.type) {
-                case "zero" : valid = slotIndex > 3; break;
+                case "zero" : valid = slotIndex <= 6; break;
                 case "one" : valid = slotIndex <= 3; break;
                 case "two": valid = false; break;
                 case "three": valid = false; break;
                 default: break;
             }
         }
-        console.log("VALID IS: " + valid);
         return valid;
     },
-    bindUpgradeToCard: function(upgradeSlot, card) {
-        if(this.validateQuantity() && this.validateAffinity(upgradeSlot)) {
-            var newBuild = this.props.build;
-            newBuild.slots = this.props.build.slots.map(function(oldSlot) {
-                if(oldSlot.card !== null && (oldSlot.card.code === card.code)) {
-                    var oldUpgradeIndex = oldSlot.upgrades.indexOf(upgradeSlot);
-                    if(oldUpgradeIndex > -1) {
-                        upgradeSlot.card = this.props.selectedCard;
-                        oldSlot.upgrades[oldUpgradeIndex] = upgradeSlot;
+    bindUpgradeToCard: function(upgradeSlot, card, bindUpgradeAtNextAvailableIndex) {
+        // GET THE NEXT AVAILABLE SLOT
+        if(this.validateQuantity()) {
+            // Got here by clicking on parent card to bind child
+            if(bindUpgradeAtNextAvailableIndex === true) {
+                var nextAvailableSlot = null;
+                upgradeSlot.upgrades.forEach(function (slot, i) {
+                    if (slot.card === null && nextAvailableSlot === null) {
+                        nextAvailableSlot = i;
+                    }
+                });
+                if (nextAvailableSlot !== null && this.validateAffinity(upgradeSlot.upgrades[nextAvailableSlot])) {
+                    var newBuild = this.props.build;
+                    if (newBuild.slots.indexOf(upgradeSlot) > -1 && this.props.selectedCard) {
+                        newBuild.slots[newBuild.slots.indexOf(upgradeSlot)].upgrades[nextAvailableSlot].card = this.props.selectedCard;
+                        this.buildUpdated(newBuild);
                     }
                 }
-                return oldSlot;
-            }.bind(this));
-            this.buildUpdated(newBuild);
+            }
+            // Got here by clicking on card
+            else if(this.validateAffinity(upgradeSlot)) {
+                // ATTEMPT TO BIND THE CARD
+                var newBuild = this.props.build;
+                newBuild.slots = this.props.build.slots.map(function(oldSlot) {
+                    if(oldSlot.card !== null && (oldSlot.card.code === card.code)) {
+                        var oldUpgradeIndex = oldSlot.upgrades.indexOf(upgradeSlot);
+                        if(oldUpgradeIndex > -1) {
+                            upgradeSlot.card = this.props.selectedCard;
+                            oldSlot.upgrades[oldUpgradeIndex] = upgradeSlot;
+                        }
+                    }
+                    return oldSlot;
+                }.bind(this));
+                this.buildUpdated(newBuild);
+            }
         }
     },
     // TODO FIXED
@@ -160,7 +180,7 @@ var Build = React.createClass({
             var type = (i < 4) ? "one" : "zero" ;
 
             if(this.props.selectedCard && typeof this.props.selectedCard !== "undefined") {
-                if(type === this.props.selectedCard.type) {
+                if(type === this.props.selectedCard.type || this.props.selectedCard.type === "zero") {
                     activeClass = (slot.card === null) ? "active-slot " : "";
 
                     if (this.props.lastModifiedSlot === i) {
@@ -236,7 +256,7 @@ var Build = React.createClass({
             var moddedSlot = null;
 
             // TODO Implement this with real upgrade slot data, so its not random
-            var upgradeSlots = Math.floor(Math.random() * (3 - 0 + 1)) + 0;
+            var upgradeSlots = (typeof this.props.selectedCard.slots === "undefined") ? 3 : this.props.selectedCard.slots.length;
             newSlots.forEach(function (slot, i) {
                 if (i === index) {
                     if (this.props.selectedCard) {
@@ -260,6 +280,12 @@ var Build = React.createClass({
             newBuild.slots = newSlots;
             //this.setState({ build : newBuild, lastModifiedSlot: moddedSlot });
             this.buildUpdated(newBuild, moddedSlot);
+        } else if(event.target.className.indexOf("glow-layer") > -1 && this.props.selectedCard.type === "two") {
+            var bindSlot = null;
+            this.props.build.slots.forEach(function(slot, i) {
+                if(i === index) bindSlot = slot;
+            });
+            this.bindUpgradeToCard(bindSlot, bindSlot.card, true)
         }
     },
     getBuildPoints: function() {
@@ -307,7 +333,7 @@ var Build = React.createClass({
             var content = (
                 <div className="pgg-tooltip pgg-tooltip-card">
                     <div className={"head affinity-" + card.affinity.substring(9).toLowerCase()}>{card.name}</div>
-                    <div className="content">Description about the card</div>
+                    <div className="content">Description about the card {card.type}</div>
                 </div>
             );
             var tooltip = document.getElementById("toptip");
