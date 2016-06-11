@@ -34,7 +34,7 @@ var Build = React.createClass({
                  slot.upgrades.forEach(function(upgradeSlot) {
                      if(upgradeSlot.card) {
                          if(this.props.deck.indexOf(upgradeSlot.card) < 0) {
-                             
+
                              /*
                              var newBuild = this.props.build;
                              newBuild.slots = this.props.build.slots.map(function(oldSlot) {
@@ -103,6 +103,21 @@ var Build = React.createClass({
                 affinityMatches = false;
         }
         return affinityMatches;
+    },
+    validateSlot: function(slotIndex) {
+        console.log("BINDING SLOT AT INDEX: "+ slotIndex )
+        var valid = false;
+        if(this.props.selectedCard) {
+            switch(this.props.selectedCard.type) {
+                case "zero" : valid = slotIndex > 3; break;
+                case "one" : valid = slotIndex <= 3; break;
+                case "two": valid = false; break;
+                case "three": valid = false; break;
+                default: break;
+            }
+        }
+        console.log("VALID IS: " + valid);
+        return valid;
     },
     bindUpgradeToCard: function(upgradeSlot, card) {
         if(this.validateQuantity() && this.validateAffinity(upgradeSlot)) {
@@ -216,7 +231,7 @@ var Build = React.createClass({
     bindCardToSlot: function(index, event) {
         event.preventDefault();
 
-        if(event.target.className.indexOf("glow-layer") > -1 && this.validateQuantity()) {
+        if((event.target.className.indexOf("glow-layer") > -1 && this.validateQuantity()) && this.validateSlot(index)) {
             var newSlots = this.props.build.slots;
             var moddedSlot = null;
 
