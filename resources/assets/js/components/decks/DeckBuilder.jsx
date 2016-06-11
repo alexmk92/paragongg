@@ -14,6 +14,7 @@ var Build = require('./Build');
  var sidebarRect = sidebar.getBoundingClientRect();
 
  var offsetTop = (typeof window.pageYOffset !== "undefined") ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+ var offsetTop = (typeof window.pageYOffset !== "undefined") ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
 
  // Check if we can see the sidebar
  //sidebar.style.top = offsetTop + "px";
@@ -70,7 +71,7 @@ var DeckBuilder = React.createClass({
         var content = (
             <div className="pgg-tooltip pgg-tooltip-card">
                 <div className={"head affinity-" + card.affinity.substring(9).toLowerCase()}>{card.name}</div>
-                <div className="content">Description about the card</div>
+                <div className="content">Description about the card {card.type}</div>
             </div>
         );
         var tooltip = document.getElementById("toptip");
