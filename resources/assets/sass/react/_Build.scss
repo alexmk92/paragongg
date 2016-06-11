@@ -123,6 +123,7 @@
             color: #fff;
             &.active-slot {
                 opacity: 1;
+                animation: flash 1s infinite linear;
             }
         }
     }

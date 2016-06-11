@@ -133,8 +133,8 @@
                     transition: all 200ms ease-in-out;
 
                     &:hover {
-                        color: white;
-                        border: 1px solid white;
+                        color: $secondary-highlight;
+                        border: 1px solid $secondary-highlight;
                     }
                 }
                 &.narrow {
