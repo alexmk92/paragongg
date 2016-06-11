@@ -1,0 +1,38 @@
+#modal-background {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: rgba(0,0,0,0.75);
+
+    #modal-window {
+        width: 50%;
+        max-width: 900px;
+        padding: 35px;
+        border: 1px solid #0d1016;
+        background: #181d27;
+        margin: 100px auto 0px auto;
+        position: fixed;
+        left: 0;
+        right: 0;
+
+        .title {
+            font-size: 1.6em;
+            border-bottom: 1px solid #343a4a;
+            display: block;
+            line-height: 1.8em;
+        }
+
+        .description {
+            display: block;
+            font-size: 1.2em;
+            padding: 1.5em 0px;
+            line-height: 1.4em;
+        }
+
+        .button-wrapper {
+            float: right;
+        }
+    }
+}
