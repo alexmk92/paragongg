@@ -1,18 +1,18 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var Helpers = require('../../helpers');
+var StatPanel = require('./StatPanel');
 var Tooltip = require('../libraries/tooltip/Toptip');
 var ToggleFilter = require('../filter/ToggleFilter');
 
 var Build = React.createClass({
     componentWillMount: function() {
         this.tooltip = this.props.tooltip || new Tooltip();
-        this.lastSelectedCard = this.props.lastSelectedCard
+        this.lastSelectedCard = this.props.lastSelectedCard;
+        this.isMobile = window.innerWidth <= 1050;
     },
     componentDidUpdate: function() {
         this.updateBuildsWithNewDeck();
-
-        console.log("UPDATED");
         // Perform a quick bind on the selected card
         if(this.props.shouldQuickBindCards) {
             this.quickBind(this.props.selectedCard);
@@ -167,7 +167,7 @@ var Build = React.createClass({
         }
         // Friendly message for no slots
         if(typeof slot.upgrades === "undefined" || slot.upgrades.length === 0) {
-            return <div className="upgrade-slot"><span>NO UPGRADE SLOTS</span></div>
+            return <div key={"upgrade-slot" + slot.card.code} className="upgrade-slot"><span>NO UPGRADE SLOTS</span></div>
         } else {
             return slot.upgrades.map(function(upgrade) {
                 if(upgrade) {
@@ -182,6 +182,7 @@ var Build = React.createClass({
 
                     return (
                         <div className="upgrade-slot"
+                             key={"upgrade-slot-" + Helpers.uuid() }
                              onContextMenu={this.removeUpgradeFromCard.bind(this, upgrade, slot.card)}
                              onClick={this.bindUpgradeToCard.bind(this, upgrade, slot.card, false)}
                              style={ slotStyle }
@@ -239,7 +240,6 @@ var Build = React.createClass({
         if(this.validateQuantity()) {
             // Got here by clicking on parent card to bind child
             if(bindUpgradeAtNextAvailableIndex) {
-                console.log("ADD AT NEXT INDEX")
                 var nextAvailableSlot = null;
                 upgradeSlot.upgrades.forEach(function (slot, i) {
                     if (slot.card === null && nextAvailableSlot === null) {
@@ -256,7 +256,6 @@ var Build = React.createClass({
             }
             // Got here by clicking on card
             else if(this.validateAffinity(upgradeSlot) && !bindUpgradeAtNextAvailableIndex) {
-                console.log("ADD FROM SLOT CLICK")
                 // ATTEMPT TO BIND THE CARD
                 newBuild = this.props.build;
                 newSlots = newBuild.slots;
@@ -327,6 +326,7 @@ var Build = React.createClass({
                 card = (
                     <div style={cardStyles}
                          className="placed-card"
+                         key={"card-" + i}
                     >
                         <span className="card-title">{ slot.card.name }</span>
                         <div className="upgrade-slot-wrapper">
@@ -340,13 +340,13 @@ var Build = React.createClass({
                 if(this.props.selectedCard !== null && this.props.selectedCard.type !== "two") {
                     if(this.props.selectedCard === slot.card) {
                         return (
-                            <div className="delete-wrapper" onClick={this.bindCardToSlot.bind(this, i)} onContextMenu={this.removeCardFromSlot.bind(this, i, true)}>
+                            <div key={"action-buttons-" + i } className="delete-wrapper" onClick={this.bindCardToSlot.bind(this, i)} onContextMenu={this.removeCardFromSlot.bind(this, i, true)}>
                                 <i onClick={this.removeCardFromSlot.bind(this, i, false)} className="fa fa-trash" aria-hidden="true" />
                             </div>
                         );
                     } else {
                         return (
-                            <div className="delete-wrapper" onClick={this.bindCardToSlot.bind(this, i)}
+                            <div key={"action-buttons-" + i } className="delete-wrapper" onClick={this.bindCardToSlot.bind(this, i)}
                                  onContextMenu={this.removeCardFromSlot.bind(this, i, true)}>
                                 <i onClick={this.removeCardFromSlot.bind(this, i, false)} className="fa fa-trash"
                                    aria-hidden="true"/>
@@ -357,7 +357,7 @@ var Build = React.createClass({
                     }
                 } else {
                     return (
-                        <div className="delete-wrapper" onContextMenu={this.removeCardFromSlot.bind(this, i, true)}>
+                        <div key={"delete-wrapper-" + i } className="delete-wrapper" onContextMenu={this.removeCardFromSlot.bind(this, i, true)}>
                             <i onClick={this.removeCardFromSlot.bind(this, i, false)} className="fa fa-trash" aria-hidden="true" />
                         </div>
                     );
@@ -471,6 +471,7 @@ var Build = React.createClass({
 
             var newBuild = this.props.build;
             newBuild.slots = newSlots;
+
             this.buildUpdated(newBuild, moddedSlot, this.props.shouldQuickBindCards);
         }
     },
@@ -555,22 +556,34 @@ var Build = React.createClass({
     toggleQuickBind: function() {
         this.buildUpdated(this.build, null, true, !this.props.shouldQuickBindCards);
     },
+    numberOfCardsPlaced: function() {
+        var total = 0;
+        this.props.build.slots.forEach(function(slot) {
+            if(slot.card) total++;
+        });
+        return total;
+    },
     render: function() {
-        var quickBindLabel = (this.props.shouldQuickBindCards === true) ? "Disable Quick Bind" : "Enable Quick Bind";
+        //var quickBindLabel = (this.props.shouldQuickBindCards === true) ? "Disable Quick Bind" : "Enable Quick Bind";
+        /* USE IN FUTURE MAYBE?
+         <ul id="options-wrapper">
+         <li onMouseEnter={this.setTooltipContent.bind(this, null, tooltipMessage)} onMouseMove={this.showTooltip.bind(this, null, null)} onMouseLeave={this.hideTooltip}>
+         <ToggleFilter onToggleFilterChanged={this.toggleQuickBind} parentClassName={"wide-with-text-only"} label={quickBindLabel} active={this.props.shouldQuickBindCards} />
+         </li>
+         </ul>
+         */
         var tooltipMessage = ("Any selected equipment card will automatically be bound to the next available slot, upgrade cards must still need to be manually added to equipment cards.");
+        var buildListClass = this.numberOfCardsPlaced() > 0 ? " upgrades-showing" : "";
         return (
             <div id="builds-wrapper">
                 <input onChange={this.titleChanged} className="h2" placeholder="ENTER BUILD TITLE" ref="buildTitleInput" value={ this.props.build.title } />
                 <span className="build-cost">{ this.getBuildPoints() }/40 <span>CARD POINTS</span></span>
-                <ul id="options-wrapper">
-                    <li onMouseEnter={this.setTooltipContent.bind(this, null, tooltipMessage)} onMouseMove={this.showTooltip.bind(this, null, null)} onMouseLeave={this.hideTooltip}>
-                        <ToggleFilter onToggleFilterChanged={this.toggleQuickBind} parentClassName={"wide-with-text-only"} label={quickBindLabel} active={this.props.shouldQuickBindCards} />
-                    </li>
+                <ul className={"build-list " + buildListClass }>
+                    { this.getBuildSlots() }
                 </ul>
-                <div>
-                    <ul className="build-list">
-                        { this.getBuildSlots() }
-                    </ul>
+                <div id="statistic-wrapper">
+                    <StatPanel  />
+                    <StatPanel />
                 </div>
             </div>
         )

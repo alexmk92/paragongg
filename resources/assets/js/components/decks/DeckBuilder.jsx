@@ -49,12 +49,24 @@ var DeckBuilder = React.createClass({
             lastModifiedSlot: null,
             selectedHero : HEROES[0],
             isBuildsPanelShowing : false,
-            activeTab: 0
+            activeTab: this.isClientMobile() ? -1 : 0
         }
     },
     componentDidMount: function() {
         this.refs.deckNameInput.focus();
         this.lastDeletedCard = null;
+
+        var textarea = document.querySelector('textarea');
+        textarea.addEventListener('keydown', autosize);
+        function autosize(){
+            var el = this;
+            setTimeout(function(){
+                el.style.cssText = 'height:auto; padding:0';
+                // for box-sizing other than "content-box" use:
+                // el.style.cssText = '-moz-box-sizing:content-box';
+                el.style.cssText = 'height:' + el.scrollHeight + 'px';
+            },0);
+        }
 
         // Replace the current notification panel.
         this.notificationPanel = new Notification();
@@ -67,12 +79,15 @@ var DeckBuilder = React.createClass({
         }
     },
     componentWillUpdate: function(nextProps, nextState) {
-        if((nextState.deck.length > this.state.deck.length) && nextState.activeTab === 1) {
+        if((nextState.deck.length > this.state.deck.length) && (nextState.activeTab === 1 || nextState.activeTab === -1)) {
             this.setState({ playFlashTabAnimation: true })
         }
     },
     shouldComponentUpdate: function(nextProps, nextState) {
         return this.state !== nextState;
+    },
+    isClientMobile: function() {
+        return window.innerWidth <= 1050;
     },
     toggleModal: function() {
         var modal = this.state.modal ? false : true;
@@ -82,6 +97,9 @@ var DeckBuilder = React.createClass({
     setTooltipContent: function(card) {
         if(card)
         {
+            if(this.state.selectedCard !== null && (card.code === this.state.selectedCard.code)) {
+                return false;
+            }
             this.lastHoveredCard = card;
             var content = (
                 <div className="pgg-tooltip pgg-tooltip-card">
@@ -97,6 +115,10 @@ var DeckBuilder = React.createClass({
     },
     showTooltip: function(card) {
         if(card) {
+            if(this.state.selectedCard !== null && (card.code === this.state.selectedCard.code)) {
+                return false;
+            }
+
             this.lastHoveredCard = card;
             this.tooltip.showTooltip();
         }
@@ -129,7 +151,7 @@ var DeckBuilder = React.createClass({
             if(newDeck.length === 0 || !foundCard) {
                 newDeck.push(selectedCard);
             }
-            if(this.state.activeTab === 1) {
+            if(this.state.activeTab === 1 || this.state.activeTab === -1) {
                 this.animateFlashTab(event);
             }
             this.setState({
@@ -150,8 +172,10 @@ var DeckBuilder = React.createClass({
         var elem = event.target;
         if(elem.className !== "fa fa-trash" && elem.className !== "delete-icon") {
             if((this.state.selectedCard && this.state.selectedCard.code == card.code) || card.type === "three") {
+                this.hideSelectedCardPopup();
                 this.setState({selectedCard: null, playFlashAnimation: false});
             } else {
+                this.showSelectedCardPopup();
                 this.setState({selectedCard: card, playFlashAnimation: false});
             }
         }
@@ -412,7 +436,7 @@ var DeckBuilder = React.createClass({
     toggleBuildView: function(dismiss = true, sender) {
         var showDeckTab = this.state.activeTab;
         var flashTab = this.state.playFlashTabAnimation;
-        if(this.state.activeTab === 1) flashTab = true;
+        if(this.state.activeTab === 1 || this.state.activeTab === -1) flashTab = true;
 
         if(dismiss === false && (sender === "edit-button" || sender === "add-build-button")) {
             showDeckTab = 0;
@@ -447,6 +471,11 @@ var DeckBuilder = React.createClass({
          if(this.state.addedCard && this.state.isBuildsPanelShowing) {
              flashTab = true;
          }
+
+        if(index === this.state.activeTab && this.isClientMobile()) {
+            index = -1;
+            flashTab = true;
+        }
 
         this.setState({
             activeTab : index,
@@ -507,6 +536,48 @@ var DeckBuilder = React.createClass({
             });
         }
     },
+    getSelectedCardPopup: function() {
+        console.log("Rerendering")
+        if(this.state.selectedCard && this.isClientMobile()) {
+            return (
+                <div onClick={this.hideSelectedCardPopup} id="selected-card-wrapper" className="visible">
+                    <span>Currently selected: <span className="subtext">{this.state.selectedCard.name}</span> <i className="fa fa-close"></i></span>
+                    <div className="black-overlay"></div>
+                    <div className="selected-card-background"
+                         style={{backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/'+this.state.selectedCard.code+'/icon.png)'}}
+                    ></div>
+                </div>
+            )
+        }
+        if((this.lastSelectedCard && this.isClientMobile())) {
+            return (
+                <div onClick={this.hideSelectedCardPopup} id="selected-card-wrapper" className="visible">
+                    <span>Currently selected: <span className="subtext">{this.lastSelectedCard.name}</span> <i className="fa fa-close"></i></span>
+                    <div className="black-overlay"></div>
+                    <div className="selected-card-background"
+                         style={{backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/'+this.lastSelectedCard.code+'/icon.png)'}}
+                    ></div>
+                </div>
+            )
+        }
+        return <div onClick={this.hideSelectedCardPopup} id="selected-card-wrapper"></div>;
+    },
+    showSelectedCardPopup: function() {
+        if(this.isClientMobile()) {
+            var selectedCardPopup = document.getElementById("selected-card-wrapper");
+            if(selectedCardPopup) {
+                selectedCardPopup.className = "visible";
+            }
+        }
+    },
+    hideSelectedCardPopup: function() {
+        if(this.isClientMobile()) {
+            var selectedCardPopup = document.getElementById("selected-card-wrapper");
+            if(selectedCardPopup) {
+                selectedCardPopup.className = "hidden";
+            }
+        }
+    },
     getAffinities: function() {
         var affinities = [];
         if(this.state.selectedHero) {
@@ -523,9 +594,10 @@ var DeckBuilder = React.createClass({
         var tmpLastDeletedCard = this.lastDeletedCard;
         this.lastDeletedCard = null;
 
+        var sidebarClass = this.state.activeTab === -1 ? "hidden" : "";
         return (
             <div>
-                <div id="sidebar">
+                <div id="sidebar" className={sidebarClass}>
                     <button onClick={this.toggleBuildView.bind(this, false, "edit-button")} name="publish" type="submit" className={"btn inline narrow"}><i className="fa fa-pencil" aria-hidden="true"></i> EDIT DECK</button>
                     <button name="publish" type="submit" className="btn inline wide"><i className="fa fa-check" aria-hidden="true"></i> SAVE DECK</button>
                     <div className="dual-tab-wrapper">
@@ -542,9 +614,15 @@ var DeckBuilder = React.createClass({
                             </div>
                         </div>
                         <div className="dual-tab-panel">
+                            <div className={"mobile-header " + this.isActiveTab(0)} onClick={this.setActiveTab.bind(this, -1)}>
+                                <span>YOUR DECK <i className="fa fa-close" /></span>
+                            </div>
                             {this.renderDeckList()}
                         </div>
                         <div className="dual-tab-panel">
+                            <div className={"mobile-header " + this.isActiveTab(1)} onClick={this.setActiveTab.bind(this, -1)}>
+                                <span>YOUR BUILDS <i className="fa fa-close" /></span>
+                            </div>
                             <div className={ "sidebox panel cf" + this.isActiveTab(1) }>
                                 <ul className="deck-list">
                                     {this.getBuilds()}
@@ -567,7 +645,7 @@ var DeckBuilder = React.createClass({
                             </div>
                             <div className="title-container">
                                 <span className="breadcrumb">Building a <strong>{ this.state.selectedHero.name }</strong> deck</span>
-                                <input className="h2" placeholder="Enter deck name..." ref="deckNameInput" />
+                                <textarea className="h2" placeholder="Enter deck name..." ref="deckNameInput"></textarea>
                             </div>
                         </div>
                         <HeroPanel showAffinityFilter={false} heroes={HEROES} isActive={this.state.heroPanelActive} onHeroSelected={this.onHeroPanelSelectedHero} />
@@ -605,6 +683,7 @@ var DeckBuilder = React.createClass({
                         ) : ""
                     }
                 </div>
+                { this.getSelectedCardPopup() }
             </div>
         )
     }

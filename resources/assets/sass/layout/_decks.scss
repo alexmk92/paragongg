@@ -182,15 +182,24 @@
 
         &.selected {
             border: 1px solid $tertiary-highlight;
-            &:hover {
-                .delete-icon {
-                    opacity: 1;
-                }
+            .delete-icon {
+                opacity: 1;
+                z-index: 100;
+                background: $primary-highlight;
+                color: #fff;
             }
         }
 
         &.disabled {
             opacity: 0.6;
+
+            .name {
+                text-decoration: line-through;
+                font-weight: 100;
+                font-style: italic;
+                font-family: Roboto;
+                font-size: 0.9em;
+            }
 
             &:hover {
                 .wrapper {
@@ -204,12 +213,6 @@
         }
 
         &:hover {
-            .delete-icon {
-                opacity: 1;
-                z-index: 100;
-                background: $primary-highlight;
-                color: #fff;
-            }
             .wrapper {
                 background: rgba($panel-color-dark,0.2);
             }
@@ -236,5 +239,15 @@
     }
     .cost {
         float: right;
+    }
+}
+
+@media screen and (max-width: $media-tablet) {
+    .deck-list {
+        li {
+            .delete-icon {
+                width: 60px;
+            }
+        }
     }
 }
