@@ -1,28 +1,33 @@
-.build-list {
-    margin-top: 50px;
-    li {
-        opacity: 0.4;
-        transition: all 250ms ease-in-out;
-
-        &:hover {
-            opacity: 0.6;
-        }
-
-        &.active-slot {
-            opacity:0.75;
+#builds-wrapper {
+    #options-wrapper {
+        padding: 10px 10px 20px 0;
+    }
+    .build-list {
+        margin-top: 50px;
+        li {
+            display: inline-block;
+            opacity: 0.4;
+            transition: all 250ms ease-in-out;
 
             &:hover {
-                opacity: 0.9;
+                opacity: 0.6;
             }
-        }
 
-        &.active-placed {
-            opacity:1;
+            &.active-slot {
+                opacity:0.75;
 
-            &:hover {
-                .delete-wrapper {
-                    // TODO MAKE THIS AN ACTIVE STATE SO DELETE CAN ISNT ALWAYS IMMEDIATE ON HOVER
-                   // &.active {
+                &:hover {
+                    opacity: 0.9;
+                }
+            }
+
+            &.active-placed {
+                opacity:1;
+
+                &:hover {
+                    .delete-wrapper {
+                        // TODO MAKE THIS AN ACTIVE STATE SO DELETE CAN ISNT ALWAYS IMMEDIATE ON HOVER
+                        // &.active {
                         z-index: 50;
                         pointer-events: all;
                         opacity: 1;
@@ -31,151 +36,152 @@
                         i {
                             top: 0%;
                         }
-                    //}
-                }
-                opacity: 0.9;
-            }
-        }
-
-        .delete-wrapper {
-            cursor: default;
-            opacity: 0;
-            pointer-events: none;
-            position: absolute;
-            z-index: 1;
-            top: 0;
-            width: 100%;
-            left: 0;
-            text-align: center;
-            background: rgba(0,0,0,0.6);
-            right: 0;
-            overflow: hidden;
-            height: 100%;
-            transition: all 150ms ease-in-out;
-
-            i {
-                position: relative;
-                font-size: 32px;
-                margin-top: 70px;
-                transition: all 300ms ease-in-out;
-                z-index: 999;
-                padding: 0px 10px;
-
-                &:hover {
-                    cursor: pointer;
-                    &.fa-trash {
-                        color: $primary-highlight;
+                        //}
                     }
-                    &.fa-refresh {
-                        color: $green;
-                    }
+                    opacity: 0.9;
                 }
             }
-        }
 
-        .glow-layer {
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            z-index: 2;
-
-            &.pulse-glow-inner {
-                animation: pulse-card-with-inner-glow 500ms linear
-            }
-            &.pulse-glow-outer {
-                animation: pulse-card-with-outer-glow 750ms linear;
-            }
-        }
-
-        .upgrade-slot-wrapper {
-            position: relative;
-            bottom: -100%;
-            left: 0;
-            height: 100%;
-            right: 0;
-            margin-top: 10px;
-
-            .upgrade-slot {
-                font-size: 12px;
-                background: #181d27;
-                line-height: 14px;
-                margin-bottom: 5px;
-                font-weight: 600;
-                width: 100%;
-                text-align: center;
-                padding: 10px 5px;
-                border: 1px solid #232a38;
-                transition: all 250ms ease-in-out;
-                background-size: 100%;
-                position: relative;
-                background-position-y: -15px;
-
-                &:hover {
-                    .overlay {
-                        opacity: 0.2;
-                    }
-                }
-
-                .upgrade-label {
-                    position: relative;
-                    z-index: 5;
-                    text-transform: uppercase;
-                }
-
-                .overlay {
-                    position: absolute;
-                    background: black;
-                    opacity: 0.7;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    z-index: 2;
-                    transition: all 250ms ease-in-out;
-                }
-
-                &:hover {
-                    border: 1px solid $tertiary-highlight;
-                }
-            }
-        }
-
-        .placed-card {
-            position: absolute;
-            height: 100%;
-            width: 100%;
-            background-repeat: no-repeat;
-            background-size: 100% 100%;
-            top: 0;
-            transition: background 300ms ease-in-out;
-
-            .card-title {
+            .delete-wrapper {
+                cursor: default;
+                opacity: 0;
+                pointer-events: none;
                 position: absolute;
-                bottom: 20px;
-                display: block;
+                z-index: 1;
+                top: 0;
                 width: 100%;
-                padding: 0px 10px;
-                font-size: 12px;
+                left: 0;
                 text-align: center;
-            }
-        }
+                background: rgba(0,0,0,0.6);
+                right: 0;
+                overflow: hidden;
+                height: 100%;
+                transition: all 150ms ease-in-out;
 
-        .pulsing-arrow {
-            opacity: 0;
-            position: absolute;
-            text-align: center;
-            bottom: 22px;
-            left: 0;
-            right: 0;
-            font-size: 34px;
-            color: #fff;
-            &.active-slot {
-                opacity: 1;
-                animation: flash 1s infinite linear;
+                i {
+                    position: relative;
+                    font-size: 32px;
+                    margin-top: 70px;
+                    transition: all 300ms ease-in-out;
+                    z-index: 999;
+                    padding: 0px 10px;
+
+                    &:hover {
+                        cursor: pointer;
+                        &.fa-trash {
+                            color: $primary-highlight;
+                        }
+                        &.fa-refresh {
+                            color: $green;
+                        }
+                    }
+                }
+            }
+
+            .glow-layer {
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                z-index: 2;
+
+                &.pulse-glow-inner {
+                    animation: pulse-card-with-inner-glow 500ms linear
+                }
+                &.pulse-glow-outer {
+                    animation: pulse-card-with-outer-glow 750ms linear;
+                }
+            }
+
+            .upgrade-slot-wrapper {
+                position: relative;
+                bottom: -100%;
+                left: 0;
+                height: 100%;
+                right: 0;
+                margin-top: 10px;
+
+                .upgrade-slot {
+                    font-size: 12px;
+                    background: #181d27;
+                    line-height: 14px;
+                    margin-bottom: 5px;
+                    font-weight: 600;
+                    width: 100%;
+                    text-align: center;
+                    padding: 10px 5px;
+                    border: 1px solid #232a38;
+                    transition: all 250ms ease-in-out;
+                    background-size: 100%;
+                    position: relative;
+                    background-position-y: -15px;
+
+                    &:hover {
+                        .overlay {
+                            opacity: 0.2;
+                        }
+                    }
+
+                    .upgrade-label {
+                        position: relative;
+                        z-index: 5;
+                        text-transform: uppercase;
+                    }
+
+                    .overlay {
+                        position: absolute;
+                        background: black;
+                        opacity: 0.7;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        z-index: 2;
+                        transition: all 250ms ease-in-out;
+                    }
+
+                    &:hover {
+                        border: 1px solid $tertiary-highlight;
+                    }
+                }
+            }
+
+            .placed-card {
+                position: absolute;
+                height: 100%;
+                width: 100%;
+                background-repeat: no-repeat;
+                background-size: 100% 100%;
+                top: 0;
+                transition: background 300ms ease-in-out;
+
+                .card-title {
+                    position: absolute;
+                    bottom: 20px;
+                    display: block;
+                    width: 100%;
+                    padding: 0px 10px;
+                    font-size: 12px;
+                    text-align: center;
+                }
+            }
+
+            .pulsing-arrow {
+                opacity: 0;
+                position: absolute;
+                text-align: center;
+                bottom: 22px;
+                left: 0;
+                right: 0;
+                font-size: 34px;
+                color: #fff;
+                &.active-slot {
+                    opacity: 1;
+                    animation: flash 1s infinite linear;
+                }
             }
         }
     }
-
 }
+
