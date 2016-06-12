@@ -38,6 +38,7 @@ var DeckBuilder = React.createClass({
             modal: false,
             addedCard : false,
             showCardSection: false,
+            quickBind: false,
             selectedCard: null,
             selectedBuild : null,
             lastSelectedCard: null,
@@ -53,6 +54,7 @@ var DeckBuilder = React.createClass({
     },
     componentDidMount: function() {
         this.refs.deckNameInput.focus();
+        this.lastDeletedCard = null;
 
         // Replace the current notification panel.
         this.notificationPanel = new Notification();
@@ -145,7 +147,6 @@ var DeckBuilder = React.createClass({
     },
     selectCard: function(card, event) {
         event.preventDefault();
-
         var elem = event.target;
         if(elem.className !== "fa fa-trash" && elem.className !== "delete-icon") {
             if((this.state.selectedCard && this.state.selectedCard.code == card.code) || card.type === "three") {
@@ -157,19 +158,38 @@ var DeckBuilder = React.createClass({
     },
     deleteCardFromDeck : function(cardToDelete, event) {
         event.preventDefault();
-
+        var newActiveTab = this.state.activeTab;
         var newSelectedCard = (this.state.selectedCard === cardToDelete) ? null : this.state.selectedCard;
+        var newFlashTabAnimation = this.state.playFlashTabAnimation;
+        var newIsBuildsPanelShowing = this.state.isBuildsPanelShowing;
 
         var newDeck = [];
+        console.log("PREVIOUS CARD TO DELETE: ", cardToDelete);
         this.state.deck.forEach(function(card) {
             if(card.code !== cardToDelete.code)
                 newDeck.push(card);
             else if(card.quantity > 1) {
+                cardToDelete.quantity = card.quantity;
                 card.quantity--;
                 newDeck.push(card);
             }
+        }.bind(this));
+
+        if(newDeck.length <= 0) {
+            newIsBuildsPanelShowing = false;
+            newActiveTab = 0;
+            newFlashTabAnimation = false;
+        }
+
+        this.lastDeletedCard = cardToDelete;
+        this.setState({
+            deck : newDeck,
+            playFlashAnimation: false,
+            playFlashTabAnimation: newFlashTabAnimation,
+            selectedCard : newSelectedCard,
+            activeTab: newActiveTab,
+            isBuildsPanelShowing: newIsBuildsPanelShowing
         });
-        this.setState({ deck : newDeck, playFlashAnimation: false, selectedCard : newSelectedCard });
     },
     renderDeckList: function() {
         if(this.state.deck.length === 0) {
@@ -219,6 +239,24 @@ var DeckBuilder = React.createClass({
                 if(this.state.selectedCard && (this.state.selectedCard.code == card.code)) {
                     className += " selected";
                 }
+                var quantityLabel = card.quantity + "x";
+                var disableCardRow = false;
+                // Set label when adding cards to build
+                if(this.state.isBuildsPanelShowing && this.state.selectedBuild !== null) {
+                    var finalQuantity = 0;
+                    this.state.selectedBuild.slots.forEach(function(slot) {
+                       if(slot.card !== null) {
+                           if(slot.card.code === card.code) {
+                               finalQuantity = (finalQuantity+1 > card.quantity) ? card.quantity : finalQuantity+1;
+                           }
+                       }
+                    });
+                    disableCardRow = finalQuantity === card.quantity;
+                    quantityLabel = finalQuantity + "/" + card.quantity;
+                }
+                if(disableCardRow) {
+                    className += " disabled";
+                }
 
                 cardList.push(
                     <li className={className}
@@ -231,7 +269,7 @@ var DeckBuilder = React.createClass({
                         onMouseLeave={this.hideTooltip}
                     >
                         <div className={ "wrapper " + childClassName }>
-                            <span className="count">{card.quantity }x</span>
+                            <span className="count">{ quantityLabel }</span>
                             <span className="name">{card.name}</span>
                             <span className="cost">{card.cost} CP</span>
                         </div>
@@ -261,7 +299,11 @@ var DeckBuilder = React.createClass({
         event.preventDefault();
         var elem = event.target;
         if(elem.className !== "fa fa-trash" && elem.className !== "delete-icon") {
-            this.setState({selectedBuild: build, playFlashAnimation: false, isBuildsPanelShowing: true });
+            var newActiveTab = this.state.activeTab;
+            if(this.state.selectedBuild === build) {
+                newActiveTab = 0;
+            }
+            this.setState({selectedBuild: build, playFlashAnimation: false, isBuildsPanelShowing: true, activeTab: newActiveTab });
         }
     },
     getBuilds: function() {
@@ -370,12 +412,13 @@ var DeckBuilder = React.createClass({
 
         this.setState({ isBuildsPanelShowing : dismiss, activeTab: showDeckTab, playFlashTabAnimation: flashTab })
     },
-    buildUpdated: function(newBuild, lastModifiedSlot) {
+    buildUpdated: function(newBuild, lastModifiedSlot, deselectSelectedCard, toggleQuickBind) {
         var buildIndex = this.state.builds.indexOf(newBuild);
         var newBuilds = this.state.builds;
+        var newSelectedCard = deselectSelectedCard ? null : this.state.selectedCard;
         newBuilds[buildIndex] = newBuild;
 
-        this.setState({ builds : newBuilds, lastModifiedSlot: lastModifiedSlot });
+        this.setState({ builds : newBuilds, lastModifiedSlot: lastModifiedSlot, selectedCard: newSelectedCard, quickBind : toggleQuickBind });
     },
     /** TAB PANEL FUNCTIONS **/
     animateFlashTab: function(event) {
@@ -467,6 +510,10 @@ var DeckBuilder = React.createClass({
     },
     /** END OF FUNCTIONS **/
     render: function() {
+        // Used to delete cards from deck builder
+        var tmpLastDeletedCard = this.lastDeletedCard;
+        this.lastDeletedCard = null;
+
         return (
             <div>
                 <div id="sidebar">
@@ -519,7 +566,13 @@ var DeckBuilder = React.createClass({
                             Write a short description about your deck. What team compositions might you use this deck against? Under what situations would you use the different builds? Click here to edit the description text.
                         </div>
                         <div id="cards-feed" className={ this.state.showCardSection ? "" : "hidden" }>
-                            <CardsFeed forceRedraw={true} affinities={this.getAffinities()} tooltip={this.tooltip} cards={CARDS.allCards} cardsRedirectOnClick={false} onCardClicked={this.addCard} />
+                            <CardsFeed forceRedraw={true}
+                                       affinities={this.getAffinities()}
+                                       tooltip={this.tooltip}
+                                       cards={CARDS.allCards}
+                                       cardsRedirectOnClick={false}
+                                       onCardClicked={this.addCard}
+                            />
                         </div>
                     </div>
                 </div>
@@ -532,8 +585,10 @@ var DeckBuilder = React.createClass({
                             <Build
                                 deck={this.state.deck}
                                 tooltip={this.tooltip}
+                                shouldQuickBindCards={this.state.quickBind}
                                 selectedCard ={this.state.selectedCard}
                                 build={this.state.selectedBuild}
+                                lastDeletedCard={tmpLastDeletedCard}
                                 lastModifiedSlot={this.state.lastModifiedSlot}
                                 onBuildChanged={this.buildUpdated}
                                 onNotificationInvoked={this.notificationPanel.addNotification}

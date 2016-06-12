@@ -5,6 +5,19 @@
     width: 34px;
     cursor: pointer;
 
+    &.wide-with-text-only {
+        width: auto;
+
+        label {
+            width: auto;
+            min-width: 34px;
+            font-size: 1.1em;
+        }
+        .underline {
+            width: 100%;
+        }
+    }
+
     label {
         text-transform: uppercase;
         color: #5a606f;
@@ -17,11 +30,11 @@
     }
 
     &:hover .underline {
-        margin-top: 8px;
-        opacity: 0.6;
+        opacity: 0.4;
 
         &.active {
-            margin-top: 6px;
+            margin-top: 8px;
+            opacity: 0.75;
         }
     }
 

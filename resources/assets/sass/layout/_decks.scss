@@ -163,6 +163,20 @@
             }
         }
 
+        &.disabled {
+            opacity: 0.6;
+
+            &:hover {
+                .wrapper {
+                    background: rgba(0,0,0,0.8);
+                }
+            }
+
+            .wrapper {
+                background: rgba(0,0,0,0.9);
+            }
+        }
+
         &:hover {
             .delete-icon {
                 opacity: 1;

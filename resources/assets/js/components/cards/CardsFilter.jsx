@@ -179,17 +179,19 @@ var CardsFilter = React.createClass({
         if(this.props.affinities) {
             affinityFilters = this.props.affinities.map(function(affinity, i) {
                     return <ToggleFilter key={ "affinity_toggle_" + affinity.name.toLowerCase() }
-                                         affinity={affinity}
                                          active={false}
+                                         targetObject={affinity}
+                                         className={ ("pgg pgg-affinity-" + affinity.name.toLowerCase() + " affinity-color ") }
                                          label={ i === 0 ? "AFFINITIES" : "" }
                                          onToggleFilterChanged={_this.affinityFilterChanged}
                     />
-                });
+                }.bind(this));
         } else {
             affinityFilters = this.state.affinities.map(function(affinity, i) {
                 return <ToggleFilter key={ "affinity_toggle_" + affinity.name.toLowerCase() }
-                                     affinity={affinity}
+                                     className={ ("pgg pgg-affinity-" + affinity.name.toLowerCase() + " affinity-color ") }
                                      active={false}
+                                     targetObject={affinity}
                                      label={ i === 0 ? "AFFINITIES" : "" }
                                      onToggleFilterChanged={_this.affinityFilterChanged}
                 />
