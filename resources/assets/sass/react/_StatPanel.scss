@@ -1,0 +1,50 @@
+#statistic-wrapper {
+    margin: 40px 0;
+
+    .statistic-panel {
+        padding: 20px;
+        width: 50%;
+        display: inline-block;
+        background: $panel-color-dark;
+        border: 1px solid $panel-color;
+
+        &:nth-child(even) {
+            border-left: none;
+        }
+
+        &.wide {
+            width: 100%;
+            display: block;
+        }
+
+        .title {
+            text-transform: uppercase;
+            display: block;
+            width: 100%;
+            font-size: 1.5em;
+            color: #5a606f;
+            font-weight: 100;
+            font-family: Roboto Condensed;
+            margin-bottom: 30px;
+        }
+
+        .statistic-list {
+            width: 100%;
+            li {
+                display: inline-block;
+                width: 50%;
+                color: white;
+
+                i {
+                    font-size: 1.5em;
+                    margin-right: 5px;
+                    color: white;
+                }
+
+                &.modifier {
+                    color: $green;
+                }
+            }
+        }
+    }
+}

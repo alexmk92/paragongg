@@ -4,6 +4,11 @@
     }
     .build-list {
         margin-top: 50px;
+
+        &.upgrades-showing {
+            margin-bottom: 120px;
+        }
+
         li {
             display: inline-block;
             opacity: 0.4;
@@ -185,3 +190,11 @@
     }
 }
 
+@media screen and (max-width: $media-tablet) {
+    .build-builder {
+        &.wrapper {
+            width: 100%;
+            padding: 30px;
+        }
+    }
+}
