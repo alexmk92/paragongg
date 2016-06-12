@@ -68,9 +68,7 @@ $card-height : 181px;
         padding-left: 0px;
     }
     .card-preview {
-        width: calc(#{$card-width} + (#{$card-width}/2.5)) !important;
-        height: calc(#{$card-height} + (#{$card-height}/2.5)) !important;
-        background-size: calc(#{$card-width} + (#{$card-width}/2.5)) calc(#{$card-height} + (#{$card-height}/2.5)) !important;
+
     }
 }
 @media screen and (max-width: $media-desktop) {
@@ -82,10 +80,12 @@ $card-height : 181px;
     }
 }
 @media screen and (max-width: $media-mobile) {
+    .card-list {
+        margin: 0 auto;
+        text-align: center;
+    }
     .card-preview {
-        width: calc(#{$card-width} + (#{$card-width}/2)) !important;
-        height: calc(#{$card-height} + (#{$card-height}/2)) !important;
-        background-size: 100% !important;
+
     }
     #sidebar form select {
         height: 50px;

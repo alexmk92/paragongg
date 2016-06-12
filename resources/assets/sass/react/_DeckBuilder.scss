@@ -1,3 +1,83 @@
+#selected-card-wrapper {
+    position: fixed;
+    bottom: 70px;
+    left: -100%;
+    z-index: 999999;
+    width: 100%;
+    height: 50px;
+    opacity: 0;
+    border-top: 1px solid $panel-color;
+    transition: all 150ms ease-in-out;
+
+    &.visible {
+        left: 0%;
+        opacity: 1;
+    }
+
+    &.hidden {
+        left: -100%;
+        opacity: 0;
+    }
+
+    span {
+        display: block;
+        position: relative;
+        top: 0;
+        z-index: 3;
+        text-transform: uppercase;
+        font-weight: 100;
+        color: #5a606f;
+        padding: 15px 30px 15px 30px;
+        text-shadow: 0px 0px 10px #000;
+        font-family: Roboto Condensed;
+
+        .subtext {
+            color: white;
+            font-weight: 600;
+            display: inline-block;
+            margin: 0;
+            padding: 0;
+        }
+
+        i {
+            float: right;
+            color: white;
+        }
+    }
+
+    &:hover {
+        .black-overlay {
+            background: rgba(0, 0, 0, 0.6);
+        }
+    }
+
+    .black-overlay {
+        width: 100%;
+        display: block;
+        position: absolute;
+        height: 100%;
+        left: 0;
+        top: 0;
+        background: rgba(0, 0, 0, 0.8);
+        transition: all 200ms ease-in-out;
+        bottom: 0;
+        right: 0;
+        z-index: 2;
+    }
+
+    .selected-card-background {
+        height: 100%;
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        background-size: 100%;
+        background-position-y: 25%;
+        transition: all 250ms ease-in-out;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+}
 .dual-tab-wrapper {
     width: 100%;
     .dual-tab-tabs {
@@ -31,6 +111,10 @@
         position: relative;
         top: 0;
         width: 100%;
+
+        .mobile-header {
+            display: none;
+        }
 
         .panel {
             display: none;
@@ -198,7 +282,7 @@
             opacity: 0;
             min-height: 0;
             visibility: hidden;
-            height: 0;
+            //height: 0;
         }
 
         .build-cost {
@@ -261,11 +345,12 @@
                 position: relative;
 
                 .title-container {
+                    margin-bottom: 20px;
                     position: relative;
                     display: inline-block;
                     left: 20px;
                     width: 85%;
-                    top: -5px;
+                    padding-top: 10px;
 
                     .breadcrumb {
                         font-family: "Roboto Condensed", sans-serif;
@@ -275,14 +360,34 @@
                         display: block;
                     }
 
+                    // this used to be the title container
                     input {
                         display: inline-block;
                         min-width: 85%;
                         width: 100% !important;
                     }
+
+                    textarea {
+                        max-width: 700px;
+                        background: none;
+                        display: inline-block;
+                        border: none;
+                        padding: 0;
+                        margin: 0;
+                        min-height: 10px;
+                        height: auto;
+                        resize: none;
+
+                        &.h2 {
+                            font-weight: 600;
+                            font-size: 2em;
+                            text-transform: uppercase;
+                        }
+                    }
                 }
 
                 .hero-portrait-container {
+                    vertical-align: top;
                     border-radius: 50%;
                     display: inline-block;
                     width: 60px;
@@ -308,6 +413,7 @@
                     .hero-portrait {
                         transition: all 300ms ease-in-out;
                         z-index: 1;
+                        vertical-align: top;
                         border-radius: 50%;
                         position: absolute;
                         width: inherit;
@@ -343,15 +449,40 @@
 @media screen and (max-width: $media-tablet) {
     body {
         #deck-builder {
-
+            .subtext {
+                position: relative;
+                z-index: 1;
+            }
+            .filter-wrapper {
+                .search-bar-wrapper {
+                    width: 50%;
+                    input {
+                        width: 100%;
+                    }
+                }
+            }
             #sidebar {
+                top: 0;
                 max-width: 100%;
                 width: 100%;
                 position: fixed;
+                -webkit-backface-visibility: hidden;
                 min-height: 100%;
                 height: 100%;
-                z-index: 1000;
+                opacity: 1;
+                z-index: 999999;
                 background: $panel-color-dark;
+                transition: all 200ms ease-in-out;
+
+                &.hidden {
+                    top: 100%;
+
+                    .dual-tab-wrapper {
+                        .dual-tab-panel {
+                            opacity: 0;
+                        }
+                    }
+                }
 
                 .dual-tab-wrapper {
                     .dual-tab-tabs {
@@ -359,11 +490,20 @@
                         border-top: 1px solid $panel-color;
                         z-index: 1338;
                         position: fixed;
+                        -webkit-backface-visibility: hidden;
                         bottom: 0;
 
                         div {
-                            height: 60px;
-                            padding: 25px;
+                            height: 70px;
+                            padding: 28px;
+
+                            &:nth-child(even) {
+                                border-left: 1px solid $panel-color;
+                            }
+
+                            &.active {
+                                border-top: 2px solid $panel-color;
+                            }
                         }
                     }
 
@@ -372,19 +512,53 @@
                         position: absolute;
                         min-height: 100%;
                         height: 100%;
+                        padding-top: 60px;
                         padding-bottom: 100px;
                         overflow-y: scroll;
 
+                        .mobile-header {
+                            &.active {
+                                width: 100%;
+                                display: block;
+                                position: relative;
+                                z-index: 10;
+                                padding: 20px 30px;
+                                box-shadow: 0px 0px 50px #000;
+                                background: #181d27;
+                                border-bottom: 1px solid #212735;
+
+                                span {
+                                    font-size: 1.2em;
+                                }
+
+                                i {
+                                    float: right;
+                                }
+                            }
+                        }
+
                         .sidebox {
                             &.panel {
-                                background: none;
+                                background: $panel-color-dark !important;
                                 .deck-list {
                                     li {
                                         background-size: 100%;
                                         background-position-y: 25%;
 
+                                        &.create-build {
+                                            background: $panel-color;
+                                            .dotted-button {
+                                                padding: 25px 15px;
+                                            }
+                                        }
+
                                         .wrapper {
                                             padding: 22px 10px;
+                                            border: 1px solid #212735;
+
+                                            &.intro-row {
+                                                font-size: 1.25em;
+                                            }
                                         }
                                     }
                                 }
@@ -401,7 +575,14 @@
                     .content-wrapper {
 
                         .deck-title {
-                            padding: 5px 30px;
+                            padding: 20px 30px;
+                            .title-container {
+                                margin-bottom: 0px;
+                            }
+                            .hero-portrait-container {
+                                width: 95px;
+                                height: 95px;
+                            }
                         }
 
                         .p {
@@ -442,6 +623,9 @@
 
 @media screen and (max-width: $media-mobile) {
     body {
+        footer {
+            display: none;
+        }
         #deck-builder {
 
             #sidebar {
@@ -468,14 +652,12 @@
             }
 
             .deck-builder {
-                &.wrapper {
-
-                    .content-wrapper {
-
-                        .deck-title {
-                        }
-
-                        .p {
+                .content-wrapper {
+                    .deck-title {
+                        padding: 20px 10px !important;
+                        .hero-portrait-container {
+                            margin: 0px auto 40px auto;
+                            display: block;
                         }
                     }
                 }
