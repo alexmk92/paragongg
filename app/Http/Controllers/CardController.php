@@ -7,6 +7,7 @@ use App\Http\Requests;
 use App\Jobs\UpdateCardObject;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
@@ -88,19 +89,22 @@ class CardController extends Controller
     }
 
     // Edit
-    public function edit($slug)
+    public function edit($code)
     {
-        $card = Card::where('slug', $slug);
+        $card = Card::where('code', $code)->get();
 
-        return view('cards.edit');
+        return view('cards.edit')->with('card', $card);
     }
 
     // Update
-    public function update($slug)
+    public function update($code, Request $request)
     {
-        $card = Card::where('slug', $slug);
+        $updatedCard = json_decode($request->input('data'), true);
+        $card = Card::where('code', $code);
+        $card->update($updatedCard[0], ['upsert' => true]);
+        session()->flash('notification', 'success|Card saved.');
 
-        return view('cards.edit');
+        return redirect()->back();
     }
 
     // Delete

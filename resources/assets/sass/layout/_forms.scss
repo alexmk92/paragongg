@@ -52,6 +52,9 @@ input, select {
 textarea {
     max-width: 700px;
     min-height: 150px;
+    &.tall {
+        min-height: 500px;
+    }
     &::selection {
         background-color: #ff0000; /* WebKit/Blink Browsers */
 

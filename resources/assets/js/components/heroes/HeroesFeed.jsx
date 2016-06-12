@@ -91,6 +91,7 @@ var HeroPreview = React.createClass({
                             {this.getAffinities()}
                         </div>
                         <span className="title">{this.props.name}</span>
+                        <span className="winrate">65% Win Rate</span>
                     </div>
                     <div className="winrate-wrapper">
                         <div className="winrate-bar"></div>

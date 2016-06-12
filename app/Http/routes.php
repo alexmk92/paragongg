@@ -47,6 +47,9 @@ Route::get('/games/id', 'GameController@show');
 
 /* CARDS */
 Route::get('/cards', 'CardController@index');
+Route::get('/cards/edit/{slug}', 'CardController@edit');
+Route::post('/cards/edit/{slug}', 'CardController@update');
+Route::get('/cards/delete/{slug}', 'CardController@delete');
 Route::get('/cards/{slug}', 'CardController@show');
 
 /* HEROES */
@@ -87,6 +90,7 @@ Route::group(['prefix' => 'account', 'middleware' => 'auth'], function () {
 Route::group(['prefix' => 'moderation', 'namespace' => 'Moderation', 'middleware' => ['auth', 'mod']], function () {
     Route::get('/', 'ModerationController@index');
     Route::get('/news', 'ModerationController@news');
+    Route::get('/cards', 'ModerationController@cards');
     Route::get('/reports', 'ModerationController@reports');
 });
 
