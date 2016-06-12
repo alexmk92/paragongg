@@ -59,17 +59,13 @@
         height: 50px;
         position: relative;
 
-        .slot-icon {
+        .slot-icon-wrapper {
             display: inline-block;
             width: 34px;
             height: 34px;
             margin-right: 10px;
-            background-size: 150% auto;
-            overflow: hidden;
-            border-radius: 50%;
-            background-position-y: 5%;
-            background-position-x: 50%;
             position: relative;
+            border-radius: 50%;
             top: 10px;
             opacity: 0.3;
             box-shadow: 0 0 5px #000;
@@ -77,6 +73,36 @@
 
             &.active {
                 opacity: 1.0;
+            }
+
+            .slot-icon {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-size: 150% auto;
+                overflow: hidden;
+                border-radius: 50%;
+                background-position-y: 5%;
+                background-position-x: 50%;
+                transition: all 300ms ease-in-out;
+            }
+
+            .upgrade-badge {
+                position: absolute;
+                bottom: -5px;
+                right: -5px;
+                border-radius: 50%;
+                padding: 3px 1px;
+                margin: 0;
+                width: 20px;
+                text-align: center;
+                height: 20px;
+                z-index: 10;
+                font-size: 0.9em;
+                border: 1px solid $panel-color;
+                background: $panel-color-dark;
             }
         }
     }

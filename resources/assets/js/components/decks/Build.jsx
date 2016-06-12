@@ -12,6 +12,7 @@ var Build = React.createClass({
     componentDidUpdate: function() {
         this.updateBuildsWithNewDeck();
 
+        console.log("UPDATED");
         // Perform a quick bind on the selected card
         if(this.props.shouldQuickBindCards) {
             this.quickBind(this.props.selectedCard);
@@ -132,6 +133,28 @@ var Build = React.createClass({
                             newBuild.slots[newBuild.slots.indexOf(slot)].upgrades[deletedSlotIndex].card = null;
                             this.buildUpdated(newBuild, null, false);
                         }
+                    }
+                }
+            }.bind(this));
+        }
+        // JUST DELETE ALL NOT FOUND CARDS
+        else {
+            var newBuild = this.props.build;
+            this.props.build.slots.forEach(function(slot, slotIndex) {
+                if(slot.card) {
+                    // 0 cards found in the deck
+                    if(this.props.deck.indexOf(slot.card) < 0) {
+                        newSlots.forEach(function(slot, i) {
+                            if(slotIndex === i) {
+                                slot.occupied = false;
+                                slot.card = null;
+                                slot.upgrades = [];
+                                newSlots[i] = slot;
+                            }
+                        }.bind(this));
+
+                        newBuild.slots = newSlots;
+                        this.buildUpdated(newBuild, null, false);
                     }
                 }
             }.bind(this));
@@ -533,16 +556,17 @@ var Build = React.createClass({
         this.buildUpdated(this.build, null, true, !this.props.shouldQuickBindCards);
     },
     render: function() {
+        var quickBindLabel = (this.props.shouldQuickBindCards === true) ? "Disable Quick Bind" : "Enable Quick Bind";
         var tooltipMessage = ("Any selected equipment card will automatically be bound to the next available slot, upgrade cards must still need to be manually added to equipment cards.");
         return (
             <div id="builds-wrapper">
-                <ul id="options-wrapper">
-                    <li onMouseEnter={this.setTooltipContent.bind(this, null, tooltipMessage)} onMouseMove={this.showTooltip.bind(this, null, null)} onMouseLeave={this.hideTooltip}>
-                        <ToggleFilter onToggleFilterChanged={this.toggleQuickBind} parentClassName={"wide-with-text-only"} label="Enable Quick Bind" active={this.props.shouldQuickBindCards} />
-                    </li>
-                </ul>
                 <input onChange={this.titleChanged} className="h2" placeholder="ENTER BUILD TITLE" ref="buildTitleInput" value={ this.props.build.title } />
                 <span className="build-cost">{ this.getBuildPoints() }/40 <span>CARD POINTS</span></span>
+                <ul id="options-wrapper">
+                    <li onMouseEnter={this.setTooltipContent.bind(this, null, tooltipMessage)} onMouseMove={this.showTooltip.bind(this, null, null)} onMouseLeave={this.hideTooltip}>
+                        <ToggleFilter onToggleFilterChanged={this.toggleQuickBind} parentClassName={"wide-with-text-only"} label={quickBindLabel} active={this.props.shouldQuickBindCards} />
+                    </li>
+                </ul>
                 <div>
                     <ul className="build-list">
                         { this.getBuildSlots() }

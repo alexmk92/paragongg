@@ -8,10 +8,21 @@
     &.wide-with-text-only {
         width: auto;
 
+        &.active {
+            label {
+                color: white;
+            }
+        }
         label {
             width: auto;
             min-width: 34px;
             font-size: 1.1em;
+            transition: all 300ms ease-in-out;
+
+            &:hover {
+                //color: white;
+                cursor: pointer;
+            }
         }
         .underline {
             width: 100%;

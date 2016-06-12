@@ -328,15 +328,24 @@ var DeckBuilder = React.createClass({
                     imageURL = "https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/" + slot.card.code + "/icon.png";
 
                 if(i === 0) wrapperBackgroundImageURL = imageURL;
+                var upgradeBadge = "";
+                var upgradeCount = 0;
+                slot.upgrades.forEach(function(upgradeSlot) {
+                    if(upgradeSlot.card !== null) { upgradeCount++ }
+                });
+                if(upgradeCount > 0)
+                    upgradeBadge = <div className="upgrade-badge">{ upgradeCount }</div>
 
                 return (
                     <div key={ "slot-" + i + "-icon" }
-                         className={"slot-icon" + (slot.card !== null ? " active" : "")}
-                         style={{ backgroundImage : "url(" + imageURL + ")" }}
+                         className={"slot-icon-wrapper" + (slot.card !== null ? " active" : "")}
                          onMouseEnter={this.setTooltipContent.bind(this, slot.card)}
                          onMouseOver={this.showTooltip.bind(this, slot.card)}
                          onMouseLeave={this.hideTooltip}
-                    ></div>
+                    >
+                        { upgradeBadge }
+                        <div className="slot-icon" style={{ backgroundImage : "url(" + imageURL + ")" }}></div>
+                    </div>
                 )
             }.bind(this));
 
