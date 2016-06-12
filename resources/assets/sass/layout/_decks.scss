@@ -1,7 +1,7 @@
 .deck-builder {
     margin-top: 30px;
     padding-top: 30px;
-    border-top: 1px solid $faded-line;
+    border-top: 1px solid $panel-color-dark;
 }
 .deck-list {
     overflow-x: hidden;
@@ -11,12 +11,25 @@
     font-size: 14px;
 
     .wrapper {
+        &.intro-row {
+            span {
+                font-size: 1em;
+                line-height: 1.4em;
+                padding: 5px;
+                display: block;
+            }
+        }
         &.with-background {
             background-size: 110%;
             background-repeat: no-repeat;
             background-position-x: 50%;
             background-position-y: 20%;
             padding: 15px 20px;
+            border: 1px solid $faded-line;
+
+            &.selected {
+                border: 1px solid $tertiary-highlight;
+            }
 
             &:hover {
                 background-size: 110%;
@@ -98,6 +111,10 @@
         position: relative;
         overflow-x: hidden;
         z-index: 10;
+
+        &.build-item {
+            border: none;
+        }
         &.pulse-card-outer {
             animation: pulse-card-with-outer-glow 500ms linear;
         }

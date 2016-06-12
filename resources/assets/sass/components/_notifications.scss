@@ -8,6 +8,7 @@
     z-index: 1337;
 }
 .notification {
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.75);
     font-size: 14px;
     line-height: 24px;
     width: 100%;
@@ -43,6 +44,46 @@
     margin-bottom: 50px;
     .fa {
         margin-right: 10px;
+    }
+}
+
+// USED ON DECK BUILDER PAGE
+.multiple-notification-panel {
+    display: block;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 100%;
+    max-width: 350px;
+    height: auto;
+    padding: 40px 0px;
+    z-index: 1337;
+
+    .notification-panel-wrapper {
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+
+        .notification-panel {
+            position: relative;
+            display: block;
+            bottom: 0;
+            width: 100%;
+            max-width: 350px;
+            z-index: 1337;
+            margin-bottom: 10px;
+
+            .notification {
+                opacity: 1;
+                transition: all 200ms;
+                animation: none;
+
+                &.fade-out {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+            }
+        }
     }
 }
 

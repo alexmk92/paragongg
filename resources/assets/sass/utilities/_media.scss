@@ -1,6 +1,6 @@
 // Media
 $media-tablet : 1050px;
-$media-mobile : 600px;
+$media-mobile : 750px;
 $media-desktop : 1400px;
 
 // Generic media queries
@@ -8,5 +8,12 @@ $media-desktop : 1400px;
   #page,
   nav {
     padding: 0px 10px;
+  }
+}
+
+@media screen and (max-width: $media-tablet) {
+  #page {
+    padding: 0px;
+    margin: 60px auto 0 !important;
   }
 }
