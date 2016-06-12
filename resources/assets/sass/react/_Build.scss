@@ -10,7 +10,7 @@
 
         &.active-slot {
             opacity:0.75;
-            //animation: pulse-card-with-inner-glow 2000ms infinite;
+
             &:hover {
                 opacity: 0.9;
             }
@@ -18,9 +18,58 @@
 
         &.active-placed {
             opacity:1;
-            //animation: pulse-card-with-inner-glow 2000ms infinite;
+
             &:hover {
+                .delete-wrapper {
+                    // TODO MAKE THIS AN ACTIVE STATE SO DELETE CAN ISNT ALWAYS IMMEDIATE ON HOVER
+                   // &.active {
+                        z-index: 50;
+                        pointer-events: all;
+                        opacity: 1;
+                        cursor: default;
+
+                        i {
+                            top: 0%;
+                        }
+                    //}
+                }
                 opacity: 0.9;
+            }
+        }
+
+        .delete-wrapper {
+            cursor: default;
+            opacity: 0;
+            pointer-events: none;
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            width: 100%;
+            left: 0;
+            text-align: center;
+            background: rgba(0,0,0,0.6);
+            right: 0;
+            overflow: hidden;
+            height: 100%;
+            transition: all 150ms ease-in-out;
+
+            i {
+                position: relative;
+                font-size: 32px;
+                margin-top: 70px;
+                transition: all 300ms ease-in-out;
+                z-index: 999;
+                padding: 0px 10px;
+
+                &:hover {
+                    cursor: pointer;
+                    &.fa-trash {
+                        color: $primary-highlight;
+                    }
+                    &.fa-refresh {
+                        color: $green;
+                    }
+                }
             }
         }
 
@@ -100,6 +149,7 @@
             background-repeat: no-repeat;
             background-size: 100% 100%;
             top: 0;
+            transition: background 300ms ease-in-out;
 
             .card-title {
                 position: absolute;

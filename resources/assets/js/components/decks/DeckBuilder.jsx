@@ -6,6 +6,7 @@ var Tooltip = require('../libraries/tooltip/Toptip');
 var HeroPanel = require('../heroes/HeroPanel');
 var Build = require('./Build');
 var ConfirmModal = require('../ConfirmModal');
+var Notification = require('../libraries/notification/Notification');
 
 /*
  window.onscroll = function(event) {
@@ -28,8 +29,6 @@ var ConfirmModal = require('../ConfirmModal');
  };
  */
 
-
-
 var DeckBuilder = React.createClass({
     getInitialState: function(){
         this.tooltip = new Tooltip();
@@ -37,6 +36,7 @@ var DeckBuilder = React.createClass({
             deck: [],
             builds: [],
             modal: false,
+            addedCard : false,
             showCardSection: false,
             selectedCard: null,
             selectedBuild : null,
@@ -53,6 +53,16 @@ var DeckBuilder = React.createClass({
     },
     componentDidMount: function() {
         this.refs.deckNameInput.focus();
+
+        // Replace the current notification panel.
+        this.notificationPanel = new Notification();
+        this.notificationPanel.initialiseNotifications();
+    },
+    componentDidUpdate: function() {
+        this.hideTooltip();
+        if(this.lastHoveredCard) {
+            this.setTooltipContent(this.lastHoveredCard);
+        }
     },
     componentWillUpdate: function(nextProps, nextState) {
         if((nextState.deck.length > this.state.deck.length) && nextState.activeTab === 1) {
@@ -68,18 +78,26 @@ var DeckBuilder = React.createClass({
     },
     /** TOOLTIP FUNCTIONS **/
     setTooltipContent: function(card) {
-        console.log(card.affinity.substring(9).toLowerCase());
-        var content = (
-            <div className="pgg-tooltip pgg-tooltip-card">
-                <div className={"head affinity-" + card.affinity.substring(9).toLowerCase()}>{card.name}</div>
-                <div className="content">Description about the card {card.type}</div>
-            </div>
-        );
-        var tooltip = document.getElementById("toptip");
-        ReactDOM.render(content, tooltip);
+        if(card)
+        {
+            this.lastHoveredCard = card;
+            var content = (
+                <div className="pgg-tooltip pgg-tooltip-card">
+                    <div className={"head affinity-" + card.affinity.substring(9).toLowerCase()}>{card.name}</div>
+                    <div className="content">Description about the card {card.type}</div>
+                </div>
+            );
+            var tooltip = document.getElementById("toptip");
+            ReactDOM.render(content, tooltip);
+        } else {
+            this.hideTooltip();
+        }
     },
     showTooltip: function(card) {
-        if(card) this.tooltip.showTooltip();
+        if(card) {
+            this.lastHoveredCard = card;
+            this.tooltip.showTooltip();
+        }
     },
     hideTooltip: function() {
         this.tooltip.hideTooltip();
@@ -94,6 +112,7 @@ var DeckBuilder = React.createClass({
     },
     addCard: function(selectedCard, event) {
         if(this.deckCount() < 40) {
+
             if(!selectedCard.quantity)
                 selectedCard.quantity = 1;
             var newDeck = [];
@@ -113,8 +132,14 @@ var DeckBuilder = React.createClass({
             }
             this.setState({
                 deck : newDeck,
+                addedCard: true,
                 lastSelectedCard : selectedCard,
                 playFlashAnimation: true
+            });
+        } else {
+            this.notificationPanel.addNotification("warning", "Your deck is full!");
+            this.setState({
+                addedCard: false
             });
         }
     },
@@ -152,8 +177,8 @@ var DeckBuilder = React.createClass({
                 <div className={ "sidebox panel cf" + this.isActiveTab(0) }>
                     <ul className="deck-list">
                         <li key="no_cards">
-                            <div className="wrapper">
-                                <span>To get started, select a card from the cards menu</span>
+                            <div className="wrapper intro-row">
+                                <span>Once you have selected a hero, start adding cards from the menu below.</span>
                             </div>
                         </li>
                     </ul>
@@ -251,7 +276,7 @@ var DeckBuilder = React.createClass({
                 }
                 */
                 if(this.state.selectedBuild.code === build.code) {
-                    className += " selected";
+                    childClassName += " selected";
                 }
             }
             var wrapperBackgroundImageURL = "";
@@ -274,7 +299,7 @@ var DeckBuilder = React.createClass({
             }.bind(this));
 
             return (
-                <li className={className}
+                <li className={"build-item " + className}
                     key={build.code}
                     onClick={this.selectBuild.bind(this, build)}
                 >
@@ -291,7 +316,7 @@ var DeckBuilder = React.createClass({
         if(buildList.length === 0) {
             buildList.push(
                 <li key="no_cards">
-                    <div className="wrapper">
+                    <div className="wrapper intro-row">
                         <span>Create your first build by pressing the button below, make sure you have some cards in your deck first!</span>
                     </div>
                 </li>
@@ -307,27 +332,31 @@ var DeckBuilder = React.createClass({
         return buildList;
     },
     addBuild: function() {
-        var newBuild = {
-            code : "build_" + Helpers.uuid(),
-            title : "",
-            slots: [
-                { type: "Active",  card : null, upgrades : [], occupied: false },
-                { type: "Active",  card : null, upgrades : [], occupied: false },
-                { type: "Active",  card : null, upgrades : [], occupied: false },
-                { type: "Active",  card : null, upgrades : [], occupied: false },
-                { type: "Passive", card : null, upgrades : [], occupied: false },
-                { type: "Passive", card : null, upgrades : [], occupied: false }
-            ],
-            cost: 0
-        };
-        this.toggleBuildView(true, "add-build-button");
-        this.setState({
-            builds : this.state.builds.concat(newBuild),
-            activeTab : 0,
-            selectedBuild: newBuild,
-            playFlashAnimation: false,
-            playFlashTabAnimation: false
-        });
+        if(this.state.deck.length === 0) {
+            this.notificationPanel.addNotification("warning", "You must add some cards to your deck before creating a build!");
+        } else {
+            var newBuild = {
+                code : "build_" + Helpers.uuid(),
+                title : "",
+                slots: [
+                    { type: "Active",  card : null, upgrades : [], occupied: false },
+                    { type: "Active",  card : null, upgrades : [], occupied: false },
+                    { type: "Active",  card : null, upgrades : [], occupied: false },
+                    { type: "Active",  card : null, upgrades : [], occupied: false },
+                    { type: "Passive", card : null, upgrades : [], occupied: false },
+                    { type: "Passive", card : null, upgrades : [], occupied: false }
+                ],
+                cost: 0
+            };
+            this.toggleBuildView(true, "add-build-button");
+            this.setState({
+                builds : this.state.builds.concat(newBuild),
+                activeTab : 0,
+                selectedBuild: newBuild,
+                playFlashAnimation: false,
+                playFlashTabAnimation: false
+            });
+        }
     },
     toggleBuildView: function(dismiss = true, sender) {
         var showDeckTab = this.state.activeTab;
@@ -360,21 +389,16 @@ var DeckBuilder = React.createClass({
     },
     setActiveTab: function(index) {
         var showBuildsPanel = this.state.isBuildsPanelShowing;
-        var flashTab = this.state.activeTab === 0;
         var selectedCard = this.state.selectedCard;
+        var flashTab = false;
 
-         if(!this.state.isBuildsPanelShowing && index === 1 && this.state.builds.length > 0) {
-             //showBuildsPanel = true;
-             flashTab = false;
+         if(this.state.addedCard && this.state.isBuildsPanelShowing) {
+             flashTab = true;
          }
-        /* DESELECT ACTIVE CARD IF SWAPPING TABS?
-        if(index === 0) {
-            selectedCard = null;
-        }
-        */
 
         this.setState({
             activeTab : index,
+            addedCard: false,
             selectedCard : selectedCard,
             playFlashAnimation: false,
             playFlashTabAnimation: flashTab,
@@ -404,7 +428,7 @@ var DeckBuilder = React.createClass({
         }
 
         // PROMPT USER IF THEY WANT TO DO THIS
-        if(hero.code !== currentHero.code && (deck.length > 0 || builds.length > 0)) {
+        if(hero.code !== currentHero.code && (deck.length > 0 || (builds.length > 0 && builds[0].cost > 0))) {
             var confirmNode = document.body.appendChild(document.createElement('div'));
             if(confirmNode) {
                 var confirm = ReactDOM.render(<ConfirmModal titleIcon="fa-info-circle" title="ATTENTION!" description="Changing your hero will permanently delete any existing builds and this deck, are you sure you want to continue?" cancelText="CANCEL" confirmText="YES CHANGE MY HERO" />, confirmNode);
@@ -466,7 +490,6 @@ var DeckBuilder = React.createClass({
                         </div>
                         <div className="dual-tab-panel">
                             <div className={ "sidebox panel cf" + this.isActiveTab(1) }>
-                                <h4>Builds <span className="deck-total">{this.buildCount()}/40 Cards</span></h4>
                                 <ul className="deck-list">
                                     {this.getBuilds()}
                                 </ul>
@@ -513,6 +536,7 @@ var DeckBuilder = React.createClass({
                                 build={this.state.selectedBuild}
                                 lastModifiedSlot={this.state.lastModifiedSlot}
                                 onBuildChanged={this.buildUpdated}
+                                onNotificationInvoked={this.notificationPanel.addNotification}
                             />
                         ) : ""
                     }

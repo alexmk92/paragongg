@@ -104,3 +104,40 @@ nav {
         user-select: none;
     }
 }
+
+@media screen and (max-width: $media-tablet) {
+    nav {
+        height: 60px;
+        padding: 0;
+        z-index: 99999;
+
+        .links {
+            height: auto;
+            top: 60px;
+            width: 100%;
+            background: $panel-color;
+            position: absolute;
+            padding: 10px 5px 20px 5px;
+            opacity: 0;
+            height: 0px;
+            transition: all 200ms ease-in-out;
+            
+            li {
+                display: block;
+
+                &:first-of-type a {
+                    padding: 25px 15px 18px;
+                }
+                a {
+                    width: 100%;
+                    padding: 25px 15px 18px;
+                }
+            }
+
+            &.active {
+                height: auto;
+                opacity: 1.0;
+            }
+        }
+    }
+}
