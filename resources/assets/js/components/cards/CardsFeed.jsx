@@ -29,7 +29,7 @@ var CardsFeed = React.createClass({
         }
     },
     render: function() {
-        var title = this.props.showTitle ? <h2>Paragon Cards</h2> : "";
+        var title = this.props.showTitle ? <h1>Paragon Cards</h1> : "";
         return(
             <div>
                 { title }
