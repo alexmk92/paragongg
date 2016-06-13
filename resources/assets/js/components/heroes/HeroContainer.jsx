@@ -49,6 +49,7 @@ var HeroContainer = React.createClass({
                     </div>
                 </div>
                 <div id="graph-wrapper">
+                    <h3 className="section-heading">Game Statistics <span className="subheader">{ HERO.name} stats, last 7 days</span></h3>
                     <HeroGraph />
                 </div>
                 <div id="abilities-wrapper">

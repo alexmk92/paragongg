@@ -189,15 +189,6 @@ canvas {
                 }
             }
 
-            #name {
-                font-weight: 600;
-                font-size: 3em;
-                line-height: 1.1em;
-                background: -webkit-linear-gradient(#fff, #ccc);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-            }
-
             #divider {
                 width: 100%;
                 height: 2px;
@@ -270,20 +261,6 @@ canvas {
         }
 
         #comments-wrapper {
-            h3 {
-                color: $font-color-base;
-                font-weight: 500;
-                text-align: center;
-                margin-bottom: 50px;
-                &:after {
-                    content: '';
-                    display: block;
-                    width: 70px;
-                    margin: 20px auto;
-                    height: 1px;
-                    border-top: 1px solid $faded-line;
-                }
-            }
             text-align: left;
         }
 

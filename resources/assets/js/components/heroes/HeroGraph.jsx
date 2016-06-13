@@ -274,20 +274,8 @@ var HeroGraph = React.createClass({
         }
     },
     render: function () {
-        var gauges = this.state.progressCircles.map(function (chart) {
-            return (<div key={"gauge_" + chart.container} className="gauge">
-                        <Chart container={chart.container}
-                               options={chart.options}
-                               theme={ChartTheme.gaugeDark()}
-                               hideTooltip={false}
-                        />
-            </div>);
-        });
         return (
             <div>
-                <div id="gauge-container">
-                    { gauges }
-                </div>
                 <Chart key={"chart_" + this.state.statGraph.container}
                        container={this.state.statGraph.container}
                        options={this.state.statGraph.options}

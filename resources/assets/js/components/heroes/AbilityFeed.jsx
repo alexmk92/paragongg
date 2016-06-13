@@ -30,9 +30,7 @@ var AbilityFeed = React.createClass({
         });
         return (
             <div>
-                <div id="ability-header">
-                    <h2>ABILITIES</h2>
-                </div>
+                <h3 className="section-heading">Abilities</h3>
                 { abilities }
             </div>
         );
