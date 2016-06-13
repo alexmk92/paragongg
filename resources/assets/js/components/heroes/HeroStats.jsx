@@ -48,7 +48,7 @@ var HeroStats = React.createClass({
                     scaling : 2.2
                 },
                 {
-                    icon : "max-movement-speed",
+                    icon : "movement-speed",
                     label : "MAX MOVEMENT SPEED",
                     value : 420,
                     scaling : null
