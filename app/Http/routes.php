@@ -54,9 +54,9 @@ Route::get('/cards/{slug}', 'CardController@show');
 
 /* HEROES */
 Route::get('/heroes', 'HeroController@index');
-Route::get('/heroes/edit/{slug}', 'CardController@edit')->middleware('mod');
-Route::post('/heroes/edit/{slug}', 'CardController@update')->middleware('mod');
-Route::get('/heroes/delete/{slug}', 'CardController@delete')->middleware('mod');
+Route::get('/heroes/edit/{slug}', 'HeroController@edit')->middleware('mod');
+Route::post('/heroes/edit/{slug}', 'HeroController@update')->middleware('mod');
+Route::get('/heroes/delete/{slug}', 'HeroController@delete')->middleware('mod');
 Route::get('/heroes/{slug}', 'HeroController@show');
 
 /* DECKS */
@@ -94,6 +94,7 @@ Route::group(['prefix' => 'moderation', 'namespace' => 'Moderation', 'middleware
     Route::get('/', 'ModerationController@index');
     Route::get('/news', 'ModerationController@news');
     Route::get('/cards', 'ModerationController@cards');
+    Route::get('/heroes', 'ModerationController@heroes');
     Route::get('/reports', 'ModerationController@reports');
 });
 

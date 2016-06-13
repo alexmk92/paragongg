@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Moderation;
 
+use App\Hero;
 use App\News;
 use App\Card;
 use Illuminate\Http\Request;
@@ -29,5 +30,12 @@ class ModerationController extends Controller
         $cards = Card::orderBy('name', 'ASC')
             ->get();
         return view('moderation.cards')->with('cards', $cards);
+    }
+
+    public function heroes()
+    {
+        $heroes = Hero::orderBy('name', 'ASC')
+            ->get();
+        return view('moderation.heroes')->with('cards', $heroes);
     }
 }
