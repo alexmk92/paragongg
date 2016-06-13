@@ -492,6 +492,10 @@ var DeckBuilder = React.createClass({
             showDeckTab = 0;
             flashTab = false;
         }
+        if(dismiss === false && (sender === "edit-button-mobile")) {
+            showDeckTab = -1;
+            flashTab = false;
+        }
 
         this.setState({ isBuildsPanelShowing : dismiss, activeTab: showDeckTab, playFlashTabAnimation: flashTab })
     },
@@ -677,6 +681,25 @@ var DeckBuilder = React.createClass({
         var tmpPlacementSlotIndex = this.placementSlotIndex;
         //this.placementSlotIndex = -1;
 
+        var editDeckButton = "";
+        var backButtonMobile = "";
+        if(this.isClientMobile() && (this.state.isBuildsPanelShowing)) {
+            editDeckButton = (
+                <button onClick={this.toggleBuildView.bind(this, false, "edit-button-mobile")}
+                        name="publish"
+                        type="submit"
+                        className={"btn mobile-full"}
+                >
+                    <i className="fa fa-pencil" aria-hidden="true"></i> EDIT DECK
+                </button>
+            );
+            backButtonMobile = (
+                <div id="back-button-mobile" onClick={this.toggleBuildView.bind(this, false)}>
+                    <i className="fa fa-angle-left" aria-hidden="true"></i> BACK
+                </div>
+            );
+        }
+
         var sidebarClass = this.state.activeTab === -1 ? "hidden" : "";
         var buildClass = "";
         if(this.isClientMobile() && this.state.activeTab > -1) {
@@ -686,6 +709,7 @@ var DeckBuilder = React.createClass({
             <div>
                 <div id="sidebar" className={sidebarClass}>
                     <div id="action-button-wrapper">
+                        { backButtonMobile }
                         <button onClick={this.toggleBuildView.bind(this, false, "edit-button")} name="publish" type="submit" className={"btn inline narrow"}><i className="fa fa-pencil" aria-hidden="true"></i> EDIT DECK</button>
                         <button name="publish" type="submit" className="btn inline wide"><i className="fa fa-check" aria-hidden="true"></i> SAVE DECK</button>
                     </div>
@@ -706,6 +730,7 @@ var DeckBuilder = React.createClass({
                             <div className={"mobile-header " + this.isActiveTab(0)} onClick={this.setActiveTab.bind(this, -1, null)}>
                                 <span>YOUR DECK <i className="fa fa-close" /></span>
                             </div>
+                            { editDeckButton }
                             {this.renderDeckList()}
                         </div>
                         <div className="dual-tab-panel">

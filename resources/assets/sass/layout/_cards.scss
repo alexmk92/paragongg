@@ -84,3 +84,18 @@ $card-height : 181px;
         max-width: 100%;
     }
 }
+
+// iPHONE 5 and small devices
+@media screen and (max-width: 350px) {
+    #cards-feed {
+        .wrapper {
+            .card-list {
+                .card-preview {
+                    width: 108px;
+                    height: 144px;
+                    background-size: 108px 144px;
+                }
+            }
+        }
+    }
+}
