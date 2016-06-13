@@ -18,6 +18,9 @@ var Build = React.createClass({
             this.quickBind(this.props.selectedCard);
         }
     },
+    isClientMobile: function() {
+        return window.innerWidth <= 1050;
+    },
     quickBind: function() {
         var newBuild = this.props.build;
         // CANNOT QUICK BIND UPGRADES
@@ -39,7 +42,9 @@ var Build = React.createClass({
 
         this.lastSelectedCard = this.props.selectedCard;
 
-        this.props.onBuildChanged(newBuild, lastModifiedSlot, deselectSelectedCard, toggleQuickBind);
+        var hasQuantity = this.validateQuantity(true);
+
+        this.props.onBuildChanged(newBuild, lastModifiedSlot, deselectSelectedCard, toggleQuickBind, !hasQuantity);
     },
     updateBuildsWithNewDeck: function() {
         var lastOfTypeRemoved = false;
@@ -237,7 +242,7 @@ var Build = React.createClass({
     },
     bindUpgradeToCard: function(upgradeSlot, card, bindUpgradeAtNextAvailableIndex) {
         // GET THE NEXT AVAILABLE SLOT
-        if(this.validateQuantity()) {
+        if(this.validateQuantity(false)) {
             // Got here by clicking on parent card to bind child
             if(bindUpgradeAtNextAvailableIndex) {
                 var nextAvailableSlot = null;
@@ -293,10 +298,16 @@ var Build = React.createClass({
         this.props.onNotificationInvoked(type, message);
     },
     getBuildSlots: function() {
+        console.log(this.props.autoPlaceIndex);
         return this.props.build.slots.map(function(slot, i) {
             var activeClass = "";
             var card = "";
             var cardPulse = "";
+
+            if(this.props.autoPlaceIndex === i && this.isClientMobile() && this.props.selectedCard !== null) {
+                console.log("AUTO BINDING");
+                this.bindCard(i);
+            }
 
             // IS THIS AN ACTIVE OR PASSIVE SLOT (ACTIVE = ONE)
             var type = (i < 4) ? "one" : "zero" ;
@@ -385,10 +396,10 @@ var Build = React.createClass({
             );
         }.bind(this));
     },
-    validateQuantity: function() {
+    validateQuantity: function(surpressNotification) {
         if(this.props.deck && this.props.selectedCard) {
             // CANT ADD A PRIME HELIX
-            if(this.props.selectedCard.type === "three") {
+            if(this.props.selectedCard.type === "three" && !surpressNotification) {
                 this.invokeNotification("warning", "You can't add a Prime Helix to a build.");
                 return false;
             }
@@ -420,7 +431,10 @@ var Build = React.createClass({
                         return false;
                        */
 
-                    this.invokeNotification("warning", "You have used all of the available " + this.props.selectedCard.name + "'s in your deck in this build.");
+                    if(!surpressNotification) {
+                        this.invokeNotification("warning", "You have used all of the available " + this.props.selectedCard.name + "'s in your deck in this build.");
+                    }
+
                     return false;
                 }
             }
@@ -441,10 +455,12 @@ var Build = React.createClass({
                 if(event.target.className.indexOf("glow-layer") > -1 || event.target.className.indexOf("delete-wrapper") > -1)
                     this.bindUpgradeToCard(bindSlot, bindSlot.card, true)
             }
+        } else if(this.isClientMobile()) {
+            this.props.requestActiveTab(0, index);
         }
     },
     bindCard: function(index) {
-        if(this.validateQuantity() && this.validateSlot(index)) {
+        if(this.validateQuantity(false) && this.validateSlot(index)) {
             var newSlots = this.props.build.slots;
             var moddedSlot = null;
 

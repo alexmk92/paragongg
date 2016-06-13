@@ -47,7 +47,7 @@
 
     &:hover {
         .black-overlay {
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.2);
         }
     }
 
@@ -58,7 +58,7 @@
         height: 100%;
         left: 0;
         top: 0;
-        background: rgba(0, 0, 0, 0.8);
+        background: rgba(0, 0, 0, 0.5);
         transition: all 200ms ease-in-out;
         bottom: 0;
         right: 0;
@@ -496,13 +496,15 @@
                         div {
                             height: 70px;
                             padding: 28px;
+                            transition: all 150ms ease-in-out;
+                            border-top: 2px solid rgba(0,0,0,0);
 
                             &:nth-child(even) {
                                 border-left: 1px solid $panel-color;
                             }
 
                             &.active {
-                                border-top: 2px solid $panel-color;
+                                border-top: 2px solid $primary-highlight;
                             }
                         }
                     }
