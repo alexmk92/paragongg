@@ -31,7 +31,10 @@
     @yield('libraries')
 
 </head>
-<body @if(isset($customBackground)) style="background-image:url({{ $customBackground }});" @endif>
+<body @if(isset($customBackground)) style="background-image: none;" @endif>
+@if(isset($customBackground))
+    <div class="custom-background" style="background-image:url({{ $customBackground }});"></div>
+@endif
 {{-- Yield navigation content --}}
 @include('layouts.nav')
 

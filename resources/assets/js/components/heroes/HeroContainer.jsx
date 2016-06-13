@@ -32,27 +32,19 @@ var HeroContainer = React.createClass({
         }
     },
     render: function() {
-        var styles = {
-            "backgroundImage" : "url('/assets/hero/" + HERO.name.toLowerCase() + "/terrain.jpg')",
-            "backgroundRepeat" : "no-repeat",
-            "backgroundSize" : "contain"
-        };
-        var modelURL = "/assets/hero/" + HERO.name + "/portrait.png";
+        var modelURL = "/assets/hero/" + HERO.code + "/portrait.png";
         return(
             <div>
                 <div onMouseOver={this.updateParallax} className="hero-container">
-                    <div id="hero-background" style={styles}></div>
                     <div id="left-wrapper">
                         <div id="hero-stats">
                             <HeroStats hero={ HERO } />
                         </div>
-                        <div id="blur-layer"></div>
                     </div>
                     <div id="particle-layer"></div>
                     <div className="anim-fadeIn" id="hero-model-wrapper">
                         <div id="hero-model" className="anim-flicker">
                             <img src={modelURL} />
-                            <div id="blur"></div>
                         </div>
                     </div>
                 </div>
@@ -67,9 +59,7 @@ var HeroContainer = React.createClass({
     }
 });
 
-var elem = document.querySelector("#hero-wrapper");
-if(typeof elem !== "undefined" && elem) {
-    ReactDOM.render( <HeroContainer />, elem);
-}
+var element = document.querySelector("#hero-wrapper");
+if(element) ReactDOM.render( <HeroContainer />, element);
 
 

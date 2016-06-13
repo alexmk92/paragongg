@@ -19,18 +19,12 @@ class HeroController extends Controller
     // Read
     public function show($slug)
     {
-        $heroes = Hero::all();
-        $activeHero = [];
-        foreach($heroes as $hero) {
-            if(strtolower($hero->name) == strtolower($slug)) {
-                $activeHero = $hero;
-            }
-        }
-        $customBackground = "none";
+        $hero = Hero::where('slug', urldecode($slug))->firstOrFail();
+        $customBackground = "/assets/hero/".$hero->code."/terrain.jpg";
         // $stageBackground = "/assets/hero/".$activeHero->name."/terrain.jpg";  <-- WE WANT TO USE THIS IN PRODUCTION
-        $stageBackground = "/assets/hero/dekker/terrain.jpg";
+        //$stageBackground = "/assets/hero/dekker/terrain.jpg";
 
-        return view('heroes.show')->with('hero', $activeHero)->with('heroes', $heroes)->with('customBackground', $customBackground)->with('stageBackground', $stageBackground);
+        return view('heroes.show')->with('hero', $hero)->with('customBackground', $customBackground);
     }
 
     // Edit

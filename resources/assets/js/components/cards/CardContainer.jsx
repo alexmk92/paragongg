@@ -69,6 +69,4 @@ var CardContainer = React.createClass({
 module.exports = CardContainer;
 
 var element = document.querySelector("#card-detail-container");
-if(typeof element !== "undefined" && element) {
-    ReactDOM.render( <CardContainer />, element);
-}
+if(element) ReactDOM.render( <CardContainer />, element);

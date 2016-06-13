@@ -57,6 +57,7 @@ class UpdateHeroObject extends Job implements ShouldQueue
         $heroDetails = json_decode($heroDetails);
 
         $hero = Hero::where('code', $this->object->id)->first();
+        $hero->slug       = strtolower($hero->name);
         $hero->affinities = $heroDetails->affinities;
         $hero->type       = $heroDetails->type;
         $hero->role       = $heroDetails->role;

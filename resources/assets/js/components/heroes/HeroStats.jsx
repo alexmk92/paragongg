@@ -12,43 +12,43 @@ var HeroStats = React.createClass({
             multiplier : 1,
             stats : [
                 {
-                    icon : "",
+                    icon : "max-health",
                     label : "MAX HEALTH",
                     value : 1900,
                     scaling : 100
                 },
                 {
-                    icon : "",
+                    icon : "health-regeneration",
                     label : "HEALTH REGENERATION",
                     value : "3.8/s",
                     scaling : null
                 },
                 {
-                    icon : "",
+                    icon : "max-mana",
                     label : "MAX MANA",
                     value : 561.2,
                     scaling : 100
                 },
                 {
-                    icon : "",
+                    icon : "mana-regeneration",
                     label : "MANA REGENERATION",
                     value : "2.25/s",
                     scaling : null
                 },
                 {
-                    icon : "",
+                    icon : "energy-armor",
                     label : "ENERGY ARMOR",
                     value : 14.4,
                     scaling : 2.2
                 },
                 {
-                    icon : "",
+                    icon : "physical-armor",
                     label : "PHYSICAL ARMOR",
                     value : 13.8,
                     scaling : 2.2
                 },
                 {
-                    icon : "",
+                    icon : "max-movement-speed",
                     label : "MAX MOVEMENT SPEED",
                     value : 420,
                     scaling : null
@@ -88,8 +88,8 @@ var HeroStats = React.createClass({
             var scaling = stat.scaling !== null ? <span className="scaling">({ stat.scaling } per level)</span> : "";
             return (
                 <li key={stat.label}>
-                    <span>{ stat.label }</span>
-                    <span><img src={ stat.icon } /> { value } { scaling }</span>
+                    <label>{ stat.label }</label>
+                    <span><i className={"pgg pgg-" + stat.icon }></i> { value } { scaling }</span>
                 </li>
             );
         });
