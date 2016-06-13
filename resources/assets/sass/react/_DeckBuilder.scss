@@ -1,6 +1,6 @@
 #selected-card-wrapper {
     position: fixed;
-    bottom: 70px;
+    bottom: 55px;
     left: -100%;
     z-index: 999999;
     width: 100%;
@@ -171,6 +171,12 @@
 
 #deck-builder {
     position: relative;
+
+    .prevent-scroll {
+        pointer-events: none;
+        overflow: hidden;
+        position: relative;
+    }
 
     .subtext {
         color: #5a606f;
@@ -474,6 +480,12 @@
                 background: $panel-color-dark;
                 transition: all 200ms ease-in-out;
 
+                .sidebox {
+                    &.panel {
+                        padding: 20px 8px 20px 18px;
+                    }
+                }
+
                 &.hidden {
                     top: 100%;
 
@@ -494,8 +506,8 @@
                         bottom: 0;
 
                         div {
-                            height: 70px;
-                            padding: 28px;
+                            height: 55px;
+                            padding: 20px;
                             transition: all 150ms ease-in-out;
                             border-top: 2px solid rgba(0,0,0,0);
 
@@ -591,31 +603,6 @@
                             font-size: 1.1em;
                             padding: 5px 30px;
                         }
-                    }
-                }
-            }
-        }
-
-        .multiple-notification-panel {
-            max-width: 100%;
-            padding: 0;
-            width: 100%;
-            top: 102px;
-            left: 0;
-            right: 0;
-            bottom: initial;
-
-            .notification-panel-wrapper {
-                .notification-panel {
-                    max-width: 100%;
-                    right: 0;
-                    bottom: 0;
-                    margin: 0;
-
-                    .notification {
-                        background: rgba(24, 29, 39, 0.95);
-                        padding: 10px 20px;
-                        text-align: left;
                     }
                 }
             }

@@ -9,6 +9,11 @@ module.exports = {
             }, delay);
         };
     },
+    // TODO REFACTOR TO SUPPORT AN ARRAY OF CLASSES
+    hasClass: function(element, selector) {
+        if(!element) { return false; }
+        return element.className.indexOf(selector) > -1;
+    },
     prettyDate : function(time)
     {
         var system_date = new Date(Date.parse(time));

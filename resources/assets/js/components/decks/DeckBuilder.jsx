@@ -78,6 +78,18 @@ var DeckBuilder = React.createClass({
         if(this.lastHoveredCard) {
             this.setTooltipContent(this.lastHoveredCard);
         }
+        console.log("CHECKING TAB STATE")
+        if(this.state.activeTab !== -1) {
+            console.log("SETTING BODY CLASS NAME TO no-scroll")
+            if(typeof document.body.className === "undefined" || document.body.className === "") {
+                document.body.className = "no-scroll";
+            }
+        } else {
+            console.log("REMOVING NO SCROLL CLASS")
+            if(typeof document.body.className === "undefined" || document.body.className === "no-scroll"){
+                document.body.className = "";
+            }
+        }
     },
     componentWillUpdate: function(nextProps, nextState) {
         if((nextState.deck.length > this.state.deck.length) && (nextState.activeTab === 1 || nextState.activeTab === -1)) {
@@ -244,22 +256,33 @@ var DeckBuilder = React.createClass({
                 </div>
             )
         }
-        return(
-            <div className={ "sidebox panel cf" + this.isActiveTab(0) }>
-                <span className="subtext">PRIME HELIX</span>
-                <ul className="deck-list">
-                    {this.getCardsInDeck(["three"])}
-                </ul>
-                <span className="subtext">EQUIPMENT</span>
-                <ul className="deck-list">
-                    {this.getCardsInDeck(["zero", "one"])}
-                </ul>
-                <span className="subtext">UPGRADE</span>
-                <ul className="deck-list">
-                    {this.getCardsInDeck(["two"])}
-                </ul>
-            </div>
-        );
+        if(this.isClientMobile() && this.deckOptionFilter && this.deckOptionFilter === "UPGRADES") {
+            return(
+                <div className={ "sidebox panel cf" + this.isActiveTab(0) }>
+                    <span className="subtext">UPGRADE</span>
+                    <ul className="deck-list">
+                        {this.getCardsInDeck(["two"])}
+                    </ul>
+                </div>
+            );
+        } else {
+            return (
+                <div className={ "sidebox panel cf" + this.isActiveTab(0) }>
+                    <span className="subtext">PRIME HELIX</span>
+                    <ul className="deck-list">
+                        {this.getCardsInDeck(["three"])}
+                    </ul>
+                    <span className="subtext">EQUIPMENT</span>
+                    <ul className="deck-list">
+                        {this.getCardsInDeck(["zero", "one"])}
+                    </ul>
+                    <span className="subtext">UPGRADE</span>
+                    <ul className="deck-list">
+                        {this.getCardsInDeck(["two"])}
+                    </ul>
+                </div>
+            );
+        }
     },
     getCardQuantityInCurrentDeck: function(card) {
         if(this.state.isBuildsPanelShowing && this.state.selectedBuild !== null) {
@@ -439,12 +462,12 @@ var DeckBuilder = React.createClass({
                 code : "build_" + Helpers.uuid(),
                 title : "",
                 slots: [
-                    { type: "",  card : null, upgrades : [], occupied: false },
-                    { type: "",  card : null, upgrades : [], occupied: false },
-                    { type: "",  card : null, upgrades : [], occupied: false },
-                    { type: "",  card : null, upgrades : [], occupied: false },
-                    { type: "", card : null, upgrades : [], occupied: false },
-                    { type: "", card : null, upgrades : [], occupied: false }
+                    { type: "",  card : null, upgrades : [], occupied: false, buttonsVisible: false },
+                    { type: "",  card : null, upgrades : [], occupied: false, buttonsVisible: false },
+                    { type: "",  card : null, upgrades : [], occupied: false, buttonsVisible: false },
+                    { type: "",  card : null, upgrades : [], occupied: false, buttonsVisible: false },
+                    { type: "", card : null, upgrades : [], occupied: false, buttonsVisible: false },
+                    { type: "", card : null, upgrades : [], occupied: false, buttonsVisible: false }
                 ],
                 cost: 0
             };
@@ -472,10 +495,11 @@ var DeckBuilder = React.createClass({
 
         this.setState({ isBuildsPanelShowing : dismiss, activeTab: showDeckTab, playFlashTabAnimation: flashTab })
     },
-    buildUpdated: function(newBuild, lastModifiedSlot, deselectSelectedCard, toggleQuickBind, disableSelected) {
+    buildUpdated: function(newBuild, lastModifiedSlot, deselectSelectedCard, toggleQuickBind, disableSelected, setActiveTab) {
         var buildIndex = this.state.builds.indexOf(newBuild);
         var newBuilds = this.state.builds;
         var newSelectedCard = deselectSelectedCard ? null : this.state.selectedCard;
+        var newActiveTab = this.state.activeTab;
         newBuilds[buildIndex] = newBuild;
 
         if(disableSelected) newSelectedCard = null;
@@ -485,8 +509,11 @@ var DeckBuilder = React.createClass({
             this.placementSlotIndex = -1;
             newSelectedCard = null;
         }
-
-        this.setState({ builds : newBuilds, lastModifiedSlot: lastModifiedSlot, selectedCard: newSelectedCard, quickBind : toggleQuickBind });
+        if(typeof setActiveTab !== "undefined" && setActiveTab !== null) {
+            newActiveTab = setActiveTab;
+        }
+        
+        this.setState({ builds : newBuilds, lastModifiedSlot: lastModifiedSlot, selectedCard: newSelectedCard, quickBind : toggleQuickBind, activeTab: newActiveTab });
     },
     /** TAB PANEL FUNCTIONS **/
     animateFlashTab: function(event) {
@@ -499,10 +526,14 @@ var DeckBuilder = React.createClass({
         }
     },
     // Slot index is an optional passed up the tree
-    setActiveTab: function(index, slotIndex) {
+    setActiveTab: function(index, slotIndex, filter) {
         var showBuildsPanel = this.state.isBuildsPanelShowing;
         var selectedCard = this.state.selectedCard;
         var flashTab = false;
+
+        // filter for mobile
+        if(this.isClientMobile())
+            this.deckOptionFilter = filter;
 
          if(this.state.addedCard && this.state.isBuildsPanelShowing) {
              flashTab = true;
@@ -578,9 +609,11 @@ var DeckBuilder = React.createClass({
     },
     getSelectedCardPopup: function() {
         if(this.state.selectedCard && this.isClientMobile()) {
+            var cardType = "UPGRADE";
+            if(this.state.selectedCard.type === "one" || this.state.selectedCard.type === "zero") cardType = "EQUIPMENT";
             return (
                 <div onClick={this.hideSelectedCardPopup} id="selected-card-wrapper" className="visible">
-                    <span>Currently selected: <span className="subtext">{this.state.selectedCard.name}</span> <i className="fa fa-close"></i></span>
+                    <span>SELECTED: <span className="subtext">{this.state.selectedCard.name} ({cardType})</span> <i className="fa fa-close"></i></span>
                     <div className="black-overlay"></div>
                     <div className="selected-card-background"
                          style={{backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/'+this.state.selectedCard.code+'/icon.png)'}}
@@ -628,6 +661,11 @@ var DeckBuilder = React.createClass({
         affinities.push({ name : "Universal" });
         return affinities;
     },
+    // Always deselect the current card when this happens as its an error
+    childAddedNotification(type, message) {
+        this.notificationPanel.addNotification(type, message);
+        this.setState({ selectedCard : null });
+    },
     // Handles auto bind to a slot
     /** END OF FUNCTIONS **/
     render: function() {
@@ -640,11 +678,17 @@ var DeckBuilder = React.createClass({
         //this.placementSlotIndex = -1;
 
         var sidebarClass = this.state.activeTab === -1 ? "hidden" : "";
+        var buildClass = "";
+        if(this.isClientMobile() && this.state.activeTab > -1) {
+            buildClass += " prevent-scroll";
+        }
         return (
             <div>
                 <div id="sidebar" className={sidebarClass}>
-                    <button onClick={this.toggleBuildView.bind(this, false, "edit-button")} name="publish" type="submit" className={"btn inline narrow"}><i className="fa fa-pencil" aria-hidden="true"></i> EDIT DECK</button>
-                    <button name="publish" type="submit" className="btn inline wide"><i className="fa fa-check" aria-hidden="true"></i> SAVE DECK</button>
+                    <div id="action-button-wrapper">
+                        <button onClick={this.toggleBuildView.bind(this, false, "edit-button")} name="publish" type="submit" className={"btn inline narrow"}><i className="fa fa-pencil" aria-hidden="true"></i> EDIT DECK</button>
+                        <button name="publish" type="submit" className="btn inline wide"><i className="fa fa-check" aria-hidden="true"></i> SAVE DECK</button>
+                    </div>
                     <div className="dual-tab-wrapper">
                         <div className="dual-tab-tabs">
                             <div onClick={this.setActiveTab.bind(this, 0, null)}
@@ -676,7 +720,7 @@ var DeckBuilder = React.createClass({
                         </div>
                     </div>
                 </div>
-                <div className={"deck-builder wrapper " + (this.state.isBuildsPanelShowing ? "hidden" : "")}>
+                <div className={"deck-builder wrapper " + (this.state.isBuildsPanelShowing ? "hidden" : "") + buildClass}>
                     <div className="content-wrapper">
                         <div className="deck-title">
                             <div className="hero-portrait-container"
@@ -708,7 +752,7 @@ var DeckBuilder = React.createClass({
                         </div>
                     </div>
                 </div>
-                <div className={"build-builder wrapper " + (this.state.isBuildsPanelShowing ? "" : "hidden")}>
+                <div className={"build-builder wrapper " + (this.state.isBuildsPanelShowing ? "" : "hidden") + buildClass}>
                     <div id="back-button" onClick={this.toggleBuildView.bind(this, false)}>
                         <i className="fa fa-angle-left" aria-hidden="true"></i> BACK TO DECK BUILDER
                     </div>
@@ -725,7 +769,7 @@ var DeckBuilder = React.createClass({
                                 lastDeletedCard={tmpLastDeletedCard}
                                 lastModifiedSlot={this.state.lastModifiedSlot}
                                 onBuildChanged={this.buildUpdated}
-                                onNotificationInvoked={this.notificationPanel.addNotification}
+                                onNotificationInvoked={this.childAddedNotification}
                             />
                         ) : ""
                     }

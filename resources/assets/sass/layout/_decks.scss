@@ -188,6 +188,9 @@
                 background: $primary-highlight;
                 color: #fff;
             }
+            .wrapper {
+                background: rgba($panel-color-dark,0.2);
+            }
         }
 
         &.disabled {

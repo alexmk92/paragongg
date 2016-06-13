@@ -1,3 +1,6 @@
+$placed-card-height : 187px;
+$placed-card-width : 141px;
+
 #builds-wrapper {
     #options-wrapper {
         padding: 10px 10px 20px 0;
@@ -12,7 +15,13 @@
         li {
             display: inline-block;
             opacity: 0.4;
+            height: auto;
+            vertical-align: top;
             transition: all 250ms ease-in-out;
+            background-size: $placed-card-width $placed-card-height;
+            min-width: $placed-card-width;
+            min-height: $placed-card-height;
+            padding-top: 0px;
 
             &:hover {
                 opacity: 0.6;
@@ -31,8 +40,6 @@
 
                 &:hover {
                     .delete-wrapper {
-                        // TODO MAKE THIS AN ACTIVE STATE SO DELETE CAN ISNT ALWAYS IMMEDIATE ON HOVER
-                        // &.active {
                         z-index: 50;
                         pointer-events: all;
                         opacity: 1;
@@ -41,7 +48,6 @@
                         i {
                             top: 0%;
                         }
-                        //}
                     }
                     opacity: 0.9;
                 }
@@ -54,13 +60,13 @@
                 position: absolute;
                 z-index: 1;
                 top: 0;
-                width: 100%;
+                width: $placed-card-width;
+                height: $placed-card-height;
                 left: 0;
                 text-align: center;
                 background: rgba(0,0,0,0.6);
                 right: 0;
                 overflow: hidden;
-                height: 100%;
                 transition: all 150ms ease-in-out;
 
                 i {
@@ -81,14 +87,24 @@
                         }
                     }
                 }
+
+                // ALWAYS SHOW ON MOBILE
+                &.active-mobile {
+                    z-index: 50;
+                    pointer-events: all;
+                    opacity: 1;
+                    cursor: default;
+
+                    i {
+                        top: 0%;
+                    }
+                }
             }
 
             .glow-layer {
                 position: absolute;
-                top: 0;
-                left: 0;
-                bottom: 0;
-                right: 0;
+                width: $placed-card-width;
+                height: $placed-card-height;
                 z-index: 2;
 
                 &.pulse-glow-inner {
@@ -101,7 +117,6 @@
 
             .upgrade-slot-wrapper {
                 position: relative;
-                bottom: -100%;
                 left: 0;
                 height: 100%;
                 right: 0;
@@ -153,9 +168,9 @@
             }
 
             .placed-card {
-                position: absolute;
-                height: 100%;
-                width: 100%;
+                position: relative;
+                height: $placed-card-height;
+                width: $placed-card-width;
                 background-repeat: no-repeat;
                 background-size: 100% 100%;
                 top: 0;
@@ -191,10 +206,22 @@
 }
 
 @media screen and (max-width: $media-tablet) {
-    .build-builder {
-        &.wrapper {
-            width: 100%;
-            padding: 30px;
+    #deck-builder {
+        .build-builder {
+            &.wrapper {
+                width: 100%;
+                padding: 30px 15px;
+
+                #builds-wrapper {
+                    .build-list {
+                        text-align: center;
+
+                        li {
+                            margin-bottom: 30px;
+                        }
+                    }
+                }
+            }
         }
     }
 }
