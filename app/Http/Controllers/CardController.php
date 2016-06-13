@@ -21,6 +21,14 @@ class CardController extends Controller
         return view('cards.index')->with('cards', $cards);
     }
 
+    // Show
+    public function show($slug)
+    {
+        $card = Card::where('name', $slug)->firstOrFail();
+
+        return view('cards.show')->with('card', $card);
+    }
+
     public function getCards()
     {
         $cards = Card::all('name', 'code', 'cost', 'type', 'affinity', 'rarity');
@@ -101,28 +109,18 @@ class CardController extends Controller
     {
         $updatedCard = json_decode($request->input('data'), true);
         $card = Card::where('code', $code);
-        $card->update($updatedCard[0], ['upsert' => true]);
+        $card->update($updatedCard[0]);
         session()->flash('notification', 'success|Card saved.');
 
         return redirect()->back();
     }
 
     // Delete
-    public function delete($slug)
+    public function delete($code)
     {
-        $card = Card::where('slug', $slug)->firstOrFail();
+        $card = Card::where('code', $code)->firstOrFail();
         $card->delete();
 
-        return view('cards.delete');
+        return redirect()->back();
     }
-
-    // Show
-    public function show($slug)
-    {
-        //$cards = Card::where('slug', $slug)->firstOrFail();    WE NEED TO IMPLEMENT SLUGS
-        $card = Card::where('name', $slug)->firstOrFail();
-
-        return view('cards.show')->with('card', $card);
-    }
-    
 }

@@ -47,13 +47,16 @@ Route::get('/games/id', 'GameController@show');
 
 /* CARDS */
 Route::get('/cards', 'CardController@index');
-Route::get('/cards/edit/{slug}', 'CardController@edit');
-Route::post('/cards/edit/{slug}', 'CardController@update');
-Route::get('/cards/delete/{slug}', 'CardController@delete');
+Route::get('/cards/edit/{slug}', 'CardController@edit')->middleware('mod');
+Route::post('/cards/edit/{slug}', 'CardController@update')->middleware('mod');
+Route::get('/cards/delete/{slug}', 'CardController@delete')->middleware('mod');
 Route::get('/cards/{slug}', 'CardController@show');
 
 /* HEROES */
 Route::get('/heroes', 'HeroController@index');
+Route::get('/heroes/edit/{slug}', 'CardController@edit')->middleware('mod');
+Route::post('/heroes/edit/{slug}', 'CardController@update')->middleware('mod');
+Route::get('/heroes/delete/{slug}', 'CardController@delete')->middleware('mod');
 Route::get('/heroes/{slug}', 'HeroController@show');
 
 /* DECKS */
