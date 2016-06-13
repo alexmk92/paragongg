@@ -9,6 +9,10 @@ body {
     margin: 0 0 150px;
     overflow-x: hidden;
     min-height: 100%;
+
+    &.no-scroll {
+        overflow: hidden;
+    }
 }
 #page {
     margin: 100px auto 0;

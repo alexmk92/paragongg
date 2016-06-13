@@ -87,6 +87,35 @@
     }
 }
 
+@media screen and (max-width: $media-tablet) {
+    .multiple-notification-panel {
+        max-width: 100%;
+        padding: 0;
+        width: 100%;
+        top: 125px;
+        left: 0;
+        right: 0;
+        z-index: 9999999;
+        bottom: initial;
+
+        .notification-panel-wrapper {
+            .notification-panel {
+                position: absolute;
+                max-width: 100%;
+                right: 0;
+                bottom: 0;
+                margin: 0;
+
+                .notification {
+                    background: rgba(24, 29, 39, 0.95);
+                    padding: 10px 20px;
+                    text-align: left;
+                }
+            }
+        }
+    }
+}
+
 @keyframes fadeOut {
     0% {
         opacity: 0;

@@ -9,7 +9,9 @@ var Build = React.createClass({
     componentWillMount: function() {
         this.tooltip = this.props.tooltip || new Tooltip();
         this.lastSelectedCard = this.props.lastSelectedCard;
-        this.isMobile = window.innerWidth <= 1050;
+        this.lastSelectedSlot = -1;
+        this.queuedCards    = [];
+        this.queuedUpgrades = [];
     },
     componentDidUpdate: function() {
         this.updateBuildsWithNewDeck();
@@ -17,6 +19,7 @@ var Build = React.createClass({
         if(this.props.shouldQuickBindCards) {
             this.quickBind(this.props.selectedCard);
         }
+        this.renderQueuedCards();
     },
     isClientMobile: function() {
         return window.innerWidth <= 1050;
@@ -34,7 +37,7 @@ var Build = React.createClass({
             }.bind(this));
         }
     },
-    buildUpdated: function(newBuild, lastModifiedSlot, deselectSelectedCard, toggleQuickBind) {
+    buildUpdated: function(newBuild, lastModifiedSlot, deselectSelectedCard, toggleQuickBind, activeTab) {
         if(lastModifiedSlot === null)
             lastModifiedSlot = this.props.lastModifiedSlot;
         if(toggleQuickBind === null || typeof toggleQuickBind === "undefined")
@@ -44,7 +47,7 @@ var Build = React.createClass({
 
         var hasQuantity = this.validateQuantity(true);
 
-        this.props.onBuildChanged(newBuild, lastModifiedSlot, deselectSelectedCard, toggleQuickBind, !hasQuantity);
+        this.props.onBuildChanged(newBuild, lastModifiedSlot, deselectSelectedCard, toggleQuickBind, !hasQuantity, activeTab);
     },
     updateBuildsWithNewDeck: function() {
         var lastOfTypeRemoved = false;
@@ -68,7 +71,7 @@ var Build = React.createClass({
                         }.bind(this));
 
                         newBuild.slots = newSlots;
-                        this.buildUpdated(newBuild, null, false);
+                        this.buildUpdated(newBuild, null, false, null);
                     }
                     // Check for cards that had a multi delete
                     else if(this.props.deck.indexOf(slot.card) > -1) {
@@ -96,7 +99,7 @@ var Build = React.createClass({
                                 newBuild.slots = newSlots;
 
                                 lastOfTypeRemoved = true;
-                                this.buildUpdated(newBuild, null, false);
+                                this.buildUpdated(newBuild, null, false, null);
                             }
                         }
                     }
@@ -136,7 +139,7 @@ var Build = React.createClass({
                         newBuild = this.props.build;
                         if(newBuild.slots.indexOf(slot) > -1) {
                             newBuild.slots[newBuild.slots.indexOf(slot)].upgrades[deletedSlotIndex].card = null;
-                            this.buildUpdated(newBuild, null, false);
+                            this.buildUpdated(newBuild, null, false, null);
                         }
                     }
                 }
@@ -159,7 +162,7 @@ var Build = React.createClass({
                         }.bind(this));
 
                         newBuild.slots = newSlots;
-                        this.buildUpdated(newBuild, null, false);
+                        this.buildUpdated(newBuild, null, false, null);
                     }
                 }
             }.bind(this));
@@ -255,7 +258,7 @@ var Build = React.createClass({
                     var newBuild = this.props.build;
                     if (newBuild.slots.indexOf(upgradeSlot) > -1 && this.props.selectedCard) {
                         newBuild.slots[newBuild.slots.indexOf(upgradeSlot)].upgrades[nextAvailableSlot].card = this.props.selectedCard;
-                        this.buildUpdated(newBuild, null, true);
+                        this.buildUpdated(newBuild, null, true, null);
                     }
                 }
             }
@@ -275,11 +278,10 @@ var Build = React.createClass({
                     }
                 }.bind(this));
                 newBuild.slots = newSlots;
-                this.buildUpdated(newBuild, null, true);
+                this.buildUpdated(newBuild, null, true, null);
             }
         }
     },
-    // TODO FIXED
     removeUpgradeFromCard: function(upgradeSlot, card, event) {
         event.preventDefault();
         var newBuild = this.props.build;
@@ -292,21 +294,56 @@ var Build = React.createClass({
             }
             return oldSlot;
         }.bind(this));
-        this.buildUpdated(newBuild, null, false);
+        this.buildUpdated(newBuild, null, false, null);
     },
     invokeNotification: function(type, message) {
+        this.props.selectedCard = null;
         this.props.onNotificationInvoked(type, message);
     },
+    renderQueuedCards: function() {
+        if(this.queuedCards) {
+            this.queuedCards.forEach(function(action) {
+                 this.bindCard(action.index);
+            }.bind(this));
+            this.queuedCards = [];
+        }
+        if(this.queuedUpgrades) {
+            this.queuedUpgrades.forEach(function(action) {
+                this.bindUpgradeToCard(action.slot, action.card, action.bindAtNextIndex);
+            }.bind(this));
+            this.queuedUpgrades = [];
+        }
+    },
     getBuildSlots: function() {
-        console.log(this.props.autoPlaceIndex);
         return this.props.build.slots.map(function(slot, i) {
             var activeClass = "";
             var card = "";
             var cardPulse = "";
 
             if(this.props.autoPlaceIndex === i && this.isClientMobile() && this.props.selectedCard !== null) {
-                console.log("AUTO BINDING");
-                this.bindCard(i);
+                if(this.props.selectedCard.type !== "two") {
+                    this.queuedCards.push({
+                        slot: slot,
+                        index : i
+                    });
+                    //this.bindCard(i);
+                } else {
+                    //this.bindUpgradeToCard(slot, slot.card, true);
+                    this.queuedUpgrades.push({
+                        slot: slot,
+                        card : slot.card,
+                        bindAtNextIndex: true
+                    })
+                }
+            } else if(this.props.autoPlaceIndex != -1 && this.lastSelectedSlot === i && this.isClientMobile() && this.props.selectedCard !== null) {
+                if(typeof slot.upgrades !== "undefined" || slot.upgrades !== null ) {
+                    //this.bindUpgradeToCard(slot.upgrades[this.props.autoPlaceIndex], slot.card, false);
+                    this.queuedUpgrades.push({
+                        slot: slot.upgrades[this.props.autoPlaceIndex],
+                        card: slot.card,
+                        bindAtNextIndex: false
+                    });
+                }
             }
 
             // IS THIS AN ACTIVE OR PASSIVE SLOT (ACTIVE = ONE)
@@ -340,38 +377,49 @@ var Build = React.createClass({
                          key={"card-" + i}
                     >
                         <span className="card-title">{ slot.card.name }</span>
-                        <div className="upgrade-slot-wrapper">
-                            { this.getUpgradeSlots( slot ) }
-                        </div>
                     </div>
                 );
             }
             var actionButtons = (function() {
+                // ALWAYS RETURN THIS VIEW FOR MOBILE ON TRAP
+                if(this.isClientMobile() && slot.card) {
+                    return (
+                        <div key={"action-buttons-" + i } className={"delete-wrapper"} onClick={this.bindCardToSlot.bind(this, i)}
+                             onContextMenu={this.removeCardFromSlot.bind(this, i, true)}>
+                            <i onClick={this.removeCardFromSlot.bind(this, i, false)} className="fa fa-trash"
+                               aria-hidden="true"/>
+                            <i onClick={this.requestActiveTab.bind(this, 0, i)} className="fa fa-refresh"
+                               aria-hidden="true"/>
+                        </div>
+                    );
+                }
                 // CANNOT BE A UPGRADE CARD
-                if(this.props.selectedCard !== null && this.props.selectedCard.type !== "two") {
-                    if(this.props.selectedCard === slot.card) {
+                if(!this.isClientMobile()) {
+                    if(this.props.selectedCard !== null && this.props.selectedCard.type !== "two") {
+                        if(this.props.selectedCard === slot.card) {
+                            return (
+                                <div key={"action-buttons-" + i } className="delete-wrapper" onClick={this.bindCardToSlot.bind(this, i)} onContextMenu={this.removeCardFromSlot.bind(this, i, true)}>
+                                    <i onClick={this.removeCardFromSlot.bind(this, i, false)} className="fa fa-trash" aria-hidden="true" />
+                                </div>
+                            );
+                        } else {
+                            return (
+                                <div key={"action-buttons-" + i } className="delete-wrapper" onClick={this.bindCardToSlot.bind(this, i)}
+                                     onContextMenu={this.removeCardFromSlot.bind(this, i, true)}>
+                                    <i onClick={this.removeCardFromSlot.bind(this, i, false)} className="fa fa-trash"
+                                       aria-hidden="true"/>
+                                    <i onClick={this.bindCardToSlot.bind(this, i)} className="fa fa-refresh"
+                                       aria-hidden="true"/>
+                                </div>
+                            );
+                        }
+                    } else {
                         return (
-                            <div key={"action-buttons-" + i } className="delete-wrapper" onClick={this.bindCardToSlot.bind(this, i)} onContextMenu={this.removeCardFromSlot.bind(this, i, true)}>
+                            <div key={"delete-wrapper-" + i } className="delete-wrapper" onContextMenu={this.removeCardFromSlot.bind(this, i, true)}>
                                 <i onClick={this.removeCardFromSlot.bind(this, i, false)} className="fa fa-trash" aria-hidden="true" />
                             </div>
                         );
-                    } else {
-                        return (
-                            <div key={"action-buttons-" + i } className="delete-wrapper" onClick={this.bindCardToSlot.bind(this, i)}
-                                 onContextMenu={this.removeCardFromSlot.bind(this, i, true)}>
-                                <i onClick={this.removeCardFromSlot.bind(this, i, false)} className="fa fa-trash"
-                                   aria-hidden="true"/>
-                                <i onClick={this.bindCardToSlot.bind(this, i)} className="fa fa-refresh"
-                                   aria-hidden="true"/>
-                            </div>
-                        );
                     }
-                } else {
-                    return (
-                        <div key={"delete-wrapper-" + i } className="delete-wrapper" onContextMenu={this.removeCardFromSlot.bind(this, i, true)}>
-                            <i onClick={this.removeCardFromSlot.bind(this, i, false)} className="fa fa-trash" aria-hidden="true" />
-                        </div>
-                    );
                 }
             }.bind(this))();
             return (
@@ -392,9 +440,19 @@ var Build = React.createClass({
                     <div className={"pulsing-arrow " + activeClass}>
                         <i className="fa fa-arrow-circle-up" aria-hidden="true" />
                     </div>
+                    <div className="upgrade-slot-wrapper">
+                        { this.getUpgradeSlots( slot ) }
+                    </div>
                 </li>
             );
         }.bind(this));
+    },
+    requestActiveTab(tabIndex, slot, filter) {
+        this.lastSelectedSlot = slot;
+        if(typeof filter === "undefined" || filter === null)
+            filter = null;
+
+        this.props.requestActiveTab(tabIndex, slot, filter);
     },
     validateQuantity: function(surpressNotification) {
         if(this.props.deck && this.props.selectedCard) {
@@ -444,6 +502,7 @@ var Build = React.createClass({
     bindCardToSlot: function(index, event) {
         event.preventDefault();
         if(this.props.selectedCard !== null) {
+            this.lastSelectedSlot = index;
             this.currentBindIndex = index;
             if(this.props.selectedCard.type !== "two" && ((event.target.className.indexOf("glow-layer") > -1 || event.target.className.indexOf("delete-wrapper") > -1 || event.target.className.indexOf("fa-refresh") > -1))) {
                 this.bindCard(index);
@@ -456,7 +515,16 @@ var Build = React.createClass({
                     this.bindUpgradeToCard(bindSlot, bindSlot.card, true)
             }
         } else if(this.isClientMobile()) {
-            this.props.requestActiveTab(0, index);
+            var slot = this.props.build.slots[index];
+            var elem = event.target;
+            this.lastSelectedSlot = index;
+            if(!slot.card) {
+                if(Helpers.hasClass(elem, "glow-layer")) this.requestActiveTab(0, index);
+            } else if(slot.card && this.lastSelectedSlot === index) {
+                console.log(elem);
+                if(Helpers.hasClass(elem, "fa-refresh")) this.requestActiveTab(0, index);
+                if(Helpers.hasClass(elem, "upgrade-label") || Helpers.hasClass(elem, "overlay")) this.requestActiveTab(0, index, "UPGRADES");
+            }
         }
     },
     bindCard: function(index) {
@@ -464,7 +532,6 @@ var Build = React.createClass({
             var newSlots = this.props.build.slots;
             var moddedSlot = null;
 
-            // TODO Implement this with real upgrade slot data, so its not random
             var upgradeSlots = (typeof this.props.selectedCard.slots === "undefined") ? 3 : this.props.selectedCard.slots.length;
             newSlots.forEach(function (slot, i) {
                 if (i === index) {
@@ -472,8 +539,6 @@ var Build = React.createClass({
                         slot.card = this.props.selectedCard;
                         slot.occupied = true;
 
-                        // TODO this filter can be universal or affinity, when we get access to upgrade types
-                        // we can use multiple required affinities
                         slot.upgrades = [];
                         for (var j = 0; j < upgradeSlots; j++) {
                             slot.upgrades.push({requiredAffinity: this.props.selectedCard.affinity, card: null})
@@ -488,7 +553,7 @@ var Build = React.createClass({
             var newBuild = this.props.build;
             newBuild.slots = newSlots;
 
-            this.buildUpdated(newBuild, moddedSlot, this.props.shouldQuickBindCards);
+            this.buildUpdated(newBuild, moddedSlot, this.props.shouldQuickBindCards, null);
         }
     },
     getBuildPoints: function() {
@@ -503,10 +568,12 @@ var Build = React.createClass({
         return points;
     },
     removeCardFromSlot: function(index, wasRightClick, event) {
+        this.lastSelectedSlot = index;
         if(event) {
             event.preventDefault();
             if(((event.target.className.indexOf("glow-layer") > -1 || event.target.className.indexOf("delete-wrapper") > -1) && wasRightClick) || event.target.className.indexOf("fa-trash") > -1) {
                 var newSlots = this.props.build.slots;
+                var activeTab = null;
                 newSlots.forEach(function(slot, i) {
                     if(index === i) {
                         slot.upgrades = [];
@@ -519,7 +586,11 @@ var Build = React.createClass({
                 var newBuild = this.props.build;
                 newBuild.slots = newSlots;
 
-                this.buildUpdated(newBuild, null, false);
+                if(this.isClientMobile()) {
+                    activeTab = -1;
+                }
+
+                this.buildUpdated(newBuild, null, false, activeTab);
             }
         }
 
@@ -531,46 +602,50 @@ var Build = React.createClass({
             var newBuild = this.props.build;
             newBuild.title = value;
 
-            this.buildUpdated(newBuild, null, false);
+            this.buildUpdated(newBuild, null, false, null);
         }
     },
     /* TOOLTIP METHODS */
     setTooltipContent: function(card, message) {
-        var content = null;
-        if(card !== null) {
-            content = (
-                <div className="pgg-tooltip pgg-tooltip-card">
-                    <div className={"head affinity-" + card.affinity.substring(9).toLowerCase()}>{card.name}</div>
-                    <div className="content">Description about the card {card.type}</div>
-                </div>
-            );
+        if(!this.isClientMobile()) {
+            var content = null;
+            if(card !== null) {
+                content = (
+                    <div className="pgg-tooltip pgg-tooltip-card">
+                        <div className={"head affinity-" + card.affinity.substring(9).toLowerCase()}>{card.name}</div>
+                        <div className="content">Description about the card {card.type}</div>
+                    </div>
+                );
 
-        } else if(message !== null) {
-            content = (
-                <div className="pgg-tooltip pgg-tooltip-card">
-                    <div className="content">{message}</div>
-                </div>
-            );
-        }
-        if(content !== null) {
-            var tooltip = document.getElementById("toptip");
-            ReactDOM.render(content, tooltip);
+            } else if(message !== null) {
+                content = (
+                    <div className="pgg-tooltip pgg-tooltip-card">
+                        <div className="content">{message}</div>
+                    </div>
+                );
+            }
+            if(content !== null) {
+                var tooltip = document.getElementById("toptip");
+                ReactDOM.render(content, tooltip);
+            }
         }
     },
     showTooltip: function(card, selector, event) {
-        if(card) {
-            if(event.target.className.toLowerCase().indexOf(selector.toLowerCase()) > -1) {
+        if(!this.isClientMobile()) {
+            if(card) {
+                if(event.target.className.toLowerCase().indexOf(selector.toLowerCase()) > -1) {
+                    this.tooltip.showTooltip();
+                }
+            } else if(card === null && selector === null) {
                 this.tooltip.showTooltip();
             }
-        } else if(card === null && selector === null) {
-            this.tooltip.showTooltip();
         }
     },
     hideTooltip: function() {
         this.tooltip.hideTooltip();
     },
     toggleQuickBind: function() {
-        this.buildUpdated(this.build, null, true, !this.props.shouldQuickBindCards);
+        this.buildUpdated(this.build, null, true, !this.props.shouldQuickBindCards, null);
     },
     numberOfCardsPlaced: function() {
         var total = 0;
