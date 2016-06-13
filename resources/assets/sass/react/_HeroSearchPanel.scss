@@ -84,7 +84,7 @@
         img {
             transition: all 600ms;
             position: absolute;
-            width: 80px;
+            width: 100%;
             top: 0;
             left: 0;
             transform: scale(1);
@@ -161,6 +161,15 @@
             .panel-title {
                 display: none;
             }
+        }
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .hero-panel {
+        .hero-row {
+            width: 70px;
+            height: 70px;
         }
     }
 }
