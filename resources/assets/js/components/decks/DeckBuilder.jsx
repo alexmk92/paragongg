@@ -79,15 +79,17 @@ var DeckBuilder = React.createClass({
             this.setTooltipContent(this.lastHoveredCard);
         }
         console.log("CHECKING TAB STATE")
-        if(this.state.activeTab !== -1) {
-            console.log("SETTING BODY CLASS NAME TO no-scroll")
-            if(typeof document.body.className === "undefined" || document.body.className === "") {
-                document.body.className = "no-scroll";
-            }
-        } else {
-            console.log("REMOVING NO SCROLL CLASS")
-            if(typeof document.body.className === "undefined" || document.body.className === "no-scroll"){
-                document.body.className = "";
+        if(this.isClientMobile()) {
+            if(this.state.activeTab !== -1) {
+                console.log("SETTING BODY CLASS NAME TO no-scroll")
+                if(typeof document.body.className === "undefined" || document.body.className === "") {
+                    document.body.className = "no-scroll";
+                }
+            } else {
+                console.log("REMOVING NO SCROLL CLASS")
+                if(typeof document.body.className === "undefined" || document.body.className === "no-scroll"){
+                    document.body.className = "";
+                }
             }
         }
     },
@@ -546,6 +548,9 @@ var DeckBuilder = React.createClass({
         if(index === this.state.activeTab && this.isClientMobile()) {
             index = -1;
             flashTab = true;
+        }
+        if(index === 1 && this.isClientMobile()) {
+            window.scrollTo(0, 0);
         }
 
         if(typeof slotIndex !== "undefined" && slotIndex !== null) {
