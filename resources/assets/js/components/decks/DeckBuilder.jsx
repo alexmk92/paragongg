@@ -55,6 +55,7 @@ var DeckBuilder = React.createClass({
     componentDidMount: function() {
         this.refs.deckNameInput.focus();
         this.lastDeletedCard = null;
+        this.placementSlotIndex = -1;
 
         var textarea = document.querySelector('textarea');
         textarea.addEventListener('keydown', autosize);
@@ -170,8 +171,23 @@ var DeckBuilder = React.createClass({
     selectCard: function(card, event) {
         event.preventDefault();
         var elem = event.target;
+
         if(elem.className !== "fa fa-trash" && elem.className !== "delete-icon") {
-            if((this.state.selectedCard && this.state.selectedCard.code == card.code) || card.type === "three") {
+
+            /* PREVENT CARD SELECTION
+            var disableSelectedCard = false;
+            if(this.state.selectedBuild !== null && this.state.isBuildsPanelShowing) {
+                disableSelectedCard = this.getCardQuantityInCurrentDeck(card) >= card.quantity;
+            }
+            */
+
+            // TODO WORK ON THIS ITS REALLY BUGGY
+            if(this.placementSlotIndex != -1 && this.isClientMobile()) {
+                this.hideSelectedCardPopup();
+                this.setState({selectedCard: null, playFlashAnimation: false, activeTab: -1});
+            }
+
+            if(((this.state.selectedCard && this.state.selectedCard.code == card.code) || card.type === "three")) {
                 this.hideSelectedCardPopup();
                 this.setState({selectedCard: null, playFlashAnimation: false});
             } else {
@@ -188,7 +204,6 @@ var DeckBuilder = React.createClass({
         var newIsBuildsPanelShowing = this.state.isBuildsPanelShowing;
 
         var newDeck = [];
-        console.log("PREVIOUS CARD TO DELETE: ", cardToDelete);
         this.state.deck.forEach(function(card) {
             if(card.code !== cardToDelete.code)
                 newDeck.push(card);
@@ -246,6 +261,20 @@ var DeckBuilder = React.createClass({
             </div>
         );
     },
+    getCardQuantityInCurrentDeck: function(card) {
+        if(this.state.isBuildsPanelShowing && this.state.selectedBuild !== null) {
+            var finalQuantity = 0;
+            this.state.selectedBuild.slots.forEach(function(slot) {
+                if(slot.card !== null) {
+                    if(slot.card.code === card.code) {
+                        finalQuantity = (finalQuantity+1 > card.quantity) ? card.quantity : finalQuantity+1;
+                    }
+                }
+            });
+            return finalQuantity;
+        }
+        return -1;
+    },
     getCardsInDeck : function(types) {
         var cardList = [];
         this.state.deck.forEach(function(card) {
@@ -267,14 +296,7 @@ var DeckBuilder = React.createClass({
                 var disableCardRow = false;
                 // Set label when adding cards to build
                 if(this.state.isBuildsPanelShowing && this.state.selectedBuild !== null) {
-                    var finalQuantity = 0;
-                    this.state.selectedBuild.slots.forEach(function(slot) {
-                       if(slot.card !== null) {
-                           if(slot.card.code === card.code) {
-                               finalQuantity = (finalQuantity+1 > card.quantity) ? card.quantity : finalQuantity+1;
-                           }
-                       }
-                    });
+                    var finalQuantity = this.getCardQuantityInCurrentDeck(card);
                     disableCardRow = finalQuantity === card.quantity;
                     quantityLabel = finalQuantity + "/" + card.quantity;
                 }
@@ -326,6 +348,9 @@ var DeckBuilder = React.createClass({
             var newActiveTab = this.state.activeTab;
             if(this.state.selectedBuild === build) {
                 newActiveTab = 0;
+            }
+            if(this.isClientMobile()) {
+                newActiveTab = -1;
             }
             this.setState({selectedBuild: build, playFlashAnimation: false, isBuildsPanelShowing: true, activeTab: newActiveTab });
         }
@@ -414,19 +439,21 @@ var DeckBuilder = React.createClass({
                 code : "build_" + Helpers.uuid(),
                 title : "",
                 slots: [
-                    { type: "Active",  card : null, upgrades : [], occupied: false },
-                    { type: "Active",  card : null, upgrades : [], occupied: false },
-                    { type: "Active",  card : null, upgrades : [], occupied: false },
-                    { type: "Active",  card : null, upgrades : [], occupied: false },
-                    { type: "Passive", card : null, upgrades : [], occupied: false },
-                    { type: "Passive", card : null, upgrades : [], occupied: false }
+                    { type: "",  card : null, upgrades : [], occupied: false },
+                    { type: "",  card : null, upgrades : [], occupied: false },
+                    { type: "",  card : null, upgrades : [], occupied: false },
+                    { type: "",  card : null, upgrades : [], occupied: false },
+                    { type: "", card : null, upgrades : [], occupied: false },
+                    { type: "", card : null, upgrades : [], occupied: false }
                 ],
                 cost: 0
             };
+            // We dont want to go directly to deck on mobile
+            var newActiveTab = this.isClientMobile() ? -1 : 0;
             this.toggleBuildView(true, "add-build-button");
             this.setState({
                 builds : this.state.builds.concat(newBuild),
-                activeTab : 0,
+                activeTab : newActiveTab,
                 selectedBuild: newBuild,
                 playFlashAnimation: false,
                 playFlashTabAnimation: false
@@ -445,11 +472,19 @@ var DeckBuilder = React.createClass({
 
         this.setState({ isBuildsPanelShowing : dismiss, activeTab: showDeckTab, playFlashTabAnimation: flashTab })
     },
-    buildUpdated: function(newBuild, lastModifiedSlot, deselectSelectedCard, toggleQuickBind) {
+    buildUpdated: function(newBuild, lastModifiedSlot, deselectSelectedCard, toggleQuickBind, disableSelected) {
         var buildIndex = this.state.builds.indexOf(newBuild);
         var newBuilds = this.state.builds;
         var newSelectedCard = deselectSelectedCard ? null : this.state.selectedCard;
         newBuilds[buildIndex] = newBuild;
+
+        if(disableSelected) newSelectedCard = null;
+
+        // Was a mobile device
+        if(this.placementSlotIndex != -1 && this.isClientMobile()) {
+            this.placementSlotIndex = -1;
+            newSelectedCard = null;
+        }
 
         this.setState({ builds : newBuilds, lastModifiedSlot: lastModifiedSlot, selectedCard: newSelectedCard, quickBind : toggleQuickBind });
     },
@@ -463,7 +498,8 @@ var DeckBuilder = React.createClass({
             }, 50);
         }
     },
-    setActiveTab: function(index) {
+    // Slot index is an optional passed up the tree
+    setActiveTab: function(index, slotIndex) {
         var showBuildsPanel = this.state.isBuildsPanelShowing;
         var selectedCard = this.state.selectedCard;
         var flashTab = false;
@@ -475,6 +511,10 @@ var DeckBuilder = React.createClass({
         if(index === this.state.activeTab && this.isClientMobile()) {
             index = -1;
             flashTab = true;
+        }
+
+        if(typeof slotIndex !== "undefined" && slotIndex !== null) {
+            this.placementSlotIndex = slotIndex;
         }
 
         this.setState({
@@ -537,7 +577,6 @@ var DeckBuilder = React.createClass({
         }
     },
     getSelectedCardPopup: function() {
-        console.log("Rerendering")
         if(this.state.selectedCard && this.isClientMobile()) {
             return (
                 <div onClick={this.hideSelectedCardPopup} id="selected-card-wrapper" className="visible">
@@ -575,6 +614,7 @@ var DeckBuilder = React.createClass({
             var selectedCardPopup = document.getElementById("selected-card-wrapper");
             if(selectedCardPopup) {
                 selectedCardPopup.className = "hidden";
+                this.setState({ selectedCard : null });
             }
         }
     },
@@ -588,11 +628,16 @@ var DeckBuilder = React.createClass({
         affinities.push({ name : "Universal" });
         return affinities;
     },
+    // Handles auto bind to a slot
     /** END OF FUNCTIONS **/
     render: function() {
         // Used to delete cards from deck builder
         var tmpLastDeletedCard = this.lastDeletedCard;
         this.lastDeletedCard = null;
+
+        // Used to auto place into deck
+        var tmpPlacementSlotIndex = this.placementSlotIndex;
+        //this.placementSlotIndex = -1;
 
         var sidebarClass = this.state.activeTab === -1 ? "hidden" : "";
         return (
@@ -602,25 +647,25 @@ var DeckBuilder = React.createClass({
                     <button name="publish" type="submit" className="btn inline wide"><i className="fa fa-check" aria-hidden="true"></i> SAVE DECK</button>
                     <div className="dual-tab-wrapper">
                         <div className="dual-tab-tabs">
-                            <div onClick={this.setActiveTab.bind(this, 0)}
+                            <div onClick={this.setActiveTab.bind(this, 0, null)}
                                  className={this.isActiveTab(0)}
                             >
                                 <span>MY DECK <span className={"subtext " + (this.deckCount() >= 40 ? "max-capacity" : "") }> ( {this.deckCount()}/40 )</span></span>
                             </div>
-                            <div onClick={this.setActiveTab.bind(this, 1)}
+                            <div onClick={this.setActiveTab.bind(this, 1, null)}
                                  className={this.isActiveTab(1) }
                             >
-                                <span>MY BUILDS</span>
+                                <span>MY BUILDS <span className={"subtext " + (this.deckCount() >= 40 ? "max-capacity" : "") }> ( {this.state.builds.length} )</span></span>
                             </div>
                         </div>
                         <div className="dual-tab-panel">
-                            <div className={"mobile-header " + this.isActiveTab(0)} onClick={this.setActiveTab.bind(this, -1)}>
+                            <div className={"mobile-header " + this.isActiveTab(0)} onClick={this.setActiveTab.bind(this, -1, null)}>
                                 <span>YOUR DECK <i className="fa fa-close" /></span>
                             </div>
                             {this.renderDeckList()}
                         </div>
                         <div className="dual-tab-panel">
-                            <div className={"mobile-header " + this.isActiveTab(1)} onClick={this.setActiveTab.bind(this, -1)}>
+                            <div className={"mobile-header " + this.isActiveTab(1)} onClick={this.setActiveTab.bind(this, -1, null)}>
                                 <span>YOUR BUILDS <i className="fa fa-close" /></span>
                             </div>
                             <div className={ "sidebox panel cf" + this.isActiveTab(1) }>
@@ -670,8 +715,10 @@ var DeckBuilder = React.createClass({
                     {
                         this.state.selectedBuild ? (
                             <Build
+                                autoPlaceIndex={tmpPlacementSlotIndex}
                                 deck={this.state.deck}
                                 tooltip={this.tooltip}
+                                requestActiveTab={this.setActiveTab}
                                 shouldQuickBindCards={this.state.quickBind}
                                 selectedCard ={this.state.selectedCard}
                                 build={this.state.selectedBuild}
