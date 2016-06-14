@@ -31,6 +31,14 @@ var CardsFeed = React.createClass({
     render: function() {
         var title = this.props.showTitle ? <h1>Paragon Cards</h1> : "";
         var stickTop = this.props.stickTopOnMobile ? "fixed" : "";
+        var doneMobileButton = "";
+        if(this.props.stickTopOnMobile) {
+            doneMobileButton = (
+                <div id="confirm-search-button" onClick={this.props.onDismissFilter}>
+                    <span>DONE SEARCHING</span>
+                </div>
+            );
+        }
         return(
             <div>
                 { title }
@@ -46,6 +54,7 @@ var CardsFeed = React.createClass({
                                  cardsRedirectOnClick={ this.props.cardsRedirectOnClick }
                                  onCardClicked={this.onCardClicked}
                     />
+                    { doneMobileButton }
                 </div>
                 <div className="wrapper">
                     <ul className="card-list">
