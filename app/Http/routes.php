@@ -47,16 +47,16 @@ Route::get('/games/id', 'GameController@show');
 
 /* CARDS */
 Route::get('/cards', 'CardController@index');
-Route::get('/cards/edit/{slug}', 'CardController@edit')->middleware('mod');
-Route::post('/cards/edit/{slug}', 'CardController@update')->middleware('mod');
-Route::get('/cards/delete/{slug}', 'CardController@delete')->middleware('mod');
+Route::get('/cards/edit/{slug}', 'CardController@edit')->middleware('admin');
+Route::post('/cards/edit/{slug}', 'CardController@update')->middleware('admin');
+Route::get('/cards/delete/{slug}', 'CardController@delete')->middleware('admin');
 Route::get('/cards/{slug}', 'CardController@show');
 
 /* HEROES */
 Route::get('/heroes', 'HeroController@index');
-Route::get('/heroes/edit/{slug}', 'HeroController@edit')->middleware('mod');
-Route::post('/heroes/edit/{slug}', 'HeroController@update')->middleware('mod');
-Route::get('/heroes/delete/{slug}', 'HeroController@delete')->middleware('mod');
+Route::get('/heroes/edit/{slug}', 'HeroController@edit')->middleware('admin');
+Route::post('/heroes/edit/{slug}', 'HeroController@update')->middleware('admin');
+Route::get('/heroes/delete/{slug}', 'HeroController@delete')->middleware('admin');
 Route::get('/heroes/{slug}', 'HeroController@show');
 
 /* DECKS */
@@ -93,8 +93,6 @@ Route::group(['prefix' => 'account', 'middleware' => 'auth'], function () {
 Route::group(['prefix' => 'moderation', 'namespace' => 'Moderation', 'middleware' => ['auth', 'mod']], function () {
     Route::get('/', 'ModerationController@index');
     Route::get('/news', 'ModerationController@news');
-    Route::get('/cards', 'ModerationController@cards');
-    Route::get('/heroes', 'ModerationController@heroes');
     Route::get('/reports', 'ModerationController@reports');
 });
 
@@ -102,6 +100,8 @@ Route::group(['prefix' => 'moderation', 'namespace' => 'Moderation', 'middleware
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['auth', 'admin', 'cors']], function () {
     Route::get('/', 'AdminController@index');
     Route::get('/jobs', 'AdminController@jobs');
+    Route::get('/cards', 'AdminController@cards');
+    Route::get('/heroes', 'AdminController@heroes');
     Route::get('/maintenance', 'MaintenanceController@index');
     Route::get('/maintenance/update-cards', 'MaintenanceController@updateCards');
     Route::get('/maintenance/update-heroes', 'MaintenanceController@updateHeroes');

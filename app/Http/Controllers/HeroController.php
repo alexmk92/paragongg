@@ -54,4 +54,53 @@ class HeroController extends Controller
         return redirect()->back();
     }
 
+    // Pull latest heroes
+    public function pullHeroes()
+    {
+        // Get latest hero list
+        $client = new Client();
+        $res = $client->request('GET', 'https://developer-paragon.epicgames.com/v1/hero/list', [
+            'headers' => [
+                'Accept'        => 'application/json',
+                'Authorization' => 'Bearer '.APIToken(),
+                'X-Epic-ApiKey' => env('EPIC_API_KEY'),
+            ]
+        ])->getBody();
+
+        $response = json_decode($res);
+
+        // Run through each cards returned
+        foreach($response as $object) {
+            $this->dispatch(new UpdateHeroObject($object));
+        }
+
+        session()->flash('notification', 'success|Heroes update processing...');
+
+        return redirect('/admin/jobs');
+    }
+
+    public function pullImages()
+    {
+        // Get latest cards list
+        $client = new Client();
+        $res = $client->request('GET', 'https://developer-paragon.epicgames.com/v1/hero/list', [
+            'headers' => [
+                'Accept'        => 'application/json',
+                'Authorization' => 'Bearer '.APIToken(),
+                'X-Epic-ApiKey' => env('EPIC_API_KEY'),
+            ]
+        ])->getBody();
+
+        $response = json_decode($res);
+
+        // Run through each hero returned
+        foreach($response as $object) {
+            $this->dispatch(new UpdateHeroImage($object));
+        }
+
+        session()->flash('notification', 'success|Heroe images update processing...');
+
+        return redirect('/admin/jobs');
+    }
+
 }

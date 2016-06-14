@@ -1,9 +1,12 @@
 @extends('layouts/app')
 @section('body')
-    @include('moderation.nav')
+    @include('admin.nav')
     <div class="wrapper">
-        <span class="breadcrumb"><a href="/moderation">Moderation</a> / <a href="/moderation/cards">Cards</a></span>
+        <span class="breadcrumb"><a href="/admin">Admin</a> / <a href="/admin/cards">Cards</a></span>
         <h1>Cards</h1>
+        <hr>
+        <a class="btn" href="/admin/maintenance/update-cards"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Update cards database</a>
+        <a class="btn" href="/admin/maintenance/update-cards?update_images=true"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Update card images</a>
         <hr>
         <table class="minimal">
             <thead>

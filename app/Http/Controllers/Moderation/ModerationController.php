@@ -24,18 +24,4 @@ class ModerationController extends Controller
             ->get();
         return view('moderation.news')->with('news', $news);
     }
-
-    public function cards()
-    {
-        $cards = Card::orderBy('name', 'ASC')
-            ->get();
-        return view('moderation.cards')->with('cards', $cards);
-    }
-
-    public function heroes()
-    {
-        $heroes = Hero::orderBy('name', 'ASC')
-            ->get();
-        return view('moderation.heroes')->with('cards', $heroes);
-    }
 }
