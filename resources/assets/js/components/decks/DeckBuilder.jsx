@@ -8,27 +8,6 @@ var Build = require('./Build');
 var ConfirmModal = require('../ConfirmModal');
 var Notification = require('../libraries/notification/Notification');
 
-/*
- window.onscroll = function(event) {
- var sidebar = document.querySelector(".dual-tab-wrapper");
- if(typeof sidebar !== "undefined" && sidebar) {
- var bodyRect = { width: window.innerWidth, height: window.innerHeight };
- var sidebarRect = sidebar.getBoundingClientRect();
-
- var offsetTop = (typeof window.pageYOffset !== "undefined") ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
- var offsetTop = (typeof window.pageYOffset !== "undefined") ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
-
- // Check if we can see the sidebar
- //sidebar.style.top = offsetTop + "px";
- if((sidebarRect.top + sidebarRect.height) < 0) {
- sidebar.style.top = (oldTop + (sidebarRect.height + 100)) + "px";
- } else {
- sidebar.style.top = 0 + "px";
- }
- }
- };
- */
-
 var DeckBuilder = React.createClass({
     getInitialState: function(){
         this.tooltip = new Tooltip();
@@ -49,6 +28,7 @@ var DeckBuilder = React.createClass({
             lastModifiedSlot: null,
             selectedHero : HEROES[0],
             isBuildsPanelShowing : false,
+            isMobileSearchShowing: false,
             activeTab: this.isClientMobile() ? -1 : 0
         }
     },
@@ -57,8 +37,11 @@ var DeckBuilder = React.createClass({
         this.lastDeletedCard = null;
         this.placementSlotIndex = -1;
 
-        var textarea = document.querySelector('textarea');
-        textarea.addEventListener('keydown', autosize);
+        window.addEventListener("resize", this.updateViewForDimensions);
+
+        var textareaA = document.querySelector('textarea.h2');
+        var textareaB = document.querySelector('textarea.p');
+        textareaA.addEventListener('keydown', autosize);
         function autosize(){
             var el = this;
             setTimeout(function(){
@@ -66,6 +49,16 @@ var DeckBuilder = React.createClass({
                 // for box-sizing other than "content-box" use:
                 // el.style.cssText = '-moz-box-sizing:content-box';
                 el.style.cssText = 'height:' + el.scrollHeight + 'px';
+            },0);
+        }
+        textareaB.addEventListener('keydown', autosize);
+        function autosize(){
+            var el = this;
+            setTimeout(function(){
+                el.style.cssText = 'height:auto; padding:0';
+                // for box-sizing other than "content-box" use:
+                // el.style.cssText = '-moz-box-sizing:content-box';
+                el.style.cssText = 'height:' + (el.scrollHeight + 60) + 'px';
             },0);
         }
 
@@ -80,6 +73,7 @@ var DeckBuilder = React.createClass({
             if(selectedCardWrapper) {
                 selectedCardWrapper.className = "";
             }
+            this.forceUpdate();
         } else {
             if(selectedCardWrapper && this.state.selectedCard) {
                 selectedCardWrapper.className = "visible";
@@ -750,6 +744,10 @@ var DeckBuilder = React.createClass({
         this.notificationPanel.addNotification(type, message);
         this.setState({ selectedCard : null });
     },
+    // Shows the search bar filter
+    toggleSearchFilter: function() {
+        this.setState({ isMobileSearchShowing: !this.state.isMobileSearchShowing });
+    },
     // Handles auto bind to a slot
     /** END OF FUNCTIONS **/
     render: function() {
@@ -762,16 +760,29 @@ var DeckBuilder = React.createClass({
         //this.placementSlotIndex = -1;
 
         var backButtonMobile = "";
-        if(this.isClientMobile() && (this.state.isBuildsPanelShowing)) {
-            backButtonMobile = (
-                <div id="back-button-mobile" onClick={this.toggleBuildView.bind(this, false)}>
-                    <i className="pgg pgg-arrow-left" aria-hidden="true"></i> BACK
-                </div>
-            );
+        var searchButtonMobile = "";
+        if(this.isClientMobile()) {
+            if(this.state.isBuildsPanelShowing) {
+                backButtonMobile = (
+                    <div id="back-button-mobile" onClick={this.toggleBuildView.bind(this, false)}>
+                        <i className="pgg pgg-arrow-left" aria-hidden="true"></i> BACK
+                    </div>
+                );
+            } else if(!this.state.heroPanelActive) {
+                var info = <span><i className="fa fa-search" aria-hidden="true"></i> SEARCH CARDS</span>;
+                if(this.state.isMobileSearchShowing)
+                    info = <span><i className="fa fa-minus" aria-hidden="true"></i> HIDE SEARCH CARDS</span>
+                searchButtonMobile = (
+                    <button id="search-button-mobile" name="search-cards" type="submit" onClick={this.toggleSearchFilter}>
+                        { info }
+                    </button>
+                );
+            }
         }
 
         var sidebarClass = this.state.activeTab === -1 ? "hidden" : "";
         var buildClass = "";
+        var stickSearchFilterTop = (this.isClientMobile() && this.state.isMobileSearchShowing);
         return (
             <div>
                 <div id="sidebar" className={sidebarClass}>
@@ -779,6 +790,7 @@ var DeckBuilder = React.createClass({
                         { backButtonMobile }
                         <button onClick={this.toggleBuildView.bind(this, false, "edit-button")} name="publish" type="submit" className={"btn inline narrow"}><i className="fa fa-pencil" aria-hidden="true"></i> EDIT DECK</button>
                         <button name="publish" type="submit" className="btn inline wide"><i className="fa fa-check" aria-hidden="true"></i> SAVE DECK</button>
+                        { searchButtonMobile }
                     </div>
                     <div className="dual-tab-wrapper">
                         <div className="dual-tab-tabs">
@@ -829,12 +841,11 @@ var DeckBuilder = React.createClass({
                             </div>
                         </div>
                         <HeroPanel showAffinityFilter={false} heroes={HEROES} isActive={this.state.heroPanelActive} onHeroSelected={this.onHeroPanelSelectedHero} />
-                        <div className="p">
-                            Write a short description about your deck. What team compositions might you use this deck against? Under what situations would you use the different builds? Click here to edit the description text.
-                        </div>
+                        <textarea className={"p " + (!this.state.heroPanelActive ? "pull-up" : "") } ref="deckDescriptionInput" placeholder="Enter a short description about your deck, what team compositions might you use this deck against? Under what situations would you use the different builds?">
+                        </textarea>
                         <div id="cards-feed" className={ this.state.showCardSection ? "" : "hidden" }>
                             <CardsFeed forceRedraw={true}
-                                       stickTopOnMobile={this.isClientMobile()}
+                                       stickTopOnMobile={stickSearchFilterTop}
                                        affinities={this.getAffinities()}
                                        tooltip={this.tooltip}
                                        cards={CARDS.allCards}
