@@ -172,12 +172,6 @@
 #deck-builder {
     position: relative;
 
-    .prevent-scroll {
-        pointer-events: none;
-        overflow: hidden;
-        position: relative;
-    }
-
     .subtext {
         color: #5a606f;
         font-family: "Roboto Condensed", sans-serif, Arial;
@@ -214,9 +208,9 @@
             &.mobile-full {
                 z-index: 1000;
                 position: relative;
-                top: 60px;
+                top: 0px;
                 height: 50px;
-                width: 93%;
+                width: 100%;
                 display: block;
                 margin: 15px auto 30px auto;
                 color: $faded-line;
@@ -504,7 +498,14 @@
                     #back-button-mobile {
                         display: inline-block;
                         font-family: Roboto Condensed;
-                        padding: 13px 15px;
+                        padding: 11px 15px;
+                        font-size: 12px;
+
+                        i {
+                            font-size: 18px;
+                            top: 3px;
+                            position: relative;
+                        }
                     }
 
                     .btn.inline.narrow {
@@ -611,8 +612,12 @@
                                             padding: 22px 10px;
                                             border: 1px solid #212735;
 
+                                            &.selected {
+                                                border: 1px solid $tertiary-highlight;
+                                            }
+
                                             &.intro-row {
-                                                font-size: 1.25em;
+                                                font-size: 1.15em;
                                             }
                                         }
                                     }
@@ -732,16 +737,19 @@
                                 min-width: 108px;
                                 min-height: 144px;
                                 max-width: 108px;
+                                max-height: 144px;
                             }
                             .glow-layer {
                                 min-width: 108px;
                                 min-height: 144px;
                                 max-width: 108px;
+                                max-height: 144px;
                             }
                             .placed-card {
                                 min-width: 108px;
                                 min-height: 144px;
                                 max-width: 108px;
+                                max-height: 144px;
                                 background-size: 108px 144px;
                             }
                         }

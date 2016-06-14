@@ -30,11 +30,12 @@ var CardsFeed = React.createClass({
     },
     render: function() {
         var title = this.props.showTitle ? <h1>Paragon Cards</h1> : "";
+        var stickTop = this.props.stickTopOnMobile ? "fixed" : "";
         return(
             <div>
                 { title }
-                <div id="filter">
-                    <CardsFilter
+                <div id="filter" className={stickTop}>
+                    <CardsFilter stickTopOnMobile={this.props.stickTopOnMobile || null}
                                  forceRedraw={this.props.forceRedraw || null}
                                  affinities={this.props.affinities || null}
                                  tooltip={this.props.tooltip || null}

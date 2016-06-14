@@ -73,20 +73,33 @@ var DeckBuilder = React.createClass({
         this.notificationPanel = new Notification();
         this.notificationPanel.initialiseNotifications();
     },
+    updateViewForDimensions: function() {
+        var selectedCardWrapper = document.querySelector("#selected-card-wrapper");
+        if(!this.isClientMobile()) {
+            document.body.className = "";
+            if(selectedCardWrapper) {
+                selectedCardWrapper.className = "";
+            }
+        } else {
+            if(selectedCardWrapper && this.state.selectedCard) {
+                selectedCardWrapper.className = "visible";
+            }
+            if(this.state.activeTab === -1) {
+                this.setState({ activeTab : 0 });
+            }
+        }
+    },
     componentDidUpdate: function() {
         this.hideTooltip();
         if(this.lastHoveredCard) {
             this.setTooltipContent(this.lastHoveredCard);
         }
-        console.log("CHECKING TAB STATE")
         if(this.isClientMobile()) {
             if(this.state.activeTab !== -1) {
-                console.log("SETTING BODY CLASS NAME TO no-scroll")
                 if(typeof document.body.className === "undefined" || document.body.className === "") {
                     document.body.className = "no-scroll";
                 }
             } else {
-                console.log("REMOVING NO SCROLL CLASS")
                 if(typeof document.body.className === "undefined" || document.body.className === "no-scroll"){
                     document.body.className = "";
                 }
@@ -186,7 +199,7 @@ var DeckBuilder = React.createClass({
         event.preventDefault();
         var elem = event.target;
 
-        if(elem.className !== "fa fa-trash" && elem.className !== "delete-icon") {
+        if(elem.className !== "fa fa-trash" && elem.className !== "delete-icon" && elem.className.indexOf("delete-build-wrapper") < 0) {
 
             /* PREVENT CARD SELECTION
             var disableSelectedCard = false;
@@ -195,19 +208,24 @@ var DeckBuilder = React.createClass({
             }
             */
 
-            // TODO WORK ON THIS ITS REALLY BUGGY
             if(this.placementSlotIndex != -1 && this.isClientMobile()) {
                 this.hideSelectedCardPopup();
                 this.setState({selectedCard: null, playFlashAnimation: false, activeTab: -1});
             }
+
 
             if(((this.state.selectedCard && this.state.selectedCard.code == card.code) || card.type === "three")) {
                 this.hideSelectedCardPopup();
                 this.setState({selectedCard: null, playFlashAnimation: false});
             } else {
                 this.showSelectedCardPopup();
-                this.setState({selectedCard: card, playFlashAnimation: false});
+                var activeTab = this.state.activeTab;
+                if(this.state.isBuildsPanelShowing && this.isClientMobile()) {
+                    activeTab = -1;
+                }
+                this.setState({selectedCard: card, playFlashAnimation: false, activeTab: activeTab});
             }
+
         }
     },
     deleteCardFromDeck : function(cardToDelete, event) {
@@ -245,9 +263,24 @@ var DeckBuilder = React.createClass({
         });
     },
     renderDeckList: function() {
+
+        var editDeckButton = "";
+        if(this.isClientMobile() && (this.state.isBuildsPanelShowing)) {
+            editDeckButton = (
+                <button onClick={this.toggleBuildView.bind(this, false, "edit-button-mobile")}
+                        name="publish"
+                        type="submit"
+                        className={"btn mobile-full"}
+                >
+                    <i className="fa fa-pencil" aria-hidden="true"></i> EDIT DECK
+                </button>
+            );
+        }
+
         if(this.state.deck.length === 0) {
             return (
                 <div className={ "sidebox panel cf" + this.isActiveTab(0) }>
+                    { editDeckButton }
                     <ul className="deck-list">
                         <li key="no_cards">
                             <div className="wrapper intro-row">
@@ -261,6 +294,7 @@ var DeckBuilder = React.createClass({
         if(this.isClientMobile() && this.deckOptionFilter && this.deckOptionFilter === "UPGRADES") {
             return(
                 <div className={ "sidebox panel cf" + this.isActiveTab(0) }>
+                    { editDeckButton }
                     <span className="subtext">UPGRADE</span>
                     <ul className="deck-list">
                         {this.getCardsInDeck(["two"])}
@@ -270,6 +304,7 @@ var DeckBuilder = React.createClass({
         } else {
             return (
                 <div className={ "sidebox panel cf" + this.isActiveTab(0) }>
+                    { editDeckButton }
                     <span className="subtext">PRIME HELIX</span>
                     <ul className="deck-list">
                         {this.getCardsInDeck(["three"])}
@@ -293,6 +328,12 @@ var DeckBuilder = React.createClass({
                 if(slot.card !== null) {
                     if(slot.card.code === card.code) {
                         finalQuantity = (finalQuantity+1 > card.quantity) ? card.quantity : finalQuantity+1;
+                    } else if(card.type === "two") {
+                        slot.upgrades.forEach(function(upgradeCard) {
+                            if(upgradeCard.card && upgradeCard.card.code === card.code) {
+                                finalQuantity = (finalQuantity+1 > card.quantity) ? card.quantity : finalQuantity+1;
+                            }
+                        });
                     }
                 }
             });
@@ -369,21 +410,49 @@ var DeckBuilder = React.createClass({
     selectBuild: function(build, event) {
         event.preventDefault();
         var elem = event.target;
-        if(elem.className !== "fa fa-trash" && elem.className !== "delete-icon") {
+        if(elem.className !== "fa fa-trash" && elem.className !== "delete-icon" && elem.className.indexOf("delete-build-wrapper") < 0) {
             var newActiveTab = this.state.activeTab;
             if(this.state.selectedBuild === build) {
                 newActiveTab = 0;
             }
-            if(this.isClientMobile()) {
+            if(this.isClientMobile() && (build === this.state.selectedBuild)) {
                 newActiveTab = -1;
             }
             this.setState({selectedBuild: build, playFlashAnimation: false, isBuildsPanelShowing: true, activeTab: newActiveTab });
+        }
+    },
+    deleteBuild: function(build, event) {
+        event.preventDefault();
+        if(this.state.selectedBuild.code === build.code) {
+            var newActiveTab = this.state.activeTab;
+            var buildsPanelShowing = this.state.isBuildsPanelShowing;
+            var newSelectedBuild = null;
+            var newBuilds = [];
+            this.state.builds.forEach(function(oldBuild) {
+                if(oldBuild.code !== build.code) {
+                    newBuilds.push(oldBuild);
+                }
+            });
+            if(newBuilds.length === 0) {
+                newActiveTab = 0;
+                buildsPanelShowing = false;
+                newSelectedBuild = null;
+                if(this.isClientMobile()) {
+                    newActiveTab = -1;
+                }
+            } else {
+                newSelectedBuild = newBuilds[0];
+                newActiveTab = 1;
+            }
+
+            this.setState({ builds: newBuilds, selectedBuild: newSelectedBuild, activeTab: newActiveTab, isBuildsPanelShowing: buildsPanelShowing });
         }
     },
     getBuilds: function() {
         var buildList = this.state.builds.map(function(build) {
             var className = "";
             var childClassName = "";
+            var deleteWrapperClass = "";
             if(this.state.selectedBuild !== null) {
                 /*
                 if(this.state.lastSelectedBuild !== null && (this.state.lastSelectedBuild.code === build.code && this.state.playFlashAnimation)) {
@@ -393,6 +462,7 @@ var DeckBuilder = React.createClass({
                 */
                 if(this.state.selectedBuild.code === build.code) {
                     childClassName += " selected";
+                    deleteWrapperClass = " visible";
                 }
             }
             var wrapperBackgroundImageURL = "";
@@ -423,6 +493,7 @@ var DeckBuilder = React.createClass({
                 )
             }.bind(this));
 
+
             return (
                 <li className={"build-item " + className}
                     key={build.code}
@@ -430,6 +501,10 @@ var DeckBuilder = React.createClass({
                 >
                     <div className={ "wrapper with-background " + childClassName } style={{ backgroundImage : "url(" + wrapperBackgroundImageURL + ")" }}>
                         <span className="title">{build.title === "" ? "UNTITLED DECK" : build.title} <span className="subtext">{build.cost}CP</span></span>
+                        <span className={"delete-build-wrapper " + deleteWrapperClass}
+                              onClick={this.deleteBuild.bind(this, build)}
+                        >
+                            <i className="fa fa-trash"></i></span>
                         <div className="slot-icon-container">
                             { slotIcons }
                         </div>
@@ -686,30 +761,17 @@ var DeckBuilder = React.createClass({
         var tmpPlacementSlotIndex = this.placementSlotIndex;
         //this.placementSlotIndex = -1;
 
-        var editDeckButton = "";
         var backButtonMobile = "";
         if(this.isClientMobile() && (this.state.isBuildsPanelShowing)) {
-            editDeckButton = (
-                <button onClick={this.toggleBuildView.bind(this, false, "edit-button-mobile")}
-                        name="publish"
-                        type="submit"
-                        className={"btn mobile-full"}
-                >
-                    <i className="fa fa-pencil" aria-hidden="true"></i> EDIT DECK
-                </button>
-            );
             backButtonMobile = (
                 <div id="back-button-mobile" onClick={this.toggleBuildView.bind(this, false)}>
-                    <i className="fa fa-angle-left" aria-hidden="true"></i> BACK
+                    <i className="pgg pgg-arrow-left" aria-hidden="true"></i> BACK
                 </div>
             );
         }
 
         var sidebarClass = this.state.activeTab === -1 ? "hidden" : "";
         var buildClass = "";
-        if(this.isClientMobile() && this.state.activeTab > -1) {
-            buildClass += " prevent-scroll";
-        }
         return (
             <div>
                 <div id="sidebar" className={sidebarClass}>
@@ -735,7 +797,6 @@ var DeckBuilder = React.createClass({
                             <div className={"mobile-header " + this.isActiveTab(0)} onClick={this.setActiveTab.bind(this, -1, null)}>
                                 <span>YOUR DECK <i className="fa fa-close" /></span>
                             </div>
-                            { editDeckButton }
                             {this.renderDeckList()}
                         </div>
                         <div className="dual-tab-panel">
@@ -773,6 +834,7 @@ var DeckBuilder = React.createClass({
                         </div>
                         <div id="cards-feed" className={ this.state.showCardSection ? "" : "hidden" }>
                             <CardsFeed forceRedraw={true}
+                                       stickTopOnMobile={this.isClientMobile()}
                                        affinities={this.getAffinities()}
                                        tooltip={this.tooltip}
                                        cards={CARDS.allCards}
@@ -784,7 +846,7 @@ var DeckBuilder = React.createClass({
                 </div>
                 <div className={"build-builder wrapper " + (this.state.isBuildsPanelShowing ? "" : "hidden") + buildClass}>
                     <div id="back-button" onClick={this.toggleBuildView.bind(this, false)}>
-                        <i className="fa fa-angle-left" aria-hidden="true"></i> BACK TO DECK BUILDER
+                        <i className="pgg pgg-arrow-left" aria-hidden="true"></i> BACK TO DECK BUILDER
                     </div>
                     {
                         this.state.selectedBuild ? (

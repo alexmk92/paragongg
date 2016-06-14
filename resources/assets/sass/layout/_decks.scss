@@ -52,12 +52,31 @@
                 background: rgba(0, 0, 0, 0.75);
                 transition: background 250ms ease-in-out;
             }
+
+            .delete-build-wrapper {
+                display: none;
+                right: 0;
+                font-size: 18px;
+                top: 0;
+                color: white;
+                position: absolute;
+                background: $primary-highlight;
+                padding: 40px 10px;
+                height: 100%;
+
+                &.visible {
+                    display: inline-block;
+                    z-index: 10;
+                }
+            }
         }
     }
 
     .slot-icon-container {
         height: 50px;
         position: relative;
+        left: 5px;
+        z-index: 1;
 
         .slot-icon-wrapper {
             display: inline-block;
@@ -248,8 +267,35 @@
 @media screen and (max-width: $media-tablet) {
     .deck-list {
         li {
+            .title {
+                left: -10px;
+            }
             .delete-icon {
                 width: 60px;
+            }
+        }
+    }
+}
+
+// iPHONE 5 and small phones
+@media screen and (max-width: 350px) {
+    .sidebox {
+        .deck-list {
+            .slot-icon-container {
+
+                .slot-icon-wrapper {
+                    width: 28px ;
+                    height: 28px;
+                    top: 20px;
+
+                    .slot-icon {
+
+                    }
+
+                    .upgrade-badge {
+
+                    }
+                }
             }
         }
     }
