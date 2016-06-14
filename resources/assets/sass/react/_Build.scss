@@ -22,6 +22,7 @@ $placed-card-width : 141px;
             min-width: $placed-card-width;
             min-height: $placed-card-height;
             padding-top: 0px;
+            margin-bottom: 60px;
 
             &:hover {
                 opacity: 0.6;
@@ -217,7 +218,6 @@ $placed-card-width : 141px;
                         text-align: center;
 
                         li {
-                            margin-bottom: 30px;
                             margin-right: 5px;
                         }
                     }

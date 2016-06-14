@@ -533,12 +533,12 @@ var DeckBuilder = React.createClass({
                 code : "build_" + Helpers.uuid(),
                 title : "",
                 slots: [
-                    { type: "",  card : null, upgrades : [], occupied: false, buttonsVisible: false },
-                    { type: "",  card : null, upgrades : [], occupied: false, buttonsVisible: false },
-                    { type: "",  card : null, upgrades : [], occupied: false, buttonsVisible: false },
-                    { type: "",  card : null, upgrades : [], occupied: false, buttonsVisible: false },
-                    { type: "", card : null, upgrades : [], occupied: false, buttonsVisible: false },
-                    { type: "", card : null, upgrades : [], occupied: false, buttonsVisible: false }
+                    { type: "Active",  card : null, upgrades : [], occupied: false, buttonsVisible: false },
+                    { type: "Active",  card : null, upgrades : [], occupied: false, buttonsVisible: false },
+                    { type: "Active",  card : null, upgrades : [], occupied: false, buttonsVisible: false },
+                    { type: "Active",  card : null, upgrades : [], occupied: false, buttonsVisible: false },
+                    { type: "Passive", card : null, upgrades : [], occupied: false, buttonsVisible: false },
+                    { type: "Passive", card : null, upgrades : [], occupied: false, buttonsVisible: false }
                 ],
                 cost: 0
             };
