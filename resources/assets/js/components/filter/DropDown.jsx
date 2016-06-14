@@ -8,8 +8,10 @@ var DropDown = React.createClass({
         };
     },
     optionClicked: function(option) {
+        console.log("SETTING OPTION: ", option);
         option.checked = !option.checked;
         this.props.onOptionChanged(option);
+        this.forceUpdate();
     },
     // If the body is clicked anywhere but this element, then dismiss
     dismissMenuOnElementClick: function(event) {
@@ -48,16 +50,21 @@ var DropDown = React.createClass({
         this.setState({ isVisible : !this.state.isVisible });
     },
     render: function() {
+        /*
+         <input type="checkbox"
+         defaultChecked={ option.checked }
+         onChange={function() { this.optionClicked(option) }.bind(this) }
+         />
+         */
+
         var active = this.state.isVisible ? "active" : "";
         var options = this.props.options.map(function(option) {
             return (
                 <li className={ "cols-" + this.props.columns }
-                    key={option.name}>
-                    <input type="checkbox"
-                           defaultChecked={ option.checked }
-                           onChange={function() { this.optionClicked(option) }.bind(this) }
-                    />
-                    <span>
+                    key={option.name}
+                    onClick={ this.optionClicked.bind(this, option) }
+                >
+                    <span className={ "option " + (option.checked ? "checked" : "") }>
                         <i className={ "pgg " + option.iconName } />
                         { option.name.toUpperCase() }
                     </span>

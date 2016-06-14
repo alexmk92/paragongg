@@ -147,10 +147,20 @@
             padding-left: 15px;
             padding-right: 15px;
             li {
+                cursor: pointer;
                 line-height: 1.3em;
                 position: relative;
                 display: inline-block;
                 padding: 0px 10px;
+
+                .option {
+                    padding-left: 10px;
+                    border-left: 3px solid $faded-line;
+
+                    &.checked {
+                        border-left: 3px solid $secondary-highlight;
+                    }
+                }
 
                 &.cols-1 {
                     width: 100%;
@@ -159,7 +169,7 @@
                     width: 49%;
                 }
                 i {
-                    font-size: 18px !important;
+                    font-size: 24px !important;
                     padding-right: 4px;
                 }
                 input {

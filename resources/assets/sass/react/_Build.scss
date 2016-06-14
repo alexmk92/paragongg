@@ -225,3 +225,12 @@ $placed-card-width : 141px;
         }
     }
 }
+
+@media screen and (max-width: 350px) {
+    .delete-wrapper {
+        i {
+            font-size: 28px !important;
+            margin-top: 60px !important;
+        }
+    }
+}
