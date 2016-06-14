@@ -576,7 +576,7 @@ var DeckBuilder = React.createClass({
         var newSelectedCard = deselectSelectedCard ? null : this.state.selectedCard;
         var newActiveTab = this.state.activeTab;
         newBuilds[buildIndex] = newBuild;
-
+        
         if(disableSelected) newSelectedCard = null;
 
         // Was a mobile device

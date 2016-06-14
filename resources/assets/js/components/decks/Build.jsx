@@ -17,7 +17,7 @@ var Build = React.createClass({
         this.updateBuildsWithNewDeck();
         // Perform a quick bind on the selected card
         if(this.props.shouldQuickBindCards) {
-            //this.quickBind(this.props.selectedCard);
+            this.quickBind(this.props.selectedCard);
         }
         this.renderQueuedCards();
     },
@@ -41,11 +41,10 @@ var Build = React.createClass({
     buildUpdated: function(newBuild, lastModifiedSlot, deselectSelectedCard, toggleQuickBind, activeTab) {
         if(lastModifiedSlot === null)
             lastModifiedSlot = this.lastModifiedSlot;
-        if(toggleQuickBind === null || typeof toggleQuickBind === "undefined")
-            toggleQuickBind = this.props.shouldQuickBindCards;
+        if(toggleQuickBind !== true)
+            toggleQuickBind = false;
 
         //this.lastSelectedCard = this.props.selectedCard;
-        console.log("THE LAST MODDED SLOT WAS: " + lastModifiedSlot);
         var hasQuantity = this.validateQuantity(true);
 
         this.props.onBuildChanged(newBuild, lastModifiedSlot, deselectSelectedCard, toggleQuickBind, !hasQuantity, activeTab);
@@ -72,7 +71,7 @@ var Build = React.createClass({
                         }.bind(this));
 
                         newBuild.slots = newSlots;
-                        this.buildUpdated(newBuild, slotIndex, false, null);
+                        this.buildUpdated(newBuild, slotIndex, this.props.shouldQuickBindCards, null);
                     }
                     // Check for cards that had a multi delete
                     else if(this.props.deck.indexOf(slot.card) > -1) {
@@ -100,7 +99,7 @@ var Build = React.createClass({
                                 newBuild.slots = newSlots;
 
                                 lastOfTypeRemoved = true;
-                                this.buildUpdated(newBuild, slotIndex, false, null);
+                                this.buildUpdated(newBuild, slotIndex, this.props.shouldQuickBindCards, null);
                             }
                         }
                     }
@@ -140,7 +139,7 @@ var Build = React.createClass({
                         newBuild = this.props.build;
                         if(newBuild.slots.indexOf(slot) > -1) {
                             newBuild.slots[newBuild.slots.indexOf(slot)].upgrades[deletedSlotIndex].card = null;
-                            this.buildUpdated(newBuild, slotIndex, false, null);
+                            this.buildUpdated(newBuild, slotIndex, this.props.shouldQuickBindCards, null);
                         }
                     }
                 }
@@ -163,7 +162,7 @@ var Build = React.createClass({
                         }.bind(this));
 
                         newBuild.slots = newSlots;
-                        this.buildUpdated(newBuild, slotIndex, false, null);
+                        this.buildUpdated(newBuild, slotIndex, this.props.shouldQuickBindCards, null);
                     }
                 }
             }.bind(this));
@@ -260,7 +259,7 @@ var Build = React.createClass({
                     var slotIndex = newBuild.slots.indexOf(upgradeSlot);
                     if (slotIndex > -1 && this.props.selectedCard) {
                         newBuild.slots[newBuild.slots.indexOf(upgradeSlot)].upgrades[nextAvailableSlot].card = this.props.selectedCard;
-                        this.buildUpdated(newBuild, slotIndex, true, null);
+                        this.buildUpdated(newBuild, slotIndex, this.props.shouldQuickBindCards, null);
                     }
                 }
             }
@@ -281,7 +280,7 @@ var Build = React.createClass({
                     }
                 }.bind(this));
                 newBuild.slots = newSlots;
-                this.buildUpdated(newBuild, lastModdedSlot, true, null);
+                this.buildUpdated(newBuild, lastModdedSlot, this.props.shouldQuickBindCards, null);
             }
         }
     },
@@ -299,7 +298,7 @@ var Build = React.createClass({
             }
             return oldSlot;
         }.bind(this));
-        this.buildUpdated(newBuild, lastModdedSlot, false, null);
+        this.buildUpdated(newBuild, lastModdedSlot, this.props.shouldQuickBindCards, null);
     },
     invokeNotification: function(type, message) {
         this.props.selectedCard = null;
@@ -355,12 +354,10 @@ var Build = React.createClass({
 
             if((this.props.selectedCard && typeof this.props.selectedCard !== "undefined")) {
                 if((type === this.props.selectedCard.type || this.props.selectedCard.type === "zero")) {
-                    /*
-                    if(!this.props.shouldQuickBindCards) {
 
+                    if(!this.props.shouldQuickBindCards) {
+                        activeClass = (slot.card === null) ? "active-slot " : "";
                     }
-                    */
-                    activeClass = (slot.card === null) ? "active-slot " : "";
 
                     if (this.props.lastModifiedSlot === i) {
                         cardPulse = "pulse-glow";
@@ -596,7 +593,7 @@ var Build = React.createClass({
                     activeTab = -1;
                 }
 
-                this.buildUpdated(newBuild, index, false, activeTab);
+                this.buildUpdated(newBuild, index, this.props.shouldQuickBindCards, activeTab);
             }
         }
 
@@ -608,7 +605,7 @@ var Build = React.createClass({
             var newBuild = this.props.build;
             newBuild.title = value;
 
-            this.buildUpdated(newBuild, this.lastModifiedSlot, false, null);
+            this.buildUpdated(newBuild, this.lastModifiedSlot, this.props.shouldQuickBindCards, null);
         }
     },
     /* TOOLTIP METHODS */
