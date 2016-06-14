@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Hero;
 use App\Http\Requests;
+use App\Jobs\UpdateHeroImage;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 
 class HeroController extends Controller

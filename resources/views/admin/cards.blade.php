@@ -6,7 +6,7 @@
         <h1>Cards</h1>
         <hr>
         <a class="btn" href="/admin/maintenance/update-cards"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Update cards database</a>
-        <a class="btn" href="/admin/maintenance/update-cards?update_images=true"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Update card images</a>
+        <a class="btn" href="/admin/maintenance/update-cards-images"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Update card images</a>
         <hr>
         <table class="minimal">
             <thead>

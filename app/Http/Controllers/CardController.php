@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Card;
 use App\Http\Requests;
+use App\Jobs\UpdateCardImage;
 use App\Jobs\UpdateCardObject;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
