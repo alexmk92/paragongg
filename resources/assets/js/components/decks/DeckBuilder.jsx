@@ -89,7 +89,7 @@ var DeckBuilder = React.createClass({
             this.setTooltipContent(this.lastHoveredCard);
         }
         if(this.isClientMobile()) {
-            if(this.state.activeTab !== -1) {
+            if(this.state.activeTab !== -1 || this.state.isMobileSearchShowing) {
                 if(typeof document.body.className === "undefined" || document.body.className === "") {
                     document.body.className = "no-scroll";
                 }
@@ -769,12 +769,9 @@ var DeckBuilder = React.createClass({
                     </div>
                 );
             } else if(!this.state.heroPanelActive) {
-                var info = <span><i className="fa fa-search" aria-hidden="true"></i> SEARCH CARDS</span>;
-                if(this.state.isMobileSearchShowing)
-                    info = <span><i className="fa fa-minus" aria-hidden="true"></i> HIDE SEARCH CARDS</span>
                 searchButtonMobile = (
                     <button id="search-button-mobile" name="search-cards" type="submit" onClick={this.toggleSearchFilter}>
-                        { info }
+                        <i className="fa fa-search" aria-hidden="true"></i> SEARCH CARDS
                     </button>
                 );
             }
@@ -851,6 +848,7 @@ var DeckBuilder = React.createClass({
                                        cards={CARDS.allCards}
                                        cardsRedirectOnClick={false}
                                        onCardClicked={this.addCard}
+                                       onDismissFilter={this.toggleSearchFilter}
                             />
                         </div>
                     </div>
