@@ -130,7 +130,7 @@ $placed-card-width : 141px;
                     font-weight: 600;
                     width: 100%;
                     text-align: center;
-                    padding: 10px 5px;
+                    padding: 16px 5px;
                     border: 1px solid #232a38;
                     transition: all 250ms ease-in-out;
                     background-size: 100%;
@@ -218,6 +218,7 @@ $placed-card-width : 141px;
 
                         li {
                             margin-bottom: 30px;
+                            margin-right: 5px;
                         }
                     }
                 }
