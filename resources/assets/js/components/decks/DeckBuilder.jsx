@@ -40,6 +40,18 @@ var DeckBuilder = React.createClass({
 
         window.addEventListener("resize", this.updateViewForDimensions);
 
+        // HANDLE STICKY BAR
+        var sidebar = document.querySelector("#sidebar");
+        if(sidebar) {
+            sidebar.addEventListener("mouseleave", function() {
+                console.log("BLURRED")
+                document.body.className = "";
+            });
+            sidebar.addEventListener("scroll", function() {
+                document.body.className = "no-scroll";
+            });
+        }
+
         var textareaA = document.querySelector('textarea.h2');
         var textareaB = document.querySelector('textarea.p');
         textareaA.addEventListener('keydown', autosize);
@@ -66,23 +78,40 @@ var DeckBuilder = React.createClass({
         // Replace the current notification panel.
         this.notificationPanel = new Notification();
         this.notificationPanel.initialiseNotifications();
+        this.updateViewForDimensions();
     },
     updateViewForDimensions: function() {
+        var sidebar = document.querySelector("#sidebar");
         var selectedCardWrapper = document.querySelector("#selected-card-wrapper");
+
         if(!this.isClientMobile()) {
             document.body.className = "";
             if(selectedCardWrapper) {
                 selectedCardWrapper.className = "";
             }
+            if(sidebar) {
+                sidebar.className = "fixed-desktop";
+
+                // COMPUTE THE RIGHT HAND MARGIN
+                var containerRect = document.querySelector("#deck-builder").getBoundingClientRect();
+
+                console.log(containerRect);
+                var newRight = (containerRect.right - containerRect.width) - 20;
+                sidebar.style.right = newRight + "px";
+            }
             if(this.state.activeTab === -1) {
                 this.setState({ activeTab : 0 });
             }
-            //this.forceUpdate();
         } else {
+            if(sidebar) {
+                sidebar.className = "";
+                sidebar.style.right = "0";
+            }
             if(selectedCardWrapper && this.state.selectedCard) {
                 selectedCardWrapper.className = "visible";
             }
         }
+        this.setFooterHeight();
     },
     componentDidUpdate: function() {
         this.hideTooltip();
@@ -99,6 +128,21 @@ var DeckBuilder = React.createClass({
                     document.body.className = "";
                 }
             }
+        }
+        // Update the footer style so we can keep animation
+        this.setFooterHeight();
+    },
+    setFooterHeight: function() {
+        var footer = document.querySelector("footer");
+        if(this.state.isBuildsPanelShowing) {
+            var buildWindow = document.querySelector("#builds-wrapper");
+            if(footer && buildWindow) {
+                var buildBottom = buildWindow.getBoundingClientRect().bottom;
+                var footerHeight = footer.getBoundingClientRect().height;
+                footer.style.top = (buildBottom + footerHeight) + "px";
+            }
+        } else {
+            footer.style.top = "100%";
         }
     },
     componentWillUpdate: function(nextProps, nextState) {
@@ -165,7 +209,6 @@ var DeckBuilder = React.createClass({
     },
     addCard: function(selectedCard, event) {
         if(this.deckCount() < 40) {
-
             if(!selectedCard.quantity)
                 selectedCard.quantity = 1;
             var newDeck = [];

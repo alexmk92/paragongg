@@ -9,7 +9,7 @@ $placed-card-width : 141px;
         margin-top: 50px;
 
         &.upgrades-showing {
-            margin-bottom: 120px;
+            //margin-bottom: 120px;
         }
 
         li {
@@ -122,6 +122,7 @@ $placed-card-width : 141px;
                 height: 100%;
                 right: 0;
                 margin-top: 10px;
+                transition: all 200ms ease-in-out;
 
                 .upgrade-slot {
                     font-size: 12px;
