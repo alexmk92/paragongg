@@ -120,14 +120,14 @@ canvas {
                 padding: 0px 10px;
                 display: inline-block;
                 vertical-align: top;
-                img {
+                i {
                     vertical-align: middle;
+                    font-size: 42px;
                 }
                 span {
+                    font-size: 1.2em;
                     display: inline-block;
-                    margin-left: 10px;
-                    top: 2px;
-                    position: relative;
+                    margin-left: 12px;
                 }
             }
             #rarity-container {

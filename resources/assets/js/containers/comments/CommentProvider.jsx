@@ -1,12 +1,12 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
-var CommentFeed = require('./../containers/CommentFeed.js');
+var CommentFeed = require('./CommentFeed');
 var Provider = require('react-redux').Provider;
 var createStore = require("redux").createStore;
 var applyMiddleware = require("redux").applyMiddleware;
 var ReduxPromise = require('redux-promise');
 
-var reducers = require('../reducers/index');
+var reducers = require('../../reducers/index');
 
 // Render the component
 var element = document.querySelector('#comment-feed');
