@@ -203,6 +203,25 @@
         width: 29%;
         max-width: 400px;
 
+        &.fixed-desktop {
+            position: fixed;
+            right: 5%;
+            overflow-y: scroll;
+            padding-bottom: 90px;
+
+            // SCROLL BAR
+            ::-webkit-scrollbar {
+                width: 4px;
+            }
+
+            ::-webkit-scrollbar-track {
+            }
+
+            ::-webkit-scrollbar-thumb {
+                background: lighten($panel-color,10%);
+            }
+        }
+
         .btn {
             outline: none;
             &.mobile-full {

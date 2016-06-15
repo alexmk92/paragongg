@@ -25,7 +25,6 @@ var Build = React.createClass({
         return window.innerWidth <= 1050;
     },
     quickBind: function() {
-        console.log("QUICK BINDING")
         var newBuild = this.props.build;
         // CANNOT QUICK BIND UPGRADES
         if(this.props.selectedCard !== null && this.props.selectedCard.type !== "two") {
@@ -453,7 +452,6 @@ var Build = React.createClass({
     },
     requestActiveTab: function(tabIndex, slot, filter, card) {
         this.lastSelectedSlot = slot;
-        console.log("SELECTED CARD: ", card);
         if(typeof filter === "undefined" || filter === null)
             filter = null;
 
@@ -523,7 +521,6 @@ var Build = React.createClass({
             if(!slot.card) {
                 if(Helpers.hasClass(elem, "glow-layer")) this.requestActiveTab(0, index, null);
             } else if(slot.card && this.lastSelectedSlot === index) {
-                console.log(elem);
                 if(Helpers.hasClass(elem, "fa-refresh")) this.requestActiveTab(0, index, slot.card);
                 if(Helpers.hasClass(elem, "upgrade-label") || Helpers.hasClass(elem, "overlay")) this.requestActiveTab(0, index, "UPGRADES", slot.card);
             }

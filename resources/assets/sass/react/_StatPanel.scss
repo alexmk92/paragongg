@@ -48,3 +48,17 @@
         }
     }
 }
+
+@media screen and (max-width: $media-mobile) {
+    #statistic-wrapper {
+        .statistic-panel {
+            width: 100%;
+
+            .statistic-list {
+                li {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
