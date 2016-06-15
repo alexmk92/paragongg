@@ -44,7 +44,6 @@ var DeckBuilder = React.createClass({
         var sidebar = document.querySelector("#sidebar");
         if(sidebar) {
             sidebar.addEventListener("mouseleave", function() {
-                console.log("BLURRED")
                 document.body.className = "";
             });
             sidebar.addEventListener("scroll", function() {
@@ -94,8 +93,6 @@ var DeckBuilder = React.createClass({
 
                 // COMPUTE THE RIGHT HAND MARGIN
                 var containerRect = document.querySelector("#deck-builder").getBoundingClientRect();
-
-                console.log(containerRect);
                 var newRight = (containerRect.right - containerRect.width) - 20;
                 sidebar.style.right = newRight + "px";
             }
@@ -336,7 +333,6 @@ var DeckBuilder = React.createClass({
             )
         }
         if(this.isClientMobile() && this.deckOptionFilter && this.deckOptionFilter === "UPGRADES") {
-            console.log("FILTER IS: " + this.deckOptionFilter + " AND THE SELECTED CARD IS ", this.state.selectedCard);
             return(
                 <div className={ "sidebox panel cf" + this.isActiveTab(0) }>
                     { editDeckButton }
@@ -439,8 +435,6 @@ var DeckBuilder = React.createClass({
                 if(this.state.selectedCard && this.state.selectedCard.type !== "two" && card.type === "two" && this.state.isBuildsPanelShowing) {
                     var cardAffinity = card.affinity.toLowerCase();
                     var selectedAffinity = this.state.selectedCard.affinity.toLowerCase();
-                    console.log("CHECKING IF " + cardAffinity + " CONTAINS universal");
-                    console.log("CHECKING IF " + cardAffinity + " CONTAINS " + selectedAffinity);
                     if(cardAffinity.indexOf("universal") > -1) {
                         cardList.push( cardMarkup );
                     } else if(cardAffinity.indexOf(selectedAffinity) > -1) {
