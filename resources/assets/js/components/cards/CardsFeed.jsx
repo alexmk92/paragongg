@@ -35,7 +35,7 @@ var CardsFeed = React.createClass({
         if(this.props.stickTopOnMobile) {
             doneMobileButton = (
                 <div id="confirm-search-button" onClick={this.props.onDismissFilter}>
-                    <span>DONE SEARCHING</span>
+                    <span>DONE SEARCHING <i className="fa fa-close"></i></span>
                 </div>
             );
         }

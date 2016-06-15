@@ -392,7 +392,7 @@ var Build = React.createClass({
                              onContextMenu={this.removeCardFromSlot.bind(this, i, true)}>
                             <i onClick={this.removeCardFromSlot.bind(this, i, false)} className="fa fa-trash"
                                aria-hidden="true"/>
-                            <i onClick={this.requestActiveTab.bind(this, 0, i)} className="fa fa-refresh"
+                            <i onClick={this.requestActiveTab.bind(this, 0, i, slot.card)} className="fa fa-refresh"
                                aria-hidden="true"/>
                         </div>
                     );
@@ -451,12 +451,13 @@ var Build = React.createClass({
             );
         }.bind(this));
     },
-    requestActiveTab(tabIndex, slot, filter) {
+    requestActiveTab: function(tabIndex, slot, filter, card) {
         this.lastSelectedSlot = slot;
+        console.log("SELECTED CARD: ", card);
         if(typeof filter === "undefined" || filter === null)
             filter = null;
 
-        this.props.requestActiveTab(tabIndex, slot, filter);
+        this.props.requestActiveTab(tabIndex, slot, filter, card);
     },
     validateQuantity: function(surpressNotification) {
         if(this.props.deck && this.props.selectedCard) {
@@ -520,11 +521,11 @@ var Build = React.createClass({
             var slot = this.props.build.slots[index];
             var elem = event.target;
             if(!slot.card) {
-                if(Helpers.hasClass(elem, "glow-layer")) this.requestActiveTab(0, index);
+                if(Helpers.hasClass(elem, "glow-layer")) this.requestActiveTab(0, index, null);
             } else if(slot.card && this.lastSelectedSlot === index) {
                 console.log(elem);
-                if(Helpers.hasClass(elem, "fa-refresh")) this.requestActiveTab(0, index);
-                if(Helpers.hasClass(elem, "upgrade-label") || Helpers.hasClass(elem, "overlay")) this.requestActiveTab(0, index, "UPGRADES");
+                if(Helpers.hasClass(elem, "fa-refresh")) this.requestActiveTab(0, index, slot.card);
+                if(Helpers.hasClass(elem, "upgrade-label") || Helpers.hasClass(elem, "overlay")) this.requestActiveTab(0, index, "UPGRADES", slot.card);
             }
         }
     },
@@ -666,6 +667,22 @@ var Build = React.createClass({
          </li>
          </ul>
          */
+        var panels = "";
+        // ONLY SHOW UPGRADE PANEL ON MOBILE
+        if(this.isClientMobile()) {
+            panels = (
+                <div id="statistic-wrapper">
+                    <StatPanel  />
+                </div>
+            )
+        } else {
+            panels = (
+                <div id="statistic-wrapper">
+                    <StatPanel  />
+                    <StatPanel />
+                </div>
+            )
+        }
         var tooltipMessage = ("Any selected equipment card will automatically be bound to the next available slot, upgrade cards must still need to be manually added to equipment cards.");
         var buildListClass = this.numberOfCardsPlaced() > 0 ? " upgrades-showing" : "";
         return (
@@ -675,10 +692,7 @@ var Build = React.createClass({
                 <ul className={"build-list " + buildListClass }>
                     { this.getBuildSlots() }
                 </ul>
-                <div id="statistic-wrapper">
-                    <StatPanel  />
-                    <StatPanel />
-                </div>
+                { panels }
             </div>
         )
     }
