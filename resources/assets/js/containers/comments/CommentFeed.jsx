@@ -9,30 +9,75 @@ var CommentBox = require('./CommentBox');
 
 var CommentFeed = React.createClass({
     componentWillMount: function() {
-        this.props.fetchComments(1);
+        this.props.fetchComments(THREAD_ID);
     },
-    render: function() {
+    renderComments: function() {
+        var comments = [];
+        var initialCommentCollection = [];
         var author = {
             name : "Alex Sims"
         };
-        console.log("NEW PROPS: ", this.props);
-        var comments = [];
-        this.props.comments.forEach(function(comment) {
-            if(comment.parent_id === 0 || comment.parent_id === null) {
-                comments.push(
-                    <CommentListItem
-                        key={Helpers.uuid()}
-                        comment={comment}
-                        author={ author }
-                        childComments={ this.props.comments }
-                        upVoteComment={ this.props.upVoteComment }
-                    />
-                );
+
+        this.removePendingComments();
+
+        if(this.props.comments.length === 0) {
+            initialCommentCollection = COMMENTS;
+        } else {
+            initialCommentCollection = this.props.comments;
+        }
+        if(initialCommentCollection.length > 0) {
+            initialCommentCollection.forEach(function(comment) {
+                if(comment.parent_id === 0 || comment.parent_id === null) {
+                    comments.push(
+                        <CommentListItem
+                            key={Helpers.uuid()}
+                            comment={comment}
+                            author={ author }
+                            childComments={ this.props.comments }
+                            upVoteComment={ this.props.upVoteComment }
+                        />
+                    );
+                }
+            }.bind(this));
+        }
+        return comments;
+    },
+    removePendingComments: function() {
+        var pendingComment = document.querySelector("#pending-comment");
+        if(pendingComment) {
+            var parentNode = pendingComment.parentNode;
+            if(parentNode) {
+                parentNode.removeChild(pendingComment);
             }
-        }.bind(this));
+        }
+    },
+    appendPendingComment: function(commentContent, parent) {
+
+        var author = {
+            name : "Alex"
+        };
+
+        var tempComment = document.createElement("li");
+        tempComment.className = "comment-item";
+        tempComment.id = "pending-comment";
+
+        tempComment.innerHTML += "<img class='comment-avatar' src='' alt='Your avatar' />";
+        tempComment.innerHTML += "<span class='author-name'>" + author.name + " <span class='created-at'>" + Helpers.prettyDate(new Date())+ "</span></span>";
+        tempComment.innerHTML += "<p class='comment-body'>" + commentContent + "</p>";
+        tempComment.innerHTML += "<a href='#'>Reply</a>";
+        tempComment.innerHTML += "<i class='fa fa-thumbs-up vote-button' aria-hidden='true'><span>0</span></i>";
+        tempComment.innerHTML += "<a class='report' href='#'>Report</a>";
+
+        var commentList = document.querySelector("#comment-list");
+        if(commentList) {
+            commentList.insertBefore(tempComment, commentList.childNodes[0]);
+        }
+    },
+    render: function() {
+        var comments = this.renderComments();
         return (
             <div id="comments-wrapper" className={this.props.className || ""}>
-                <CommentBox isHidden={false}  />
+                <CommentBox isHidden={false} onCommentSubmitted={this.appendPendingComment} postComment={this.props.postComment} />
                 <ul id="comment-list">
                     { comments }
                 </ul>
@@ -55,7 +100,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return Redux.bindActionCreators({
         upVoteComment : Action.upVoteComment,
-        fetchComments : Action.fetchComments
+        fetchComments : Action.fetchComments,
+        postComment : Action.postComment
     }, dispatch)
 }
 // Promote CommentFeed from a component to a container

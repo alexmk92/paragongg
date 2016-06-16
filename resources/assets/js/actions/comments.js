@@ -4,10 +4,10 @@ var Helpers = require('../helpers');
 var ROOT_URL = '/api/v1/comments';
 
 module.exports = {
-    fetchComments: function (threadId) {
+    fetchComments: function (threadId, skip) {
         var request = Helpers.ajax({
             type: "GET",
-            url: ROOT_URL + "/thread/" + threadId,
+            url: ROOT_URL + "/thread/" + threadId + "/fetch/" + skip,
             contentType: "application/json",
             cache: true
         });
@@ -24,36 +24,36 @@ module.exports = {
     upVoteComment: function (comment) {
         // upVoteComment is an ActionCreator, it needs to return an action, an object with a type property
         // the type decribes the action
-        var config = {
-            type : "UPDATE",
+        Helpers.ajax({
+            type : "POST",
             url : ROOT_URL + "/upvote/" + comment.id,
             headers : [{ "X-CSRF-TOKEN" : csrf }],
             contentType: "application/x-www-form-urlencoded",
             cache: false,
             returnType: "json",
-            data: [{"body": comment, "thread_id": 1}]
-        };
+            data: [{"user_id": 1}]
+        });
 
         return {
             type: t.COMMENT_UP_VOTED,
             payload: comment
         }
     },
-    postComment: function (comment, callback) {
-        var config = {
+    postComment: function (comment, threadId) {
+        // This method now returns a promise for us to consume
+        var request = Helpers.ajax({
             type: "POST",
             url: "/api/v1/comments/store",
             headers: [{"X-CSRF-TOKEN": csrf}],
             contentType: "application/x-www-form-urlencoded",
             cache: false,
             returnType: "json",
-            data: [{"body": comment, "thread_id": 1}]
-        };
-        // This method now returns a promise for us to consume
-        Helpers.ajax(config).then(function(data) {
-            callback(null, data);
-        }, function(error) {
-            callback(error, null);
+            data: [{"body": comment, "thread_id": threadId}]
         });
+
+        return {
+            type: t.POSTED_COMMENT,
+            payload: request
+        }
     }
 }

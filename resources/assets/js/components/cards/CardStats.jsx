@@ -1,5 +1,4 @@
 var React    = require('react');
-var Rcslider = require('rc-slider');
 var Helpers  = require('../../helpers');
 var ParticleTheme = require('../../lib/ParticleThemes');
 
@@ -34,7 +33,6 @@ var CardStats = React.createClass({
         }
     },
     componentDidMount: function() {
-        console.log("COLOR: ", this.props.rarity.color);
         particlesJS('particle-layer', ParticleTheme.embers());
     },
     getAffinity: function(str) {
@@ -77,17 +75,14 @@ var CardStats = React.createClass({
         return jsx;
     },
     renderPassives: function() {
-        var _this = this;
         var jsx = "";
         var passives = this.state.passives.map(function(passive, i) {
-            console.log(passive);
             return (
                 <li key={"passive_" + i}>
                     <span><span className="italic">{ passive.type + ": "}</span>{ passive.effect }</span>
                 </li>
             );
         });
-        console.log(passives);
         if(passives.length > 0) {
             jsx = <div className="top-spacer">
                 <span className="stat-header">EFFECTS</span>
@@ -99,11 +94,10 @@ var CardStats = React.createClass({
         return jsx;
     },
     renderUpgradeBonuses: function() {
-        var _this = this;
         var jsx = "";
         var upgradeBonuses = this.state.upgradeBonuses.map(function(upgrade, i) {
-            return _this.getStatistic(upgrade, i, "upgrade")
-        });
+            return this.getStatistic(upgrade, i, "upgrade")
+        }.bind(this));
         if(upgradeBonuses.length > 0) {
             jsx = <div className="top-spacer">
                 <span className="stat-header upgraded">FULLY UPGRADED BONUS</span>

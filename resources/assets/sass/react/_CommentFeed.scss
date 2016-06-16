@@ -97,6 +97,12 @@ $avatar-radius : calc(#{$avatar-width} / 2);
             margin-top: 5px;
             min-height: 95px;
             border-bottom: 1px solid #343a4a;
+            transition: all 200ms ease-in-out;
+
+            &#pending-comment {
+                opacity: 0.5;
+                pointer-events: none;
+            }
 
             &:last-of-type {
                 border-bottom: none;

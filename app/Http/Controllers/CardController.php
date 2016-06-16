@@ -27,8 +27,9 @@ class CardController extends Controller
     {
         $card = Card::where('name', $slug)->firstOrFail();
         $thread = findOrCreateThread($request->path());
+        $comments = $thread->comments;
 
-        return view('cards.show')->with('card', $card)->with('thread', $thread);
+        return view('cards.show')->with('card', $card)->with('threadId', $thread->id)->with('comments', $comments);
     }
 
     public function getCards()

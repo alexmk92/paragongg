@@ -14,12 +14,9 @@ var CommentListItem = React.createClass({
     vote: function() {
         if(!this.state.voted) {
             this.props.upVoteComment(this.props.comment);
-            /*
              this.setState({
-             votes: (this.state.votes + 1),
-             voted: true
+                voted: true
              });
-             */
         }
     },
     report: function() {
