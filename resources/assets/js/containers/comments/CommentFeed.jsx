@@ -35,6 +35,8 @@ var CommentFeed = React.createClass({
                             author={ author }
                             childComments={ this.props.comments }
                             upVoteComment={ this.props.upVoteComment }
+                            onCommentSubmitted={this.appendPendingComment}
+                            postComment={this.props.postComment}
                         />
                     );
                 }
@@ -51,7 +53,7 @@ var CommentFeed = React.createClass({
             }
         }
     },
-    appendPendingComment: function(commentContent, parent) {
+    appendPendingComment: function(commentContent, parentId) {
 
         var author = {
             name : "Alex"
@@ -69,6 +71,9 @@ var CommentFeed = React.createClass({
         tempComment.innerHTML += "<a class='report' href='#'>Report</a>";
 
         var commentList = document.querySelector("#comment-list");
+        if(parentId > 0) {
+            commentList = document.querySelector("#comment-" + parentId + "-child-comments");
+        }
         if(commentList) {
             commentList.insertBefore(tempComment, commentList.childNodes[0]);
         }
@@ -77,7 +82,7 @@ var CommentFeed = React.createClass({
         var comments = this.renderComments();
         return (
             <div id="comments-wrapper" className={this.props.className || ""}>
-                <CommentBox isHidden={false} onCommentSubmitted={this.appendPendingComment} postComment={this.props.postComment} />
+                <CommentBox rootComment={null} isHidden={false} onCommentSubmitted={this.appendPendingComment} postComment={this.props.postComment} />
                 <ul id="comment-list">
                     { comments }
                 </ul>

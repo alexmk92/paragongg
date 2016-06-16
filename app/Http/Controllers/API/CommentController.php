@@ -30,6 +30,7 @@ class CommentController extends Controller
         $comment = new CommentThreadComment();
         $comment->body = $request->body;
         $comment->thread_id = $request->thread_id;
+        $comment->parent_id = $request->parent_comment_id;
         $comment->user_id = Auth::user()->id;
         $comment->save();
 

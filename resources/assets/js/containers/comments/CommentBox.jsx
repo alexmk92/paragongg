@@ -6,18 +6,23 @@ var CommentBox = React.createClass({
             hasText : false,
             characterCount : 0,
             lineCount : 0,
-            comment : "",
+            commentBody : "",
             posting : false,
             isFocused : false
         }
     },
     post: function(event) {
         event.preventDefault();
-        this.setState({ posting : true });
+        if(!this.childBox)
+            this.setState({ posting : true });
+        else {
+            this.setState({ posting: false })
+        }
         if(this.state.hasText) {
-            this.props.onCommentSubmitted(this.state.comment);
-            this.props.postComment(this.state.comment, THREAD_ID).then(function() {
-                this.setState({ posting : false, comment : "" });
+            var parentId = this.props.childBox === true ? this.props.parentComment.id : 0;
+            this.props.onCommentSubmitted(this.state.commentBody, parentId);
+            this.props.postComment(this.state.commentBody, THREAD_ID, parentId).then(function() {
+                this.setState({ posting : false, commentBody : "" });
             }.bind(this));
         } else {
             this.cancelPost(event);
@@ -26,15 +31,19 @@ var CommentBox = React.createClass({
     },
     cancelPost: function(event) {
         event.preventDefault();
-        this.setState({ posting : false, comment : "" });
+        if(this.props.childBox) {
+            this.props.onCanceledPost();
+        } else {
+            this.setState({ posting : false, commentBody : "" });
+        }
     },
     inputChanged: function(event) {
-        var comment = event.target.value;
+        var commentText = event.target.value;
         this.setState({
-            hasText : comment.trim().length > 0,
-            lineCount : comment.split(/\r|\r\n|\n/).length,
-            characterCount: comment.length,
-            comment : comment
+            hasText : commentText.trim().length > 0,
+            lineCount : commentText.split(/\r|\r\n|\n/).length,
+            characterCount: commentText.length,
+            commentBody : commentText
         });
 
         // See if we need to increase the size
@@ -62,8 +71,8 @@ var CommentBox = React.createClass({
                         onChange={this.inputChanged}
                         id="body"
                         name="body"
-                        placeholder="Enter your comment"
-                        value={this.state.comment}>
+                        placeholder="Enter your comment..."
+                        value={this.state.commentBody}>
                     </textarea>
                         <button
                             className={ buttonClass }
