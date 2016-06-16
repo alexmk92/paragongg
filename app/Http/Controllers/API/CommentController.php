@@ -13,14 +13,19 @@ use PhpParser\Comment;
 
 class CommentController extends Controller
 {
-    public function thread($id, $take)
+    public function thread($id)
     {
-        //$thread = CommentThread::findOrFail($id);
-        //$comments = $thread->comments;
+        $skip = 0;
+        $take = 10;
 
-        // consult with Jamie, is my way of doing this bit ok?!  When I added skip or take it would mess
-        // up on the front end, no array would be returned...
-        $comments = CommentThreadComment::where('thread_id', $id)->orderBy('created_at', 'desc')->get();
+        if(isset($_GET['skip'])) $skip = $_GET['skip'];
+        if(isset($_GET['take'])) $take = $_GET['take'];
+
+        $comments = CommentThreadComment::where('thread_id', $id)
+            ->orderBy('created_at', 'desc')
+            ->skip($skip)
+            ->take($take)
+            ->get();
 
         return response()->json($comments);
     }
