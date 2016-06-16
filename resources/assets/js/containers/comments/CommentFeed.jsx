@@ -12,24 +12,24 @@ var CommentFeed = React.createClass({
         this.props.fetchComments(1);
     },
     render: function() {
-        var _this = this;
         var author = {
             name : "Alex Sims"
         };
+        console.log("NEW PROPS: ", this.props);
         var comments = [];
         this.props.comments.forEach(function(comment) {
-            if(comment.parent_id === 0) {
+            if(comment.parent_id === 0 || comment.parent_id === null) {
                 comments.push(
                     <CommentListItem
                         key={Helpers.uuid()}
                         comment={comment}
                         author={ author }
-                        childComments={ _this.props.comments }
-                        upVoteComment={ _this.props.upVoteComment }
+                        childComments={ this.props.comments }
+                        upVoteComment={ this.props.upVoteComment }
                     />
                 );
             }
-        });
+        }.bind(this));
         return (
             <div id="comments-wrapper" className={this.props.className || ""}>
                 <CommentBox isHidden={false}  />
@@ -43,8 +43,10 @@ var CommentFeed = React.createClass({
 
 // Connect to Redux, whatever is returned from here will show up as props within CommentFeed
 function mapStateToProps(state) {
+    console.log("NEW STATE: ", state);
     return {
-        comments : state.comments
+        comments : state.commentsReducer.comments,
+        lastUpVotedComment : state.commentsReducer.lastUpvotedComment
     }
 }
 // Whenever upVoteComment is called, the result should be passed to all of our reducers.

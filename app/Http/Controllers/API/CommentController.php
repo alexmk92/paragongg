@@ -16,7 +16,7 @@ class CommentController extends Controller
     {
         $thread = CommentThread::findOrFail($id);
         $comments = $thread->comments;
-
+        
         return response()->json($comments);
     }
 

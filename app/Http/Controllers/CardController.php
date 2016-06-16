@@ -23,11 +23,12 @@ class CardController extends Controller
     }
 
     // Show
-    public function show($slug)
+    public function show(Request $request, $slug)
     {
         $card = Card::where('name', $slug)->firstOrFail();
+        $thread = findOrCreateThread($request->path());
 
-        return view('cards.show')->with('card', $card);
+        return view('cards.show')->with('card', $card)->with('thread', $thread);
     }
 
     public function getCards()

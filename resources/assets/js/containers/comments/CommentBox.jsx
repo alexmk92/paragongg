@@ -1,4 +1,5 @@
 var React = require("react");
+var Action = require('../../actions/comments');
 
 var CommentBox = React.createClass({
     getInitialState: function() {
@@ -16,9 +17,10 @@ var CommentBox = React.createClass({
         this.setState({ posting : true });
         if(this.state.hasText) {
             Action.postComment(this.state.comment, function(payload) {
+                console.log(payload);
                 //this.props.onCommentRequestRefresh();
                 this.setState({ posting : false, comment : "" });
-            })
+            }.bind(this));
         } else {
             this.cancelPost(event);
             this.setState({ posting : false });
@@ -43,6 +45,9 @@ var CommentBox = React.createClass({
             event.target.style.height = rect.height + 17.5 + "px";
         }
     },
+    toggleFocus: function(isFocused) {
+        this.setState({ isFocused: isFocused});
+    },
     render: function() {
         if(AUTHED) {
             var buttonClass = (!this.state.isFocused && !this.state.posting) ? "hidden" : "";
@@ -54,8 +59,8 @@ var CommentBox = React.createClass({
                              src="https://s.gravatar.com/avatar/bae38bd358b0325c7a3c049a4671a9cf?s=80"
                              alt="Your avatar"/>
                     <textarea
-                        onFocus={function() {this.setState({ isFocused : true })}}
-                        onBlur={function() {this.setState({ isFocused : false })}}
+                        onFocus={this.toggleFocus.bind(this, true)}
+                        onBlur={this.toggleFocus.bind(this, false)}
                         onChange={this.inputChanged}
                         id="body"
                         name="body"
