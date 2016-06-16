@@ -8,7 +8,22 @@ var CommentBox = React.createClass({
             lineCount : 0,
             commentBody : "",
             posting : false,
-            isFocused : false
+            isFocused : false,
+            enterToPost: true
+        }
+    },
+    componentDidUpdate: function() {
+        if(this.refs[0] && (document.activeElement === this.refs[0])) {
+            this.refs[0].focus();
+        }
+    },
+    didSubmitComment: function(event) {
+        if(event.keyCode === 13) {
+            if(event.shiftKey) {
+                event.stopPropagation();
+            } else {
+                this.post(event);
+            }
         }
     },
     post: function(event) {
@@ -20,9 +35,12 @@ var CommentBox = React.createClass({
         }
         if(this.state.hasText) {
             var parentId = this.props.childBox === true ? this.props.parentComment.id : 0;
-            this.props.onCommentSubmitted(this.state.commentBody, parentId);
+            var value = this.state.commentBody;
+            this.props.onCommentSubmitted(value, parentId);
+            // when the promise completes we can only re-render the master parent textarea as the
+            // child ones will not have yet been rendered, therefore the pointer to "this" does not exist
             this.props.postComment(this.state.commentBody, THREAD_ID, parentId).then(function() {
-                this.setState({ posting : false, commentBody : "" });
+                if(!this.props.childBox) this.setState({ posting : false, commentBody : "" });
             }.bind(this));
         } else {
             this.cancelPost(event);
@@ -57,6 +75,7 @@ var CommentBox = React.createClass({
     },
     render: function() {
         if(AUTHED) {
+            var id = this.props.childBox ? this.props.parentComment.id : 0;
             var buttonClass = (!this.state.isFocused && !this.state.posting) ? "hidden" : "";
             return (
                 <div id="comment-box">
@@ -66,6 +85,9 @@ var CommentBox = React.createClass({
                              src="https://s.gravatar.com/avatar/bae38bd358b0325c7a3c049a4671a9cf?s=80"
                              alt="Your avatar"/>
                     <textarea
+                        autoFocus={true}
+                        ref={"commentTextArea" + id }
+                        onKeyUp={this.didSubmitComment}
                         onFocus={this.toggleFocus.bind(this, true)}
                         onBlur={this.toggleFocus.bind(this, false)}
                         onChange={this.inputChanged}
@@ -87,7 +109,10 @@ var CommentBox = React.createClass({
             )
         } else {
             return (
-                <p id="login">Please <a href="/login">login</a> or <a href="/register">sign up</a> to post your own responses.</p>
+                <div>
+                    <h3 className="section-heading">Discussion</h3>
+                    <p id="login">Please <a href="/login">login</a> or <a href="/register">sign up</a> to post your own responses.</p>
+                </div>
             )
         }
     }

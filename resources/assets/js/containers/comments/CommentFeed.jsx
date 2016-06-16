@@ -42,6 +42,13 @@ var CommentFeed = React.createClass({
                 }
             }.bind(this));
         }
+        if(comments.length === 0) {
+            return (
+                <li>
+                    <span>No comments on this post yet, be the first to start the discussion!</span>
+                </li>
+            );
+        }
         return comments;
     },
     removePendingComments: function() {
@@ -93,7 +100,6 @@ var CommentFeed = React.createClass({
 
 // Connect to Redux, whatever is returned from here will show up as props within CommentFeed
 function mapStateToProps(state) {
-    console.log("NEW STATE: ", state);
     return {
         comments : state.commentsReducer.comments,
         lastUpVotedComment : state.commentsReducer.lastUpvotedComment

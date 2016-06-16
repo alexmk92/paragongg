@@ -36,9 +36,17 @@ var CommentListItem = React.createClass({
         var toggleClass = 'fa fa-thumbs-up vote-button ' + (this.state.voted ? "active" : "");
         var commentClass = 'comment-item ' + (this.props.comment.childComment ? "child-comment" : "");
         var replyField = AUTHED ? <a href="#" onClick={this.reply}>Reply</a> : "";
-        var comments = this.props.childComments.map(function(comment) {
+        var comments = [];
+        this.props.childComments.forEach(function(comment) {
             if(this.props.comment.id === comment.parent_id) {
-                return <CommentListItem postComment={this.props.postComment} onCommentSubmitted={this.props.onCommentSubmitted} childComment={ true } key={Helpers.uuid()} comment={comment} childComments={this.props.childComments} author={ this.props.author } upVoteComment={this.props.upVoteComment} />
+                comments.push(
+                    <CommentListItem postComment={this.props.postComment}
+                                     onCommentSubmitted={this.props.onCommentSubmitted}
+                                     childComment={ true } key={Helpers.uuid()}
+                                     comment={comment} childComments={this.props.childComments}
+                                     author={ this.props.author }
+                                     upVoteComment={this.props.upVoteComment} />
+                );
             }
         }.bind(this));
         return(
