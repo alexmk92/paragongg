@@ -3,12 +3,29 @@ var t = require('../actions/types');
 
 // State is not the application state, only the state this reducer is responsible for
 module.exports = function(state, action) {
-    switch(action.type) {
-        case t.COMMENT_UP_VOTED :
-            return action.payload;
-        case t.FETCH_COMMENTS :
-            return state.concat(action.payload.data);
-            //return [ action.payload.data, ...state ];  // ES6 flat array (concat)
+    if(typeof state !== "undefined") {
+        console.log("ACTION: ", action);
+        //console.log("SET THE NEW STATE: ", state);
+        switch(action.type) {
+            //
+            case t.COMMENT_UP_VOTED :
+                var newComments = state.comments;
+                var lastUpvotedComment = action.payload;
+                var commentIndex = newComments.indexOf(lastUpvotedComment);
+                if(commentIndex > -1) {
+                    lastUpvotedComment.votes += 1;
+                    newComments[commentIndex] = lastUpvotedComment;
+                    return { comments : newComments, lastUpvotedComment : lastUpvotedComment }
+                }
+            case t.FETCH_COMMENTS :
+                return { comments : action.payload.data, lastUpvotedComment: state.lastUpvotedComment };
+            default :
+                return state;
+        }
     }
-    return [];
+
+    return {
+        comments: [],
+        lastUpvotedComment: null
+    };
 };

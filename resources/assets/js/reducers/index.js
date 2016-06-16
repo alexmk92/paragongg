@@ -7,7 +7,7 @@ var CommentReducer = require('./reducer.comments');
 // it combines all of our data into one state catalogue so we can
 // access it from our React front end
 var rootReducer = Redux.combineReducers({
-    comments : CommentReducer
+    commentsReducer : CommentReducer
 });
 
 module.exports = rootReducer;

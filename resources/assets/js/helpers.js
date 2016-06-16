@@ -43,7 +43,8 @@ module.exports = {
     hashCode : function(str) {
         return str.split('').reduce(function (prevHash, currVal) {
             return (prevHash << 5) - prevHash + currVal.charCodeAt(0);
-        }, 0);    },
+        }, 0);
+    },
     delimitNumbers : function(str) {
         return (str + "").replace(/\b(\d+)((\.\d+)*)\b/g, function(a, b, c) {
             return (b.charAt(0) > 0 && !(c || ".").lastIndexOf(".") ? b.replace(/(\d)(?=(\d{3})+$)/g, "$1,") : b) + c;
@@ -59,7 +60,7 @@ module.exports = {
      * returnType (String) : Defaults to JSON, specifies the return type from our request, text/json etc.
      * type (String) : The type of request we are going to make, GET/PUT/POST/DELETE
      * url (String) : The URL that we will hit, returns a 400 error if no url is supplied
-     * @param callback - Callback function to be implemented on invoker, calls back with an error, message and data object
+     * @param callback - Callback function to be implemented on invoker once the promise has been resolved or rejected
      */
     ajax: function ajax(payload) {
         return new Promise(function (resolve, reject) {

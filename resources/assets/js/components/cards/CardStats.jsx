@@ -114,6 +114,16 @@ var CardStats = React.createClass({
         }
         return jsx;
     },
+    getType: function() {
+        var type = this.props.card.type.toUpperCase().trim();
+        switch(type) {
+            case "ZERO" : return "PASSIVE";
+            case "ONE" : return "ACTIVE";
+            case "TWO" : return "UPGRADE";
+            case "THREE" : return "PRIME HELIX";
+            default : return type;
+        }
+    },
     render: function() {
         return (
             <div>
@@ -132,10 +142,10 @@ var CardStats = React.createClass({
                     <div id="vertical-separator"></div>
                     <div id="rarity-container">
                         <span style={ { color : this.props.rarity.color } }>{ this.props.rarity.label.toUpperCase() }</span>
-                        <span>{ this.props.card.type.toUpperCase() }</span>
+                        <span>{ this.getType() }</span>
                     </div>
                     <div id="affinity-container">
-                        <img src="/assets/images/affinities/fury.png" />
+                        <i className={"pgg pgg-affinity-" + this.getAffinity(this.props.card.affinity).toLowerCase() + " affinity-color"} aria-hidden="true" />
                         <span>{ this.getAffinity(this.props.card.affinity).toUpperCase() }</span>
                     </div>
                 </div>
