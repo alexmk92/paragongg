@@ -7,7 +7,7 @@ module.exports = {
     fetchComments: function (threadId, skip) {
         var request = Helpers.ajax({
             type: "GET",
-            url: ROOT_URL + "/thread/" + threadId + "/fetch/" + skip,
+            url: ROOT_URL + "/thread/" + threadId,
             contentType: "application/json",
             cache: true
         });
