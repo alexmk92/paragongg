@@ -35,10 +35,19 @@ var CommentFeed = React.createClass({
                             author={ author }
                             childComments={ this.props.comments }
                             upVoteComment={ this.props.upVoteComment }
+                            onCommentSubmitted={this.appendPendingComment}
+                            postComment={this.props.postComment}
                         />
                     );
                 }
             }.bind(this));
+        }
+        if(comments.length === 0) {
+            return (
+                <li>
+                    <span>No comments on this post yet, be the first to start the discussion!</span>
+                </li>
+            );
         }
         return comments;
     },
@@ -51,7 +60,7 @@ var CommentFeed = React.createClass({
             }
         }
     },
-    appendPendingComment: function(commentContent, parent) {
+    appendPendingComment: function(commentContent, parentId) {
 
         var author = {
             name : "Alex"
@@ -69,6 +78,9 @@ var CommentFeed = React.createClass({
         tempComment.innerHTML += "<a class='report' href='#'>Report</a>";
 
         var commentList = document.querySelector("#comment-list");
+        if(parentId > 0) {
+            commentList = document.querySelector("#comment-" + parentId + "-child-comments");
+        }
         if(commentList) {
             commentList.insertBefore(tempComment, commentList.childNodes[0]);
         }
@@ -77,7 +89,7 @@ var CommentFeed = React.createClass({
         var comments = this.renderComments();
         return (
             <div id="comments-wrapper" className={this.props.className || ""}>
-                <CommentBox isHidden={false} onCommentSubmitted={this.appendPendingComment} postComment={this.props.postComment} />
+                <CommentBox rootComment={null} isHidden={false} onCommentSubmitted={this.appendPendingComment} postComment={this.props.postComment} />
                 <ul id="comment-list">
                     { comments }
                 </ul>
@@ -88,7 +100,6 @@ var CommentFeed = React.createClass({
 
 // Connect to Redux, whatever is returned from here will show up as props within CommentFeed
 function mapStateToProps(state) {
-    console.log("NEW STATE: ", state);
     return {
         comments : state.commentsReducer.comments,
         lastUpVotedComment : state.commentsReducer.lastUpvotedComment

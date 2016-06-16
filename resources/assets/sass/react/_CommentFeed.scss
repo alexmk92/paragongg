@@ -109,14 +109,20 @@ $avatar-radius : calc(#{$avatar-width} / 2);
             }
 
             &.child-comment,
-            #comment-box form {
-                img.comment-avatar {
-                    position: absolute;
-                    left: 8px;
-                    top: 8px;
-                    width: calc(#{$avatar-width}/1.25);
-                    height: calc(#{$avatar-height}/1.25);
-                    border-radius: calc(#{$avatar-radius}/1.25);
+            #comment-box  {
+                // Dont show the section headings that are inside the sub content
+                .section-heading {
+                    display: none;
+                }
+                form {
+                    img.comment-avatar {
+                        position: absolute;
+                        left: 8px;
+                        top: 8px;
+                        width: calc(#{$avatar-width}/1.25);
+                        height: calc(#{$avatar-height}/1.25);
+                        border-radius: calc(#{$avatar-radius}/1.25);
+                    }
                 }
             }
 

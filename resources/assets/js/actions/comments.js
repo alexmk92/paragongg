@@ -39,7 +39,7 @@ module.exports = {
             payload: comment
         }
     },
-    postComment: function (comment, threadId) {
+    postComment: function (comment, threadId, parentCommentId) {
         // This method now returns a promise for us to consume
         var request = Helpers.ajax({
             type: "POST",
@@ -48,7 +48,7 @@ module.exports = {
             contentType: "application/x-www-form-urlencoded",
             cache: false,
             returnType: "json",
-            data: [{"body": comment, "thread_id": threadId}]
+            data: [{"body": comment, "thread_id": threadId, "parent_comment_id" : parentCommentId}]
         });
 
         return {

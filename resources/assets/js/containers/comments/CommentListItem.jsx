@@ -27,29 +27,40 @@ var CommentListItem = React.createClass({
         this.setState({ isReplying : !this.state.isReplying });
     },
     getReplies: function() {
-        // TODO
+        // TODO IF A COMMENT HAS LOADS OF SUB COMMENTS WE SHOULD LOAD THEM HERE....
+    },
+    closeCommentBox : function() {
+        this.setState({ isReplying: false });
     },
     render: function() {
-        var _this = this;
         var toggleClass = 'fa fa-thumbs-up vote-button ' + (this.state.voted ? "active" : "");
         var commentClass = 'comment-item ' + (this.props.comment.childComment ? "child-comment" : "");
-        var comments = this.props.childComments.map(function(comment) {
-            if(_this.props.comment.id === comment.parent_id) {
-                return <CommentListItem childComment={true} key={Helpers.uuid()} comment={comment} childComments={_this.props.childComments} author={ _this.props.author } upVoteComment={_this.props.upVoteComment} />
+        var replyField = AUTHED ? <a href="#" onClick={this.reply}>Reply</a> : "";
+        var comments = [];
+        this.props.childComments.forEach(function(comment) {
+            if(this.props.comment.id === comment.parent_id) {
+                comments.push(
+                    <CommentListItem postComment={this.props.postComment}
+                                     onCommentSubmitted={this.props.onCommentSubmitted}
+                                     childComment={ true } key={Helpers.uuid()}
+                                     comment={comment} childComments={this.props.childComments}
+                                     author={ this.props.author }
+                                     upVoteComment={this.props.upVoteComment} />
+                );
             }
-        });
+        }.bind(this));
         return(
             <li className={commentClass}>
                 <img className="comment-avatar" src="https://s.gravatar.com/avatar/bae38bd358b0325c7a3c049a4671a9cf?s=80" alt="Your avatar" />
                 <span className="author-name">{ this.props.author.name } <span className="created-at">{ Helpers.prettyDate(this.props.comment.created_at) }</span></span>
                 <p className="comment-body">{ this.props.comment.body }</p>
-                <a href="#" onClick={this.reply}>Reply</a>
+                { replyField }
                 <i onClick={ this.vote } className={toggleClass} aria-hidden="true"><span>{ this.props.comment.votes }</span></i>
                 <a className="report" onClick={this.report} href="#">Report</a>
-                <div className={!this.props.comment.isReplying ? "child-comment-box-wrapper hidden" : "child-comment-box-wrapper"}>
-                    <CommentBox />
+                <div className={"child-comment-box-wrapper " + (this.state.isReplying ? "" : " hidden")}>
+                    <CommentBox parentComment={this.props.comment} postComment={this.props.postComment} onCommentSubmitted={this.props.onCommentSubmitted} childBox={true} onCanceledPost={this.closeCommentBox} />
                 </div>
-                <ul class="comment-list">
+                <ul id={"comment-" + this.props.comment.id + "-child-comments"} className="comment-list">
                     { comments }
                 </ul>
             </li>
