@@ -1,5 +1,4 @@
 var React = require("react");
-var Action = require('../../actions/comments');
 
 var CommentBox = React.createClass({
     getInitialState: function() {
@@ -16,9 +15,8 @@ var CommentBox = React.createClass({
         event.preventDefault();
         this.setState({ posting : true });
         if(this.state.hasText) {
-            Action.postComment(this.state.comment, function(payload) {
-                console.log(payload);
-                //this.props.onCommentRequestRefresh();
+            this.props.onCommentSubmitted(this.state.comment);
+            this.props.postComment(this.state.comment, THREAD_ID).then(function() {
                 this.setState({ posting : false, comment : "" });
             }.bind(this));
         } else {

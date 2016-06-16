@@ -76,7 +76,8 @@ class NewsController extends Controller
             ->with('articleBody', $articleBody)
             ->with('articleTOC', $articleTOC)
             ->with('recent', $recent)
-            ->with('comments', $comments);
+            ->with('comments', $comments)
+            ->with('threadId', $thread->id);
     }
 
     // Edit

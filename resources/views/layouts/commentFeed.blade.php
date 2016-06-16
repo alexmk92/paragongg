@@ -6,4 +6,8 @@
             @else
     var AUTHED = false;
             @endif;
+
+    var THREAD_ID = Number('{{ $threadId }}');
+    var COMMENTS  = {!! json_encode($comments) !!};
+
 </script>

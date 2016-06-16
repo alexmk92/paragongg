@@ -9,14 +9,19 @@ use App\CommentThreadComment;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use PhpParser\Comment;
 
 class CommentController extends Controller
 {
-    public function thread($id)
+    public function thread($id, $take)
     {
-        $thread = CommentThread::findOrFail($id);
-        $comments = $thread->comments;
-        
+        //$thread = CommentThread::findOrFail($id);
+        //$comments = $thread->comments;
+
+        // consult with Jamie, is my way of doing this bit ok?!  When I added skip or take it would mess
+        // up on the front end, no array would be returned...
+        $comments = CommentThreadComment::where('thread_id', $id)->orderBy('created_at', 'desc')->get();
+
         return response()->json($comments);
     }
 
@@ -28,7 +33,18 @@ class CommentController extends Controller
         $comment->user_id = Auth::user()->id;
         $comment->save();
 
-        return response()->json(['code' => 200, 'message' => 'Message stored']);
+        $comment = CommentThreadComment::findOrFail($comment->id);
+
+        return response()->json(['code' => 200, 'message' => 'Message stored', 'comment' => $comment]);
+    }
+
+    public function upvote(Request $request) {
+        $comment = CommentThreadComment::findOrFail($request->id);
+        $comment->votes = $comment->votes + 1;
+
+        $comment->save();
+
+        return response()->json(['code' => 200, 'message' => 'Comment upvoted', 'comment' => $comment]);
     }
 
 
