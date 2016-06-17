@@ -27,7 +27,7 @@ var Build = React.createClass({
     quickBind: function() {
         var newBuild = this.props.build;
         // CANNOT QUICK BIND UPGRADES
-        if(this.props.selectedCard !== null && this.props.selectedCard.type !== "two") {
+        if(this.props.selectedCard !== null && this.props.selectedCard.type !== "Upgrade") {
             newBuild.slots.some(function (slot, slotIndex) {
                 if (slot.card === null) {
                     this.bindCard(slotIndex);
@@ -56,7 +56,7 @@ var Build = React.createClass({
                 var newSlots = this.props.build.slots;
 
                 // ALL PARENT CARDS
-                if(slot.card && this.props.lastDeletedCard.type !== "two")
+                if(slot.card && this.props.lastDeletedCard.type !== "Upgrade")
                 {
                     // 0 cards found in the deck
                     if(this.props.deck.indexOf(slot.card) < 0) {
@@ -219,7 +219,7 @@ var Build = React.createClass({
                 this.invokeNotification("warning", "You must apply a " + requiredAffinity + " to this slot, you tried to use " + attemptedAffinity + ".");
             }
             // MUST BE AN UPGRADE
-            if(this.props.selectedCard.type !== "two") {
+            if(this.props.selectedCard.type !== "Upgrade") {
                 this.invokeNotification("warning", "Only upgrade cards may be fitted into that slot!");
                 affinityMatches = false;
             }
@@ -230,10 +230,10 @@ var Build = React.createClass({
         var valid = false;
         if(this.props.selectedCard) {
             switch(this.props.selectedCard.type) {
-                case "zero" : valid = slotIndex <= 6; break;
-                case "one" : valid = slotIndex <= 3; break;
-                case "two": valid = false; break;
-                case "three": valid = false; break;
+                case "Passive" : valid = slotIndex <= 6; break;
+                case "Active" : valid = slotIndex <= 3; break;
+                case "Upgrade": valid = false; break;
+                case "Prime": valid = false; break;
                 default: break;
             }
         }
@@ -324,7 +324,7 @@ var Build = React.createClass({
             var cardPulse = "";
 
             if(this.props.autoPlaceIndex === i && this.isClientMobile() && this.props.selectedCard !== null) {
-                if(this.props.selectedCard.type !== "two") {
+                if(this.props.selectedCard.type !== "Upgrade") {
                     this.queuedCards.push({
                         slot: slot,
                         index : i
@@ -349,10 +349,10 @@ var Build = React.createClass({
             }
 
             // IS THIS AN ACTIVE OR PASSIVE SLOT (ACTIVE = ONE)
-            var type = (i < 4) ? "one" : "zero" ;
+            var type = (i < 4) ? "Active" : "Passive" ;
 
             if((this.props.selectedCard && typeof this.props.selectedCard !== "undefined")) {
-                if((type === this.props.selectedCard.type || this.props.selectedCard.type === "zero")) {
+                if((type === this.props.selectedCard.type || this.props.selectedCard.type === "Passive")) {
 
                     if(!this.props.shouldQuickBindCards) {
                         activeClass = (slot.card === null) ? "active-slot " : "";
@@ -365,7 +365,7 @@ var Build = React.createClass({
             }
             // CHECK FOR AUTO ADDING
             if(this.props.shouldQuickBindCards && (this.lastSelectedCard && typeof this.lastSelectedCard !== "undefined")) {
-                if((type === this.lastSelectedCard.type || this.lastSelectedCard.type === "zero")) {
+                if((type === this.lastSelectedCard.type || this.lastSelectedCard.type === "Passive")) {
                     if (this.props.lastModifiedSlot === i) {
                         cardPulse = "pulse-glow";
                     }
@@ -398,7 +398,7 @@ var Build = React.createClass({
                 }
                 // CANNOT BE A UPGRADE CARD
                 if(!this.isClientMobile()) {
-                    if(this.props.selectedCard !== null && this.props.selectedCard.type !== "two") {
+                    if(this.props.selectedCard !== null && this.props.selectedCard.type !== "Upgrade") {
                         if(this.props.selectedCard === slot.card) {
                             return (
                                 <div key={"action-buttons-" + i } className="delete-wrapper" onClick={this.bindCardToSlot.bind(this, i)} onContextMenu={this.removeCardFromSlot.bind(this, i, true)}>
@@ -460,7 +460,7 @@ var Build = React.createClass({
     validateQuantity: function(surpressNotification) {
         if(this.props.deck && this.props.selectedCard) {
             // CANT ADD A PRIME HELIX
-            if(this.props.selectedCard.type === "three" && !surpressNotification) {
+            if(this.props.selectedCard.type === "Prime" && !surpressNotification) {
                 this.invokeNotification("warning", "You can't add a Prime Helix to a build.");
                 return false;
             }
@@ -505,9 +505,9 @@ var Build = React.createClass({
         this.currentBindIndex = index;
 
         if(this.props.selectedCard !== null) {
-            if(this.props.selectedCard.type !== "two" && ((event.target.className.indexOf("glow-layer") > -1 || event.target.className.indexOf("delete-wrapper") > -1 || event.target.className.indexOf("fa-refresh") > -1))) {
+            if(this.props.selectedCard.type !== "Upgrade" && ((event.target.className.indexOf("glow-layer") > -1 || event.target.className.indexOf("delete-wrapper") > -1 || event.target.className.indexOf("fa-refresh") > -1))) {
                 this.bindCard(index);
-            } else if(this.props.selectedCard.type === "two") {
+            } else if(this.props.selectedCard.type === "Upgrade") {
                 var bindSlot = null;
                 this.props.build.slots.forEach(function(slot, i) {
                     if(i === index) bindSlot = slot;
@@ -533,7 +533,9 @@ var Build = React.createClass({
         if(this.validateQuantity(false) && this.validateSlot(index)) {
             var newSlots = this.props.build.slots;
 
-            var upgradeSlots = (typeof this.props.selectedCard.slots === "undefined") ? 3 : this.props.selectedCard.slots.length;
+            console.log(this.props.selectedCard);
+            var upgradeSlots = typeof this.props.selectedCard.upgradeSlots !== "undefined" ? this.props.selectedCard.upgradeSlots : 0;
+            console.log(upgradeSlots);
             newSlots.forEach(function (slot, i) {
                 if (i === index) {
                     if (this.props.selectedCard) {
