@@ -34,7 +34,7 @@ class CardController extends Controller
 
     public function getCards()
     {
-        $cards = Card::all('name', 'code', 'cost', 'type', 'affinity', 'rarity', 'images.large');
+        $cards = Card::all('name', 'code', 'cost', 'type', 'upgradeSlots', 'affinity', 'rarity', 'images.large');
         $cardsOwned = null;
 
         if(Auth::check() && Auth::user()->epicAccountLinked()) {

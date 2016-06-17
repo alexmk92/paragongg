@@ -114,6 +114,7 @@ Route::group(['prefix' => 'api', 'namespace' => 'API', 'middleware' => 'cors'], 
     Route::get('/v1/comments/thread/{id}', 'CommentController@thread');
     Route::post('/v1/comments/upvote/{id}', 'CommentController@upvote');
     Route::post('/v1/comments/store', 'CommentController@store');
+    Route::get('/v1/cards', 'CardController@index');
     Route::get('/v1/cards/find/{id}', 'CardController@show');
     Route::get('/v1/heroes/find/{id}', 'HeroController@show');
     Route::get('/v1/news', 'NewsController@index');
