@@ -89,6 +89,8 @@ class AuthController extends Controller
 
         session()->flash('notification', 'success|You are now logged in.');
 
+        if(session()->has('intendedPath')) return redirect(session()->get('intendedPath'));
+
         return redirect()->intended($this->redirectPath());
     }
 
@@ -107,5 +109,24 @@ class AuthController extends Controller
             ->withErrors([
                 $this->loginUsername() => $this->getFailedLoginMessage(),
             ]);
+    }
+
+    /**
+     * Show the application login form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showLoginForm()
+    {
+        if(url()->previous()) session()->put('intendedPath', url()->previous());
+
+        $view = property_exists($this, 'loginView')
+            ? $this->loginView : 'auth.authenticate';
+
+        if (view()->exists($view)) {
+            return view($view);
+        }
+
+        return view('auth.login');
     }
 }
