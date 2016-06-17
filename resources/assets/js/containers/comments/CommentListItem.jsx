@@ -1,6 +1,5 @@
 var React = require("react");
 var Helpers = require("../../helpers.js");
-
 var CommentBox = require('./CommentBox.jsx');
 
 // Actions
@@ -35,7 +34,6 @@ var CommentListItem = React.createClass({
     render: function() {
         var toggleClass = 'fa fa-thumbs-up vote-button ' + (this.state.voted ? "active" : "");
         var commentClass = 'comment-item ' + (this.props.comment.childComment ? "child-comment" : "");
-        var replyField = AUTHED ? <a href="#" onClick={this.reply}>Reply</a> : "";
         var comments = [];
         this.props.childComments.forEach(function(comment) {
             if(this.props.comment.id === comment.parent_id) {
@@ -51,12 +49,22 @@ var CommentListItem = React.createClass({
         }.bind(this));
         return(
             <li className={commentClass}>
-                <img className="comment-avatar" src="https://s.gravatar.com/avatar/bae38bd358b0325c7a3c049a4671a9cf?s=80" alt="Your avatar" />
-                <span className="author-name">{ this.props.author.name } <span className="created-at">{ Helpers.prettyDate(this.props.comment.created_at) }</span></span>
-                <p className="comment-body">{ this.props.comment.body }</p>
-                { replyField }
-                <i onClick={ this.vote } className={toggleClass} aria-hidden="true"><span>{ this.props.comment.votes }</span></i>
-                <a className="report" onClick={this.report} href="#">Report</a>
+                <div className="comment-details">
+                    <img className="user-avatar" src="https://s.gravatar.com/avatar/bae38bd358b0325c7a3c049a4671a9cf?s=28" alt="Your avatar" />
+                    <a href="">{ this.props.author.name } </a> <span><time className="created-at">{ Helpers.prettyDate(this.props.comment.created_at) }</time></span>
+                </div>
+                <div className="comment-body">{ this.props.comment.body }</div>
+                <div className="comment-actions">
+                    <button className="btn btn-small btn-faded" onClick={this.reply}>Reply</button>
+                    <button className="btn btn-small btn-faded" onClick={this.vote}>
+                        <i className={toggleClass} aria-hidden="true"></i> { this.props.comment.votes }
+                    </button>
+                    <button className="btn btn-small btn-faded btn-icon">
+                        <i className="fa fa-ellipsis-h" aria-hidden="true"></i>
+                    </button>
+                </div>
+
+
                 <div className={"child-comment-box-wrapper " + (this.state.isReplying ? "" : " hidden")}>
                     <CommentBox parentComment={this.props.comment} postComment={this.props.postComment} onCommentSubmitted={this.props.onCommentSubmitted} childBox={true} onCanceledPost={this.closeCommentBox} />
                 </div>

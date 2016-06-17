@@ -1,170 +1,224 @@
 $avatar-width : 40px;
 $avatar-height : $avatar-width;
-$avatar-radius : calc(#{$avatar-width} / 2);
+
 
 #comment-feed {
-
-    #login {
-        padding-top: 15px;
-        font-style: italic;
+    margin: 0 auto;
+    max-width: 800px;
+    clear: both;
+    .user-avatar {
+        width: 28px;
+        height: 28px;
+        float: none;
+        vertical-align: middle;
     }
-
-    margin-right: 400px;
-    background: none;
-    border-right: 1px solid #343a4a;
-    font-weight: 100;
-
-    .child-comment-box-wrapper {
-        &.hidden {
-            display: none;
+    .comment-box {
+        margin: 0 auto;
+        max-width: 600px;
+        textarea {
+            min-height: 100px;
         }
     }
-    
-    #comment-box {
-
-        display: block;
-        &.hidden {
-            display: none;
-        }
-
-        form {
-            position: relative;
-            padding-left: 60px;
-            max-width: 100%;
-            padding-right: 40px;
-
-            &.disabled {
-                pointer-events: none;
-                transition: 500ms;
-                opacity: 0.3;
-            }
-
-            textarea {
-                background: #0d1016;
-                max-width: 100%;
-                min-height: 75px;
-                padding: 13px;
-                border: 1px solid #151922;
-            }
-
-            button {
-                margin-left: 10px;
-                float: right;
-                height: 35px;
-                width: 80px;
-                margin-top: -20px;
-                background: $primary-highlight;
-                border: 1px solid #C1540C;
-                color: white;
-                border-radius: 5px;
-                outline : none;
-                transition: 300ms;
-                opacity: 1.0;
-
-                &:hover {
-                    cursor: pointer;
-                }
-
-                &.hidden {
-                    transition: 250ms;
-                    opacity: 0.0;
-                }
-
-                &:last-of-type {
-                    background: #E8E8E8;
-                    color: #0d1016;
-                    border: 1px solid #575757;
-                }
-            }
-
-            img.comment-avatar {
-                position: absolute;
-                left: 0;
-                width: $avatar-width;
-                height: $avatar-height;
-                border-radius: $avatar-radius;
-            }
-        }
+    .user-details {
+        display: inline-block;
+    }
+    .post-comment-actions {
+        float: right;
     }
 
     #comment-list {
-        padding-top: 20px;
-        font-weight: 100;
-
+        margin: 150px 0;
         .comment-item {
-            position: relative;
-            padding: 10px 0px 25px 80px;
-            margin-top: 5px;
-            min-height: 95px;
-            border-bottom: 1px solid #343a4a;
-            transition: all 200ms ease-in-out;
-
-            &#pending-comment {
-                opacity: 0.5;
-                pointer-events: none;
-            }
-
-            &:last-of-type {
-                border-bottom: none;
-            }
-
-            &.child-comment,
-            #comment-box  {
-                // Dont show the section headings that are inside the sub content
-                .section-heading {
-                    display: none;
-                }
-                form {
-                    img.comment-avatar {
-                        position: absolute;
-                        left: 8px;
-                        top: 8px;
-                        width: calc(#{$avatar-width}/1.25);
-                        height: calc(#{$avatar-height}/1.25);
-                        border-radius: calc(#{$avatar-radius}/1.25);
-                    }
-                }
-            }
-
-            img.comment-avatar {
-                position: absolute;
-                left: 20px;
-                width: $avatar-width;
-                height: $avatar-height;
-                border-radius: $avatar-radius;
-            }
-            span.author-name {
-                font-size: 1em;
-                color: $primary-highlight;
-            }
-            i.vote-button {
+            border-top: 1px solid $faded-line;
+            padding-top: 30px;
+            margin-bottom: 30px;
+            .comment-details {
                 span {
-                    font-size: 1em;
-                    color: white;
-                    padding-left: 8px;
-                }
-                &.active,
-                &.active span {
-                    color : $primary-highlight;
-                    pointer-events: none;
+                    margin-left: 5px;
+                    font-family: $font-condensed;
+                    color: $font-color-faded;
+                    font-size: 13px;
+                    text-transform: uppercase;
                 }
             }
-            p.comment-body {
-                padding-top: 7px;
-                padding-bottom: 35px;
+            .comment-body {
+                margin: 30px 0;
+                line-height: 150%;
             }
-            span.created-at {
-                font-size: 0.8em;
-                color: #5a606f;
-
-                &:before {
-                    content : " -  "
-                }
-            }
-            a.report {
-                float: right;
-                padding-right: 15px;
+            .comment-actions {
             }
         }
     }
+    .comment-list {
+        margin-left: 50px;
+        margin-top: 30px;
+    }
 }
+
+//
+//#comment-feed {
+//
+//    #login {
+//        padding-top: 15px;
+//        font-style: italic;
+//    }
+//
+//    margin-right: 400px;
+//    background: none;
+//    border-right: 1px solid #343a4a;
+//    font-weight: 100;
+//
+//    .child-comment-box-wrapper {
+//        &.hidden {
+//            display: none;
+//        }
+//    }
+//
+//    #comment-box {
+//
+//        display: block;
+//        &.hidden {
+//            display: none;
+//        }
+//
+//        form {
+//            position: relative;
+//            padding-left: 60px;
+//            max-width: 100%;
+//            padding-right: 40px;
+//
+//            &.disabled {
+//                pointer-events: none;
+//                transition: 500ms;
+//                opacity: 0.3;
+//            }
+//
+//            textarea {
+//                background: #0d1016;
+//                max-width: 100%;
+//                min-height: 75px;
+//                padding: 13px;
+//                border: 1px solid #151922;
+//            }
+//
+//            button {
+//                margin-left: 10px;
+//                float: right;
+//                height: 35px;
+//                width: 80px;
+//                margin-top: -20px;
+//                background: $primary-highlight;
+//                border: 1px solid #C1540C;
+//                color: white;
+//                border-radius: 5px;
+//                outline : none;
+//                transition: 300ms;
+//                opacity: 1.0;
+//
+//                &:hover {
+//                    cursor: pointer;
+//                }
+//
+//                &.hidden {
+//                    transition: 250ms;
+//                    opacity: 0.0;
+//                }
+//
+//                &:last-of-type {
+//                    background: #E8E8E8;
+//                    color: #0d1016;
+//                    border: 1px solid #575757;
+//                }
+//            }
+//
+//            img.comment-avatar {
+//                position: absolute;
+//                left: 0;
+//                width: $avatar-width;
+//                height: $avatar-height;
+//                border-radius: $avatar-radius;
+//            }
+//        }
+//    }
+//
+//    #comment-list {
+//        padding-top: 20px;
+//        font-weight: 100;
+//
+//        .comment-item {
+//            position: relative;
+//            padding: 10px 0px 25px 80px;
+//            margin-top: 5px;
+//            min-height: 95px;
+//            border-bottom: 1px solid #343a4a;
+//            transition: all 200ms ease-in-out;
+//
+//            &#pending-comment {
+//                opacity: 0.5;
+//                pointer-events: none;
+//            }
+//
+//            &:last-of-type {
+//                border-bottom: none;
+//            }
+//
+//            &.child-comment,
+//            #comment-box  {
+//                // Dont show the section headings that are inside the sub content
+//                .section-heading {
+//                    display: none;
+//                }
+//                form {
+//                    img.comment-avatar {
+//                        position: absolute;
+//                        left: 8px;
+//                        top: 8px;
+//                        width: calc(#{$avatar-width}/1.25);
+//                        height: calc(#{$avatar-height}/1.25);
+//                        border-radius: calc(#{$avatar-radius}/1.25);
+//                    }
+//                }
+//            }
+//
+//            img.comment-avatar {
+//                position: absolute;
+//                left: 20px;
+//                width: $avatar-width;
+//                height: $avatar-height;
+//                border-radius: $avatar-radius;
+//            }
+//            span.author-name {
+//                font-size: 1em;
+//                color: $primary-highlight;
+//            }
+//            i.vote-button {
+//                span {
+//                    font-size: 1em;
+//                    color: white;
+//                    padding-left: 8px;
+//                }
+//                &.active,
+//                &.active span {
+//                    color : $primary-highlight;
+//                    pointer-events: none;
+//                }
+//            }
+//            p.comment-body {
+//                padding-top: 7px;
+//                padding-bottom: 35px;
+//            }
+//            span.created-at {
+//                font-size: 0.8em;
+//                color: #5a606f;
+//
+//                &:before {
+//                    content : " -  "
+//                }
+//            }
+//            a.report {
+//                float: right;
+//                padding-right: 15px;
+//            }
+//        }
+//    }
+//}

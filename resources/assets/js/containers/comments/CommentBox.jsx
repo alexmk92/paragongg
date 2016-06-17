@@ -78,32 +78,28 @@ var CommentBox = React.createClass({
             var id = this.props.childBox ? this.props.parentComment.id : 0;
             var buttonClass = (!this.state.isFocused && !this.state.posting) ? "hidden" : "";
             return (
-                <div id="comment-box">
-                    <h3 className="section-heading">Discussion</h3>
+                <div className="comment-box cf">
                     <form className={this.state.posting ? "disabled" : ""}>
-                        <img className="comment-avatar"
-                             src="https://s.gravatar.com/avatar/bae38bd358b0325c7a3c049a4671a9cf?s=80"
-                             alt="Your avatar"/>
-                    <textarea
-                        autoFocus={true}
-                        ref={"commentTextArea" + id }
-                        onKeyUp={this.didSubmitComment}
-                        onFocus={this.toggleFocus.bind(this, true)}
-                        onBlur={this.toggleFocus.bind(this, false)}
-                        onChange={this.inputChanged}
-                        id="body"
-                        name="body"
-                        placeholder="Enter your comment..."
-                        value={this.state.commentBody}>
-                    </textarea>
-                        <button
-                            className={ buttonClass }
-                            onClick={this.post}>Post
-                        </button>
-                        <button
-                            className={ buttonClass }
-                            onClick={this.cancelPost}>Cancel
-                        </button>
+                        <textarea
+                            ref={"commentTextArea" + id }
+                            onKeyUp={this.didSubmitComment}
+                            onFocus={this.toggleFocus.bind(this, true)}
+                            onBlur={this.toggleFocus.bind(this, false)}
+                            onChange={this.inputChanged}
+                            id="body"
+                            name="body"
+                            placeholder="Enter your comment..."
+                            value={this.state.commentBody}>
+                        </textarea>
+                        <div className="user-details">
+                            <img className="user-avatar" src="https://s.gravatar.com/avatar/bae38bd358b0325c7a3c049a4671a9cf?s=28" alt="Your avatar"/>
+                            <span>Posting as <a href="">jamieshepherd</a></span>
+                        </div>
+                        <div className="post-comment-actions">
+                            <button className={ "btn btn-faded " + buttonClass } onClick={this.cancelPost}>Cancel</button>
+                            <button className={ "btn btn-primary " + buttonClass } onClick={this.post}>Post</button>
+                        </div>
+
                     </form>
                 </div>
             )

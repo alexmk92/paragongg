@@ -63,13 +63,14 @@ var CommentFeed = React.createClass({
     appendPendingComment: function(commentContent, parentId) {
 
         var author = {
-            name : "Alex"
+            name : "Alex" // TODO pass username
         };
 
         var tempComment = document.createElement("li");
         tempComment.className = "comment-item";
         tempComment.id = "pending-comment";
 
+        // TODO React way of creating element here
         tempComment.innerHTML += "<img class='comment-avatar' src='' alt='Your avatar' />";
         tempComment.innerHTML += "<span class='author-name'>" + author.name + " <span class='created-at'>" + Helpers.prettyDate(new Date())+ "</span></span>";
         tempComment.innerHTML += "<p class='comment-body'>" + commentContent + "</p>";
@@ -88,7 +89,8 @@ var CommentFeed = React.createClass({
     render: function() {
         var comments = this.renderComments();
         return (
-            <div id="comments-wrapper" className={this.props.className || ""}>
+            <div>
+                <h3 className="section-heading">Discussion</h3>
                 <CommentBox rootComment={null} isHidden={false} onCommentSubmitted={this.appendPendingComment} postComment={this.props.postComment} />
                 <ul id="comment-list">
                     { comments }
