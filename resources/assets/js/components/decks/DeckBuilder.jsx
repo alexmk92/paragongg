@@ -255,7 +255,7 @@ var DeckBuilder = React.createClass({
             }
 
 
-            if(((this.state.selectedCard && this.state.selectedCard.code == card.code) || card.type === "three")) {
+            if(((this.state.selectedCard && this.state.selectedCard.code == card.code) || card.type === "Prime")) {
                 this.hideSelectedCardPopup();
                 this.setState({selectedCard: null, playFlashAnimation: false});
             } else {
@@ -338,7 +338,7 @@ var DeckBuilder = React.createClass({
                     { editDeckButton }
                     <span className="subtext">UPGRADE</span>
                     <ul className="deck-list">
-                        {this.getCardsInDeck(["two"])}
+                        {this.getCardsInDeck(["Upgrade"])}
                     </ul>
                 </div>
             );
@@ -348,15 +348,15 @@ var DeckBuilder = React.createClass({
                     { editDeckButton }
                     <span className="subtext">PRIME HELIX</span>
                     <ul className="deck-list">
-                        {this.getCardsInDeck(["three"])}
+                        {this.getCardsInDeck(["Prime"])}
                     </ul>
                     <span className="subtext">EQUIPMENT</span>
                     <ul className="deck-list">
-                        {this.getCardsInDeck(["zero", "one"])}
+                        {this.getCardsInDeck(["Passive", "Active"])}
                     </ul>
                     <span className="subtext">UPGRADE</span>
                     <ul className="deck-list">
-                        {this.getCardsInDeck(["two"])}
+                        {this.getCardsInDeck(["Upgrade"])}
                     </ul>
                 </div>
             );
@@ -369,7 +369,7 @@ var DeckBuilder = React.createClass({
                 if(slot.card !== null) {
                     if(slot.card.code === card.code) {
                         finalQuantity = (finalQuantity+1 > card.quantity) ? card.quantity : finalQuantity+1;
-                    } else if(card.type === "two") {
+                    } else if(card.type === "Upgrade") {
                         slot.upgrades.forEach(function(upgradeCard) {
                             if(upgradeCard.card && upgradeCard.card.code === card.code) {
                                 finalQuantity = (finalQuantity+1 > card.quantity) ? card.quantity : finalQuantity+1;
@@ -432,7 +432,7 @@ var DeckBuilder = React.createClass({
                     </li>
                 );
 
-                if(this.state.selectedCard && this.state.selectedCard.type !== "two" && card.type === "two" && this.state.isBuildsPanelShowing) {
+                if(this.state.selectedCard && this.state.selectedCard.type !== "Upgrade" && card.type === "Upgrade" && this.state.isBuildsPanelShowing) {
                     var cardAffinity = card.affinity.toLowerCase();
                     var selectedAffinity = this.state.selectedCard.affinity.toLowerCase();
                     if(cardAffinity.indexOf("universal") > -1) {
@@ -753,7 +753,7 @@ var DeckBuilder = React.createClass({
     getSelectedCardPopup: function() {
         if(this.state.selectedCard && this.isClientMobile()) {
             var cardType = "UPGRADE";
-            if(this.state.selectedCard.type === "one" || this.state.selectedCard.type === "zero") cardType = "EQUIPMENT";
+            if(this.state.selectedCard.type === "Active" || this.state.selectedCard.type === "Passive") cardType = "EQUIPMENT";
             return (
                 <div onClick={this.hideSelectedCardPopup} id="selected-card-wrapper" className="visible">
                     <span>SELECTED: <span className="subtext">{this.state.selectedCard.name} ({cardType})</span> <i className="fa fa-close"></i></span>
