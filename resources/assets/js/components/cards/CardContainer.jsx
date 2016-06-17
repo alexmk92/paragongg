@@ -24,7 +24,6 @@ var CardContainer = React.createClass({
     },
     render: function() {
         var card = this.state.card;
-        var cardModelURL = "https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/" + card.code + "/background.png";
         var rarity = (function() {
             var rarity = Math.floor(Math.random() * (4 - 1 + 1)) + 1;
             var rarityDetails = "";
@@ -54,7 +53,7 @@ var CardContainer = React.createClass({
                     <div className="anim-fadeIn" id="card-model-wrapper">
                         <div id="card-model" className="anim-flicker">
                             <div id="card-model-container">
-                                <img src={cardModelURL} />
+                                <img src={card.images.large} />
                                 <span>{ card.name }</span>
                                 <div id="card-glow-layer" style={modelStyles}></div>
                             </div>

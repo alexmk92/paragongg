@@ -34,7 +34,7 @@ class CardController extends Controller
 
     public function getCards()
     {
-        $cards = Card::all('name', 'code', 'cost', 'type', 'affinity', 'rarity');
+        $cards = Card::all('name', 'code', 'cost', 'type', 'affinity', 'rarity', 'images.large');
         $cardsOwned = null;
 
         if(Auth::check() && Auth::user()->epicAccountLinked()) {
@@ -132,7 +132,7 @@ class CardController extends Controller
     {
         // Get latest cards list
         $client = new Client();
-        $res = $client->request('GET', 'https://developer-paragon.epicgames.com/v1/card/list', [
+        $res = $client->request('GET', 'https://developer-paragon.epicgames.com/v1/cards', [
             'headers' => [
                 'Accept'        => 'application/json',
                 'Authorization' => 'Bearer '.APIToken(),
@@ -148,30 +148,6 @@ class CardController extends Controller
         }
 
         session()->flash('notification', 'success|Cards update processing...');
-
-        return redirect('/admin/jobs');
-    }
-
-    public function pullImages()
-    {
-        // Get latest cards list
-        $client = new Client();
-        $res = $client->request('GET', 'https://developer-paragon.epicgames.com/v1/card/list', [
-            'headers' => [
-                'Accept'        => 'application/json',
-                'Authorization' => 'Bearer '.APIToken(),
-                'X-Epic-ApiKey' => env('EPIC_API_KEY'),
-            ]
-        ])->getBody();
-
-        $response = json_decode($res);
-
-        // Run through each cards returned
-        foreach($response as $object) {
-            $this->dispatch(new UpdateCardImage($object));
-        }
-
-        session()->flash('notification', 'success|Card images processing...');
 
         return redirect('/admin/jobs');
     }

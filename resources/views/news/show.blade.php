@@ -11,10 +11,10 @@
             <h4>Table of Contents</h4>
             {!! $articleTOC !!}
         </div>
-        <time class="post-details">Posted by <a href="/users/jamieshepherd">jamieshepherd</a> on <span class="emphasis">24th April 2016, 16:25 GMT</span><span class="updated_at"> (Updated: 24th April 2016, 16:25 GMT)</span></time>
-
     </div>
     <div id="article-wrapper">
+        <time class="post-details">Posted by <a href="/users/jamieshepherd">jamieshepherd</a> on <span class="emphasis">24th April 2016, 16:25 GMT</span><span class="updated_at"> (Updated: 24th April 2016, 16:25 GMT)</span></time>
+
         <article>
             <div class="article-body">
                 {!! $articleBody !!}

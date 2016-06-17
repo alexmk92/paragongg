@@ -6,7 +6,6 @@
         <h1>Heroes</h1>
         <hr>
         <a class="btn" href="/admin/maintenance/update-heroes"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Update heroes database</a>
-        <a class="btn" href="/admin/maintenance/update-heroes-images"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Update hero images</a>
         <hr>
         <table class="minimal">
             <thead>

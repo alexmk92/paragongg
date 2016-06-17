@@ -16,7 +16,7 @@ var HeroPreview = React.createClass({
     },
     render: function() {
         var divStyle = {
-            backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/' + this.props.hero.code + '/portrait.png)'
+            backgroundImage: 'url('+this.props.hero.images.icon+')'
         };
         return (
             <a href={ "/heroes/" + this.props.hero.name.toLowerCase() }>

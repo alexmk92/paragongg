@@ -16,7 +16,7 @@ var CardPreview = React.createClass({
     },
     render: function() {
         var divStyle = {
-            backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/' + this.props.card.code + '/background_small.png)'
+            backgroundImage: 'url('+ this.props.card.images.large +')'
         };
         var className = "card-preview ";
         if(typeof this.props.card.owned !== 'undefined') {

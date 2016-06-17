@@ -38,7 +38,6 @@ class UpdateHeroObject extends Job implements ShouldQueue
 
         if (!$exists) {
             Hero::create(['name' => $this->object->name, 'code' => $this->object->id]);
-            $this->updateImages = true;
         }
 
         $heroDetails = $client->request('GET', 'https://oriondata-public-service-prod09.ol.epicgames.com/v1/hero/' . $this->object->id, [
@@ -55,11 +54,10 @@ class UpdateHeroObject extends Job implements ShouldQueue
         $hero->slug       = strtolower($hero->name);
         $hero->affinities = $heroDetails->affinities;
         $hero->type       = $heroDetails->type;
-        $hero->role       = $heroDetails->role;
         $hero->attack     = $heroDetails->attack;
-        $hero->scale      = $heroDetails->scale;
         $hero->stats      = $heroDetails->stats;
         $hero->abilities  = $heroDetails->abilities;
+        $hero->images     = $heroDetails->images;
         $hero->save();
     }
 }

@@ -38,7 +38,6 @@ class UpdateCardObject extends Job implements ShouldQueue
 
         if (!$exists) {
             Card::create(['name' => $this->object->name, 'code' => $this->object->id]);
-            $this->updateImages = true;
         }
 
         $cardDetails = $client->request('GET', 'https://oriondata-public-service-prod09.ol.epicgames.com/v1/card/' . $this->object->id, [
@@ -52,12 +51,15 @@ class UpdateCardObject extends Job implements ShouldQueue
         $cardDetails = json_decode($cardDetails);
 
         $card = Card::where('code', $this->object->id)->first();
-        $card->description = $cardDetails->description;
-        $card->type = $cardDetails->type;
+        $card->type = $cardDetails->slotType;
         $card->cost = $cardDetails->cost;
+        $card->images = $cardDetails->images;
         $card->upgradeSlots = $cardDetails->upgradeSlots;
-        $card->affinity = $cardDetails->affinity;
+        $card->affinity = $cardDetails->affinities[0];
         $card->effects = $cardDetails->effects;
+        if($cardDetails->maxedEffects) {
+            $card->maxedEffects = $cardDetails->maxedEffects;
+        }
         $card->save();
     }
 }
