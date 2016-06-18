@@ -6,7 +6,6 @@ var InteractiveParallax = require("../../lib/InteractiveParallax");
 var CardContainer = React.createClass({
     getInitialState: function() {
         return {
-            card : CARD || null,
             parallax : null
         }
     },
@@ -22,22 +21,20 @@ var CardContainer = React.createClass({
         }
     },
     render: function() {
-        console.log(CARD);
-        var card = this.state.card;
         var rarity = (function() {
-            var rarity = Math.floor(Math.random() * (4 - 1 + 1)) + 1;
-            var rarityDetails = "";
-            switch(rarity) {
-                case 1: rarityDetails = { color : "#b547d9", label : "Epic Rare" }; break; // EPIC RARE
-                case 2: rarityDetails = { color : "#477ed9", label : "Rare" }; break; // 477ed9 RARE
-                case 3: rarityDetails = { color : "#47d95f", label : "Common" }; break; // 953ab4 COMMON
-                case 4: rarityDetails = { color : "#d4d4d4", label : "Uncommon" }; break; // d4d4d4 UNCOMMON
-                default : rarityDetails = {};break;
+            var rarityProps = null;
+            switch(CARD.rarity.toUpperCase()) {
+                case "EPIC": rarityProps = { color : "#b547d9", label : "Epic Rare" }; break; // EPIC RARE
+                case "RARE": rarityProps = { color : "#477ed9", label : "Rare" }; break; // 477ed9 RARE
+                case "COMMON" : rarityProps = { color : "#47d95f", label : "Common" }; break; // 953ab4 COMMON
+                case "UNCOMMON" : rarityProps = { color : "#d4d4d4", label : "Uncommon" }; break; // d4d4d4 UNCOMMON
+                case "STARTER" : rarityProps = { color : "#aaa", label : "Starter" }; break; // STARTER
+                default : rarityProps = {};break;
             }
-            return rarityDetails;
+            return rarityProps;
         })();
         var modelStyles = {
-            boxShadow : "0px 0px 270px " + rarity.color,
+            boxShadow : rarity.label === "Starter" ? "" : "0px 0px 270px " + rarity.color,
             opacity : 1.00
         };
         return (
@@ -46,15 +43,15 @@ var CardContainer = React.createClass({
                     <div id="particle-layer"></div>
                     <div id="left-wrapper">
                         <div id="card-stats">
-                            <CardStats rarity={ rarity } card={ card } />
+                            <CardStats rarity={ rarity } card={ CARD } />
                         </div>
                         <div id="blur-layer"></div>
                     </div>
                     <div className="anim-fadeIn" id="card-model-wrapper">
                         <div id="card-model" className="anim-flicker">
                             <div id="card-model-container">
-                                <img src={card.images.large} />
-                                <span>{ card.name }</span>
+                                <img src={CARD.images.large} />
+                                <span>{ CARD.name }</span>
                                 <div id="card-glow-layer" style={modelStyles}></div>
                             </div>
                         </div>

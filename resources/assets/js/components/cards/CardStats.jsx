@@ -38,32 +38,20 @@ var CardStats = React.createClass({
     getAffinity: function(str) {
         return str.replace("Affinity.", "");
     },
-    getStatistic: function(stat, i, label) {
-        var operation = "";
-        switch(stat.opertation) {
-            case "Additive" : operation = "+"; break;
-            case "Negative" : operation = "-"; break;
-            default : operation = ""; break;
-        }
-        var value = (function() {
-            if(!isNaN(stat.value)) {
-                return Number(Helpers.delimitNumbers(stat.value)).toFixed(2)
-            } else {
-                return stat.value;
-            }
-        })();
-        return (
-            <li key={label + "_" + i}>
-                <span><img src={ stat.icon } />{ operation + value + " " + stat.attribute}</span>
-            </li>
-        );
-    },
     renderStatistics: function() {
-        var _this = this;
         var jsx = "";
-        var statistics = this.props.card.effects.map(function(stat, i) {
-            return _this.getStatistic(stat, i, "stat")
-        });
+        var statistics = [];
+        this.props.card.effects.forEach(function(stat, i) {
+            if(stat.stat) {
+                var statistic = Helpers.getFormattedStatistic(stat.stat);
+                console.log("STAT IS: ", statistic);
+                statistics.push(
+                    <li key={stat.label + "_" + i}>
+                        <span><i className={statistic.icon} aria-hidden="true" /> { statistic.label + " " + Number(stat.value).toFixed(2) + "" + statistic.modifier }</span>
+                    </li>
+                );
+            }
+        }.bind(this));
         if(statistics.length > 0) {
             jsx = <div>
                       <span className="stat-header">STATISTICS</span>
@@ -76,12 +64,20 @@ var CardStats = React.createClass({
     },
     renderPassives: function() {
         var jsx = "";
-        var passives = this.state.passives.map(function(passive, i) {
-            return (
-                <li key={"passive_" + i}>
-                    <span><span className="italic">{ passive.type + ": "}</span>{ passive.effect }</span>
-                </li>
-            );
+        var passives = [];
+        this.props.card.effects.forEach(function(passive, i) {
+            if(passive.description) {
+                console.log("Found a passive: ", passive);
+                var passiveOrActive = passive.passive ? "Passive" : "Active";
+                var isUnique = passive.unique ? "Unique " : "";
+
+                var passiveName = isUnique + passiveOrActive;
+                passives.push(
+                    <li key={"passive_" + i}>
+                        <span><span className="italic">{ passiveName + ": "}</span>{ Helpers.getFormattedCardDescription(passive.description) }</span>
+                    </li>
+                );
+            }
         });
         if(passives.length > 0) {
             jsx = <div className="top-spacer">
@@ -95,16 +91,24 @@ var CardStats = React.createClass({
     },
     renderUpgradeBonuses: function() {
         var jsx = "";
-        var upgradeBonuses = this.state.upgradeBonuses.map(function(upgrade, i) {
-            return this.getStatistic(upgrade, i, "upgrade")
-        }.bind(this));
-        if(upgradeBonuses.length > 0) {
-            jsx = <div className="top-spacer">
-                <span className="stat-header upgraded">FULLY UPGRADED BONUS</span>
-                <ul id="upgrade-container" className="stat-container">
-                    { upgradeBonuses }
-                </ul>
-            </div>
+        var upgradeBonuses = [];
+        if(this.props.card.maxedEffects) {
+            this.props.card.maxedEffects.forEach(function(upgrade, i) {
+                var upgradeDetails = Helpers.getFormattedStatistic(upgrade.stat);
+                upgradeBonuses.push(
+                    <li key={upgradeDetails.label + "_" + i}>
+                        <span><i className={upgradeDetails.icon} aria-hidden="true" /> { upgradeDetails.label + " " + Number(upgrade.value).toFixed(2) + "" + upgradeDetails.modifier }</span>
+                    </li>
+                );
+            }.bind(this));
+            if(upgradeBonuses.length > 0) {
+                jsx = <div className="top-spacer">
+                    <span className="stat-header upgraded">FULLY UPGRADED BONUS</span>
+                    <ul id="upgrade-container" className="stat-container">
+                        { upgradeBonuses }
+                    </ul>
+                </div>
+            }
         }
         return jsx;
     },
@@ -131,7 +135,7 @@ var CardStats = React.createClass({
                 <div id="attribute-container">
                     <div id="cost-container">
                         <span>COST</span>
-                        <span>{ this.props.card.cost === 0 ? Math.floor(Math.random() * (6 - 1 + 1)) + 1 : this.props.card.cost }</span>
+                        <span>{ this.props.card.cost }</span>
                     </div>
                     <div id="vertical-separator"></div>
                     <div id="rarity-container">
