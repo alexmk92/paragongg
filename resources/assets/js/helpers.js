@@ -42,8 +42,9 @@ module.exports = {
     },
     prettyDate : function(time)
     {
+        var local = new Date();
         var system_date = new Date(Date.parse(time));
-        var user_date = new Date().getUTCDate();
+        var user_date = new Date(local.getUTCFullYear(), local.getUTCMonth(), local.getUTCDate(),  local.getUTCHours(), local.getUTCMinutes(), local.getUTCSeconds());
 
         var diff = Math.floor((user_date - system_date) / 1000);
         if (diff <= 1) {return "just now";}

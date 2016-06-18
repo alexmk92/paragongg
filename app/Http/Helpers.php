@@ -100,3 +100,8 @@ function OAuthToken()
 
     return Cache::get('user.'.$user->id.'.token');
 }
+
+function createSlug($string)
+{
+    
+}
