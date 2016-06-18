@@ -48,44 +48,11 @@ $pgg-version: "1.0.0";
     &.pgg-energy-damage:before {
         content: "\61";
     }
-    &.pgg-amber:before {
-        content: "\62";
-    }
-    &.pgg-affinity-order:before {
-        content: "\63";
-    }
-    &.pgg-affinity-intellect:before {
-        content: "\64";
-    }
-    &.pgg-affinity-growth:before {
-        content: "\65";
-    }
-    &.pgg-affinity-fury:before {
-        content: "\66";
-    }
-    &.pgg-affinity-corruption:before {
-        content: "\67";
-    }
-    &.pgg-physical-armor-2:before {
+    &.pgg-physical-armor:before {
         content: "\68";
-    }
-    &.pgg-affinity-universal:before {
-        content: "\69";
-    }
-    &.pgg-star:before {
-        content: "\6a";
-    }
-    &.pgg-badge:before {
-        content: "\6b";
     }
     &.pgg-armor-penetration:before {
         content: "\6c";
-    }
-    &.pgg-epic-games:before {
-        content: "\6d";
-    }
-    &.pgg-save:before {
-        content: "\6e";
     }
     &.pgg-movement-speed:before {
         content: "\6f";
@@ -137,6 +104,33 @@ $pgg-version: "1.0.0";
     }
     &.pgg-critical-strike-chance:before {
         content: "\45";
+    }
+    &.pgg-affinity-universal:before {
+        content: "\47";
+    }
+    &.pgg-affinity-order:before {
+        content: "\48";
+    }
+    &.pgg-affinity-intellect:before {
+        content: "\49";
+    }
+    &.pgg-affinity-fury:before {
+        content: "\4a";
+    }
+    &.pgg-affinity-growth:before {
+        content: "\4b";
+    }
+    &.pgg-affinity-corruption:before {
+        content: "\4c";
+    }
+    &.pgg-paragon-logo:before {
+        content: "\63";
+    }
+    &.pgg-amber:before {
+        content: "\64";
+    }
+    &.pgg-epic-games-logo:before {
+        content: "\62";
     }
 }
 
