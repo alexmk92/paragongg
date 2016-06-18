@@ -9,7 +9,7 @@ var CommentBox = React.createClass({
             commentBody : "",
             posting : false,
             isFocused : false,
-            enterToPost: true
+            enterToPost: false
         }
     },
     componentDidUpdate: function() {
