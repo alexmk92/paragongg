@@ -82,5 +82,29 @@ class HeroController extends Controller
         return redirect('/admin/jobs');
     }
 
+    // Pull latest hero images
+    public function pullHeroImages()
+    {
+        // Get latest hero list
+        $client = new Client();
+        $res = $client->request('GET', 'https://developer-paragon.epicgames.com/v1/heroes', [
+            'headers' => [
+                'Accept'        => 'application/json',
+                'Authorization' => 'Bearer '.APIToken(),
+                'X-Epic-ApiKey' => env('EPIC_API_KEY'),
+            ]
+        ])->getBody();
+
+        $response = json_decode($res);
+
+        // Run through each cards returned
+        foreach($response as $object) {
+            $this->dispatch(new UpdateHeroImage($object));
+        }
+
+        session()->flash('notification', 'success|Hero image update processing...');
+
+        return redirect('/admin/jobs');
+    }
 
 }

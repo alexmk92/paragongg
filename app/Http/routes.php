@@ -104,8 +104,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::get('/heroes', 'AdminController@heroes');
     Route::get('/maintenance', 'MaintenanceController@index');
     Route::get('/maintenance/update-cards', '\App\Http\Controllers\CardController@pullCards');
+    Route::get('/maintenance/update-card-images', '\App\Http\Controllers\CardController@pullCardImages');
     Route::get('/maintenance/update-heroes', '\App\Http\Controllers\HeroController@pullHeroes');
-
+    Route::get('/maintenance/update-hero-images', '\App\Http\Controllers\HeroController@pullHeroImages');
     Route::get('/api/jobs', 'AdminController@getJobs');
 });
 

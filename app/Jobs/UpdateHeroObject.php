@@ -33,7 +33,6 @@ class UpdateHeroObject extends Job implements ShouldQueue
      */
     public function handle()
     {
-        $storage = Storage::disk('s3');
         $client = new Client();
         $exists = Hero::where('code', $this->object->id)->first();
 
@@ -60,12 +59,5 @@ class UpdateHeroObject extends Job implements ShouldQueue
         $hero->abilities  = $heroDetails->abilities;
         $hero->save();
 
-        $portrait_large  = Image::make('http:' . $heroDetails->images->icon)->stream()->getContents();
-        $portrait_medium =  Image::make($portrait_large)->resize(256,256)->stream()->getContents();
-        $portrait_small =  Image::make($portrait_large)->resize(128,128)->stream()->getContents();
-
-        $storage->getDriver()->put('images/heroes/' . $this->object->id . '/portrait_large.png', $portrait_large, ["CacheControl" => "max-age=86400"]);
-        $storage->getDriver()->put('images/heroes/' . $this->object->id . '/portrait_medium.png', $portrait_medium, ["CacheControl" => "max-age=86400"]);
-        $storage->getDriver()->put('images/heroes/' . $this->object->id . '/portrait_small.png', $portrait_small, ["CacheControl" => "max-age=86400"]);
     }
 }

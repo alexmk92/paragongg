@@ -10,13 +10,12 @@ var HeroPreview = React.createClass({
     getAffinities: function() {
         var affinities = [];
         this.state.affinities.forEach(function (affinity) {
-            affinity = affinity.substring(9).toLowerCase();
+            affinity = affinity.toLowerCase();
             affinities.push(<i key={affinity} className={"pgg pgg-affinity-" + affinity + " affinity-color"} ></i>);
         });
         return affinities;
     },
     render: function() {
-        console.log(Helpers.S3URL() + this.props.hero.code + '/portrait_small.png');
         var divStyle = {
             backgroundImage: 'url('+ Helpers.S3URL() + 'images/heroes/' + this.props.hero.code + '/portrait_medium.png)'
         };

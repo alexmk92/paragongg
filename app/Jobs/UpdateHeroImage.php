@@ -33,27 +33,28 @@ class UpdateHeroImage extends Job implements ShouldQueue
      */
     public function handle()
     {
-        $storage = Storage::disk('s3');
-
         $client = new Client();
+        $storage = Storage::disk('s3');
         $exists = Hero::where('code', $this->object->id)->first();
 
         if (!$exists) return true;
 
-        // BACKGROUND
-        $portrait = $client->request('GET', 'https://oriondata-public-service-prod09.ol.epicgames.com/v1/hero/' . $this->object->id . '/image/mugshot.png', [
+        $heroDetails = $client->request('GET', 'https://oriondata-public-service-prod09.ol.epicgames.com/v1/hero/' . $this->object->id, [
             'headers' => [
-                'Accept' => 'image/png',
+                'Accept' => 'application/json',
                 'Authorization' => 'Bearer ' . APIToken(),
                 'X-Epic-ApiKey' => env('EPIC_API_KEY'),
             ]
-        ])->getBody()->getContents();
+        ])->getBody();
 
-        $portrait_medium =  Image::make($portrait)->resize(256,256)->stream()->getContents();
-        $portrait_small =  Image::make($portrait)->resize(128,128)->stream()->getContents();
+        $heroDetails = json_decode($heroDetails);
 
-        $storage->getDriver()->put('images/heroes/' . $this->object->id . '/portrait.png', $portrait, ["CacheControl" => "max-age=3600"]);
-        $storage->getDriver()->put('images/heroes/' . $this->object->id . '/portrait_medium.png', $portrait_medium, ["CacheControl" => "max-age=3600"]);
-        $storage->getDriver()->put('images/heroes/' . $this->object->id . '/portrait_small.png', $portrait_small, ["CacheControl" => "max-age=3600"]);
+        $portrait_large  = Image::make('http:' . $heroDetails->images->icon)->stream()->getContents();
+        $portrait_medium =  Image::make($portrait_large)->resize(256,256)->stream()->getContents();
+        $portrait_small  =  Image::make($portrait_large)->resize(128,128)->stream()->getContents();
+
+        $storage->getDriver()->put('images/heroes/' . $this->object->id . '/portrait_large.png', $portrait_large, ["CacheControl" => "max-age=86400"]);
+        $storage->getDriver()->put('images/heroes/' . $this->object->id . '/portrait_medium.png', $portrait_medium, ["CacheControl" => "max-age=86400"]);
+        $storage->getDriver()->put('images/heroes/' . $this->object->id . '/portrait_small.png', $portrait_small, ["CacheControl" => "max-age=86400"]);
     }
 }

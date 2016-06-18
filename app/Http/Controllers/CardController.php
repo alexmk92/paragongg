@@ -151,4 +151,28 @@ class CardController extends Controller
 
         return redirect('/admin/jobs');
     }
+
+    public function pullCardImages()
+    {
+        // Get latest cards list
+        $client = new Client();
+        $res = $client->request('GET', 'https://developer-paragon.epicgames.com/v1/cards', [
+            'headers' => [
+                'Accept'        => 'application/json',
+                'Authorization' => 'Bearer '.APIToken(),
+                'X-Epic-ApiKey' => env('EPIC_API_KEY'),
+            ]
+        ])->getBody();
+
+        $response = json_decode($res);
+
+        // Run through each cards returned
+        foreach($response as $object) {
+            $this->dispatch(new UpdateCardImage($object));
+        }
+
+        session()->flash('notification', 'success|Card image update processing...');
+
+        return redirect('/admin/jobs');
+    }
 }
