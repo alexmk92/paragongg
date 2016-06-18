@@ -18,7 +18,7 @@ var CommentBox = React.createClass({
         }
     },
     didSubmitComment: function(event) {
-        if(event.keyCode === 13) {
+        if(event.keyCode === 13 && this.state.enterToPost) {
             if(event.shiftKey) {
                 event.stopPropagation();
             } else {
