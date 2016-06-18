@@ -31,8 +31,8 @@ module.exports = {
             case "LIFESTEALRATING" : return { label : "Lifesteal", icon: "pgg pgg-lifesteal", modifier : "%" }; break;
             case "PHYSICALPENETRATIONRATING" : return { label : "Physical Pen.", icon: "pgg pgg-physical-penetration", modifier : "%" }; break;
             case "ENERGYPENETRATIONRATING" : return { label : "Energy Pen.", icon: "pgg pgg-energy-penetration", modifier : "%" }; break;
-            case "CRITICALDAMAGEBONUS" : return { label : "Critical Strike Damage", icon: "pgg pgg-critical-strike-damage", modifier : "" }; break;
-            case "CRITICALDAMAGECHANCE" : return { label : "Critical Strike Chance", icon: "pgg pgg-critical-strike-chance", modifier : "%" }; break;
+            case "CRITICALDAMAGEBONUS" : return { label : "Critical Damage", icon: "pgg pgg-critical-strike-damage", modifier : "" }; break;
+            case "CRITICALDAMAGECHANCE" : return { label : "Critical Chance", icon: "pgg pgg-critical-strike-chance", modifier : "%" }; break;
             case "HEALTHREGENRATE" : return { label : "Health Regen.", icon: "pgg pgg-health-regeneration", modifier : "/s" }; break;
             case "ENERGYRESISTANCERATING" : return { label : "Energy Armor", icon: "pgg pgg-energy-armor", modifier : "" }; break;
             case "PHYSICALRESISTANCERATING" : return { label : "Physical Armor", icon : "pgg pgg-physical-armor", modifier : "" }; break;
