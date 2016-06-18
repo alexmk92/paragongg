@@ -173,5 +173,8 @@ module.exports = {
             .toLowerCase()
             .replace(/[^\w ]+/g,'')
             .replace(/ +/g,'-');
+    },
+    S3URL: function() {
+        return 'https://s3-eu-west-1.amazonaws.com/paragon.gg/';
     }
 };

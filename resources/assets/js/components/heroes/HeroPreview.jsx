@@ -1,4 +1,5 @@
 var React = require('react');
+var Helpers     = require('../../helpers')
 
 var HeroPreview = React.createClass({
     getInitialState: function() {
@@ -15,8 +16,9 @@ var HeroPreview = React.createClass({
         return affinities;
     },
     render: function() {
+        console.log(Helpers.S3URL() + this.props.hero.code + '/portrait_small.png');
         var divStyle = {
-            backgroundImage: 'url('+this.props.hero.images.icon+')'
+            backgroundImage: 'url('+ Helpers.S3URL() + 'images/heroes/' + this.props.hero.code + '/portrait_medium.png)'
         };
         return (
             <a href={ "/heroes/" + this.props.hero.name.toLowerCase() }>
