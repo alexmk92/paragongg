@@ -139,6 +139,11 @@ $placed-card-width : 141px;
                     position: relative;
                     background-position-y: -15px;
 
+                    &.pulse-upgrade {
+                        opacity: 1;
+                        animation: flash 1s infinite linear;
+                    }
+
                     &:hover {
                         .overlay {
                             opacity: 0.2;
