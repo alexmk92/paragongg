@@ -14,6 +14,32 @@ module.exports = {
         if(!element) { return false; }
         return element.className.indexOf(selector) > -1;
     },
+    getFormattedCardDescription: function(description) {
+        return description
+            .replace("<", "")
+            .replace("</", "")
+            .replace("keyBurning", "burning");
+    },
+    getFormattedStatistic: function(statLabel) {
+        switch(statLabel.toUpperCase()) {
+            case "ATTACKSPEEDRATING": return { label : "Attack Speed", icon: "pgg pgg-attack-speed", modifier : "" }; break;
+            case "COOLDOWNREDUCTIONPERCENTAGE": return { label : "Cooldown Reduction", icon: "pgg pgg-cooldown-reduction", modifier : "%" }; break;
+            case "MAXENERGY" : return { label : "Max Energy", icon: "pgg pgg-max-energy", modifier : "" }; break;
+            case "MAXHEALTH" : return { label : "Max Health", icon: "pgg pgg-max-health", modifier : "" }; break;
+            case "ENERGYREGENRATE" : return { label : "Energy Regen.", icon: "pgg pgg-mana-regeneration", modifier : "/s" }; break;
+            case "ATTACKRATING" : return { label : "Attack Rating", icon: "pgg pgg-physical-damage", modifier : "" }; break;
+            case "LIFESTEALRATING" : return { label : "Lifesteal", icon: "pgg pgg-lifesteal", modifier : "%" }; break;
+            case "PHYSICALPENETRATIONRATING" : return { label : "Physical Pen.", icon: "pgg pgg-physical-penetration", modifier : "%" }; break;
+            case "ENERGYPENETRATIONRATING" : return { label : "Energy Pen.", icon: "pgg pgg-energy-penetration", modifier : "%" }; break;
+            case "CRITICALDAMAGEBONUS" : return { label : "Critical Strike Damage", icon: "pgg pgg-critical-strike-damage", modifier : "" }; break;
+            case "CRITICALDAMAGECHANCE" : return { label : "Critical Strike Chance", icon: "pgg pgg-critical-strike-chance", modifier : "%" }; break;
+            case "HEALTHREGENRATE" : return { label : "Health Regen.", icon: "pgg pgg-health-regeneration", modifier : "/s" }; break;
+            case "ENERGYRESISTANCERATING" : return { label : "Energy Armor", icon: "pgg pgg-energy-armor", modifier : "" }; break;
+            case "PHYSICALRESISTANCERATING" : return { label : "Physical Armor", icon : "pgg pgg-physical-armor", modifier : "" }; break;
+            case "WELLRIGPLACEMENTTIMER" : return { label : "Harvester Placement Time", icon: "pgg pgg-harvester-placement-time", modifier : "/s" }; break;
+            default : return { label : ("undefined label: " + statLabel), icon: "", modifier : "" };
+        }
+    },
     prettyDate : function(time)
     {
         var system_date = new Date(Date.parse(time));
