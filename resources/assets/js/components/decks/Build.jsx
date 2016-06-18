@@ -167,7 +167,7 @@ var Build = React.createClass({
             }.bind(this));
         }
     },
-    getUpgradeSlots: function(slot) {
+    getUpgradeSlots: function(slot, activeClass) {
         // Dont show this section on unplaced cards
         if(typeof slot.card === "undefined" || slot.card === null) {
             return "";
@@ -181,6 +181,7 @@ var Build = React.createClass({
                     var label = "";
                     var slotStyle = { backgroundImage : "" };
                     if(upgrade.card === null) {
+                        activeClass = "";
                         label = <span className="upgrade-label">EMPTY SLOT</span>;
                     } else {
                         label = <span className="upgrade-label"><span className="subtext">{upgrade.card.cost}CP </span>{upgrade.card.name}</span>;
@@ -188,7 +189,7 @@ var Build = React.createClass({
                     }
 
                     return (
-                        <div className="upgrade-slot"
+                        <div className={ "upgrade-slot " + activeClass }
                              key={"upgrade-slot-" + Helpers.uuid() }
                              onContextMenu={this.removeUpgradeFromCard.bind(this, upgrade, slot.card)}
                              onClick={this.bindUpgradeToCard.bind(this, upgrade, slot.card, false)}
@@ -322,6 +323,7 @@ var Build = React.createClass({
             var activeClass = "";
             var card = "";
             var cardPulse = "";
+            var upgradePulse = "";
 
             if(this.props.autoPlaceIndex === i && this.isClientMobile() && this.props.selectedCard !== null) {
                 if(this.props.selectedCard.type !== "Upgrade") {
@@ -373,6 +375,14 @@ var Build = React.createClass({
             }
             if(slot.card !== null) {
                 activeClass = "active-placed";
+
+                if(this.props.selectedCard && slot.card.upgradeSlots && slot.card.upgradeSlots > 0 && this.props.selectedCard.type === "Upgrade") {
+                    if(this.props.selectedCard.affinity === slot.card.affinity || this.props.selectedCard.affinity === "Universal") {
+                        console.log("GOT UPGRADE");
+                        upgradePulse = "pulse-upgrade";
+                    }
+                }
+
                 var cardStyles = { backgroundImage : "url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/" + slot.card.code + "/background_small.png)"}
                 card = (
                     <div style={cardStyles}
@@ -444,7 +454,7 @@ var Build = React.createClass({
                         <i className="fa fa-arrow-circle-up" aria-hidden="true" />
                     </div>
                     <div className="upgrade-slot-wrapper">
-                        { this.getUpgradeSlots( slot ) }
+                        { this.getUpgradeSlots( slot, upgradePulse ) }
                     </div>
                 </li>
             );
