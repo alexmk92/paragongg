@@ -181,9 +181,9 @@ var Build = React.createClass({
                     var label = "";
                     var slotStyle = { backgroundImage : "" };
                     if(upgrade.card === null) {
-                        activeClass = "";
                         label = <span className="upgrade-label">EMPTY SLOT</span>;
                     } else {
+                        activeClass = "";
                         label = <span className="upgrade-label"><span className="subtext">{upgrade.card.cost}CP </span>{upgrade.card.name}</span>;
                         slotStyle = { backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/'+upgrade.card.code+'/icon.png)' }
                     }
