@@ -168,6 +168,10 @@ $placed-card-width : 141px;
                         transition: all 250ms ease-in-out;
                     }
 
+                    &.selected {
+                        border: 1px solid $tertiary-highlight;
+                    }
+
                     &:hover {
                         border: 1px solid $tertiary-highlight;
                     }
