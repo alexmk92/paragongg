@@ -101,6 +101,11 @@ function OAuthToken()
     return Cache::get('user.'.$user->id.'.token');
 }
 
+function S3URL()
+{
+    return 'https://s3-eu-west-1.amazonaws.com/paragon.gg';
+}
+
 function createSlug($string)
 {
     

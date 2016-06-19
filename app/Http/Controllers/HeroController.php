@@ -8,6 +8,8 @@ use App\Jobs\UpdateHeroImage;
 use App\Jobs\UpdateHeroObject;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class HeroController extends Controller
 {
@@ -23,9 +25,7 @@ class HeroController extends Controller
     public function show($slug)
     {
         $hero = Hero::where('slug', urldecode($slug))->firstOrFail();
-        $customBackground = "/assets/hero/".$hero->code."/terrain.jpg";
-        // $stageBackground = "/assets/hero/".$activeHero->name."/terrain.jpg";  <-- WE WANT TO USE THIS IN PRODUCTION
-        //$stageBackground = "/assets/hero/dekker/terrain.jpg";
+        $customBackground = S3URL()."/images/heroes/".$hero->code."/background.jpg";
 
         return view('heroes.show')->with('hero', $hero)->with('customBackground', $customBackground);
     }
@@ -33,16 +33,31 @@ class HeroController extends Controller
     // Edit
     public function edit($code)
     {
-        $hero = Hero::where('code', $code)->get();
+        $hero = Hero::where('code', $code)->firstOrFail();
         return view('heroes.edit')->with('hero', $hero);
     }
 
     // Update
     public function update($code, Request $request)
     {
-        $updatedHero = json_decode($request->input('data'), true);
-        $hero = Hero::where('code', $code);
-        $hero->update($updatedHero[0]);
+        $hero = Hero::where('code', $code)->firstOrFail();
+//        $updatedHero = json_decode($request->input('data'), true);
+//        $hero->update($updatedHero[0]);
+
+        if($request->hasFile('background')) {
+            $path = 'images/heroes/' . $hero->code . '/background.jpg';
+            $storage = Storage::disk('s3');
+            $image = Image::make($request->file('background'));
+            $storage->getDriver()->put($path, $image->stream()->getContents(), ["CacheControl" => "max-age=604800"]);
+        }
+
+        if($request->hasFile('cutout')) {
+            $path = 'images/heroes/' . $hero->code . '/cutout.png';
+            $storage = Storage::disk('s3');
+            $image = Image::make($request->file('cutout'));
+            $storage->getDriver()->put($path, $image->stream()->getContents(), ["CacheControl" => "max-age=86400"]);
+        }
+
         session()->flash('notification', 'success|Hero saved.');
 
         return redirect()->back();

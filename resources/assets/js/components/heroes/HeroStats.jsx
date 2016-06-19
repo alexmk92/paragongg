@@ -62,7 +62,7 @@ var HeroStats = React.createClass({
         particlesJS('particle-layer', ParticleTheme.sparks());
     },
     sliderChanged: function(value) {
-        var domNode = "<p>RANK<br/><span>" + value + "</span></p>";
+        var domNode = "<p>Rank<br/><span>" + value + "</span></p>";
         var elem = document.querySelector(".rc-slider-handle");
         if(typeof elem !== "undefined" && elem !== null) {
             elem.innerHTML = domNode;
@@ -72,15 +72,20 @@ var HeroStats = React.createClass({
     render: function() {
 
         var _this = this;
-        /*
         var affinities = this.props.hero.affinities.map(function(affinity) {
             return(
-                  <li><span>{ affinity }</span></li>
+                  <i className={"affinity-color pgg pgg-affinity-" + affinity.toLowerCase()} title={"Affinity: " + affinity }></i>
             );
         });
-        */
-        var affinities = <li>No affinities</li>;
+
         var roles = <li>No suggested roles</li>;
+        if(this.props.hero.roles > 0) {
+            roles = this.props.hero.roles.map(function(role) {
+                return(
+                    <i className={"pgg pgg-role-" + role.toLowerCase()} title={"Role: " + role }></i>
+                );
+            });
+        }
 
         var statistics = this.state.stats.map(function(stat) {
             var scale = _this.state.multiplier === 1 ? 0 : stat.scaling;
@@ -96,24 +101,19 @@ var HeroStats = React.createClass({
         return (
             <div>
                 <span className="breadcrumb">
-                    <a href="/heroes">HEROES</a> / <a href={ "/heroes/" + this.props.hero.name }>{ this.props.hero.name }</a>
+                    <a href="/heroes">Heroes</a> / <a href={ "/heroes/" + this.props.hero.name }>{ this.props.hero.name }</a>
                 </span>
                 <h1 id="name">{ this.props.hero.name.toUpperCase() }</h1>
-                <div id="divider"></div>
-                <ul id="overview">
-                    <li className="parent-list">
-                        <span>AFFINITIES</span>
-                        <ul>
-                            { affinities }
-                        </ul>
-                    </li>
-                    <li className="parent-list">
-                        <span>SUGGESTED ROLES</span>
-                        <ul>
-                            { roles }
-                        </ul>
-                    </li>
-                </ul>
+                <div className="attributes">
+                    <div className="attribute affinities">
+                        <label>Affinities</label>
+                        { affinities }
+                    </div>
+                    <div className="attribute roles">
+                        <label>Suggested Roles</label>
+                        { roles }
+                    </div>
+                </div>
 
                 <div id="rank-slider">
                     <Rcslider defaultValue={1} min={1} max={15} onChange={this.sliderChanged} tipFormatter={null}  />

@@ -169,6 +169,36 @@ canvas {
             top: 50px;
             z-index: 10;
 
+            h1 {
+                padding-bottom: 25px;
+                margin-bottom: 25px;
+                border-bottom: 2px solid #444;
+            }
+
+            .attributes {
+                margin-top: 10px;
+                .attribute {
+                    display: inline-block;
+                    width: 48%;
+                    vertical-align: top;
+                    label {
+                        color: white;
+                        font-size: 18px;
+                        margin-bottom: 25px;
+                    }
+                    &:first-of-type {
+                        margin-right: 4%;
+                    }
+                }
+                .affinities {
+                    font-size: 72px;
+                    .pgg {
+                        &:first-of-type {
+                            margin-right: 15px;
+                        }
+                    }
+                }
+            }
             #overview {
                 padding-top: 10px;
 

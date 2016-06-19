@@ -2,9 +2,10 @@
     padding: 30px 0px;
     .rc-slider {
         height: 1px;
-        background: rgba(66, 169, 232, 0.5);
+        background: rgba(66, 169, 232, 0.3);
 
         .rc-slider-handle {
+            text-transform: uppercase;
             left: 60%;
             width: 50px;
             position: absolute;
@@ -14,20 +15,19 @@
             border: 1px solid rgb(66, 169, 232);
             margin-top: 0;
             top: -25px;
-            //background: #08090d;
-            background: rgba(0, 0, 0, 0.7);
+            background: black;
 
             p {
                 text-align: center;
                 transform: rotate(-45deg) !important;
                 display: block;
-                font-family: "Roboto Condensed", SansSerif, Arial;
+                font-family: "Roboto Condensed", sans-serif, Arial;
                 font-weight: 100;
                 font-size: 0.7em;
                 margin-left: 0px;
                 margin-top: 5px;
                 line-height: 1.6em;
-                color: #9C9FA5;
+                color: $font-color-base;
 
                 span {
                     font-family: "Roboto", SansSerif, Arial;
