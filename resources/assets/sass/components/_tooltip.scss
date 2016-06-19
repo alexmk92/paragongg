@@ -1,65 +1,49 @@
-.pgg-tooltip {
-    &.pgg-tooltip-card {
-        //background: $panel-color-dark;
-        border: 1px solid #333;
-        background: #131313;
-        color: #fff;
-        border-radius: 7px;
-        min-width: 300px;
-        overflow: hidden;
-
-        .head {
-            font-size: 1.4em;
-            font-weight: 600;
-            background: $panel-color;
-            padding: 20px;
-            &.affinity-universal {
-                background: #272727; /* Old browsers */
-                background: -moz-linear-gradient(left,  #272727 0%, #333333 47%, #272727 100%); /* FF3.6-15 */
-                background: -webkit-linear-gradient(left,  #272727 0%,#333333 47%,#272727 100%); /* Chrome10-25,Safari5.1-6 */
-                background: linear-gradient(to right,  #272727 0%,#333333 47%,#272727 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#272727', endColorstr='#272727',GradientType=1 ); /* IE6-9 */
-            }
-            &.affinity-fury {
-                background: #912421; /* Old browsers */
-                background: -moz-linear-gradient(left,  #912421 0%, #c7392f 44%, #912421 100%); /* FF3.6-15 */
-                background: -webkit-linear-gradient(left,  #912421 0%,#c7392f 44%,#912421 100%); /* Chrome10-25,Safari5.1-6 */
-                background: linear-gradient(to right,  #912421 0%,#c7392f 44%,#912421 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#912421', endColorstr='#912421',GradientType=1 ); /* IE6-9 */
-            }
-            &.affinity-intellect {
-                background: #034f71; /* Old browsers */
-                background: -moz-linear-gradient(left,  #034f71 0%, #00779b 45%, #034f71 100%); /* FF3.6-15 */
-                background: -webkit-linear-gradient(left,  #034f71 0%,#00779b 45%,#034f71 100%); /* Chrome10-25,Safari5.1-6 */
-                background: linear-gradient(to right,  #034f71 0%,#00779b 45%,#034f71 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#034f71', endColorstr='#034f71',GradientType=1 ); /* IE6-9 */
-            }
-            &.affinity-order {
-                background: #b7b894; /* Old browsers */
-                background: -moz-linear-gradient(left,  #b7b894 0%, #d0d1b8 45%, #b7b894 100%); /* FF3.6-15 */
-                background: -webkit-linear-gradient(left,  #b7b894 0%,#d0d1b8 45%,#b7b894 100%); /* Chrome10-25,Safari5.1-6 */
-                background: linear-gradient(to right,  #b7b894 0%,#d0d1b8 45%,#b7b894 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b7b894', endColorstr='#d0d1b8',GradientType=1 ); /* IE6-9 */
-
-                color: $background;
-            }
-            &.affinity-growth {
-                background: #358f1d; /* Old browsers */
-                background: -moz-linear-gradient(left,  #358f1d 0%, #49b42c 50%, #358f1d 100%); /* FF3.6-15 */
-                background: -webkit-linear-gradient(left,  #358f1d 0%,#49b42c 50%,#358f1d 100%); /* Chrome10-25,Safari5.1-6 */
-                background: linear-gradient(to right,  #358f1d 0%,#49b42c 50%,#358f1d 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#358f1d', endColorstr='#358f1d',GradientType=1 ); /* IE6-9 */
-            }
-            &.affinity-corruption {
-                background: #480036; /* Old browsers */
-                background: -moz-linear-gradient(left,  #480036 0%, #7d005e 50%, #480036 100%); /* FF3.6-15 */
-                background: -webkit-linear-gradient(left,  #480036 0%,#7d005e 50%,#480036 100%); /* Chrome10-25,Safari5.1-6 */
-                background: linear-gradient(to right,  #480036 0%,#7d005e 50%,#480036 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7d005e', endColorstr='#7d005e',GradientType=1 ); /* IE6-9 */
-            }
+.pgg-tooltip-card {
+    background: black;
+    max-width: 400px;
+    min-width: 350px;
+    border: 1px solid $faded-line;
+    cursor: default;
+    box-shadow: 0px 0px 2.75px 0.25px rgba(0, 0, 0, 0.4);
+    .card-head {
+        padding: 15px;
+        background: $panel-color-dark;
+        position: relative;
+        .heading {
+            vertical-align: middle;
         }
-        .content {
-            padding: 20px;
+        .cost {
+            float: left;
+            font-size: 50px;
+            line-height: 38px;
+            color: $font-color-faded;
+            margin-right: 10px;
         }
+        .name {
+            display: block;
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        .type {
+            font-size: 15px;
+            font-family: $font-condensed;
+        }
+        .rarity {
+            font-size: 15px;
+            font-family: $font-condensed;
+            color: $font-color-faded;
+            margin-right: 5px;
+        }
+        .affinity {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 48px;
+        }
+    }
+    .content {
+        padding: 15px;
     }
 }
