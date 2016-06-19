@@ -169,6 +169,7 @@ var Build = React.createClass({
     },
     getUpgradeSlots: function(slot, activeClass) {
         // Dont show this section on unplaced cards
+        var deleteWrapper = "";
         if(typeof slot.card === "undefined" || slot.card === null) {
             return "";
         }
@@ -184,6 +185,30 @@ var Build = React.createClass({
                         label = <span className="upgrade-label">EMPTY SLOT</span>;
                     } else {
                         activeClass = "";
+                        if(this.lastSelectedUpgradeSlot !== null) {
+                            if (this.lastSelectedUpgradeSlot.parentSlot === slot && slot.upgrades.indexOf(upgrade) === this.lastSelectedUpgradeSlot.upgradeSlotIndex) {
+                                activeClass = " selected";
+                                /* TODO ADD THIS CODE TO SHOW DELETE WRAPPER FOR UPGRADE SLOTS
+                                if(this.props.selectedCard !== null && this.props.selectedCard.type === "Upgrade") {
+                                    deleteWrapper = (
+                                        <div key={"action-buttons-upgrade-slot"} className="delete-wrapper" onClick={this.bindUpgradeToCard.bind(this, upgrade, slot.card, false)}
+                                             onContextMenu={this.removeUpgradeFromCard.bind(this, upgrade, slot.card)}>
+                                            <i onClick={this.removeUpgradeFromCard.bind(this, upgrade, slot.card)} className="fa fa-trash"
+                                               aria-hidden="true"/>
+                                            <i onClick={this.bindUpgradeToCard.bind(this, upgrade, slot.card, false)} className="fa fa-refresh"
+                                               aria-hidden="true"/>
+                                        </div>
+                                    );
+                                } else {
+                                    deleteWrapper = (
+                                        <div key={"action-buttons-upgrade-slot"} className="delete-wrapper" onClick={this.bindUpgradeToCard.bind(this, upgrade, slot.card, false)} onContextMenu={this.removeUpgradeFromCard.bind(this, upgrade, slot.card)}>
+                                            <i onClick={this.removeUpgradeFromCard.bind(this, upgrade, slot.card)} className="fa fa-trash" aria-hidden="true" />
+                                        </div>
+                                    );
+                                }
+                                */
+                            }
+                        }
                         label = <span className="upgrade-label"><span className="subtext">{upgrade.card.cost}CP </span>{upgrade.card.name}</span>;
                         slotStyle = { backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/'+upgrade.card.code+'/icon.png)' }
                     }
@@ -198,6 +223,7 @@ var Build = React.createClass({
                              onMouseOver={this.showTooltip.bind(this, upgrade.card, "upgrade-label")}
                              onMouseLeave={this.hideTooltip}
                         >
+                            { deleteWrapper }
                             { label }
                             <div className="overlay"></div>
                         </div>
@@ -245,8 +271,9 @@ var Build = React.createClass({
     },
     bindUpgradeToCard: function(upgradeSlot, card, bindUpgradeAtNextAvailableIndex) {
         // GET THE NEXT AVAILABLE SLOT
-        if(this.validateQuantity(false)) {
+        if(this.validateQuantity(false) && this.props.selectedCard) {
             // Got here by clicking on parent card to bind child
+            this.lastSelectedUpgradeSlot = null;
             if(bindUpgradeAtNextAvailableIndex) {
                 var nextAvailableSlot = null;
                 upgradeSlot.upgrades.forEach(function (slot, i) {
@@ -282,17 +309,32 @@ var Build = React.createClass({
                 newBuild.slots = newSlots;
                 this.buildUpdated(newBuild, lastModdedSlot, this.props.shouldQuickBindCards, null);
             }
+        } else {
+            var parentSlot = null;
+            var upgradeIndex = -1;
+            this.props.build.slots.some(function(slot) {
+                if(slot.card !== null && slot.card.code === card.code) {
+                    parentSlot = slot;
+                    upgradeIndex = slot.upgrades.indexOf(upgradeSlot);
+                    return true;
+                }
+                return false;
+            });
+            this.lastSelectedUpgradeSlot = { parentSlot : parentSlot, upgradeSlotIndex : upgradeIndex }
         }
+        // Force fire a left click event if we get here so we can set the trash can on an active
+        // upgrade slot
+        this.forceUpdate();
     },
     removeUpgradeFromCard: function(upgradeSlot, card, event) {
         event.preventDefault();
         var newBuild = this.props.build;
         var lastModdedSlot = null;
-        newBuild.slots = this.props.build.slots.map(function(oldSlot) {
+        newBuild.slots = this.props.build.slots.map(function(oldSlot, index) {
             if(oldSlot.card !== null && (oldSlot.card.code === card.code)) {
                 var lastUpgradeIndex = oldSlot.upgrades.indexOf(upgradeSlot);
                 if(lastUpgradeIndex > -1) {
-                    lastModdedSlot = this.props.build.indexOf(oldSlot);
+                    lastModdedSlot = index;
                     oldSlot.upgrades[lastUpgradeIndex].card = null;
                 }
             }

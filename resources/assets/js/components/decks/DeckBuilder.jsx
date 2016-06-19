@@ -432,7 +432,7 @@ var DeckBuilder = React.createClass({
                     </li>
                 );
 
-                if(this.state.selectedCard && this.state.selectedCard.type !== "Upgrade" && card.type === "Upgrade" && this.state.isBuildsPanelShowing) {
+                if(this.state.selectedCard && this.state.selectedCard.type !== "Upgrade" && card.type === "Upgrade" && this.state.isBuildsPanelShowing && !this.isClientMobile()) {
                     var cardAffinity = card.affinity.toLowerCase();
                     var selectedAffinity = this.state.selectedCard.affinity.toLowerCase();
                     if(cardAffinity.indexOf("universal") > -1) {
@@ -650,7 +650,7 @@ var DeckBuilder = React.createClass({
         if(typeof setActiveTab !== "undefined" && setActiveTab !== null) {
             newActiveTab = setActiveTab;
         }
-        
+
         this.setState({ builds : newBuilds, lastModifiedSlot: lastModifiedSlot, selectedCard: newSelectedCard, quickBind : toggleQuickBind, activeTab: newActiveTab });
     },
     /** TAB PANEL FUNCTIONS **/
@@ -668,7 +668,7 @@ var DeckBuilder = React.createClass({
         var showBuildsPanel = this.state.isBuildsPanelShowing;
         if(typeof selectedCard === "undefined" || selectedCard === null)
             selectedCard = this.state.selectedCard;
-        
+
         var flashTab = false;
 
         // filter for mobile
