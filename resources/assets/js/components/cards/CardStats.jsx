@@ -47,14 +47,14 @@ var CardStats = React.createClass({
                 console.log("STAT IS: ", statistic);
                 statistics.push(
                     <li key={stat.label + "_" + i}>
-                        <span><i className={statistic.icon} aria-hidden="true" /> { statistic.label + " " + Number(stat.value).toFixed(2) + "" + statistic.modifier }</span>
+                        <span className="value">{Number(stat.value).toFixed(2) + "" + statistic.modifier }</span> <span><i className={statistic.icon} aria-hidden="true" /> { statistic.label} </span>
                     </li>
                 );
             }
         }.bind(this));
         if(statistics.length > 0) {
             jsx = <div>
-                      <span className="stat-header">STATISTICS</span>
+                      <label>Statistics</label>
                       <ul id="stat-container" className="stat-container">
                          { statistics }
                       </ul>
@@ -74,15 +74,15 @@ var CardStats = React.createClass({
                 var passiveName = isUnique + passiveOrActive;
                 passives.push(
                     <li key={"passive_" + i}>
-                        <span><span className="italic">{ passiveName + ": "}</span>{ Helpers.getFormattedCardDescription(passive.description) }</span>
+                        <span><strong>{ passiveName + ": "}</strong>{ Helpers.getFormattedCardDescription(passive.description) }</span>
                     </li>
                 );
             }
         });
         if(passives.length > 0) {
-            jsx = <div className="top-spacer">
-                <span className="stat-header">EFFECTS</span>
-                <ul id="passive-container" className="stat-container">
+            jsx = <div className="passive-stats">
+                <label>Effects</label>
+                <ul className="stat-container">
                     { passives }
                 </ul>
             </div>
@@ -102,8 +102,8 @@ var CardStats = React.createClass({
                 );
             }.bind(this));
             if(upgradeBonuses.length > 0) {
-                jsx = <div className="top-spacer">
-                    <span className="stat-header upgraded">FULLY UPGRADED BONUS</span>
+                jsx = <div className="fully-upgraded-stats">
+                    <label className="upgraded">Fully Upgraded Bonus</label>
                     <ul id="upgrade-container" className="stat-container">
                         { upgradeBonuses }
                     </ul>
@@ -131,20 +131,20 @@ var CardStats = React.createClass({
                 <h1 id="name">
                     { this.props.card.name.toUpperCase() }
                 </h1>
-                <div id="divider"></div>
-                <div id="attribute-container">
-                    <div id="cost-container">
-                        <span>COST</span>
+                <div className="attributes">
+                    <div className="attribute cost">
+                        <label>Cost</label>
                         <span>{ this.props.card.cost }</span>
                     </div>
-                    <div id="vertical-separator"></div>
-                    <div id="rarity-container">
+                    <div className="attribute rarity">
                         <span style={ { color : this.props.rarity.color } }>{ this.props.rarity.label.toUpperCase() }</span>
                         <span>{ this.getType() }</span>
                     </div>
-                    <div id="affinity-container">
+                    <div className="attribute affinity-icon">
                         <i className={"pgg pgg-affinity-" + this.getAffinity(this.props.card.affinity).toLowerCase() + " affinity-color"} aria-hidden="true" />
-                        <span>{ this.getAffinity(this.props.card.affinity).toUpperCase() }</span>
+                    </div>
+                    <div className="attribute affinity">
+                        { this.getAffinity(this.props.card.affinity).toUpperCase() }
                     </div>
                 </div>
                 { this.renderStatistics() }

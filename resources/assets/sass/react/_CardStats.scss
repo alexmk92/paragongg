@@ -12,10 +12,8 @@ canvas {
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: transparent;
-    background-repeat: no-repeat;
+    background: transparent no-repeat 50% 50%;
     background-size: cover;
-    background-position: 50% 50%;
 }
 
 .card-container {
@@ -73,7 +71,7 @@ canvas {
         }
     }
 
-    #left-wrapper {
+    .card-stats-wrapper {
         max-width: 650px;
         width: 600px;
         height: 100%;
@@ -81,193 +79,103 @@ canvas {
         position: absolute;
         z-index: 10;
 
-        #attribute-container {
+        .attributes {
             height: auto;
             position: relative;
             display: inline-block;
             margin-bottom: 40px;
-            color : #fff;
-            font-weight: 100;
-            vertical-align: top;
+            color : white;
+            font-size: 18px;
+            text-transform: uppercase;
 
-            #cost-container {
+            .attribute {
+                vertical-align: middle;
+                display: inline-block;
+            }
+
+            .cost {
                 text-align: center;
-                display: inline-block;
                 padding-right: 20px;
+                border-right: 3px solid $faded-line;
                 span {
-                    display: block;
-                    &:nth-child(1) {
-                        font-size: 0.9em;
-                        color: #5a606f;
-                        font-family: "Roboto Condensed", sans-serif, Arial;
-                        font-weight: 100;
-                    }
-                    &:nth-child(2) {
-                        font-size: 1.7em;
-                        margin-top: 3px;
-                        font-weight: 400;
-                    }
+                    font-size: 30px;
+                    font-weight: 400;
                 }
             }
-            #vertical-separator {
-                display: inline-block;
-                width: 4px;
-                height: 100%;
-                background: #5a606f;
-                position: absolute;
-                vertical-align: top;
-            }
-            #affinity-container {
-                padding: 0px 10px;
-                display: inline-block;
-                vertical-align: top;
-                i {
-                    vertical-align: middle;
-                    font-size: 42px;
-                }
-                span {
-                    font-size: 1.2em;
-                    display: inline-block;
-                    margin-left: 12px;
-                }
-            }
-            #rarity-container {
+            .rarity {
                 padding: 0px 20px;
                 margin-left: 5px;
-                display: inline-block;
-                font-size: 1.2em;
-                line-height: 1.15em;
+                font-size: 18px;
                 span {
+                    line-height: 20px;
                     display: block;
-
-                    &:nth-child(1) {
-                        font-weight: 400;
-                    }
                 }
+            }
+            .affinity-icon {
+                padding: 10px 10px 0 0;
+                font-size: 42px;
+            }
+            .affinity {
+                padding-top: 2px;
             }
         }
 
-        #blur-layer {
-            position: absolute;
-            top: -10px;
-            width: 100%;
-            height: 100%;
-            z-index: 5;
-            top: -$blur-radius;
-            left: -$blur-radius;
-            background: rgba(8, 9, 13, 0.8);
-            -webkit-filter: blur($blur-radius);
-            -moz-filter: blur($blur-radius);
-            -ms-filter: blur($blur-radius);
-            -o-filter: blur($blur-radius);
-            filter: blur($blur-radius);
-        }
-
-        #card-stats {
+        .card-stats {
             padding: 20px 5px;
             max-width: 450px;
             position: relative;
             top: 50px;
             z-index: 10;
 
-            #overview {
-                padding-top: 10px;
-
-                li {
-                    font-size: 1em;
-                    &.parent-list {
-                        display: inline-block;
-                        width: 48%;
-
-                        & span {
-                            font-size: 1.2em;
-                        }
-
-                        ul {
-                            margin-top: 10px;
-                        }
-                    }
-                }
-            }
-
-            #divider {
-                width: 100%;
-                height: 2px;
-                margin: 25px 0px;
-                background: rgba(200, 200, 200, 0.3);
-            }
-
-            .stat-header {
-                font-family: "Roboto Condensed", sans-serif;
-                font-weight: 100;
-                color : #5a606f;
-                display: block;
-                padding-bottom: 5px;
-                font-size: 1em;
-
-                &.upgraded {
-                    color : #dbbd68;
-                    background: -webkit-linear-gradient(#dbbd68, #a58f50);
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                }
-            }
-
-            .top-spacer {
-                padding-top: 20px;
-            }
-
-            .stat-container {
-                font-weight: 100;
-
-                &#passive-container {
-                    li {
-                        width: 100%;
-
-                        span {
-                            .italic {
-                                font-style: italic;
-                                font-size: 0.95em;
-                            }
-                        }
-                    }
-                }
-                li {
-                    padding-bottom: 10px;
-                    margin-bottom: 10px;
-                    display: inline-block;
-                    width: 49%;
-
-                    span {
-                        font-size: 1.1em;
-                        line-height: 1.4em;
-
-                        i {
-                            font-size: 1.6em;
-                        }
-                    }
-                }
+            h1 {
+                padding-bottom: 25px;
+                margin-bottom: 25px;
+                border-bottom: 2px solid #222;
             }
         }
     }
-}
-
-.centered-comment-feed {
-    #comment-feed {
-        text-align: center;
-        border-right: none;
-        max-width: 900px;
-        margin: 0 auto 50px;
-
-        #comment-list {
-            .comment-item {
-                border-bottom: none;
+    .stat-container {
+        .pgg {
+            font-size: 24px;
+        }
+        li {
+            font-size: 17px;
+            line-height: 22px;
+            .value {
+                color: white;
             }
         }
+    }
+    .passive-stats {
+        margin-top: 40px;
+    }
+    .fully-upgraded-stats {
+        margin-top: 40px;
+    }
+    label {
+        font-family: $font-condensed;
+        font-size: 14px;
+        color : $font-color-faded;
+        display: block;
+        margin-bottom: 5px;
+        text-transform: uppercase;
 
-        #comments-wrapper {
-            text-align: left;
+        &.upgraded {
+            color : $tertiary-highlight;
+            background: -webkit-linear-gradient($tertiary-highlight, #a58f50);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-
+    }
+    #blur-layer {
+        position: absolute;
+        top: -10px;
+        width: 100%;
+        height: 100%;
+        z-index: 5;
+        top: -$blur-radius;
+        left: -$blur-radius;
+        background: rgba(8, 9, 13, 0.8);
+        filter: blur($blur-radius);
     }
 }

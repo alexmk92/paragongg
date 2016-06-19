@@ -26,8 +26,8 @@ var CardContainer = React.createClass({
             switch(CARD.rarity.toUpperCase()) {
                 case "EPIC": rarityProps = { color : "#b547d9", label : "Epic Rare" }; break; // EPIC RARE
                 case "RARE": rarityProps = { color : "#477ed9", label : "Rare" }; break; // 477ed9 RARE
-                case "COMMON" : rarityProps = { color : "#47d95f", label : "Common" }; break; // 953ab4 COMMON
-                case "UNCOMMON" : rarityProps = { color : "#d4d4d4", label : "Uncommon" }; break; // d4d4d4 UNCOMMON
+                case "COMMON" : rarityProps = { color : "#d4d4d4", label : "Common" }; break; // 953ab4 COMMON
+                case "UNCOMMON" : rarityProps = { color : "#47d95f", label : "Uncommon" }; break; // d4d4d4 UNCOMMON
                 case "STARTER" : rarityProps = { color : "#aaa", label : "Starter" }; break; // STARTER
                 default : rarityProps = {};break;
             }
@@ -41,8 +41,8 @@ var CardContainer = React.createClass({
             <div onMouseMove={this.flipCard}>
                 <div className="card-container">
                     <div id="particle-layer"></div>
-                    <div id="left-wrapper">
-                        <div id="card-stats">
+                    <div className="card-stats-wrapper">
+                        <div className="card-stats">
                             <CardStats rarity={ rarity } card={ CARD } />
                         </div>
                         <div id="blur-layer"></div>
