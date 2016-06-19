@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Hero;
 use GuzzleHttp\Client;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -12,7 +13,7 @@ use Intervention\Image\Facades\Image;
 
 class UpdateHeroObject extends Job implements ShouldQueue
 {
-    use InteractsWithQueue, SerializesModels;
+    use InteractsWithQueue, SerializesModels, DispatchesJobs;
 
     protected $object;
 
@@ -38,6 +39,7 @@ class UpdateHeroObject extends Job implements ShouldQueue
 
         if (!$exists) {
             Hero::create(['name' => $this->object->name, 'code' => $this->object->id]);
+            $this->dispatch(new UpdateHeroImage($this->object));
         }
 
         $heroDetails = $client->request('GET', 'https://oriondata-public-service-prod09.ol.epicgames.com/v1/hero/' . $this->object->id, [

@@ -35,9 +35,9 @@ class UpdateHeroImage extends Job implements ShouldQueue
     {
         $client = new Client();
         $storage = Storage::disk('s3');
-        $exists = Hero::where('code', $this->object->id)->first();
+        $hero = Hero::where('code', $this->object->id)->first();
 
-        if (!$exists) return true;
+        if (!$hero) return true;
 
         $heroDetails = $client->request('GET', 'https://oriondata-public-service-prod09.ol.epicgames.com/v1/hero/' . $this->object->id, [
             'headers' => [
@@ -49,12 +49,27 @@ class UpdateHeroImage extends Job implements ShouldQueue
 
         $heroDetails = json_decode($heroDetails);
 
-        $portrait_large  = Image::make('http:' . $heroDetails->images->icon)->stream()->getContents();
-        $portrait_medium =  Image::make($portrait_large)->resize(256,256)->stream()->getContents();
-        $portrait_small  =  Image::make($portrait_large)->resize(128,128)->stream()->getContents();
+        $filename = explode('/', $heroDetails->images->icon);
+        $filename = end($filename);
+        $filename = pathinfo($filename, PATHINFO_FILENAME);
 
-        $storage->getDriver()->put('images/heroes/' . $this->object->id . '/portrait_large.png', $portrait_large, ["CacheControl" => "max-age=86400"]);
-        $storage->getDriver()->put('images/heroes/' . $this->object->id . '/portrait_medium.png', $portrait_medium, ["CacheControl" => "max-age=86400"]);
-        $storage->getDriver()->put('images/heroes/' . $this->object->id . '/portrait_small.png', $portrait_small, ["CacheControl" => "max-age=86400"]);
+        if(!$hero->image || $hero->image != $filename) {
+            // If an old image exists, delete the directory
+            if($hero->image) $storage->deleteDirectory('images/heroes/'.$this->object->id.'/'.$filename);
+
+            // Create 3 sizes for the hero portrait
+            $portrait_large  = Image::make('http:' . $heroDetails->images->icon)->stream()->getContents();
+            $portrait_medium = Image::make($portrait_large)->resize(256,256)->stream()->getContents();
+            $portrait_small  = Image::make($portrait_large)->resize(128,128)->stream()->getContents();
+
+            // Upload these to S3
+            $storage->getDriver()->put('images/heroes/' . $this->object->id . '/'.$filename.'/portrait_large.png', $portrait_large, ["CacheControl" => "max-age=31536000"]);
+            $storage->getDriver()->put('images/heroes/' . $this->object->id . '/'.$filename.'/portrait_medium.png', $portrait_medium, ["CacheControl" => "max-age=31536000"]);
+            $storage->getDriver()->put('images/heroes/' . $this->object->id . '/'.$filename.'/portrait_small.png', $portrait_small, ["CacheControl" => "max-age=31536000"]);
+
+            // Update the hero model with the new filename
+            $hero->image = $filename;
+            $hero->save();
+        }
     }
 }
