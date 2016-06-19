@@ -1,7 +1,8 @@
 var React     = require('react');
 var ReactDOM  = require('react-dom');
+var Helpers   = require('../../helpers');
 var FlipMove  = require('react-flip-move');
-var Tabbable  = require('./libraries/tabs/Tabbable');
+var Tabbable  = require('../libraries/tabs/Tabbable');
 
 var Tabs      = Tabbable.Tabs;
 var TabPanel  = Tabbable.TabPanel;
@@ -16,7 +17,7 @@ var GuidesFeed = React.createClass({
     render: function() {
         return(
             <div>
-                <GuideFilter heroes={this.state.heroes} />
+                <GuideHeroFilter heroes={this.state.heroes} />
                 <GuideResults guides={this.state.guides} />
             </div>
         )
@@ -28,7 +29,7 @@ var HeroListItem = React.createClass({
         return (
             <li>
                 <a href={"/guides?hero=" +this.props.hero.name }>
-                    <img src={"https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/" + this.props.hero.code + "/portrait_small.png" } />
+                    <img src={ Helpers.S3URL() + "images/heroes/" + this.props.hero.code + "/" + this.props.hero.image + "/portrait_small.png" } />
                     <span>{this.props.hero.name}</span>
                 </a>
             </li>
@@ -36,7 +37,7 @@ var HeroListItem = React.createClass({
     }
 });
 
-var GuideFilter = React.createClass({
+var GuideHeroFilter = React.createClass({
     getInitialState: function() {
         return {
             search_term : ""

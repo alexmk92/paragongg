@@ -8,7 +8,7 @@ require("./lib/InteractiveParallax");
 require("./components/StatsOverview");
 require("./components/PlayerStatsOverview");
 require("./components/AccountNav");
-require("./components/GuidesFeed");
+require("./components/guides/GuidesFeed");
 require("./components/cards/CardsFeed");
 require("./components/cards/CardContainer");
 require("./components/news/NewsFeed");
