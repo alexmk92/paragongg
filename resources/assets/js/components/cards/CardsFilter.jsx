@@ -1,5 +1,6 @@
 var React = require('react');
 var ReactDOM = require('react-dom')
+var CardEffects = require('./CardEffects');
 var SearchBar = require('../filter/SearchBar');
 var ToggleFilter = require('../filter/ToggleFilter');
 var DropDown = require('../filter/DropDown');
@@ -164,12 +165,14 @@ var CardsFilter = React.createClass({
                     <span className="cost">{card.cost}</span>
                     <div className="header">
                         <span className="name">{card.name}</span>
-                        <span className={"rarity rarity-" + card.rarity}>{card.rarity}</span>
+                        <span className={"rarity rarity-" + card.rarity.toLowerCase()}>{card.rarity}</span>
                         <span className="type">{card.type}</span>
                     </div>
                     <i className={"affinity affinity-color pgg pgg-affinity-" + card.affinity.toLowerCase()}></i>
                 </div>
-                <div className="content">Description about the card {card.type}</div>
+                <div className="content">
+                    <CardEffects card={card} />
+                </div>
             </div>
         );
         var tooltip = document.getElementById("toptip");

@@ -35,6 +35,18 @@
             font-family: $font-condensed;
             color: $font-color-faded;
             margin-right: 5px;
+            &.rarity-common {
+                color: white;
+            }
+            &.rarity-uncommon {
+                color: #47d95f;
+            }
+            &.rarity-rare {
+                color: #477ed9;
+            }
+            &.rarity-epic {
+                color: #b547d9;
+            }
         }
         .affinity {
             position: absolute;
@@ -45,5 +57,22 @@
     }
     .content {
         padding: 15px;
+        line-height: 20px;
+        .actipassive {
+            color: $tertiary-highlight;
+            font-style: italic;
+        }
+        .maxedEffects {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #222;
+            label {
+                font-family: $font-condensed;
+                color: $tertiary-highlight;
+                font-size: 13px;
+                text-transform: uppercase;
+                margin-bottom: 5px;
+            }
+        }
     }
 }
