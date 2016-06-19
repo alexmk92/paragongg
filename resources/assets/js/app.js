@@ -14,6 +14,7 @@ require("./components/cards/CardContainer");
 require("./components/news/NewsFeed");
 require("./components/news/NewsHero");
 require("./components/JobsFeed");
+require("./components/decks/DeckList");
 require("./containers/comments/CommentFeed");
 require("./containers/comments/CommentProvider");
 require("./components/heroes/HeroesFeed");
