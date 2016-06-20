@@ -44,6 +44,66 @@ var DeckList = React.createClass({
                         ]
                     },
                     {
+                        "name": "Fierce Chrono",
+                        "code": "01825fe8223efb2353e853a9e95b3a81",
+                        "type": "Upgrade",
+                        "cost": 3,
+                        "images": {
+                            "large": "//developer-paragon-cdn.epicgames.com/Images/EEABCCD7DD2005085BBD74396932158BC37208FA.png",
+                            "icon": "//developer-paragon-cdn.epicgames.com/Images/62BD7305EA1F9B2077E91AC82601531F6CBDD5E3.png",
+                            "medium": "//developer-paragon-cdn.epicgames.com/Images/BD5B1269A2C4FFA90DEB9AB60E08B8C52451A34D.png"
+                        },
+                        "upgradeSlots": 0,
+                        "affinity": "Fury",
+                        "rarity": "Common",
+                        "effects": [
+                            {
+                                "stat": "CooldownReductionPercentage",
+                                "value": 0.075000002980232
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Fierce Chrono",
+                        "code": "01825fe8223efb2353e853a9e95b3a81",
+                        "type": "Upgrade",
+                        "cost": 3,
+                        "images": {
+                            "large": "//developer-paragon-cdn.epicgames.com/Images/EEABCCD7DD2005085BBD74396932158BC37208FA.png",
+                            "icon": "//developer-paragon-cdn.epicgames.com/Images/62BD7305EA1F9B2077E91AC82601531F6CBDD5E3.png",
+                            "medium": "//developer-paragon-cdn.epicgames.com/Images/BD5B1269A2C4FFA90DEB9AB60E08B8C52451A34D.png"
+                        },
+                        "upgradeSlots": 0,
+                        "affinity": "Fury",
+                        "rarity": "Common",
+                        "effects": [
+                            {
+                                "stat": "CooldownReductionPercentage",
+                                "value": 0.075000002980232
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Fierce Chrono",
+                        "code": "01825fe8223efb2353e853a9e95b3a81",
+                        "type": "Upgrade",
+                        "cost": 3,
+                        "images": {
+                            "large": "//developer-paragon-cdn.epicgames.com/Images/EEABCCD7DD2005085BBD74396932158BC37208FA.png",
+                            "icon": "//developer-paragon-cdn.epicgames.com/Images/62BD7305EA1F9B2077E91AC82601531F6CBDD5E3.png",
+                            "medium": "//developer-paragon-cdn.epicgames.com/Images/BD5B1269A2C4FFA90DEB9AB60E08B8C52451A34D.png"
+                        },
+                        "upgradeSlots": 0,
+                        "affinity": "Fury",
+                        "rarity": "Common",
+                        "effects": [
+                            {
+                                "stat": "CooldownReductionPercentage",
+                                "value": 0.075000002980232
+                            }
+                        ]
+                    },
+                    {
                         "name": "Megavolt Pylon",
                         "code": "01937584136fa0656599c0057b58465c",
                         "type": "Active",

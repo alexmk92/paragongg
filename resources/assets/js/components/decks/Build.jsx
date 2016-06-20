@@ -270,6 +270,12 @@ var Build = React.createClass({
         return valid;
     },
     bindUpgradeToCard: function(upgradeSlot, card, bindUpgradeAtNextAvailableIndex) {
+
+        if((this.getBuildPoints() + this.props.selectedCard.cost) > 60) {
+            this.invokeNotification("warning", "You cannot add that card because you would exceed the card points total for this build!");
+            return false;
+        }
+
         // GET THE NEXT AVAILABLE SLOT
         if(this.validateQuantity(false) && this.props.selectedCard) {
             // Got here by clicking on parent card to bind child
@@ -579,6 +585,11 @@ var Build = React.createClass({
         }
     },
     bindCard: function(index) {
+        if((this.getBuildPoints() + this.props.selectedCard.cost) > 60) {
+            this.invokeNotification("warning", "You cannot add that card because you would exceed the card points total for this build!");
+            return false;
+        }
+
         this.lastSelectedSlot = index;
         this.lastModifiedSlot = index;
 
@@ -615,6 +626,11 @@ var Build = React.createClass({
             this.props.build.slots.forEach(function(slot) {
                 if(typeof slot.card !== "undefined" && slot.card !== null) {
                     points += slot.card.cost;
+                    slot.upgrades.forEach(function(upgradeSlot) {
+                       if(upgradeSlot.card) {
+                           points += upgradeSlot.card.cost;
+                       }
+                    });
                 }
             });
         }
@@ -739,7 +755,7 @@ var Build = React.createClass({
         return (
             <div id="builds-wrapper">
                 <input onChange={this.titleChanged} className="h2" placeholder="ENTER BUILD TITLE" ref="buildTitleInput" value={ this.props.build.title } />
-                <span className="build-cost">{ this.getBuildPoints() }/40 <span>CARD POINTS</span></span>
+                <span className="build-cost">{ this.getBuildPoints() }/60 <span>CARD POINTS</span></span>
                 <ul className={"build-list " + buildListClass }>
                     { this.getBuildSlots() }
                 </ul>
