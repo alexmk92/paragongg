@@ -1,7 +1,46 @@
 var React = require('react');
 var Helpers = require('../../helpers');
+var Tooltip = require('../libraries/tooltip/Toptip');
+var ReactDOM = require('react-dom');
+var CardEffects = require('../cards/CardEffects');
 
 var DeckPreview = React.createClass({
+    componentDidMount: function() {
+        this.tooltip = new Tooltip();
+    },
+    setTooltipContent: function(card) {
+        if(card)
+        {
+            var content = (
+                <div className="pgg-tooltip pgg-tooltip-card">
+                    <div className="card-head">
+                        <span className="cost">{card.cost}</span>
+                        <div className="header">
+                            <span className="name">{card.name}</span>
+                            <span className={"rarity rarity-" + card.rarity.toLowerCase()}>{card.rarity}</span>
+                            <span className="type">{card.type}</span>
+                        </div>
+                        <i className={"affinity affinity-color pgg pgg-affinity-" + card.affinity.toLowerCase()}></i>
+                    </div>
+                    <div className="content">
+                        <CardEffects card={card} />
+                    </div>
+                </div>
+            );
+            var tooltip = document.getElementById("toptip");
+            ReactDOM.render(content, tooltip);
+        } else {
+            this.hideTooltip();
+        }
+    },
+    showTooltip: function(card) {
+        if(card) {
+            this.tooltip.showTooltip();
+        }
+    },
+    hideTooltip: function() {
+        this.tooltip.hideTooltip();
+    },
     renderAffinityBar: function() {
         // this will compute card %age and then set color accordingly
         var cardCounts = [];
@@ -66,7 +105,10 @@ var DeckPreview = React.createClass({
          */
         return this.props.deck.cards.map(function(card) {
             return(
-                <li>
+                <li onMouseEnter={this.setTooltipContent.bind(this, card)}
+                    onMouseOver={this.showTooltip.bind(this, card)}
+                    onMouseLeave={this.hideTooltip}
+                >
                     <div className="black-overlay"></div>
                     <div className="card-quantity">1</div>
                     <div className="card-preview-container" style={{backgroundImage : this.getCardBackgroundURL(card)}}>
