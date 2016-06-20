@@ -894,7 +894,7 @@ var DeckBuilder = React.createClass({
                             >
                                 <div className={ this.state.heroPanelActive ? "glow-wrapper" : "glow-wrapper updated"}></div>
                                 <img className={ this.state.heroPanelActive ? "hero-portrait updating" : "hero-portrait"}
-                                     src={ "https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/" + this.state.selectedHero.code + "/portrait_small.png" }
+                                     src={ "https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/" + this.state.selectedHero.code + "/" + this.state.selectedHero.image + "/portrait_small.png" }
                                      alt="click me"
                                 />
                             </div>
