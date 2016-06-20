@@ -3,6 +3,7 @@
     var csrf = '{{ csrf_token() }}';
             @if(Auth::check())
     var AUTHED = true;
+    var USER = {!! json_encode(Auth::user()) !!}
             @else
     var AUTHED = false;
             @endif;

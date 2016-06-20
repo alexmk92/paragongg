@@ -8,7 +8,7 @@
 
             .deck-preview-container {
                 margin-bottom: 25px;
-                background: $panel-color;
+                background-color: $panel-color-dark;
                 border-top: 1px solid $faded-line;
                 border-bottom: 1px solid $faded-line;
                 padding: 20px;
@@ -18,12 +18,39 @@
                 background-position-x: 50%;
                 background-position-y: 20%;
 
+                .stat-bar {
+                    font-family: Roboto Condensed;
+                    position: relative;
+                    z-index: 5;
+                    font-weight: 200;
+                    padding: 5px 20px 15px 85px;
+
+                    .buttons-left {
+                        float: left;
+
+                        a {
+                            cursor: pointer;
+                        }
+                    }
+                    .buttons-right {
+                        float: right;
+                        span {
+                            margin-left: 20px;
+
+                            i {
+                                padding-right: 3px;
+                            }
+                        }
+                    }
+                }
+
+                // Re enable this if we ever use images
                 .black-overlay {
                     top: 0;
                     left: 0;
                     right: 0;
                     bottom: 0;
-                    background: rgba(0, 0, 0, 0.7);
+                    background: rgba(0, 0, 0, 0.0);
                     z-index: 1;
                     position: absolute;
                     transition: all 550ms ease-in-out;
@@ -45,6 +72,24 @@
                         height: 100%;
                     }
                 }
+
+                .badge {
+                    width: 50px;
+                    font-size: 12px;
+                    padding: 5px 0px;
+                    border-radius: 5px;
+                    color: black !important;
+                    text-align: center;
+                    display: inline-block;
+                    font-weight: bold;
+                    margin-right: 9px;
+                    position: relative;
+
+                    &.new {
+                        background: $green;
+                    }
+                }
+
                 .build-overview {
                     position: absolute;
                     right: 20px;
@@ -132,59 +177,98 @@
                         }
                     }
                 }
-                .deck-preview {
-                    position: relative;
-                    z-index: 5;
-                    width: 100%;
-                    padding: 0px 0px 0px 0px;
-                    margin: 25px 0px 10px 0px;
-                    overflow: hidden;
-                    max-height: 90px;
+                .mid-section {
+                    margin-top: -15px;
 
-                    li {
-                        width: 40px;
-                        height: 90px;
+                    .votes-panel {
                         display: inline-block;
+                        width: 15%;
+                        float: left;
+                        max-width: 85px;
+                        overflow: hidden;
+                        text-align: center;
+                        padding-right: 20px;
+                        padding-top: 20px;
                         position: relative;
+                        z-index: 5;
 
-                        .black-overlay {
-                            width: 40px;
-                            height: 90px;
-                            background: rgba(0, 0, 0, 0.3);
-                            z-index: 2;
-                            position: absolute;
-                            transition: all 250ms ease-in-out;
+                        span {
+                            color: $font-color-faded;
+                        }
 
-                            &:hover {
-                                background: rgba(0, 0, 0, 0);
+                        i {
+                            color: $font-color-faded;
+                            font-size: 2em;
+                            display: block;
+                            margin-bottom: 10px;
+                            transition: all 200ms ease-in-out;
+
+                            &:hover,
+                            &.active {
+                                cursor: pointer;
+                                color: $primary-highlight;
                             }
                         }
+                    }
 
-                        .card-preview-container {
+                    .deck-preview {
+                        position: relative;
+                        z-index: 5;
+                        padding: 0px 0px 0px 0px;
+                        margin: 25px 0px 10px 0px;
+                        overflow: hidden;
+                        max-height: 90px;
+
+                        li {
+                            border: 1px solid $panel-color;
+                            width: 40px;
                             height: 90px;
-                            background-size: 500%;
-                            background-repeat: no-repeat;
-                            background-position-x: 50%;
-                            background-position-y: 20%;
-                        }
+                            display: inline-block;
+                            position: relative;
 
-                        .card-quantity {
-                            text-align: center;
-                            width: 24px;
-                            height: 24px;
-                            border-radius: 50%;
-                            color: white;
-                            background: $panel-color-dark;
-                            font-size: 12px;
-                            padding-top: 5px;
-                            margin-left: 8px;
-                            z-index: 5;
-                            position: absolute;
-                            bottom: 5px;
+                            .black-overlay {
+                                width: 40px;
+                                height: 90px;
+                                background: rgba(0, 0, 0, 0.3);
+                                z-index: 2;
+                                position: absolute;
+                                transition: all 250ms ease-in-out;
+
+                                &:hover {
+                                    background: rgba(0, 0, 0, 0);
+                                }
+                            }
+
+                            .card-preview-container {
+                                height: 90px;
+                                background-size: 500%;
+                                background-repeat: no-repeat;
+                                background-position-x: 50%;
+                                background-position-y: 20%;
+                            }
+
+                            .card-quantity {
+                                text-align: center;
+                                width: 24px;
+                                height: 24px;
+                                border-radius: 50%;
+                                color: white;
+                                background: $panel-color-dark;
+                                font-size: 12px;
+                                padding-top: 5px;
+                                margin-left: 8px;
+                                z-index: 5;
+                                position: absolute;
+                                bottom: 5px;
+                            }
                         }
                     }
                 }
             }
         }
     }
+}
+
+@media screen and (max-width : $media-tablet) {
+
 }
