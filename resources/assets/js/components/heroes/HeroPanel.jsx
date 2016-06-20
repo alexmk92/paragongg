@@ -2,6 +2,7 @@ var React = require('react');
 var SearchBar = require('../../components/filter/SearchBar');
 var ToggleFilter = require('../filter/ToggleFilter');
 var FlipMove = require('react-flip-move');
+var Helpers = require('../../helpers');
 
 var HeroPanel = React.createClass({
     getInitialState: function() {
@@ -79,7 +80,7 @@ var HeroPanel = React.createClass({
                     <li key={"hero_panel_" + hero.name} className="hero-row" onClick={this.selectedHero.bind(this, hero)}>
                         <a href="#">
                             <img
-                                src={"https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/" + hero.code + "/portrait_small.png" }/>
+                                src={ Helpers.S3URL() + "images/heroes/" + hero.code + "/" + hero.image + "/portrait_small.png" }/>
                             <span>{hero.name.toUpperCase()}</span>
                         </a>
                     </li>

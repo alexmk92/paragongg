@@ -93,7 +93,7 @@ var CommentBox = React.createClass({
                         </textarea>
                         <div className="user-details">
                             <img className="user-avatar" src="https://s.gravatar.com/avatar/bae38bd358b0325c7a3c049a4671a9cf?s=28" alt="Your avatar"/>
-                            <span>Posting as <a href="">jamieshepherd</a></span>
+                            <span>Posting as <a href="">{ USER.username }</a></span>
                         </div>
                         <div className="post-comment-actions">
                             <button className={ "btn btn-faded " + buttonClass } onClick={this.cancelPost}>Cancel</button>
