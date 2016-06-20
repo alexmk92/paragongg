@@ -2,8 +2,12 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var Helpers    = require('../../helpers');
 var DeckPreview = require('./DeckPreview');
+var Tooltip = require('../libraries/tooltip/Toptip');
 
 var DeckList = React.createClass({
+    componentWillMount: function() {
+        this.tooltip = new Tooltip();
+    },
     renderDeckList: function() {
         var decks = [];
         for(var i = 1; i < 12; i++) {
@@ -1069,7 +1073,7 @@ var DeckList = React.createClass({
                 commentCount : (224 * i),
                 viewCount : (186 * i)
             };
-            decks.push(<DeckPreview deck={deck} />);
+            decks.push(<DeckPreview key={Helpers.uuid()} deck={deck} sharedTooltip={this.tooltip} />);
         }
 
         return decks;

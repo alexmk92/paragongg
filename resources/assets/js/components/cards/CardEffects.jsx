@@ -3,7 +3,6 @@ var Helpers  = require('../../helpers');
 
 var CardEffects = React.createClass({
     getStats: function(effects) {
-        console.log(effects);
         var items = [];
         effects.forEach(function(stat, i) {
             if(stat.stat) {

@@ -6,37 +6,30 @@ var CardEffects = require('../cards/CardEffects');
 
 var DeckPreview = React.createClass({
     componentDidMount: function() {
-        this.tooltip = new Tooltip();
+        this.tooltip = this.props.sharedTooltip;
     },
     setTooltipContent: function(card) {
-        if(card)
-        {
-            var content = (
-                <div className="pgg-tooltip pgg-tooltip-card">
-                    <div className="card-head">
-                        <span className="cost">{card.cost}</span>
-                        <div className="header">
-                            <span className="name">{card.name}</span>
-                            <span className={"rarity rarity-" + card.rarity.toLowerCase()}>{card.rarity}</span>
-                            <span className="type">{card.type}</span>
-                        </div>
-                        <i className={"affinity affinity-color pgg pgg-affinity-" + card.affinity.toLowerCase()}></i>
+        var content = (
+            <div className="pgg-tooltip pgg-tooltip-card">
+                <div className="card-head">
+                    <span className="cost">{card.cost}</span>
+                    <div className="header">
+                        <span className="name">{card.name}</span>
+                        <span className={"rarity rarity-" + card.rarity.toLowerCase()}>{card.rarity}</span>
+                        <span className="type">{card.type}</span>
                     </div>
-                    <div className="content">
-                        <CardEffects card={card} />
-                    </div>
+                    <i className={"affinity affinity-color pgg pgg-affinity-" + card.affinity.toLowerCase()}></i>
                 </div>
-            );
-            var tooltip = document.getElementById("toptip");
-            ReactDOM.render(content, tooltip);
-        } else {
-            this.hideTooltip();
-        }
+                <div className="content">
+                    <CardEffects card={card} />
+                </div>
+            </div>
+        );
+        var tooltip = document.getElementById("toptip");
+        ReactDOM.render(content, tooltip);
     },
-    showTooltip: function(card) {
-        if(card) {
-            this.tooltip.showTooltip();
-        }
+    showTooltip: function() {
+        this.tooltip.showTooltip();
     },
     hideTooltip: function() {
         this.tooltip.hideTooltip();
@@ -74,11 +67,11 @@ var DeckPreview = React.createClass({
 
         // find the width of each bar
         var total = this.props.deck.cards.length;
-        var bars = cardCounts.map(function(affinityInfo) {
+        var bars = cardCounts.map(function(affinityInfo, i) {
             var percentage = ((affinityInfo.value / total) * 100) + "%";
             var affinityClass = "bar bar-color-" + affinityInfo.affinity.toLowerCase().trim();
             return (
-                <div style={{ width : percentage }} className={ affinityClass }></div>
+                <div key={ "affinity-bar-" + Helpers.uuid() }style={{ width : percentage }} className={ affinityClass }></div>
             )
         });
 
@@ -103,35 +96,51 @@ var DeckPreview = React.createClass({
          RIGHT ARROW
          </div>
          */
-        return this.props.deck.cards.map(function(card) {
-            return(
-                <li onMouseEnter={this.setTooltipContent.bind(this, card)}
-                    onMouseOver={this.showTooltip.bind(this, card)}
-                    onMouseLeave={this.hideTooltip}
-                >
-                    <div className="black-overlay"></div>
-                    <div className="card-quantity">1</div>
-                    <div className="card-preview-container" style={{backgroundImage : this.getCardBackgroundURL(card)}}>
-                    </div>
-                </li>
-            );
-        }.bind(this))
+        return (
+            <ul className="deck-preview">
+                {
+                    this.props.deck.cards.map(function (card) {
+                        return (
+                            <li onMouseEnter={this.setTooltipContent.bind(this, card)}
+                                onMouseOver={this.showTooltip}
+                                onMouseLeave={this.hideTooltip}
+                                key={ "deck-card-" + Helpers.uuid() }
+                            >
+                                <div className="black-overlay"></div>
+                                <div className="card-quantity">1</div>
+                                <div className="card-preview-container"
+                                     style={{backgroundImage : this.getCardBackgroundURL(card)}}>
+                                </div>
+                            </li>
+                        );
+                    }.bind(this))
+                }
+            </ul>
+        )
+
+    },
+    renderNewBadge() {
+        // TODO Check to see if the created_at date is today
+        return (
+            <span className="badge new">NEW</span>
+        );
     },
     getCardBackgroundURL(card) {
         return 'url(' + card.images.large + ')'
     },
     getRandomBackground: function() {
-        return { backgroundImage : this.getCardBackgroundURL(this.props.deck.cards[0]) };
+        //return { backgroundImage : this.getCardBackgroundURL(this.props.deck.cards[0]) };
     },
     render: function() {
         return (
-            <li key={"deck_" + this.props.deck.id} style={ this.getRandomBackground() } className="deck-preview-container">
+            <li style={ this.getRandomBackground() } className="deck-preview-container">
                 <div className="hero-portrait">
                     <img src={ this.props.deck.hero.avatarURL } />
                 </div>
+
                 <div className="title-wrapper">
                     <h3>This is the tale of captain j...ust sparrow</h3>
-                    <span className="author"><span className="subtext">Published by</span> <a href="#">{ this.props.deck.author.name }</a> <img src={this.props.deck.author.avatarURL} /></span>
+                    <span className="author">{ this.renderNewBadge() }<span className="subtext">Published by</span> <a href="#">{ this.props.deck.author.name }</a> <img src={this.props.deck.author.avatarURL} /></span>
                 </div>
 
                 <div className="build-overview">
@@ -139,16 +148,24 @@ var DeckPreview = React.createClass({
                     <span className="large-text">{ this.props.deck.builds.length }<span className="subtext">BUILDS</span></span>
                 </div>
 
-                <ul className="deck-preview">
+
+
+                <div className="mid-section">
+                    <div className="votes-panel">
+                        <i className="fa fa-star"></i>
+                        <span>{ Helpers.delimitNumbers(this.props.deck.upvotes) }</span>
+                    </div>
                     { this.renderDeckPreview() }
-                </ul>
+                </div>
+
+
                 <div className="stat-bar">
                     <div className="buttons-left">
                         <a href="#">SHARE</a>
                     </div>
                     <div className="buttons-right">
-                        <span>{ this.props.deck.commentCount }</span>
-                        <span>{ this.props.deck.viewCount }</span>
+                        <span><i className="fa fa-comment"></i> { this.props.deck.commentCount }</span>
+                        <span><i className="fa fa-eye"></i> { this.props.deck.viewCount }</span>
                     </div>
                 </div>
                 <div className="black-overlay"></div>
