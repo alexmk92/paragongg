@@ -60,7 +60,7 @@ class HeroController extends Controller
 
         session()->flash('notification', 'success|Hero saved.');
 
-        return redirect()->back();
+        return redirect('admin/heroes');
     }
 
     // Delete

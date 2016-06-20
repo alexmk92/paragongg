@@ -1,5 +1,6 @@
 var React = require("react");
 var ReactDOM = require("react-dom");
+var Helpers   = require('../../helpers');
 var InteractiveParallax = require("../../lib/InteractiveParallax");
 var HeroStats = require("./HeroStats");
 var HeroGraph = require("./HeroGraph");
@@ -24,15 +25,14 @@ var HeroContainer = React.createClass({
                 disableY : true,
                 animationSpeed : 350,
                 verticalMultiplier : 0,
-                horizontalMultiplier : 1,
-                backgroundURL : "/assets/hero/" + HERO.name.toLowerCase() + "/terrain.jpg"
+                horizontalMultiplier : 1
             }) })
         } else {
             this.state.backgroundParallax.mousePositionChanged(e);
         }
     },
     render: function() {
-        var modelURL = "/assets/hero/" + HERO.code + "/portrait.png";
+        var modelURL = Helpers.S3URL() + "images/heroes/" + HERO.code + "/cutout.png";
         return(
             <div>
                 <div onMouseOver={this.updateParallax} className="hero-container">
