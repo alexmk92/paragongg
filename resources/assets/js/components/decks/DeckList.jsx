@@ -13,6 +13,7 @@ var DeckList = React.createClass({
         for(var i = 1; i < 12; i++) {
             var deck = {
                 id : Helpers.uuid(),
+                title : "This is the tale of captain j...ust sparrow",
                 author : {
                     name : "jamieshepherd",
                     avatarURL : "https://www.gravatar.com/avatar/d5d3310834b43c6f96e200339734c949?s=20&d=https%3A%2F%2Fparagon.gg%2Fimages%2Fdefault-avatar.png"

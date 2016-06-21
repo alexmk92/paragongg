@@ -2,6 +2,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var CardsFeed = require('../cards/CardsFeed');
 var Helpers = require('../../helpers');
+var CardEffects = require('../cards/CardEffects');
 var Tooltip = require('../libraries/tooltip/Toptip');
 var HeroPanel = require('../heroes/HeroPanel');
 var Build = require('./Build');
@@ -179,8 +180,18 @@ var DeckBuilder = React.createClass({
             this.lastHoveredCard = card;
             var content = (
                 <div className="pgg-tooltip pgg-tooltip-card">
-                    <div className={"head affinity-" + card.affinity.substring(9).toLowerCase()}>{card.name}</div>
-                    <div className="content">Description about the card {card.type}</div>
+                    <div className="card-head">
+                        <span className="cost">{card.cost}</span>
+                        <div className="header">
+                            <span className="name">{card.name}</span>
+                            <span className={"rarity rarity-" + card.rarity.toLowerCase()}>{card.rarity}</span>
+                            <span className="type">{card.type}</span>
+                        </div>
+                        <i className={"affinity affinity-color pgg pgg-affinity-" + card.affinity.toLowerCase()}></i>
+                    </div>
+                    <div className="content">
+                        <CardEffects card={card} />
+                    </div>
                 </div>
             );
             var tooltip = document.getElementById("toptip");

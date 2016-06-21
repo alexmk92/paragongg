@@ -21,9 +21,9 @@
     .sidebox {
         margin-bottom: 20px;
         &.panel {
-            background: $panel-color-dark;
+            background: $panel-color;
             padding: 20px;
-            border: 1px solid $faded-line;
+            //border: 1px solid $faded-line;
         }
         &.navigation {
             background: $panel-color-dark;
@@ -41,6 +41,25 @@
                     background: $panel-color;
                 }
             }
+        }
+        .subtext {
+            font-family: "Roboto Condensed";
+            color: $font-color-faded;
+            font-size: 14px;
+        }
+    }
+    .title-wrapper {
+        width: 100%;
+        margin-bottom: 30px;
+        h3 {
+            display: inline-block;
+        }
+        span {
+            padding-top: 8px;
+            font-family: "Roboto Condensed";
+            color: $font-color-faded;
+            display: inline-block;
+            float: right;
         }
     }
     .listbox {

@@ -162,8 +162,8 @@ var DeckPreview = React.createClass({
                 </div>
 
                 <div className="title-wrapper">
-                    <h3>This is the tale of captain j...ust sparrow</h3>
-                    <span className="author">{ this.renderNewBadge() }<span className="subtext">Published by</span> <a href="#">{ this.props.deck.author.name }</a> <img src={this.props.deck.author.avatarURL} /></span>
+                    <h3>{ this.props.deck.title }</h3>
+                    <span className="author">{ this.renderNewBadge() }<span className="subtext">Published by</span> <a href="#">{ this.props.deck.author.name }</a></span>
                 </div>
 
                 <div className="build-overview">
