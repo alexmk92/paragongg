@@ -173,7 +173,8 @@
     position: relative;
 
     .subtext {
-        color: #5a606f;
+        color: $font-color-faded;
+        font-size: 14px;
         font-family: "Roboto Condensed", sans-serif, Arial;
     }
 
