@@ -210,7 +210,7 @@ var Build = React.createClass({
                             }
                         }
                         label = <span className="upgrade-label"><span className="subtext">{upgrade.card.cost}CP </span>{upgrade.card.name}</span>;
-                        slotStyle = { backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/'+upgrade.card.code+'/icon.png)' }
+                        slotStyle = { backgroundImage: 'url('+upgrade.card.images.large+')' }
                     }
 
                     return (
@@ -431,7 +431,7 @@ var Build = React.createClass({
                     }
                 }
 
-                var cardStyles = { backgroundImage : "url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/" + slot.card.code + "/background_small.png)"}
+                var cardStyles = { backgroundImage : "url(" + slot.card.images.large + ")"}
                 card = (
                     <div style={cardStyles}
                          className="placed-card"
