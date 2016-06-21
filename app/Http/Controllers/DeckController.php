@@ -18,7 +18,7 @@ class DeckController extends Controller
     // Create
     public function create()
     {
-        $heroes = Hero::select('affinities', 'code', 'name')->orderBy('name', 'asc')->get();
+        $heroes = Hero::select('affinities', 'code', 'name', 'image')->orderBy('name', 'asc')->get();
         $cards = app('App\Http\Controllers\CardController')->getCards();
         return view('decks.create')->with('cards', $cards)->with('heroes', $heroes);
     }

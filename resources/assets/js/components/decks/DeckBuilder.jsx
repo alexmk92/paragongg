@@ -79,6 +79,11 @@ var DeckBuilder = React.createClass({
         this.notificationPanel.initialiseNotifications();
         this.updateViewForDimensions();
     },
+    componentWillMount: function() {
+        if(this.isClientMobile()) {
+            this.setState({ activeTab: -1 })
+        }
+    },
     updateViewForDimensions: function() {
         var sidebar = document.querySelector("#sidebar");
         var selectedCardWrapper = document.querySelector("#selected-card-wrapper");
@@ -101,7 +106,8 @@ var DeckBuilder = React.createClass({
             }
         } else {
             if(sidebar) {
-                sidebar.className = "";
+                if(sidebar.className !== "hidden")
+                    sidebar.className = "";
                 sidebar.style.right = "0";
             }
             if(selectedCardWrapper && this.state.selectedCard) {
@@ -414,7 +420,7 @@ var DeckBuilder = React.createClass({
                 var cardMarkup = (
                     <li className={className}
                         key={card.code + "_" + Helpers.uuid() }
-                        style={{backgroundImage: 'url(https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/'+card.code+'/icon.png)'}}
+                        style={{backgroundImage: 'url('+card.images.large+')'}}
                         onContextMenu={this.deleteCardFromDeck.bind(this, card)}
                         onClick={this.selectCard.bind(this, card)}
                         onMouseEnter={this.setTooltipContent.bind(this, card)}
@@ -523,7 +529,7 @@ var DeckBuilder = React.createClass({
             var slotIcons = build.slots.map(function(slot, i) {
                 var imageURL = "/assets/images/cards/card-placeholder.png";
                 if(slot.card !== null)
-                    imageURL = "https://s3-eu-west-1.amazonaws.com/paragon.gg/images/cards/" + slot.card.code + "/icon.png";
+                    imageURL = slot.card.images.large;
 
                 if(i === 0) wrapperBackgroundImageURL = imageURL;
                 var upgradeBadge = "";
@@ -894,7 +900,7 @@ var DeckBuilder = React.createClass({
                             >
                                 <div className={ this.state.heroPanelActive ? "glow-wrapper" : "glow-wrapper updated"}></div>
                                 <img className={ this.state.heroPanelActive ? "hero-portrait updating" : "hero-portrait"}
-                                     src={ "https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/" + this.state.selectedHero.code + "/" + this.state.selectedHero.image + "/portrait_small.png" }
+                                     src={ Helpers.S3URL() + "images/heroes/" + this.state.selectedHero.code + "/" + this.state.selectedHero.image + "/portrait_small.png" }
                                      alt="click me"
                                 />
                             </div>
