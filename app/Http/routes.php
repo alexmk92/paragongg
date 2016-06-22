@@ -11,44 +11,8 @@
 |
 */
 
-use GuzzleHttp\Client;
-
 Route::get('/', function () {
     return view('home');
-});
-
-Route::get('/test', function() {
-    //"accountId" : "099bc6a93f954cc6b164f2afd31aff35"
-    $client = new Client();
-
-    try {
-        $res = $client->request('GET', 'https://orion-public-service-prod09.ol.epicgames.com/orion/api/game/v2/ratings/account/f84402d303eb45488139ae0339fa5c75/mmr/PvP', [
-            'headers' => [
-                'Accept'        => 'application/json',
-                'Authorization' => 'Bearer '.APIToken(),
-                'X-Epic-ApiKey' => env('EPIC_API_KEY'),
-            ]
-        ])->getBody();
-    } catch (\GuzzleHttp\Exception\ClientException $e) {
-        dd($e->getResponse()->getBody()->getContents());
-    }
-    $response = json_decode($res);
-
-    dd($response);
-
-//    $res = $client->request('POST', 'https://account-public-service-prod03.ol.epicgames.com/account/api/oauth/token', [
-//        'headers' => [
-//            'Authorization' => 'Basic '.$auth,
-//            'Cache-Control'     => 'no-cache',
-//            'Content-Type'      => 'application/x-www-form-urlencoded'
-//        ],
-//        'form_params' => [
-//            'grant_type' => 'authorization_code',
-//            'code'       => $user->oauth_epic_code
-//        ]
-//    ])->getBody();
-
-    //$response = json_decode($res);
 });
 
 Route::auth();
