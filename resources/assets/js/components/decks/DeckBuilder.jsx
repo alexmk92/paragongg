@@ -464,7 +464,7 @@ var DeckBuilder = React.createClass({
                     </li>
                 );
 
-                if(this.state.selectedCard && this.state.selectedCard.type !== "Upgrade" && card.type === "Upgrade" && this.state.isBuildsPanelShowing && !this.isClientMobile()) {
+                if(this.state.selectedCard && this.state.selectedCard.type !== "Upgrade" && card.type === "Upgrade" && this.state.isBuildsPanelShowing && this.isClientMobile()) {
                     var cardAffinity = card.affinity.toLowerCase();
                     var selectedAffinity = this.state.selectedCard.affinity.toLowerCase();
                     if(cardAffinity.indexOf("universal") > -1) {
