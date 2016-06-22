@@ -151,7 +151,6 @@ var DeckPreview = React.createClass({
     },
     getRandomBackground: function() {
         var index = Math.floor(Math.random() * ((this.props.deck.cards.length-1) - 0 + 1)) + 0;
-        console.log("GETTING BG AT " + index);
         //return { backgroundImage : this.getCardBackgroundURL(this.props.deck.cards[index]) };
     },
     render: function() {

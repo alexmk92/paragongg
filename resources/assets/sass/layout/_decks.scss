@@ -75,7 +75,7 @@
     .slot-icon-container {
         height: 50px;
         position: relative;
-        left: 5px;
+        left: -6px;
         z-index: 1;
 
         .slot-icon-wrapper {
@@ -282,7 +282,7 @@
     .sidebox {
         .deck-list {
             .slot-icon-container {
-
+                left: 5px;
                 .slot-icon-wrapper {
                     width: 28px ;
                     height: 28px;
