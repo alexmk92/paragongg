@@ -13,11 +13,18 @@ var Build = React.createClass({
         this.queuedCards    = [];
         this.queuedUpgrades = [];
     },
+    componentDidMount: function() {
+        this.refs.buildTitleInput.focus();
+    },
     componentDidUpdate: function() {
         this.updateBuildsWithNewDeck();
         // Perform a quick bind on the selected card
         if(this.props.shouldQuickBindCards) {
             this.quickBind(this.props.selectedCard);
+        }
+        if(this.props.build.title === "") {
+            this.refs.buildTitleInput.value = "";
+            this.refs.buildTitleInput.focus();
         }
         this.renderQueuedCards();
     },
@@ -45,6 +52,7 @@ var Build = React.createClass({
 
         //this.lastSelectedCard = this.props.selectedCard;
         var hasQuantity = this.validateQuantity(true);
+        newBuild.cost = this.getBuildCost();
 
         this.props.onBuildChanged(newBuild, lastModifiedSlot, deselectSelectedCard, toggleQuickBind, !hasQuantity, activeTab);
     },
@@ -271,11 +279,12 @@ var Build = React.createClass({
     },
     bindUpgradeToCard: function(upgradeSlot, card, bindUpgradeAtNextAvailableIndex) {
 
-        if((this.getBuildPoints() + this.props.selectedCard.cost) > 60) {
+        if((this.getBuildCost() + this.props.selectedCard.cost) > 60) {
             this.invokeNotification("warning", "You cannot add that card because you would exceed the card points total for this build!");
             return false;
         }
 
+        console.log("GOT HERE NP")
         // GET THE NEXT AVAILABLE SLOT
         if(this.validateQuantity(false) && this.props.selectedCard) {
             // Got here by clicking on parent card to bind child
@@ -316,6 +325,7 @@ var Build = React.createClass({
                 this.buildUpdated(newBuild, lastModdedSlot, this.props.shouldQuickBindCards, null);
             }
         } else {
+            /*
             var parentSlot = null;
             var upgradeIndex = -1;
             this.props.build.slots.some(function(slot) {
@@ -327,6 +337,7 @@ var Build = React.createClass({
                 return false;
             });
             this.lastSelectedUpgradeSlot = { parentSlot : parentSlot, upgradeSlotIndex : upgradeIndex }
+            */
         }
         // Force fire a left click event if we get here so we can set the trash can on an active
         // upgrade slot
@@ -585,7 +596,7 @@ var Build = React.createClass({
         }
     },
     bindCard: function(index) {
-        if((this.getBuildPoints() + this.props.selectedCard.cost) > 60) {
+        if((this.getBuildCost() + this.props.selectedCard.cost) > 60) {
             this.invokeNotification("warning", "You cannot add that card because you would exceed the card points total for this build!");
             return false;
         }
@@ -620,7 +631,7 @@ var Build = React.createClass({
             this.buildUpdated(newBuild, index, this.props.shouldQuickBindCards, null);
         }
     },
-    getBuildPoints: function() {
+    getBuildCost: function() {
         var points = 0;
         if(this.props.build !== null) {
             this.props.build.slots.forEach(function(slot) {
@@ -667,9 +678,10 @@ var Build = React.createClass({
 
     },
     // TODO THROTTLE THE UPDATE LIMIT SOME HOW
-    titleChanged: function(event) {
-        var value = event.target.value;
+    titleChanged: function() {
+        var value = this.refs.buildTitleInput.value;
         if(typeof value !== "undefined" && value.length < 60) {
+            console.log("Setting build title to: ", value);
             var newBuild = this.props.build;
             newBuild.title = value;
 
@@ -726,6 +738,9 @@ var Build = React.createClass({
         return total;
     },
     render: function() {
+        var newTitle = Helpers.debounce(function() {
+            this.titleChanged();
+        }.bind(this), 350);
         //var quickBindLabel = (this.props.shouldQuickBindCards === true) ? "Disable Quick Bind" : "Enable Quick Bind";
         /* USE IN FUTURE MAYBE?
          <ul id="options-wrapper">
@@ -752,10 +767,11 @@ var Build = React.createClass({
         }
         var tooltipMessage = ("Any selected equipment card will automatically be bound to the next available slot, upgrade cards must still need to be manually added to equipment cards.");
         var buildListClass = this.numberOfCardsPlaced() > 0 ? " upgrades-showing" : "";
+
         return (
             <div id="builds-wrapper">
-                <input onChange={this.titleChanged} className="h2" placeholder="ENTER BUILD TITLE" ref="buildTitleInput" value={ this.props.build.title } />
-                <span className="build-cost">{ this.getBuildPoints() }/60 <span>CARD POINTS</span></span>
+                <input onChange={newTitle} defaultValue={ "" } className="h2" placeholder="ENTER BUILD TITLE" ref="buildTitleInput" />
+                <span className="build-cost">{ this.getBuildCost() }/60 <span>CP</span></span>
                 <ul className={"build-list " + buildListClass }>
                     { this.getBuildSlots() }
                 </ul>
