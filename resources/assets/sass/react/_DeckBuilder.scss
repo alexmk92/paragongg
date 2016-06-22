@@ -241,12 +241,20 @@
                 margin: 0;
 
                 &.wide {
-                    color: $color-growth;
-                    border: 1px solid $color-growth;
+                    color: $green;
+                    border: 1px solid $green;
                     width: 68%;
                     margin-bottom: 20px;
                     margin-left: 2%;
-                    transition: all 200ms ease-in-out;
+                    transition: all 350ms ease-in-out;
+                    opacity: 1.0;
+
+                    &.disabled {
+                        pointer-events: none;
+                        color: $font-color-faded;
+                        border: 1px solid $font-color-faded;
+                        opacity: 0.5;
+                    }
 
                     &:hover {
                         color: $secondary-highlight;

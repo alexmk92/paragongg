@@ -6,6 +6,9 @@
     <script>
         var rawCards = {!! json_encode($cards) !!};
         var HEROES = {!! json_encode($heroes) !!};
+        var USER_ID = {{ $userId }};
+
+        var csrf = '{{ csrf_token() }}';
 
         // TODO We should probably run this filter on the server...
         var CARDS = {

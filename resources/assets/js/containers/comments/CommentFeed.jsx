@@ -11,13 +11,15 @@ var CommentFeed = React.createClass({
     componentWillMount: function() {
         this.props.fetchComments(THREAD_ID);
     },
+    componentDidMount: function() {
+        // update the time stamps for now, to give a real time feel
+        setInterval(function() {
+            this.forceUpdate();
+        }.bind(this), 15000);
+    },
     renderComments: function() {
         var comments = [];
         var initialCommentCollection = [];
-        var author = {
-            name : "Alex Sims"
-        };
-
         this.removePendingComments();
 
         if(this.props.comments.length === 0) {
@@ -32,7 +34,7 @@ var CommentFeed = React.createClass({
                         <CommentListItem
                             key={Helpers.uuid()}
                             comment={comment}
-                            author={ author }
+                            author={ USER }
                             childComments={ this.props.comments }
                             upVoteComment={ this.props.upVoteComment }
                             onCommentSubmitted={this.appendPendingComment}
@@ -44,7 +46,7 @@ var CommentFeed = React.createClass({
         }
         if(comments.length === 0) {
             return (
-                <li>
+                <li className="no-comments">
                     <span>No comments on this post yet, be the first to start the discussion!</span>
                 </li>
             );
@@ -61,18 +63,14 @@ var CommentFeed = React.createClass({
         }
     },
     appendPendingComment: function(commentContent, parentId) {
-
-        var author = {
-            name : "Alex" // TODO pass username
-        };
-
+        
         var tempComment = document.createElement("li");
         tempComment.className = "comment-item";
         tempComment.id = "pending-comment";
 
         // TODO React way of creating element here
         tempComment.innerHTML += "<img class='comment-avatar' src='' alt='Your avatar' />";
-        tempComment.innerHTML += "<span class='author-name'>" + author.name + " <span class='created-at'>" + Helpers.prettyDate(new Date())+ "</span></span>";
+        tempComment.innerHTML += "<span class='author-name'>" + USER.username + " <span class='created-at'>" + Helpers.prettyDate(new Date())+ "</span></span>";
         tempComment.innerHTML += "<p class='comment-body'>" + commentContent + "</p>";
         tempComment.innerHTML += "<a href='#'>Reply</a>";
         tempComment.innerHTML += "<i class='fa fa-thumbs-up vote-button' aria-hidden='true'><span>0</span></i>";

@@ -42,7 +42,7 @@ var CommentListItem = React.createClass({
                                      onCommentSubmitted={this.props.onCommentSubmitted}
                                      childComment={ true } key={Helpers.uuid()}
                                      comment={comment} childComments={this.props.childComments}
-                                     author={ this.props.author }
+                                     author={ USER }
                                      upVoteComment={this.props.upVoteComment} />
                 );
             }
@@ -51,7 +51,7 @@ var CommentListItem = React.createClass({
             <li className={commentClass}>
                 <div className="comment-details">
                     <img className="user-avatar" src="https://s.gravatar.com/avatar/bae38bd358b0325c7a3c049a4671a9cf?s=28" alt="Your avatar" />
-                    <a href="">{ this.props.author.name } </a> <span><time className="created-at">{ Helpers.prettyDate(this.props.comment.created_at) }</time></span>
+                    <a href="">{ this.props.author.username } </a> <span><time className="created-at">{ Helpers.prettyDate(this.props.comment.created_at) }</time></span>
                 </div>
                 <div className="comment-body">{ this.props.comment.body }</div>
                 <div className="comment-actions">
