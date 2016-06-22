@@ -2,7 +2,7 @@
     margin: 40px 0;
 
     .statistic-panel {
-        padding: 20px;
+        padding: 20px 20px 30px 20px;
         width: 50%;
         display: inline-block;
         background: $panel-color-dark;
@@ -41,8 +41,13 @@
                     color: white;
                 }
 
-                &.modifier {
-                    color: $green;
+                span {
+                    font-family: Roboto Condensed;
+                    font-weight: 100;
+                    font-size: 0.9em;
+                    &.active {
+                        color: $green;
+                    }
                 }
             }
         }

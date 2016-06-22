@@ -23,21 +23,21 @@ module.exports = {
     // To be used by all components that consume all stats, such as the StatPanel
     getAllStatistics: function() {
         return [
-            { label : "Attack Speed", icon: "pgg pgg-attack-speed", modifier : "", value : 0, modified: false },
-            { label : "Cooldown Reduction", icon: "pgg pgg-cooldown-reduction", modifier : "%", value : 0, modified: false  },
-            { label : "Max Mana", icon: "pgg pgg-max-mana", modifier : "", value : 0, modified: false  },
-            { label : "Max Health", icon: "pgg pgg-max-health", modifier : "", value : 0, modified: false  },
-            { label : "Energy Regen", icon: "pgg pgg-mana-regeneration", modifier : "/s", value : 0, modified: false  },
-            { label : "Physical Damage", icon: "pgg pgg-physical-damage", modifier : "", value : 0, modified: false  },
-            { label : "Lifesteal", icon: "pgg pgg-lifesteal", modifier : "%", value : 0, modified: false  },
-            { label : "Physical Pen", icon: "pgg pgg-physical-penetration", modifier : "%", value : 0, modified: false  },
-            { label : "Energy Pen", icon: "pgg pgg-armor-penetration", modifier : "%", value : 0, modified: false  },
-            { label : "Critical Damage", icon: "pgg pgg-critical-strike-damage", modifier : "", value : 0, modified: false  },
-            { label : "Critical Chance", icon: "pgg pgg-critical-strike-chance", modifier : "%", value : 0, modified: false  },
-            { label : "Health Regen", icon: "pgg pgg-health-regeneration", modifier : "/s", value : 0, modified: false  },
-            { label : "Energy Armor", icon: "pgg pgg-energy-armor", modifier : "", value : 0, modified: false  },
-            { label : "Physical Armor", icon : "pgg pgg-physical-armor", modifier : "", value : 0, modified: false  },
-            { label : "Harvester Placement Time", icon: "pgg pgg-harvester-placement-time", modifier : "s", value : 0, modified: false  }
+            { ref : "ATTACKSPEEDRATING", label : "Attack Speed", icon: "pgg pgg-attack-speed", modifier : "", value : 0, modified: false },
+            { ref : "COOLDOWNREDUCTIONPERCENTAGE", label : "Cooldown Reduction", icon: "pgg pgg-cooldown-reduction", modifier : "%", value : 0, modified: false  },
+            { ref : "MAXENERGY", label : "Max Mana", icon: "pgg pgg-max-mana", modifier : "", value : 0, modified: false  },
+            { ref : "MAXHEALTH", label : "Max Health", icon: "pgg pgg-max-health", modifier : "", value : 0, modified: false  },
+            { ref : "ENERGYREGENRATE", label : "Energy Regen", icon: "pgg pgg-mana-regeneration", modifier : "/s", value : 0, modified: false  },
+            { ref : "ATTACKRATING", label : "Physical Damage", icon: "pgg pgg-physical-damage", modifier : "", value : 0, modified: false  },
+            { ref : "LIFESTEALRATING", label : "Lifesteal", icon: "pgg pgg-lifesteal", modifier : "%", value : 0, modified: false  },
+            { ref : "PHYSICALPENETRATIONRATING", label : "Physical Pen", icon: "pgg pgg-physical-penetration", modifier : "%", value : 0, modified: false  },
+            { ref : "ENERGYPENETRATIONRATING", label : "Energy Pen", icon: "pgg pgg-armor-penetration", modifier : "%", value : 0, modified: false  },
+            { ref : "CRITICALDAMAGEBONUS", label : "Critical Damage", icon: "pgg pgg-critical-strike-damage", modifier : "", value : 0, modified: false  },
+            { ref : "CRITICALDAMAGECHANCE", label : "Critical Chance", icon: "pgg pgg-critical-strike-chance", modifier : "%", value : 0, modified: false  },
+            { ref : "HEALTHREGENRATE", label : "Health Regen", icon: "pgg pgg-health-regeneration", modifier : "/s", value : 0, modified: false  },
+            { ref : "ENERGYRESISTANCERATING", label : "Energy Armor", icon: "pgg pgg-energy-armor", modifier : "", value : 0, modified: false  },
+            { ref : "PHYSICALRESISTANCERATING", label : "Physical Armor", icon : "pgg pgg-physical-armor", modifier : "", value : 0, modified: false  },
+            { ref : "WELLRIGPLACEMENTTIMER", label : "Placement Time", icon: "pgg pgg-harvester-placement-time", modifier : "s", value : 0, modified: false  }
         ]
     },
     getFormattedStatistic: function(statLabel) {
@@ -56,7 +56,7 @@ module.exports = {
             case "HEALTHREGENRATE" : return { label : "Health Regen", icon: "pgg pgg-health-regeneration", modifier : "/s" }; break;
             case "ENERGYRESISTANCERATING" : return { label : "Energy Armor", icon: "pgg pgg-energy-armor", modifier : "" }; break;
             case "PHYSICALRESISTANCERATING" : return { label : "Physical Armor", icon : "pgg pgg-physical-armor", modifier : "" }; break;
-            case "WELLRIGPLACEMENTTIMER" : return { label : "Harvester Placement Time", icon: "pgg pgg-harvester-placement-time", modifier : "s" }; break;
+            case "WELLRIGPLACEMENTTIMER" : return { label : "Placement Time", icon: "pgg pgg-harvester-placement-time", modifier : "s" }; break;
             default : return { label : ("undefined label: " + statLabel), icon: "", modifier : "" };
         }
     },
@@ -95,6 +95,13 @@ module.exports = {
         return (str + "").replace(/\b(\d+)((\.\d+)*)\b/g, function(a, b, c) {
             return (b.charAt(0) > 0 && !(c || ".").lastIndexOf(".") ? b.replace(/(\d)(?=(\d{3})+$)/g, "$1,") : b) + c;
         });
+    },
+    dropZeroesAndDelimitNumbers: function(str) {
+        if(isNaN(parseFloat(Number(this.delimitNumbers(str)).toFixed(2)))) {
+            return parseFloat((Number(str).toFixed(2)));
+        } else {
+            return parseFloat(Number(this.delimitNumbers(str)).toFixed(2))
+        }
     },
     /**
      * Makes an AJAX request to a given URL and calls back to the user
