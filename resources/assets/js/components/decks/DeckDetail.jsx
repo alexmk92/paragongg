@@ -7,6 +7,7 @@ var Helpers = require('../../helpers');
 var DeckWidget = require('./widgets/Deck');
 var CostCurveWidget = require('./widgets/CostCurve');
 var SuggestedDecksWidget = require('./widgets/SuggestedDecks');
+var SpiderWebChart = require('../charts/SpiderWebChart');
 
 var DeckDetail = React.createClass({
     getInitialState: function() {
@@ -149,14 +150,14 @@ var DeckDetail = React.createClass({
         if(Helpers.isClientMobile()) {
             return (
                 <div id="statistic-wrapper">
-                    <StatPanel heroStats={ [] } cardStats={ this.props.deck.cards } />
+                    <StatPanel title={ "Build stats" } heroStats={ [] } cardStats={ this.props.deck.cards } />
                 </div>
             )
         } else {
             return (
                 <div id="statistic-wrapper">
-                    <StatPanel heroStats={ [] } />
-                    <StatPanel heroStats={ [] } cardStats={ this.props.deck.cards } />
+                    <StatPanel title={ "Base stats (" + this.props.deck.hero.name + ")" } heroStats={ [] } />
+                    <StatPanel title={ "Build stats" } heroStats={ [] } cardStats={ this.props.deck.cards } />
                 </div>
             )
         }
@@ -175,6 +176,8 @@ var DeckDetail = React.createClass({
                     <h3>Build statistics</h3>
                     { this.renderStatPanel() }
                 </div>
+
+                <SpiderWebChart />
 
             </div>
         );
