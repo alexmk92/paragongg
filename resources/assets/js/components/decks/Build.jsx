@@ -284,6 +284,7 @@ var Build = React.createClass({
             return false;
         }
 
+        console.log("GOT HERE NP")
         // GET THE NEXT AVAILABLE SLOT
         if(this.validateQuantity(false) && this.props.selectedCard) {
             // Got here by clicking on parent card to bind child
@@ -324,6 +325,7 @@ var Build = React.createClass({
                 this.buildUpdated(newBuild, lastModdedSlot, this.props.shouldQuickBindCards, null);
             }
         } else {
+            /*
             var parentSlot = null;
             var upgradeIndex = -1;
             this.props.build.slots.some(function(slot) {
@@ -335,6 +337,7 @@ var Build = React.createClass({
                 return false;
             });
             this.lastSelectedUpgradeSlot = { parentSlot : parentSlot, upgradeSlotIndex : upgradeIndex }
+            */
         }
         // Force fire a left click event if we get here so we can set the trash can on an active
         // upgrade slot
@@ -737,7 +740,7 @@ var Build = React.createClass({
     render: function() {
         var newTitle = Helpers.debounce(function() {
             this.titleChanged();
-        }.bind(this), 750);
+        }.bind(this), 350);
         //var quickBindLabel = (this.props.shouldQuickBindCards === true) ? "Disable Quick Bind" : "Enable Quick Bind";
         /* USE IN FUTURE MAYBE?
          <ul id="options-wrapper">
