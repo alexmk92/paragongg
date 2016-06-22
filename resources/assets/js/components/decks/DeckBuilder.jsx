@@ -33,11 +33,11 @@ var DeckBuilder = React.createClass({
             lastModifiedSlot: null,
             isBuildsPanelShowing : false,
             isMobileSearchShowing: false,
-            activeTab: this.isClientMobile() ? -1 : 0
+            activeTab: Helpers.isClientMobile() ? -1 : 0
         }
     },
     componentDidMount: function() {
-        if(!this.isClientMobile()) this.refs.deckNameInput.focus();
+        if(!Helpers.isClientMobile()) this.refs.deckNameInput.focus();
 
         this.lastDeletedCard = null;
         this.placementSlotIndex = -1;
@@ -84,16 +84,16 @@ var DeckBuilder = React.createClass({
         this.updateViewForDimensions();
     },
     componentWillMount: function() {
-        if(this.isClientMobile()) {
+        if(Helpers.isClientMobile()) {
             this.setState({ activeTab: -1 })
         }
     },
     componentDidUpdate: function() {
         this.hideTooltip();
-        if(this.lastHoveredCard && !this.isClientMobile()) {
+        if(this.lastHoveredCard && !Helpers.isClientMobile()) {
             this.setTooltipContent(this.lastHoveredCard);
         }
-        if(this.isClientMobile()) {
+        if(Helpers.isClientMobile()) {
             if(this.state.activeTab !== -1 || this.state.isMobileSearchShowing) {
                 if(typeof document.body.className === "undefined" || document.body.className === "") {
                     document.body.className = "no-scroll";
@@ -123,10 +123,25 @@ var DeckBuilder = React.createClass({
             var deckAndBuilds = {
                 title : this.state.title,
                 description : this.state.description,
-                author : {},
-                cards : this.state.deck,
-                builds : this.state.builds,
-                hero : this.state.selectedHero
+                author : USER_ID,
+                cards : this.state.deck.map(function(card) {
+                    return card.code;
+                }),
+                builds : this.state.builds.map(function(build) {
+                    return {
+                            title: build.title,
+                            slots: build.slots.map(function(slot) {
+                                if(slot.card) slot.card = slot.card.code;
+                                slot.upgrades = slot.upgrades.map(function(upgradeSlot) {
+                                    if(upgradeSlot.card) upgradeSlot.card = upgradeSlot.card.code;
+                                    return upgradeSlot;
+                                });
+                                return slot;
+                            }),
+                            cost: build.cost
+                        }
+                }),
+                hero : this.state.selectedHero.code
             };
 
             var json = JSON.stringify(deckAndBuilds);
@@ -137,7 +152,7 @@ var DeckBuilder = React.createClass({
         var sidebar = document.querySelector("#sidebar");
         var selectedCardWrapper = document.querySelector("#selected-card-wrapper");
 
-        if(!this.isClientMobile()) {
+        if(!Helpers.isClientMobile()) {
             document.body.className = "";
             if(selectedCardWrapper) {
                 selectedCardWrapper.className = "";
@@ -164,15 +179,6 @@ var DeckBuilder = React.createClass({
             }
         }
         this.setFooterHeight();
-    },
-    isClientMobile: function() {
-        var check = false;
-        (function(a){if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(a)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0,4)))check = true})(navigator.userAgent||navigator.vendor||window.opera);
-        // Allows us to run the mobile code on desktop for dev purposes.
-        if(!check)
-            check = window.innerWidth <= 1050;
-
-        return check;
     },
     toggleModal: function() {
         var modal = this.state.modal ? false : true;
@@ -287,7 +293,7 @@ var DeckBuilder = React.createClass({
             }
             */
 
-            if(this.placementSlotIndex != -1 && this.isClientMobile()) {
+            if(this.placementSlotIndex != -1 && Helpers.isClientMobile()) {
                 this.hideSelectedCardPopup();
                 this.setState({selectedCard: null, playFlashAnimation: false, activeTab: -1});
             }
@@ -299,7 +305,7 @@ var DeckBuilder = React.createClass({
             } else {
                 this.showSelectedCardPopup();
                 var activeTab = this.state.activeTab;
-                if(this.state.isBuildsPanelShowing && this.isClientMobile()) {
+                if(this.state.isBuildsPanelShowing && Helpers.isClientMobile()) {
                     activeTab = -1;
                 }
                 this.setState({selectedCard: card, playFlashAnimation: false, activeTab: activeTab});
@@ -344,7 +350,7 @@ var DeckBuilder = React.createClass({
     renderDeckList: function() {
 
         var editDeckButton = "";
-        if(this.isClientMobile() && (this.state.isBuildsPanelShowing)) {
+        if(Helpers.isClientMobile() && (this.state.isBuildsPanelShowing)) {
             editDeckButton = (
                 <button onClick={this.toggleBuildView.bind(this, false, "edit-button-mobile")}
                         name="publish"
@@ -370,7 +376,7 @@ var DeckBuilder = React.createClass({
                 </div>
             )
         }
-        if(this.isClientMobile() && this.deckOptionFilter && this.deckOptionFilter === "UPGRADES") {
+        if(Helpers.isClientMobile() && this.deckOptionFilter && this.deckOptionFilter === "UPGRADES") {
             return(
                 <div className={ "sidebox panel cf" + this.isActiveTab(0) }>
                     { editDeckButton }
@@ -470,7 +476,7 @@ var DeckBuilder = React.createClass({
                     </li>
                 );
 
-                if(this.state.selectedCard && this.state.selectedCard.type !== "Upgrade" && card.type === "Upgrade" && this.state.isBuildsPanelShowing && this.isClientMobile()) {
+                if(this.state.selectedCard && this.state.selectedCard.type !== "Upgrade" && card.type === "Upgrade" && this.state.isBuildsPanelShowing && Helpers.isClientMobile()) {
                     var cardAffinity = card.affinity.toLowerCase();
                     var selectedAffinity = this.state.selectedCard.affinity.toLowerCase();
                     if(cardAffinity.indexOf("universal") > -1) {
@@ -508,7 +514,7 @@ var DeckBuilder = React.createClass({
             if(this.state.selectedBuild === build) {
                 newActiveTab = 0;
             }
-            if(this.isClientMobile() && (build === this.state.selectedBuild)) {
+            if(Helpers.isClientMobile() && (build === this.state.selectedBuild)) {
                 newActiveTab = -1;
             }
             this.setState({selectedBuild: build, playFlashAnimation: false, isBuildsPanelShowing: true, activeTab: newActiveTab });
@@ -530,7 +536,7 @@ var DeckBuilder = React.createClass({
                 newActiveTab = 0;
                 buildsPanelShowing = false;
                 newSelectedBuild = null;
-                if(this.isClientMobile()) {
+                if(Helpers.isClientMobile()) {
                     newActiveTab = -1;
                 }
             } else {
@@ -641,7 +647,7 @@ var DeckBuilder = React.createClass({
                 cost: 0
             };
             // We dont want to go directly to deck on mobile
-            var newActiveTab = this.isClientMobile() ? -1 : 0;
+            var newActiveTab = Helpers.isClientMobile() ? -1 : 0;
             this.toggleBuildView(true, "add-build-button");
             this.setState({
                 builds : this.state.builds.concat(newBuild),
@@ -681,7 +687,7 @@ var DeckBuilder = React.createClass({
         if(disableSelected) newSelectedCard = null;
 
         // Was a mobile device
-        if(this.placementSlotIndex != -1 && this.isClientMobile()) {
+        if(this.placementSlotIndex != -1 && Helpers.isClientMobile()) {
             this.placementSlotIndex = -1;
             newSelectedCard = null;
         }
@@ -710,18 +716,18 @@ var DeckBuilder = React.createClass({
         var flashTab = false;
 
         // filter for mobile
-        if(this.isClientMobile())
+        if(Helpers.isClientMobile())
             this.deckOptionFilter = filter;
 
          if(this.state.addedCard && this.state.isBuildsPanelShowing) {
              flashTab = true;
          }
 
-        if(index === this.state.activeTab && this.isClientMobile()) {
+        if(index === this.state.activeTab && Helpers.isClientMobile()) {
             index = -1;
             flashTab = true;
         }
-        if(index === 1 && this.isClientMobile()) {
+        if(index === 1 && Helpers.isClientMobile()) {
             window.scrollTo(0, 0);
         }
 
@@ -795,7 +801,7 @@ var DeckBuilder = React.createClass({
     },
     getSelectedCardPopup: function() {
         console.log(this.lastSelectedCard);
-        if(this.state.selectedCard && this.isClientMobile()) {
+        if(this.state.selectedCard && Helpers.isClientMobile()) {
             var cardType = "UPGRADE";
             if(this.state.selectedCard.type === "Active" || this.state.selectedCard.type === "Passive") cardType = "EQUIPMENT";
             return (
@@ -808,7 +814,7 @@ var DeckBuilder = React.createClass({
                 </div>
             )
         }
-        else if((this.lastSelectedCard && this.isClientMobile())) {
+        else if((this.lastSelectedCard && Helpers.isClientMobile())) {
             return (
                 <div onClick={this.hideSelectedCardPopup} id="selected-card-wrapper" className="visible">
                     <span>Currently selected: <span className="subtext">{this.lastSelectedCard.name}</span> <i className="fa fa-close"></i></span>
@@ -822,7 +828,7 @@ var DeckBuilder = React.createClass({
         return <div onClick={this.hideSelectedCardPopup} id="selected-card-wrapper"></div>;
     },
     showSelectedCardPopup: function() {
-        if(this.isClientMobile()) {
+        if(Helpers.isClientMobile()) {
             var selectedCardPopup = document.getElementById("selected-card-wrapper");
             if(selectedCardPopup) {
                 selectedCardPopup.className = "visible";
@@ -830,7 +836,7 @@ var DeckBuilder = React.createClass({
         }
     },
     hideSelectedCardPopup: function() {
-        if(this.isClientMobile()) {
+        if(Helpers.isClientMobile()) {
             var selectedCardPopup = document.getElementById("selected-card-wrapper");
             if(selectedCardPopup) {
                 selectedCardPopup.className = "hidden";
@@ -895,7 +901,7 @@ var DeckBuilder = React.createClass({
 
         var backButtonMobile = "";
         var searchButtonMobile = "";
-        if(this.isClientMobile()) {
+        if(Helpers.isClientMobile()) {
             if(this.state.isBuildsPanelShowing) {
                 backButtonMobile = (
                     <div id="back-button-mobile" onClick={this.toggleBuildView.bind(this, false)}>
@@ -913,7 +919,7 @@ var DeckBuilder = React.createClass({
 
         var sidebarClass = this.state.activeTab === -1 ? "hidden" : "";
         var buildClass = "";
-        var stickSearchFilterTop = (this.isClientMobile() && this.state.isMobileSearchShowing);
+        var stickSearchFilterTop = (Helpers.isClientMobile() && this.state.isMobileSearchShowing);
         var actionBarHidden = this.state.isMobileSearchShowing ? "hidden" : "";
         var buttonDisabled = this.isDeckValid() ? "" : "disabled";
         return (

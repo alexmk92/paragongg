@@ -28,9 +28,6 @@ var Build = React.createClass({
         }
         this.renderQueuedCards();
     },
-    isClientMobile: function() {
-        return window.innerWidth <= 1050;
-    },
     quickBind: function() {
         var newBuild = this.props.build;
         // CANNOT QUICK BIND UPGRADES
@@ -384,7 +381,7 @@ var Build = React.createClass({
             var cardPulse = "";
             var upgradePulse = "";
 
-            if(this.props.autoPlaceIndex === i && this.isClientMobile() && this.props.selectedCard !== null) {
+            if(this.props.autoPlaceIndex === i && Helpers.isClientMobile() && this.props.selectedCard !== null) {
                 if(this.props.selectedCard.type !== "Upgrade") {
                     this.queuedCards.push({
                         slot: slot,
@@ -398,7 +395,7 @@ var Build = React.createClass({
                     })
                 }
             }
-            else if(this.props.autoPlaceIndex != -1 && this.lastSelectedSlot === i && this.isClientMobile() && this.props.selectedCard !== null) {
+            else if(this.props.autoPlaceIndex != -1 && this.lastSelectedSlot === i && Helpers.isClientMobile() && this.props.selectedCard !== null) {
                 if(typeof slot.upgrades !== "undefined" || slot.upgrades !== null ) {
                     //this.bindUpgradeToCard(slot.upgrades[this.props.autoPlaceIndex], slot.card, false);
                     this.queuedUpgrades.push({
@@ -454,7 +451,7 @@ var Build = React.createClass({
             }
             var actionButtons = (function() {
                 // ALWAYS RETURN THIS VIEW FOR MOBILE ON TRAP
-                if(this.isClientMobile() && slot.card) {
+                if(Helpers.isClientMobile() && slot.card) {
                     return (
                         <div key={"action-buttons-" + i } className={"delete-wrapper"} onClick={this.bindCardToSlot.bind(this, i)}
                              onContextMenu={this.removeCardFromSlot.bind(this, i, true)}>
@@ -466,7 +463,7 @@ var Build = React.createClass({
                     );
                 }
                 // CANNOT BE A UPGRADE CARD
-                if(!this.isClientMobile()) {
+                if(!Helpers.isClientMobile()) {
                     if(this.props.selectedCard !== null && this.props.selectedCard.type !== "Upgrade") {
                         if(this.props.selectedCard === slot.card) {
                             return (
@@ -584,7 +581,7 @@ var Build = React.createClass({
                 if(event.target.className.indexOf("glow-layer") > -1 || event.target.className.indexOf("delete-wrapper") > -1)
                     this.bindUpgradeToCard(bindSlot, bindSlot.card, true)
             }
-        } else if(this.isClientMobile()) {
+        } else if(Helpers.isClientMobile()) {
             var slot = this.props.build.slots[index];
             var elem = event.target;
             if(!slot.card) {
@@ -668,7 +665,7 @@ var Build = React.createClass({
                 var newBuild = this.props.build;
                 newBuild.slots = newSlots;
 
-                if(this.isClientMobile()) {
+                if(Helpers.isClientMobile()) {
                     activeTab = -1;
                 }
 
@@ -690,7 +687,7 @@ var Build = React.createClass({
     },
     /* TOOLTIP METHODS */
     setTooltipContent: function(card, message) {
-        if(!this.isClientMobile()) {
+        if(!Helpers.isClientMobile()) {
             var content = null;
             if(card !== null) {
                 content = (
@@ -714,7 +711,7 @@ var Build = React.createClass({
         }
     },
     showTooltip: function(card, selector, event) {
-        if(!this.isClientMobile()) {
+        if(!Helpers.isClientMobile()) {
             if(card) {
                 if(event.target.className.toLowerCase().indexOf(selector.toLowerCase()) > -1) {
                     this.tooltip.showTooltip();
@@ -751,7 +748,7 @@ var Build = React.createClass({
          */
         var panels = "";
         // ONLY SHOW UPGRADE PANEL ON MOBILE
-        if(this.isClientMobile()) {
+        if(Helpers.isClientMobile()) {
             panels = (
                 <div id="statistic-wrapper">
                     <StatPanel  />

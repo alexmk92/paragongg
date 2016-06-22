@@ -1,0 +1,32 @@
+#deck-detail-wrapper {
+    width: 70%;
+
+    #deck-container {
+        margin-bottom: 60px;
+
+        .build-list {
+            .no-builds {
+                display: block;
+                width: 100%;
+                height: auto;
+                background: none;
+                padding: 0;
+                margin: 0;
+                opacity: 1.0;
+
+                &:hover {
+                    opacity: 1.0;
+                    cursor: default;
+                }
+            }
+        }
+
+        #deck-stat-container {
+            margin-top: 120px;
+
+            #statistic-wrapper {
+                margin-top: 20px;
+            }
+        }
+    }
+}

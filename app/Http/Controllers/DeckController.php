@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Deck;
 use App\Hero;
+use Auth;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 
@@ -21,7 +22,9 @@ class DeckController extends Controller
     {
         $heroes = Hero::select('affinities', 'code', 'name', 'image')->orderBy('name', 'asc')->get();
         $cards = app('App\Http\Controllers\CardController')->getCards();
-        return view('decks.create')->with('cards', $cards)->with('heroes', $heroes);
+        $userId = Auth::user() ? Auth::user()->id : "null";
+
+        return view('decks.create')->with('cards', $cards)->with('heroes', $heroes)->with('userId', $userId);
     }
 
     // Store
@@ -34,8 +37,11 @@ class DeckController extends Controller
     }
 
     // Read
-    public function show($slug)
+    public function show(Request $request, $slug)
     {
+        $thread = findOrCreateThread($request->path());
+        $comments = $thread->comments;
+
         //$deck = Deck::where('slug', $slug)->firstOrFail();
         // pass back a dummy object for now
         $deck = new \stdClass();
@@ -1153,8 +1159,29 @@ class DeckController extends Controller
                 ]
             ]
         ];
-        $deck->builds = [];
-        $deck->upvotes = 5432;
+        $deck->builds = [
+            [
+                "title" => "Coolest sparrow",
+                "slots" => [],
+                "cost" => 12
+            ],
+            [
+                "title" => "What a bitch bro",
+                "slots" => [],
+                "cost" => 8
+            ],
+            [
+                "title" => "untitled deck",
+                "slots" => [],
+                "cost" => 44
+            ],
+            [
+                "title" => "untitled deck",
+                "slots" => [],
+                "cost" => 53
+            ]
+        ];
+        $deck->voteCount = 5432;
         $deck->commentCount = 345343;
         $deck->viewCount = 233231;
         $deck->hero = [
@@ -1169,7 +1196,8 @@ class DeckController extends Controller
         $sortedCards = [
             "prime" => [],
             "equipment" => [],
-            "upgrades" => []
+            "upgrades" => [],
+            "all" => $deck->cards
         ];
 
         foreach($deck->cards as $card) {
@@ -1204,7 +1232,10 @@ class DeckController extends Controller
             }
         }
         $deck->cards = $sortedCards;
-        return view('decks.show')->with('deck', $deck);
+
+        return view('decks.show')->with('deck', $deck)
+            ->with('comments', $comments)
+            ->with('threadId', $thread->id);
     }
 
     // Edit
