@@ -13,6 +13,8 @@ var DeckBuilder = React.createClass({
     getInitialState: function(){
         this.tooltip = new Tooltip();
         return {
+            title : "",
+            description : "",
             deck: [],
             builds: [],
             modal: false,
@@ -727,6 +729,11 @@ var DeckBuilder = React.createClass({
         return className;
     },
     toggleHeroPanel: function() {
+        // If the user just dismisses the panel when starting
+        if(!this.state.showCardSection) {
+            this.onHeroPanelSelectedHero(HEROES[0]);
+        }
+        // Default toggle behaviour
         this.setState({ heroPanelActive : !this.state.heroPanelActive })
     },
     /** HERO PANEL DROP DOWN FUNCTIONS **/
@@ -830,9 +837,31 @@ var DeckBuilder = React.createClass({
     toggleSearchFilter: function() {
         this.setState({ isMobileSearchShowing: !this.state.isMobileSearchShowing });
     },
+    updateTitle: function() {
+        var value = this.refs.deckNameInput.value;
+        if(value) {
+            this.setState({ title : value });
+        }
+    },
+    updateDescription: function() {
+        var value = this.refs.deckDescriptionInput.value;
+        if(value) {
+            console.log("UPDATING DESCRIPTION TO: ", value);
+            this.setState({ description : value });
+        }
+    },
     // Handles auto bind to a slot
     /** END OF FUNCTIONS **/
     render: function() {
+        // Debounce the title and description functions so theyre throttled
+        var setTitle = Helpers.debounce(function() {
+            this.updateTitle();
+        }.bind(this), 750);
+
+        var setDescription = Helpers.debounce(function() {
+            this.updateDescription();
+        }.bind(this), 750);
+
         // Used to delete cards from deck builder
         var tmpLastDeletedCard = this.lastDeletedCard;
         this.lastDeletedCard = null;
@@ -917,11 +946,11 @@ var DeckBuilder = React.createClass({
                             </div>
                             <div className="title-container">
                                 <span className="breadcrumb">Building a <strong>{ this.state.selectedHero.name }</strong> deck</span>
-                                <textarea className="h2" placeholder="Enter deck name..." ref="deckNameInput"></textarea>
+                                <textarea onChange={setTitle} className="h2" placeholder="Enter deck name..." ref="deckNameInput"></textarea>
                             </div>
                         </div>
                         <HeroPanel showAffinityFilter={false} heroes={HEROES} isActive={this.state.heroPanelActive} onHeroSelected={this.onHeroPanelSelectedHero} />
-                        <textarea className={"p " + (!this.state.heroPanelActive ? "-pull-up" : "") } ref="deckDescriptionInput" placeholder="Enter a short description about your deck, what team compositions might you use this deck against? Under what situations would you use the different builds?">
+                        <textarea onChange={setDescription} className={"p " + (!this.state.heroPanelActive ? "-pull-up" : "") } ref="deckDescriptionInput" placeholder="Enter a short description about your deck, what team compositions might you use this deck against? Under what situations would you use the different builds?">
                         </textarea>
                         <div id="cards-feed" className={ this.state.showCardSection ? "" : "hidden" }>
                             <CardsFeed forceRedraw={true}
