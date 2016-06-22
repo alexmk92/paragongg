@@ -7,6 +7,7 @@ var Helpers = require('../../helpers');
 var DeckWidget = require('./widgets/Deck');
 var CostCurveWidget = require('./widgets/CostCurve');
 var SuggestedDecksWidget = require('./widgets/SuggestedDecks');
+var SpiderWebChart = require('../charts/SpiderWebChart');
 
 var DeckDetail = React.createClass({
     getInitialState: function() {
@@ -175,6 +176,8 @@ var DeckDetail = React.createClass({
                     <h3>Build statistics</h3>
                     { this.renderStatPanel() }
                 </div>
+
+                <SpiderWebChart />
 
             </div>
         );

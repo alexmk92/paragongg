@@ -1,4 +1,5 @@
 var React = require('react');
+var Rcslider = require('rc-slider');
 var Helpers = require('../../helpers');
 
 var StatPanel = React.createClass({
