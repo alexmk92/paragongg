@@ -149,14 +149,14 @@ var DeckDetail = React.createClass({
         if(Helpers.isClientMobile()) {
             return (
                 <div id="statistic-wrapper">
-                    <StatPanel heroStats={ [] } cardStats={ this.props.deck.cards } />
+                    <StatPanel title={ "Build stats" } heroStats={ [] } cardStats={ this.props.deck.cards } />
                 </div>
             )
         } else {
             return (
                 <div id="statistic-wrapper">
-                    <StatPanel heroStats={ [] } />
-                    <StatPanel heroStats={ [] } cardStats={ this.props.deck.cards } />
+                    <StatPanel title={ "Base stats (" + this.props.deck.hero.name + ")" } heroStats={ [] } />
+                    <StatPanel title={ "Build stats" } heroStats={ [] } cardStats={ this.props.deck.cards } />
                 </div>
             )
         }
