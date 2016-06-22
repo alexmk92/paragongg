@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Deck;
 use App\Hero;
 use App\Http\Requests;
+use Illuminate\Http\Request;
 
 class DeckController extends Controller
 {
@@ -24,9 +25,11 @@ class DeckController extends Controller
     }
 
     // Store
-    public function store()
+    public function store(Request $request)
     {
+        dd($request);
         // Store item
+
         return view('decks.create');
     }
 
