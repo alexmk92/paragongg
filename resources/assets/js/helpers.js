@@ -185,9 +185,16 @@ module.exports = {
         form.setAttribute("method", method);
         form.setAttribute("action", path);
 
+        var hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type", "hidden");
+        hiddenField.setAttribute("name", "_token");
+        hiddenField.setAttribute("value", csrf);
+        
+        form.appendChild(hiddenField);
+
         for(var key in params) {
             if(params.hasOwnProperty(key)) {
-                var hiddenField = document.createElement("input");
+                hiddenField = document.createElement("input");
                 hiddenField.setAttribute("type", "hidden");
                 hiddenField.setAttribute("name", key);
                 hiddenField.setAttribute("value", params[key]);

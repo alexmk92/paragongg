@@ -117,15 +117,21 @@ var DeckBuilder = React.createClass({
     },
     /* UTILITY FUNCTIONS */
     saveDeck: function() {
-        var deckAndBuilds = {
-            title : this.state.title,
-            description : this.state.description,
-            author : {},
-            cards : this.state.deck,
-            builds : this.state.builds,
-            hero : this.state.selectedHero
-        };
-        console.log("SAVING DECK: ", deckAndBuilds);
+        if(!this.isDeckValid()) {
+            this.notificationPanel.addNotification("warning", "You must select at least one card, one hero and enter a title for this deck before you can save.");
+        } else {
+            var deckAndBuilds = {
+                title : this.state.title,
+                description : this.state.description,
+                author : {},
+                cards : this.state.deck,
+                builds : this.state.builds,
+                hero : this.state.selectedHero
+            };
+
+            var json = JSON.stringify(deckAndBuilds);
+            Helpers.post("/decks/create", { data : json });
+        }
     },
     updateViewForDimensions: function() {
         var sidebar = document.querySelector("#sidebar");
@@ -864,6 +870,9 @@ var DeckBuilder = React.createClass({
             this.setState({ description : value });
         }
     },
+    isDeckValid: function() {
+        return this.state.title !== "" && this.state.selectedHero !== null && this.state.deck.length > 0;
+    },
     // Handles auto bind to a slot
     /** END OF FUNCTIONS **/
     render: function() {
@@ -906,13 +915,14 @@ var DeckBuilder = React.createClass({
         var buildClass = "";
         var stickSearchFilterTop = (this.isClientMobile() && this.state.isMobileSearchShowing);
         var actionBarHidden = this.state.isMobileSearchShowing ? "hidden" : "";
+        var buttonDisabled = this.isDeckValid() ? "" : "disabled";
         return (
             <div>
                 <div id="sidebar" className={sidebarClass}>
                     <div id="action-button-wrapper" className={ actionBarHidden }>
                         { backButtonMobile }
                         <button onClick={this.toggleBuildView.bind(this, false, "edit-button")} name="publish" type="submit" className={"btn inline narrow"}><i className="fa fa-pencil" aria-hidden="true"></i> EDIT DECK</button>
-                        <button name="publish" type="submit" onClick={this.saveDeck} className="btn inline wide"><i className="fa fa-check" aria-hidden="true"></i> SAVE DECK</button>
+                        <button name="publish" type="submit" onClick={this.saveDeck} className={"btn inline wide " + buttonDisabled}><i className="fa fa-check" aria-hidden="true"></i> SAVE DECK</button>
                         { searchButtonMobile }
                     </div>
                     <div className="dual-tab-wrapper">
