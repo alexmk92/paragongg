@@ -143,6 +143,9 @@ var SpiderWebChart = React.createClass({
                 polar: true,
                 type : 'area'
             },
+            credits: {
+                enabled: false
+            },
             title : {
                 text: ''
             },
@@ -164,7 +167,6 @@ var SpiderWebChart = React.createClass({
                 shared: true,
                 valuePrefix: '$'
             },
-
             legend: {
                 align: 'right',
                 verticalAlign: 'top',

@@ -8,6 +8,7 @@ var DeckWidget = require('./widgets/Deck');
 var CostCurveWidget = require('./widgets/CostCurve');
 var SuggestedDecksWidget = require('./widgets/SuggestedDecks');
 var SpiderWebChart = require('../charts/SpiderWebChart');
+var HorizontalBarChart = require('../charts/HorizontalBarChart');
 
 var DeckDetail = React.createClass({
     getInitialState: function() {
@@ -177,8 +178,23 @@ var DeckDetail = React.createClass({
                     { this.renderStatPanel() }
                 </div>
 
-                <SpiderWebChart />
-
+                <div id="chart-wrapper">
+                    <div className="chart narrow">
+                        <h3>Build Overview</h3>
+                        <span>Compare all builds in this deck</span>
+                        <SpiderWebChart container="overview-container" />
+                    </div>
+                    <div className="chart left">
+                        <div className="chart stacked">
+                            <h3>Build Comparison <span>COMPARE: DPS</span></h3>
+                            <HorizontalBarChart container="build-comparison-container" />
+                        </div>
+                        <div className="chart right">
+                            <h3>Affinity Weighting</h3>
+                            <HorizontalBarChart container="affinity-weighting-container" />
+                        </div>
+                    </div>
+                </div>
             </div>
         );
     }

@@ -35,11 +35,20 @@ class UpdateHeroObject extends Job implements ShouldQueue
     public function handle()
     {
         $client = new Client();
-        $exists = Hero::where('code', $this->object->id)->first();
+        $hero = Hero::where('code', $this->object->id)->first();
 
-        if (!$exists) {
+        if (!$hero) {
             Hero::create(['name' => $this->object->name, 'code' => $this->object->id]);
             $this->dispatch(new UpdateHeroImage($this->object));
+        } else {
+            // Save the background image
+            $filename = explode('/', $this->object->images->icon);
+            $filename = end($filename);
+            $filename = pathinfo($filename, PATHINFO_FILENAME);
+
+            if(!$hero->image || $hero->image != $filename) {
+                $this->dispatch(new UpdateHeroImage($this->object));
+            }
         }
 
         $heroDetails = $client->request('GET', 'https://oriondata-public-service-prod09.ol.epicgames.com/v1/hero/' . $this->object->id, [

@@ -34,40 +34,54 @@ class UpdateCardImage extends Job implements ShouldQueue
     public function handle()
     {
         $storage = Storage::disk('s3');
+        $card = Card::where('code', $this->object->id)->first();
 
-        $client = new Client();
-        $exists = Card::where('code', $this->object->id)->first();
+        if (!$card) return true;
 
-        if (!$exists) return true;
+        // Save the background image
+        $filename = explode('/', $this->object->images->large);
+        $filename = end($filename);
+        $filename = pathinfo($filename, PATHINFO_FILENAME);
 
-        // BACKGROUND
-        $background = $client->request('GET', 'https://oriondata-public-service-prod09.ol.epicgames.com/v1/card/' . $this->object->id . '/image/background.png', [
-            'headers' => [
-                'Accept' => 'image/png',
-                'Authorization' => 'Bearer ' . APIToken(),
-                'X-Epic-ApiKey' => env('EPIC_API_KEY'),
-            ]
-        ])->getBody()->getContents();
+        if(!$card->background || $card->background != $filename) {
+            // If an old image exists, delete the directory
+            if($card->background) $storage->deleteDirectory('images/cards/'.$this->object->id.'/'.$filename);
 
-        $background_small = Image::make($background)->resize(150, null, function($constraint) {
-            $constraint->aspectRatio();
-        })->stream()->getContents();
-        $storage->getDriver()->put('images/cards/' . $this->object->id . '/background.png', $background, ["CacheControl" => "max-age=3600"]);
-        $storage->getDriver()->put('images/cards/' . $this->object->id . '/background_small.png', $background_small, ["CacheControl" => "max-age=3600"]);
+            // Create 3 sizes for the hero portrait
+            $background_large  = Image::make('http:' . $this->object->images->large)->stream()->getContents();
+            $background_medium = Image::make($background_large)->resize(135,180)->stream()->getContents();
 
-        // ICON
-        $icon = $client->request('GET', 'https://oriondata-public-service-prod09.ol.epicgames.com/v1/card/' . $this->object->id . '/image/icon.png', [
-            'headers' => [
-                'Accept' => 'image/png',
-                'Authorization' => 'Bearer ' . APIToken(),
-                'X-Epic-ApiKey' => env('EPIC_API_KEY'),
-            ]
-        ])->getBody()->getContents();
+            // Upload these to S3
+            $storage->getDriver()->put('images/cards/' . $this->object->id . '/'.$filename.'/background_large.png', $background_large, ["CacheControl" => "max-age=31536000"]);
+            $storage->getDriver()->put('images/cards/' . $this->object->id . '/'.$filename.'/background_medium.png', $background_medium, ["CacheControl" => "max-age=31536000"]);
 
-        $icon_small =  Image::make($icon)->resize(128,128)->stream()->getContents();
-        $icon_medium = Image::make($icon)->resize(256,256)->stream()->getContents();
-        $storage->getDriver()->put('images/cards/' . $this->object->id . '/icon.png', $icon, ["CacheControl" => "max-age=3600"]);
-        $storage->getDriver()->put('images/cards/' . $this->object->id . '/icon_medium.png', $icon_medium, ["CacheControl" => "max-age=3600"]);
-        $storage->getDriver()->put('images/cards/' . $this->object->id . '/icon_small.png', $icon_small, ["CacheControl" => "max-age=3600"]);
+            // Update the card background with the new filename
+            $card->background = $filename;
+            $card->save();
+        }
+
+        // Save the icon
+        $filename = explode('/', $this->object->images->icon);
+        $filename = end($filename);
+        $filename = pathinfo($filename, PATHINFO_FILENAME);
+
+        if(!$card->icon || $card->icon != $filename) {
+            // If an old image exists, delete the directory
+            if($card->icon) $storage->deleteDirectory('images/cards/'.$this->object->id.'/'.$filename);
+
+            // Create 3 sizes for the hero portrait
+            $icon_large  = Image::make('http:' . $this->object->images->icon)->stream()->getContents();
+            $icon_medium = Image::make($icon_large)->resize(256,256)->stream()->getContents();
+            $icon_small = Image::make($icon_large)->resize(128,128)->stream()->getContents();
+
+            // Upload these to S3
+            $storage->getDriver()->put('images/cards/' . $this->object->id . '/'.$filename.'/icon_large.png', $icon_large, ["CacheControl" => "max-age=31536000"]);
+            $storage->getDriver()->put('images/cards/' . $this->object->id . '/'.$filename.'/icon_medium.png', $icon_medium, ["CacheControl" => "max-age=31536000"]);
+            $storage->getDriver()->put('images/cards/' . $this->object->id . '/'.$filename.'/icon_small.png', $icon_small, ["CacheControl" => "max-age=31536000"]);
+
+            // Update the card icon with the new filename
+            $card->icon = $filename;
+            $card->save();
+        }
     }
 }

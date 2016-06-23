@@ -103,3 +103,13 @@ input.h2, div.h2 {
 div.p {
     outline: none;
 }
+input.short {
+    max-width: 100px;
+    display: inline-block;
+}
+.sublabel {
+    margin-left: 10px;
+    font-family: $font-condensed;
+    color: $font-color-faded;
+    text-transform: uppercase;
+}

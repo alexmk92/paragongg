@@ -1,4 +1,5 @@
 var React = require('react');
+var Helpers = require('../../helpers');
 
 var CardPreview = React.createClass({
     getInitialState: function() {
@@ -16,7 +17,7 @@ var CardPreview = React.createClass({
     },
     render: function() {
         var divStyle = {
-            backgroundImage: 'url('+ this.props.card.images.large +')'
+            backgroundImage: 'url(' + Helpers.S3URL() + 'images/cards/' + this.props.card.code + '/' + this.props.card.background + '/background_medium.png)'
         };
         var className = "card-preview ";
         if(typeof this.props.card.owned !== 'undefined') {

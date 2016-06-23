@@ -1,5 +1,5 @@
-$card-width : 136px;
-$card-height : 181px;
+$card-width : 135px;
+$card-height : 180px;
 #cards-feed {
 
     .filter-wrapper {
@@ -28,11 +28,12 @@ $card-height : 181px;
             opacity: 0.3;
         }
         .card-name {
+            color: white;
             position: absolute;
-            bottom: 45px;
+            bottom: 25px;
             padding: 0 10px;
             width: 100%;
-            font-size: 11px;
+            font-size: 12px;
             text-align: center;
             line-height: 13px;
         }

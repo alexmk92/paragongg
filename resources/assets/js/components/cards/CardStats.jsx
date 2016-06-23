@@ -33,7 +33,15 @@ var CardStats = React.createClass({
         }
     },
     componentDidMount: function() {
-        particlesJS('particle-layer', ParticleTheme.embers());
+        if (this.props.card.rarity == 'Epic') {
+            particlesJS('particle-layer', ParticleTheme.epic());
+        } else if (this.props.card.rarity == 'Rare') {
+            particlesJS('particle-layer', ParticleTheme.rare());
+        } else if(this.props.card.rarity == 'Uncommon') {
+            particlesJS('particle-layer', ParticleTheme.uncommon());
+        } else {
+            particlesJS('particle-layer', ParticleTheme.common());
+        }
     },
     getAffinity: function(str) {
         return str.replace("Affinity.", "");

@@ -7,6 +7,7 @@ use App\Http\Requests;
 use App\Jobs\UpdateHeroImage;
 use App\Jobs\UpdateHeroObject;
 use GuzzleHttp\Client;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
@@ -57,6 +58,33 @@ class HeroController extends Controller
             $image = Image::make($request->file('cutout'));
             $storage->getDriver()->put($path, $image->stream()->getContents(), ["CacheControl" => "max-age=86400"]);
         }
+
+        $baseStats = new Collection();
+        if($request->has('stat_physical_damage')) $baseStats->physical_damage = (float)$request->stat_physical_damage;
+        if($request->has('stat_energy_damage')) $baseStats->energy_damage = (float)$request->stat_energy_damage;
+        if($request->has('stat_crit_chance')) $baseStats->crit_chance = (float)$request->stat_crit_chance;
+        if($request->has('stat_crit_bonus')) $baseStats->crit_bonus = (float)$request->stat_crit_bonus;
+        if($request->has('stat_attack_speed')) $baseStats->attack_speed = (float)$request->stat_attack_speed;
+        if($request->has('stat_physical_pen')) $baseStats->physical_pen = (float)$request->stat_physical_pen;
+        if($request->has('stat_energy_pen')) $baseStats->energy_pen = (float)$request->stat_energy_pen;
+        if($request->has('stat_max_health')) $baseStats->max_health = (float)$request->stat_max_health;
+        if($request->has('stat_max_health_modifier')) $baseStats->max_health_modifier = (float)$request->stat_max_health_modifier;
+        if($request->has('stat_health_regen')) $baseStats->health_regen = (float)$request->stat_health_regen;
+        if($request->has('stat_health_regen_modifier')) $baseStats->health_regen_modifier = (float)$request->stat_health_regen_modifier;
+        if($request->has('stat_max_mana')) $baseStats->max_mana = (float)$request->stat_max_mana;
+        if($request->has('stat_max_mana_modifier')) $baseStats->max_mana_modifier = (float)$request->stat_max_mana_modifier;
+        if($request->has('stat_mana_regen')) $baseStats->mana_regen = (float)$request->stat_mana_regen;
+        if($request->has('stat_mana_regen_modifier')) $baseStats->mana_regen_modifier = (float)$request->stat_mana_regen_modifier;
+        if($request->has('stat_lifesteal')) $baseStats->lifesteal = (float)$request->stat_lifesteal;
+        if($request->has('stat_physical_armor')) $baseStats->physical_armor = (float)$request->stat_physical_armor;
+        if($request->has('stat_physical_armor_modifier')) $baseStats->physical_armor_modifier = (float)$request->stat_physical_armor_modifier;
+        if($request->has('stat_energy_armor')) $baseStats->energy_armor = (float)$request->stat_energy_armor;
+        if($request->has('stat_energy_armor_modifier')) $baseStats->energy_armor_modifier = (float)$request->stat_energy_armor_modifier;
+        if($request->has('stat_cooldown_reduction')) $baseStats->cooldown_reduction = (float)$request->stat_cooldown_reduction;
+        if($request->has('stat_movement_speed')) $baseStats->movement_speed = (float)$request->stat_movement_speed;
+
+        $hero->baseStats = $baseStats;
+        $hero->save();
 
         session()->flash('notification', 'success|Hero saved.');
 

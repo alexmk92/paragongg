@@ -82,5 +82,23 @@
                 margin-top: 20px;
             }
         }
+
+        #chart-wrapper {
+            .chart {
+                display: inline-block;
+
+                &.left {
+                    float: left;
+                }
+
+                &.right {
+                    float: right;
+                }
+
+                &.stacked {
+                    display: block;
+                }
+            }
+        }
     }
 }

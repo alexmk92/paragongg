@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Card;
 use GuzzleHttp\Client;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -12,7 +13,7 @@ use Intervention\Image\Facades\Image;
 
 class UpdateCardObject extends Job implements ShouldQueue
 {
-    use InteractsWithQueue, SerializesModels;
+    use InteractsWithQueue, SerializesModels, DispatchesJobs;
 
     protected $object;
 
@@ -34,10 +35,24 @@ class UpdateCardObject extends Job implements ShouldQueue
     public function handle()
     {
         $client = new Client();
-        $exists = Card::where('code', $this->object->id)->first();
+        $card = Card::where('code', $this->object->id)->first();
 
-        if (!$exists) {
+        if (!$card) {
             Card::create(['name' => $this->object->name, 'code' => $this->object->id]);
+            $this->dispatch(new UpdateCardImage($this->object));
+        } else {
+            // Check background image
+            $filename_background = explode('/', $this->object->images->large);
+            $filename_background = end($filename_background);
+            $filename_background = pathinfo($filename_background, PATHINFO_FILENAME);
+
+            $filename_icon = explode('/', $this->object->images->icon);
+            $filename_icon = end($filename_icon);
+            $filename_icon = pathinfo($filename_icon, PATHINFO_FILENAME);
+
+            if(!$card->background || $card->background != $filename_background || !$card->icon || $card->icon != $filename_icon) {
+                $this->dispatch(new UpdateCardImage($this->object));
+            }
         }
 
         $cardDetails = $client->request('GET', 'https://oriondata-public-service-prod09.ol.epicgames.com/v1/card/' . $this->object->id, [
