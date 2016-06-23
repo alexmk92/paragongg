@@ -8,11 +8,8 @@ var SpiderWebChart = React.createClass({
         var theme = this.props.options || {
             colors: ["#ff6f00", "#64bf22", "#42a9e8", "#aa2ed3", "#2ed3ba", "#e634c2", "#e4e22e"],
             chart: {
-                backgroundColor: {
-                    color : "rgba(0,0,0,0)"
-                },
                 style: {
-                    fontFamily: "'Unica One', sans-serif"
+                    fontFamily: "Roboto, sans-serif"
                 },
                 plotBorderColor: '#5a606f'
             },
@@ -72,7 +69,7 @@ var SpiderWebChart = React.createClass({
             },
             plotOptions: {
                 series: {
-                    fillOpacity: 0.25,
+                    fillOpacity: 0.20,
                     dataLabels: {
                         color: '#B0B0B3'
                     },
@@ -141,7 +138,8 @@ var SpiderWebChart = React.createClass({
             chart: {
                 renderTo : this.props.container || 'spider-web-container',
                 polar: true,
-                type : 'area'
+                type : 'area',
+                backgroundColor : 'rgba(0, 0, 0, 0)'
             },
             credits: {
                 enabled: false

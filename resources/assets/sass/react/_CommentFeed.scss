@@ -28,8 +28,20 @@ $avatar-height : $avatar-width;
     }
 
     #comment-list {
-        margin: 150px 0;
+        margin: 100px 0 150px 0;
+        .no-comments {
+            margin-bottom: 0;
+            margin-top: -100px;
+            padding-left: 10px;
+            font-size: 1.1em;
+            border-left: 4px solid $secondary-highlight;
+            font-style: italic;
+            color: $font-color-faded;
+        }
         .comment-item {
+            &:nth-of-type(1) {
+                border-top: none;
+            }
             border-top: 1px solid $faded-line;
             padding-top: 30px;
             margin-bottom: 30px;

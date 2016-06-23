@@ -40,6 +40,17 @@ module.exports = {
             { ref : "WELLRIGPLACEMENTTIMER", label : "Placement Time", icon: "pgg pgg-harvester-placement-time", modifier : "s", value : 0, modified: false  }
         ]
     },
+    getAffinityColor: function(affinity) {
+        switch (affinity.trim().toUpperCase()) {
+            case "FURY": return "#c92a22";
+            case "GROWTH": return "#7dab1a";
+            case "ORDER": return "#e5c174";
+            case "INTELLECT": return "#17a8e0";
+            case "CORRUPTION": return "#7d005e";
+            case "UNIVERSAL": return "#ccc";
+            default: return "#000";
+        }
+    },
     getFormattedStatistic: function(statLabel) {
         switch(statLabel.toUpperCase()) {
             case "ATTACKSPEEDRATING": return { label : "Attack Speed", icon: "pgg pgg-attack-speed", modifier : "" }; break;

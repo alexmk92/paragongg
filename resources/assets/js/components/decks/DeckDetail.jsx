@@ -13,6 +13,16 @@ var HorizontalBarChart = require('../charts/HorizontalBarChart');
 var DeckDetail = React.createClass({
     getInitialState: function() {
         return {
+            comparisons: [
+                { label : "HEALING", icon : "pgg pgg-health-regeneration" },
+                { label : "REGEN", icon : "pgg pgg-health-regeneration" },
+                { label : "DPS", icon : "pgg pgg-cleave" },
+                { label : "DEFENSE", icon : "pgg pgg-physical-armor" },
+                { label : "CROWD CONTROL", icon : "pgg pgg-attack-speed" },
+                { label : "TANKING", icon : "pgg pgg-energy-armor" }
+            ],
+            compareIndex : 0,
+            compareAllBuilds: false,
             selectedBuild : this.props.deck.builds.length > 0 ? this.props.deck.builds[0] : null
         }
     },
@@ -26,9 +36,9 @@ var DeckDetail = React.createClass({
         if(footer && sidebar) {
             var newBottom = sidebar.getBoundingClientRect().bottom;
             var footerHeight = footer.getBoundingClientRect().height;
-            footer.style.top = (newBottom + footerHeight) + "px";
+            footer.style.top = ((newBottom + footerHeight) * 1.5) + "px";
         } else {
-            footer.style.top = "100%";
+            footer.style.top = "150%";
         }
     },
     showBuild: function(build) {
@@ -139,7 +149,6 @@ var DeckDetail = React.createClass({
                          onMouseOver={this.showTooltip.bind(this, upgradeSlot.card, "upgrade-label")}
                          onMouseLeave={this.hideTooltip}
                     >
-                        { deleteWrapper }
                         { label }
                         <div className="overlay"></div>
                     </div>
@@ -163,7 +172,94 @@ var DeckDetail = React.createClass({
             )
         }
     },
+    getComparisonData: function() {
+        var stat = this.state.comparisons[this.state.compareIndex];
+        var comparisonData = {
+            chartHeight: 120,
+            chartColors : ["#343a4a", "#42a9e8"],
+            max : 0,
+            parts : [],
+            data : []
+        };
+
+        if(stat) {
+            // TODO If not builds exist, then we will show deck stats
+
+            // Push for maximum possible:
+            comparisonData.parts.push({
+                start : "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible (",
+                end : " " + stat.label + ")"
+            });
+
+            // Push for this build labels:
+            comparisonData.parts.push({
+                start : "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This build (",
+                end : " " + stat.label + ")"
+            });
+
+            // Loop over the build and extract relevant info:
+            // Push the data
+            comparisonData.data.push({ data : [1042]}, { data : [122] });
+            comparisonData.max = 1042;
+        }
+
+        console.log(comparisonData);
+        return comparisonData;
+    },
+    getAffinityWeighting: function() {
+        var comparisonData = {
+            chartHeight : 45,
+            chartColors : [],
+            parts : [],
+            data : [],
+            max: 0
+        };
+
+        var affinityCounts = [];
+
+        // On a null build, show deck affinity weighting
+        if(this.state.selectedBuild === null || this.state.selectedBuild.slots.length === 0) {
+            this.props.deck.cards.all.forEach(function(card) {
+                // Push for maximum possible:
+                if(typeof affinityCounts[card.affinity] === "undefined") {
+                    affinityCounts[card.affinity] = { label : card.affinity, value : 1 };
+                } else {
+                    affinityCounts[card.affinity].value += 1;
+                }
+            });
+        } else {
+            // Show build affinity weighting
+        }
+        for(var key in affinityCounts) {
+            if(affinityCounts.hasOwnProperty(key)) {
+                var affinity = affinityCounts[key];
+                var percent = (affinity.value / this.props.deck.cards.all.length) * 100;
+                if(affinity.value > comparisonData.max) {
+                    comparisonData.max = affinity.value;
+                }
+                comparisonData.parts.push({
+                    start : "<i style='font-size: 16px;' class=''></i> " + affinity.label + " (" + parseInt(percent) + "%)",
+                    end : ""
+                });
+                comparisonData.data.push({
+                    data : [affinity.value]
+                });
+                comparisonData.chartHeight += 45;
+                comparisonData.chartColors.push(Helpers.getAffinityColor(key.toUpperCase()));
+            }
+        }
+
+        console.log(comparisonData);
+
+        return comparisonData;
+    },
+    toggleAllBuildsComparison: function() {
+        this.setState({ compareAllBuilds: !this.state.compareAllBuilds });
+    },
     render: function() {
+        var affinityWeightingData = this.getAffinityWeighting();
+        var statComparisonData = this.getComparisonData();
+
         return (
             <div>
                 <ul id="build_tabs">
@@ -179,19 +275,19 @@ var DeckDetail = React.createClass({
                 </div>
 
                 <div id="chart-wrapper">
-                    <div className="chart narrow">
+                    <div className="chart left">
                         <h3>Build Overview</h3>
-                        <span>Compare all builds in this deck</span>
+                        <div className={ this.state.compareAllBuilds ? "toggle-button active" : "toggle-button" } onClick={this.toggleAllBuildsComparison}><span>Compare all builds in this deck</span></div>
                         <SpiderWebChart container="overview-container" />
                     </div>
-                    <div className="chart left">
+                    <div className="chart right">
                         <div className="chart stacked">
                             <h3>Build Comparison <span>COMPARE: DPS</span></h3>
-                            <HorizontalBarChart container="build-comparison-container" />
+                            <HorizontalBarChart container="build-comparison-container" max={statComparisonData.max} useValue={true} height={ statComparisonData.chartHeight } colors={ statComparisonData.chartColors } series={statComparisonData} />
                         </div>
-                        <div className="chart right">
+                        <div className="chart stacked">
                             <h3>Affinity Weighting</h3>
-                            <HorizontalBarChart container="affinity-weighting-container" />
+                            <HorizontalBarChart container="affinity-weighting-container" max={affinityWeightingData.max} useValue={false} height={ affinityWeightingData.chartHeight } colors={ affinityWeightingData.chartColors } series={affinityWeightingData} />
                         </div>
                     </div>
                 </div>
