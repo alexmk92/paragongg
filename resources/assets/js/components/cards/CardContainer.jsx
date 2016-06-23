@@ -1,5 +1,6 @@
 var React = require("react");
 var ReactDOM = require("react-dom");
+var Helpers  = require('../../helpers');
 var CardStats = require("./CardStats");
 var InteractiveParallax = require("../../lib/InteractiveParallax");
 
@@ -50,7 +51,7 @@ var CardContainer = React.createClass({
                     <div className="anim-fadeIn" id="card-model-wrapper">
                         <div id="card-model" className="anim-flicker">
                             <div id="card-model-container">
-                                <img src={CARD.images.large} />
+                                <img src={ Helpers.S3URL() + 'images/cards/' + CARD.code + '/' + CARD.background + '/background_large.png' } />
                                 <span>{ CARD.name }</span>
                                 <div id="card-glow-layer" style={modelStyles}></div>
                             </div>
