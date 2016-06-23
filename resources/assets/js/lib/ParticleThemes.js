@@ -548,7 +548,7 @@ module.exports = {
         return {
             particles: {
                 number: {
-                    value: 150,
+                    value: 80,
                     density: {
                         enable: false
                     }
@@ -583,8 +583,8 @@ module.exports = {
                 },
                 move: {
                     enable: true,
-                    speed: 1,
-                    direction: 'top',
+                    speed: 3,
+                    direction: 'none',
                     random: true,
                     straight: false,
                     out_mode: 'out',
@@ -678,8 +678,8 @@ module.exports = {
                 },
                 move: {
                     enable: true,
-                    speed: 1,
-                    direction: 'top',
+                    speed: 3,
+                    direction: 'none',
                     random: true,
                     straight: false,
                     out_mode: 'out',
@@ -773,8 +773,8 @@ module.exports = {
                 },
                 move: {
                     enable: true,
-                    speed: 1,
-                    direction: 'top',
+                    speed: 3,
+                    direction: 'none',
                     random: true,
                     straight: false,
                     out_mode: 'out',
