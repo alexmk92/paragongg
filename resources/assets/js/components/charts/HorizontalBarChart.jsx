@@ -1,14 +1,12 @@
 var React = require('react');
 var Highcharts = require('highcharts');
+var Helpers = require('../../helpers');
 
 var HorizontalBarChart = React.createClass({
     componentDidMount: function() {
         var theme = this.props.options || {
-                colors: ["#ff6f00", "#64bf22", "#42a9e8", "#aa2ed3", "#2ed3ba", "#e634c2", "#e4e22e"],
+                colors: this.props.colors || ["#ff6f00", "#64bf22", "#42a9e8", "#aa2ed3", "#2ed3ba", "#e634c2", "#e4e22e"],
                 chart: {
-                    backgroundColor: {
-                        color : "rgba(0,0,0,0)"
-                    },
                     style: {
                         fontFamily: "Roboto Condensed, sans-serif"
                     },
@@ -134,10 +132,12 @@ var HorizontalBarChart = React.createClass({
     },
     renderChart: function(theme) {
         Highcharts.setOptions(theme);
+        var _this = this;
         this.chart = new Highcharts.Chart({
             chart: {
                 renderTo : this.props.container || 'horizontal-bar-container',
-                type : 'bar'
+                type : 'bar',
+                backgroundColor : 'rgba(0, 0, 0, 0)'
             },
             credits: {
                 enabled: false
@@ -170,7 +170,8 @@ var HorizontalBarChart = React.createClass({
                 minorGridLineWidth: 0,
                 gridLineColor: 'transparent',
                 lineColor: 'transparent',
-                min: 0
+                min: 0,
+                max: this.props.max || 999
             },
             tooltip: {
                 enabled: false
@@ -198,14 +199,17 @@ var HorizontalBarChart = React.createClass({
                         },
                         verticalAlign: 'middle',
                         formatter: function () {
+                            var labelValue = _this.props.useValue ? Helpers.dropZeroesAndDelimitNumbers(this.y) : "";
+                            var startText = _this.props.series.parts[this.series.index] ? _this.props.series.parts[this.series.index].start : this.series.name + " (";
+                            var endText = _this.props.series.parts[this.series.index] ? _this.props.series.parts[this.series.index].end : "%)";
                             if (this.series.name)
-                                return '<span style="margin-left: 0px; text-transform: uppercase; color:white; font-weight: 100; padding: 8px 7px; font-size: 14px; border-radius: 5px; background: rgba(0, 0, 0, 0.4) ">' + this.series.name + ' (' + this.y + '%)</span>';
+                                return '<span style="margin-left: 0px; text-transform: uppercase; color:white; font-weight: 100; padding: 8px 10px; font-size: 14px; border-radius: 5px; background: rgba(0, 0, 0, 0.4) ">' + startText + labelValue + endText + '</span>';
                             else return '';
                         }
                     }
                 }
             },
-            series: this.props.data || [
+            series: this.props.series.data || [
                 {
                     data: [297]
                 },

@@ -1,3 +1,10 @@
+#sidebar {
+    #cost-curve-container {
+        background: $panel-color-dark;
+        height: 225px;
+        border: 1px solid $faded-line;
+    }
+}
 #deck-detail-wrapper {
     width: 70%;
 
@@ -84,6 +91,9 @@
         }
 
         #chart-wrapper {
+            margin: 50px 0 80px 0;
+            overflow: hidden;
+
             .chart {
                 display: inline-block;
 
@@ -97,6 +107,34 @@
 
                 &.stacked {
                     display: block;
+                    margin-bottom: 30px;
+
+                    .highcharts-container {
+                        margin-left: -10px;
+                    }
+                }
+
+                .toggle-button {
+                    padding-left: 10px;
+                    border-left: 4px solid $font-color-faded;
+                    transition: all 350ms ease-in-out;
+                    display: block;
+                    margin: 20px 0 25px 0;
+                    font-size: 16px;
+
+                    span {
+                        &:hover {
+                            cursor: pointer;
+                        }
+                    }
+
+                    &:hover {
+                        cursor: pointer;
+                    }
+
+                    &.active {
+                        border-left: 4px solid $secondary-highlight;
+                    }
                 }
             }
         }
