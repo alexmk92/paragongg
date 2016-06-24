@@ -10,6 +10,7 @@ var StatPanel = React.createClass({
     },
     componentDidMount: function() {
         this.getCardStats();
+        console.log(this.props);
     },
     getStatisticList: function() {
         return this.state.statistics.map(function(statistic, i) {
