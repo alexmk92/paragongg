@@ -77,6 +77,9 @@ Route::post('/guides/edit/{id}', 'GuideController@update');
 Route::get('/guides/delete/{id}', 'GuideController@delete');
 Route::get('/guides/{slug}', 'GuideController@show');
 
+/* REPORTS */
+Route::get('/report/{id}', 'ReportController@store');
+
 /* Account */
 Route::group(['prefix' => 'account', 'middleware' => 'auth'], function () {
     Route::get('/', 'AccountController@index');

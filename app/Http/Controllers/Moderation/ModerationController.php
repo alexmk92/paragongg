@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Moderation;
 use App\Hero;
 use App\News;
 use App\Card;
+use App\Report;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -23,5 +24,11 @@ class ModerationController extends Controller
             ->orderBy('created_at', 'DESC')
             ->get();
         return view('moderation.news')->with('news', $news);
+    }
+
+    public function reports()
+    {
+        $reports = Report::where('status', 'open')->get();
+        return view('moderation.reports')->with('reports', $reports);
     }
 }
