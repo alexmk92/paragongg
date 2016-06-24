@@ -77,7 +77,7 @@ Route::post('/guides/edit/{id}', 'GuideController@update');
 Route::get('/guides/delete/{id}', 'GuideController@delete');
 Route::get('/guides/{slug}', 'GuideController@show');
 
-/* REPORTS */
+/* MISC */
 Route::get('/report/{id}', 'ReportController@store');
 
 /* Account */
@@ -124,4 +124,5 @@ Route::group(['prefix' => 'api', 'namespace' => 'API', 'middleware' => 'cors'], 
     Route::get('/v1/heroes/find/{id}', 'HeroController@show');
     Route::get('/v1/news', 'NewsController@index');
     Route::get('/v1/report', 'ReportController@store');
+    Route::get('/v1/vote', 'VoteController@store');
 });

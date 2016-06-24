@@ -53,5 +53,4 @@ class CommentController extends Controller
         return response()->json(['code' => 200, 'message' => 'Comment upvoted', 'comment' => $comment]);
     }
 
-
 }

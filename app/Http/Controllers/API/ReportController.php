@@ -23,9 +23,6 @@ class ReportController extends Controller
             $report->save();
 
             return response()->json(['code' => 200, 'message' => 'Report logged']);
-
-            session()->flash('notification', 'info|Your report has been logged.');
-            return redirect()->back();
         }
     }
 }
