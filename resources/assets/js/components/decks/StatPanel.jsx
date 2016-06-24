@@ -10,7 +10,12 @@ var StatPanel = React.createClass({
     },
     componentDidMount: function() {
         this.getCardStats();
-        console.log(this.props);
+    },
+    shouldComponentUpdate: function(nextProps, nextState) {
+        return nextProps !== this.props;
+    },
+    componentWillUpdate: function(nextProps, nextState) {
+        this.getCardStats();
     },
     getStatisticList: function() {
         return this.state.statistics.map(function(statistic, i) {
@@ -38,7 +43,7 @@ var StatPanel = React.createClass({
                     // This is the hero stats, we will eventually check for type but this is to
                     // prove the concept that we can get multiple stats
                     baseStats.some(function(stat, i) {
-                        effect.value += i * 1.75
+                        //effect.value += i * 1.75
                     });
                     // New stats is what we merge with the final array
                     newStats.some(function(stat) {

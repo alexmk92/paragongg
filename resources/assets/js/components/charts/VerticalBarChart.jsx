@@ -131,7 +131,6 @@ var VerticalBarChart = React.createClass({
         this.chart.destroy();
     },
     renderChart: function(theme) {
-        console.log(this.props);
         Highcharts.setOptions(theme);
         var _this = this;
         this.chart = new Highcharts.Chart({

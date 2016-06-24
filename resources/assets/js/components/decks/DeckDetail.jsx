@@ -29,7 +29,7 @@ var DeckDetail = React.createClass({
             cards: DECK.cards,
             title: DECK.title,
             hero: DECK.hero,
-            multiplier: 1,
+            currentRank: 1,
             description: DECK.description,
             compareIndex : 0,
             compareAllBuilds: false,
@@ -150,7 +150,7 @@ var DeckDetail = React.createClass({
         var elem = document.querySelector(".rc-slider-handle");
         if(typeof elem !== "undefined" && elem !== null) {
             elem.innerHTML = domNode;
-            this.setState({ multiplier : value });
+            this.setState({ currentRank : value });
         }
     },
     renderBuildSlots: function() {
@@ -234,17 +234,20 @@ var DeckDetail = React.createClass({
         if(Helpers.isClientMobile()) {
             return (
                 <div id="statistic-wrapper">
-                    <StatPanel title={ "Build stats" } heroStats={ this.state.hero.baseStats  } cardStats={ this.state.cards } build={this.state.selectedBuild} />
+                    <StatPanel title={ "Build stats" } heroRank={this.state.currentRank} heroStats={ this.state.hero.baseStats  } cardStats={ this.state.cards } build={this.state.selectedBuild} />
                 </div>
             )
         } else {
             return (
                 <div id="statistic-wrapper">
-                    <StatPanel title={ "Base stats (" + this.props.deck.hero.name + ")" } heroStats={ [] } />
-                    <StatPanel title={ "Build stats" } heroStats={ this.state.hero.baseStats } cardStats={ this.state.cards } build={this.state.selectedBuild} />
+                    <StatPanel title={ "Base stats (" + this.props.deck.hero.name + ")" } heroRank={this.state.currentRank} heroStats={ [] } />
+                    <StatPanel title={ "Build stats" } heroRank={this.state.currentRank} heroStats={ this.state.hero.baseStats } cardStats={ this.state.cards } build={this.state.selectedBuild} />
                 </div>
             )
         }
+    },
+    getDataForStat: function(statType, collection) {
+
     },
     getComparisonData: function() {
         var stat = this.state.comparisons[this.state.compareIndex];
@@ -258,6 +261,17 @@ var DeckDetail = React.createClass({
 
         if(stat) {
             // TODO If not builds exist, then we will show deck stats
+            if(stat === "DAMAGE") {
+
+            } else if(stat.label === "REGEN") {
+
+            } else if(stat.label === "HEALTH") {
+
+            } else if(stat.label === "MITIGATION") {
+
+            } else if(stat.label === "MANA") {
+
+            }
 
             // Push for maximum possible:
             comparisonData.parts.push({
@@ -304,7 +318,6 @@ var DeckDetail = React.createClass({
         } else {
             // Show build affinity weighting
             maxCards = 0;
-            console.log("RENDERING FOR BUUILD: ", this.state.selectedBuild.title);
             this.state.selectedBuild.slots.forEach(function(slot) {
                 if(slot.card) {
                     if(typeof affinityCounts[slot.card.affinity] === "undefined") {
@@ -328,7 +341,6 @@ var DeckDetail = React.createClass({
                 }
             }.bind(this));
         }
-        console.log(affinityCounts);
         for(var key in affinityCounts) {
             if(affinityCounts.hasOwnProperty(key)) {
                 var affinity = affinityCounts[key];
