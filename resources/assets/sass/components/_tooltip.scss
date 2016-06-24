@@ -58,6 +58,10 @@
     .content {
         padding: 15px;
         line-height: 20px;
+        .pgg {
+            margin: 0 3px 0 5px;
+            font-size: 22px;
+        }
         .actipassive {
             color: $tertiary-highlight;
             font-style: italic;
