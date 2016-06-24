@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\CommentThreadComment;
 use App\Deck;
 use App\Http\Controllers\Controller;
+use App\Vote;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -17,8 +18,8 @@ class VoteController extends Controller
         if(!Auth::check()) return response()->json(['code' => 403, 'message' => 'You must be logged in to vote']);
         if(!$request->has('ref_id') || !$request->has('type')) return response()->json(['code' => 400, 'message' => 'The request is missing one or more parameters']);
 
-        $exists = Vote::where('user_id', Auth::user()->id)->where('ref_id', (int) $request->id)->where('type', $request->type)->first();
-        $node = $this->getNode($request->type);
+        $exists = Vote::where('user_id', Auth::user()->id)->where('ref_id', (int) $request->ref_id)->where('type', $request->type)->first();
+        $node = $this->getNode($request->type, $request->ref_id);
         if(!$node) return response()->json(['code' => 400, 'message' => 'This node does not exist']);
 
         if($exists) {
@@ -30,10 +31,10 @@ class VoteController extends Controller
             $vote = new Vote();
             $vote->type    = $request->type;
             $vote->user_id = Auth::user()->id;
-            $vote->ref_id  = (int) $request->id;
+            $vote->ref_id  = (int) $request->ref_id;
             $vote->save();
 
-            $node->votes = $node->votes ++;
+            $node->votes = $node->votes++;
             $node->save();
 
             return response()->json(['code' => 200, 'message' => 'Vote logged successfully']);
