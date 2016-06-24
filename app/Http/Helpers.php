@@ -109,7 +109,9 @@ function S3URL()
 function createSlug($string)
 {
     $string = strtolower($string);
-    $string = preg_replace('/[\&]/', "and", $string); // Special cases
+    $string = str_replace("'", "", $string); // Delete apostrophe
+    $string = str_replace("-", " ", $string); // Swap hyphens for space (end up as hyphens anyway)
+    $string = preg_replace('/[\&]/', "and", $string); // Swap & for and
     preg_match_all('/[\w]+/', $string, $matches);
     return implode("-", $matches[0]);
 }

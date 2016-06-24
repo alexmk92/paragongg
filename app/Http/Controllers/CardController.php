@@ -25,7 +25,7 @@ class CardController extends Controller
     // Show
     public function show(Request $request, $slug)
     {
-        $card = Card::where('name', $slug)->firstOrFail();
+        $card = Card::where('slug', $slug)->firstOrFail();
         $thread = findOrCreateThread($request->path());
         $comments = $thread->comments;
 

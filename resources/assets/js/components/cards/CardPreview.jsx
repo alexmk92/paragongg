@@ -10,7 +10,7 @@ var CardPreview = React.createClass({
     showDetail: function(event) {
         event.preventDefault();
         if(this.props.redirectsOnClick)
-            window.location = "/cards/" + this.props.card.name;
+            window.location = "/cards/" + this.props.card.slug;
         else {
             this.props.onCardClicked(this.props.card);
         }
