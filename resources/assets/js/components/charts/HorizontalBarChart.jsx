@@ -3,7 +3,19 @@ var Highcharts = require('highcharts');
 var Helpers = require('../../helpers');
 
 var HorizontalBarChart = React.createClass({
+    componentDidUpdate: function() {
+        this.chart = this.renderChart(this.getBaseTheme());
+    },
+    shouldComponentUpdate: function(nextProps, nextState) {
+        return nextProps !== this.props;
+    },
     componentDidMount: function() {
+        this.renderChart(this.getBaseTheme());
+    },
+    componentWillUnmout: function() {
+        this.chart.destroy();
+    },
+    getBaseTheme: function() {
         var theme = this.props.options || {
                 colors: this.props.colors || ["#ff6f00", "#64bf22", "#42a9e8", "#aa2ed3", "#2ed3ba", "#e634c2", "#e4e22e"],
                 chart: {
@@ -125,10 +137,8 @@ var HorizontalBarChart = React.createClass({
                 contrastTextColor: '#F0F0F3',
                 maskColor: 'rgba(255,255,255,0.3)'
             };
-        this.renderChart(theme);
-    },
-    componentWillUnmout: function() {
-        this.chart.destroy();
+
+        return theme;
     },
     renderChart: function(theme) {
         Highcharts.setOptions(theme);
