@@ -13,7 +13,8 @@ module.exports = function(state, action) {
                 var lastUpvotedComment = action.payload;
                 var commentIndex = newComments.indexOf(lastUpvotedComment);
                 if(commentIndex > -1) {
-                    lastUpvotedComment.votes += 1;
+                    console.log("PAYLOAD", action.payload);
+                    lastUpvotedComment.votes = action.payload.value;
                     newComments[commentIndex] = lastUpvotedComment;
                     return { comments : newComments, lastUpvotedComment : lastUpvotedComment }
                 }
