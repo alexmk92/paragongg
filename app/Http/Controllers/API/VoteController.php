@@ -23,10 +23,10 @@ class VoteController extends Controller
         if(!$node) return response()->json(['code' => 400, 'message' => 'This node does not exist']);
 
         if($exists) {
-            $node->votes = $node->votes --;
+            $node->votes--;
             $node->save();
             $exists->delete();
-            return response()->json(['code' => 200, 'message' => 'Vote removed successfully']);
+            return response()->json(['code' => 200, 'message' => 'Vote removed successfully', 'value' => $node->votes]);
         } else {
             $vote = new Vote();
             $vote->type    = $request->type;
@@ -34,10 +34,10 @@ class VoteController extends Controller
             $vote->ref_id  = (int) $request->ref_id;
             $vote->save();
 
-            $node->votes = $node->votes++;
+            $node->votes++;
             $node->save();
 
-            return response()->json(['code' => 200, 'message' => 'Vote logged successfully']);
+            return response()->json(['code' => 200, 'message' => 'Vote logged successfully', 'value' => $node->votes]);
         }
     }
 

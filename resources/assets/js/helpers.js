@@ -14,12 +14,6 @@ module.exports = {
         if(!element) { return false; }
         return element.className.indexOf(selector) > -1;
     },
-    getFormattedCardDescription: function(description) {
-        return description
-            .replace("<", "")
-            .replace("</", "")
-            .replace("keyBurning", "burning");
-    },
     getHeroImageURL: function(hero, size) {
         if(!hero) return "";
         
@@ -120,10 +114,10 @@ module.exports = {
         });
     },
     dropZeroesAndDelimitNumbers: function(str) {
-        if(isNaN(parseFloat(Number(this.delimitNumbers(str)).toFixed(2)))) {
-            return parseFloat((Number(str).toFixed(2)));
+        if(isNaN(parseFloat(Number(this.delimitNumbers(str)).toFixed(1)))) {
+            return parseFloat((Number(str).toFixed(1)));
         } else {
-            return parseFloat(Number(this.delimitNumbers(str)).toFixed(2))
+            return parseFloat(Number(this.delimitNumbers(str)).toFixed(1))
         }
     },
     /**

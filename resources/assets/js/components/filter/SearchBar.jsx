@@ -1,4 +1,5 @@
 var React = require('react');
+var Helpers = require('../../helpers');
 
 var SearchBar = React.createClass({
     getInitialState : function() {
@@ -15,6 +16,9 @@ var SearchBar = React.createClass({
         this.props.onSearchTermChanged(value);
     },
     render : function() {
+        var searchTermChanged = Helpers.debounce(function() {
+
+        }, 300);
         return (
             <div className="search-bar-wrapper">
                 <label>{ this.props.label }</label>
