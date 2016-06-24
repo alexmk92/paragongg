@@ -31,7 +31,7 @@ module.exports = {
             contentType: "application/x-www-form-urlencoded",
             cache: false,
             returnType: "json",
-            data: [{ "id" : comment.id, "type" : "comment" }]
+            data: [{ "ref_id" : comment.id, "type" : "comment" }]
         });
 
         return {
