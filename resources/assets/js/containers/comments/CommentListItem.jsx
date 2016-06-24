@@ -47,6 +47,7 @@ var CommentListItem = React.createClass({
                 );
             }
         }.bind(this));
+        console.log(this.props.comment);
         return(
             <li className={commentClass}>
                 <div className="comment-details">

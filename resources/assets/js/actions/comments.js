@@ -1,13 +1,13 @@
 var t = require('../actions/types');
 var Helpers = require('../helpers');
 
-var ROOT_URL = '/api/v1/comments';
+var ROOT_URL = '/api/v1/';
 
 module.exports = {
     fetchComments: function (threadId, skip) {
         var request = Helpers.ajax({
             type: "GET",
-            url: ROOT_URL + "/thread/" + threadId,
+            url: ROOT_URL + "comments/thread/" + threadId,
             contentType: "application/json",
             cache: true
         });
@@ -26,12 +26,12 @@ module.exports = {
         // the type decribes the action
         Helpers.ajax({
             type : "POST",
-            url : ROOT_URL + "/upvote/" + comment.id,
+            url : ROOT_URL + "vote",
             headers : [{ "X-CSRF-TOKEN" : csrf }],
             contentType: "application/x-www-form-urlencoded",
             cache: false,
             returnType: "json",
-            data: [{"user_id": 1}]
+            data: [{ "id" : comment.id, "type" : "comment" }]
         });
 
         return {
@@ -43,7 +43,7 @@ module.exports = {
         // This method now returns a promise for us to consume
         var request = Helpers.ajax({
             type: "POST",
-            url: "/api/v1/comments/store",
+            url: ROOT_URL + "comments/store",
             headers: [{"X-CSRF-TOKEN": csrf}],
             contentType: "application/x-www-form-urlencoded",
             cache: false,
