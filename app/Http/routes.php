@@ -123,5 +123,5 @@ Route::group(['prefix' => 'api', 'namespace' => 'API', 'middleware' => 'cors'], 
     Route::get('/v1/heroes', 'HeroController@index');
     Route::get('/v1/heroes/find/{id}', 'HeroController@show');
     Route::get('/v1/news', 'NewsController@index');
-    Route::get('/v1/post/report', 'ReportController@store');
+    Route::get('/v1/report', 'ReportController@store');
 });

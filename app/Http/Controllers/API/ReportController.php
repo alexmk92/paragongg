@@ -12,8 +12,8 @@ class ReportController extends Controller
 {
     public function store(Request $request)
     {
-        if(!Auth::check()) abort(403);
-        $exists = Report::where('user_id', Auth::user()->id)->where('ref_id', (int)$id)->first();
+        if(!Auth::check()) return response()->json(['code' => 403, 'message' => 'You must be logged in to report a comment']);
+        $exists = Report::where('user_id', Auth::user()->id)->where('ref_id', (int) $request->id)->first();
         if($exists) {
             return response()->json(['code' => 403, 'message' => 'This account has already reported this ref']);
         } else {
