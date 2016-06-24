@@ -117,67 +117,49 @@ module.exports = {
         return {
             particles: {
                 number: {
-                    value: 40,
+                    value: 60,
                     density: {
-                        enable: false,
-                        value_area: 900
+                        enable: false
                     }
-                },
-                color: {
-                    value: '#7a7d8c'
                 },
                 shape: {
                     type: 'image',
                     stroke: {
-                        width: 0.0,
-                        color: '#59637d'
-                    },
-                    polygon: {
-                        nb_sides: 5
+                        width: 0.0
                     },
                     image: {
                         src: '/assets/images/particles/spark.png',
                         width: 100,
-                        height: 150
+                        height: 100
                     }
                 },
                 opacity: {
                     value: 0.5,
                     random: true,
                     anim: {
-                        enable: false,
-                        speed: 2.5,
-                        opacity_min: 0.4,
-                        sync: true
+                        enable: false
                     }
                 },
                 size: {
                     value: 6,
                     random: true,
                     anim: {
-                        enable: false,
-                        speed: 40,
-                        size_min: 2,
-                        sync: true
+                        enable: false
                     }
                 },
                 line_linked: {
-                    enable: false,
-                    distance: 85,
-                    color: '#7a7d8c',
-                    opacity: 0.6,
-                    width: 1
+                    enable: false
                 },
                 move: {
                     enable: true,
-                    speed: 3,
+                    speed: 2,
                     direction: 'none',
                     random: true,
                     straight: false,
                     out_mode: 'out',
                     bounce: false,
                     attract: {
-                        enable: true,
+                        enable: false,
                         rotateX: 3000,
                         rotateY: 1200
                     }
@@ -187,7 +169,7 @@ module.exports = {
                 detect_on: 'canvas',
                 events: {
                     onhover: {
-                        enable: false,
+                        enable: true,
                         mode: 'repulse'
                     },
                     onclick: {
@@ -220,8 +202,7 @@ module.exports = {
                     remove:{
                         particles_nb: 2
                     }
-                },
-                mouse:{}
+                }
             },
             retina_detect: true
         }

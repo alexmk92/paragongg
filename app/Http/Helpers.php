@@ -108,5 +108,8 @@ function S3URL()
 
 function createSlug($string)
 {
-    
+    $string = strtolower($string);
+    $string = preg_replace('/[\&]/', "and", $string); // Special cases
+    preg_match_all('/[\w]+/', $string, $matches);
+    return implode("-", $matches[0]);
 }
