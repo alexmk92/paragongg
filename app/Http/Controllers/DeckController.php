@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Deck;
 use App\Hero;
 use App\Card;
+use App\User;
 use Auth;
 use App\Http\Requests;
 use Illuminate\Http\Request;
@@ -14,7 +15,16 @@ class DeckController extends Controller
     // Create
     public function index()
     {
-        $decks = Deck::all();
+        $decks = Deck::orderBy('updated_at', 'desc')->get();
+        foreach($decks as $deck) {
+            $deck->cards = Card::whereIn('code', $deck->cards)->get();
+            $deck->hero = Hero::where('code', $deck->hero)->first();
+            $author = User::where('id', $deck->author_id)->first();
+            if(count($author) == 0) {
+                $author = null;
+            }
+            $deck->author = $author;
+        }
         return view('decks.index')->with('decks', $decks);
     }
 

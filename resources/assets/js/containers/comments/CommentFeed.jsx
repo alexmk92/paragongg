@@ -90,7 +90,7 @@ var CommentFeed = React.createClass({
             <div>
                 <h3 className="section-heading">Discussion</h3>
                 <CommentBox rootComment={null} isHidden={false} onCommentSubmitted={this.appendPendingComment} postComment={this.props.postComment} />
-                <ul id="comment-list">
+                <ul id="comment-list" className={ AUTHED ? "" : "no-comment-box"}>
                     { comments }
                 </ul>
             </div>

@@ -9,24 +9,26 @@ var DeckPreview = React.createClass({
         this.tooltip = this.props.sharedTooltip;
     },
     setTooltipContent: function(card) {
-        var content = (
-            <div className="pgg-tooltip pgg-tooltip-card">
-                <div className="card-head">
-                    <span className="cost">{card.cost}</span>
-                    <div className="header">
-                        <span className="name">{card.name}</span>
-                        <span className={"rarity rarity-" + card.rarity.toLowerCase()}>{card.rarity}</span>
-                        <span className="type">{card.type}</span>
+        if(card) {
+            var content = (
+                <div className="pgg-tooltip pgg-tooltip-card">
+                    <div className="card-head">
+                        <span className="cost">{card.cost}</span>
+                        <div className="header">
+                            <span className="name">{card.name}</span>
+                            <span className={"rarity rarity-" + card.rarity.toLowerCase()}>{card.rarity}</span>
+                            <span className="type">{card.type}</span>
+                        </div>
+                        <i className={"affinity affinity-color pgg pgg-affinity-" + card.affinity.toLowerCase()}></i>
                     </div>
-                    <i className={"affinity affinity-color pgg pgg-affinity-" + card.affinity.toLowerCase()}></i>
+                    <div className="content">
+                        <CardEffects card={card} />
+                    </div>
                 </div>
-                <div className="content">
-                    <CardEffects card={card} />
-                </div>
-            </div>
-        );
-        var tooltip = document.getElementById("toptip");
-        ReactDOM.render(content, tooltip);
+            );
+            var tooltip = document.getElementById("toptip");
+            ReactDOM.render(content, tooltip);
+        }
     },
     showTooltip: function() {
         this.tooltip.showTooltip();
@@ -38,24 +40,26 @@ var DeckPreview = React.createClass({
         // this will compute card %age and then set color accordingly
         var cardCounts = [];
         this.props.deck.cards.forEach(function(card){
-            if(cardCounts.length === 0 ){
-                cardCounts.push({ affinity : card.affinity, value : Number(1) });
-            } else {
-                var affinityFound = false;
-                var existingObject = null;
-                cardCounts.forEach(function(cardObject) {
-                    if(cardObject.affinity === card.affinity && !affinityFound) {
-                        affinityFound = true;
-                        existingObject = cardObject;
-                    }
-                });
-                if(affinityFound) {
-                    existingObject.value += 1;
-                } else {
+            if(card) {
+                if(cardCounts.length === 0 ){
                     cardCounts.push({ affinity : card.affinity, value : Number(1) });
+                } else {
+                    var affinityFound = false;
+                    var existingObject = null;
+                    cardCounts.forEach(function(cardObject) {
+                        if(cardObject.affinity === card.affinity && !affinityFound) {
+                            affinityFound = true;
+                            existingObject = cardObject;
+                        }
+                    });
+                    if(affinityFound) {
+                        existingObject.value += 1;
+                    } else {
+                        cardCounts.push({ affinity : card.affinity, value : Number(1) });
+                    }
                 }
             }
-        });
+        }.bind(this));
         cardCounts.sort(function(a, b) {
             if (a.value > b.value)
                 return -1;
@@ -97,42 +101,46 @@ var DeckPreview = React.createClass({
          */
         var sortedCards = [];
         this.props.deck.cards.forEach(function(card) {
-            card.quantity = 1;
-            card.borderColor = card.affinity.toLowerCase();
-            if(sortedCards.length === 0) {
-                sortedCards.push(card);
-            } else {
-                var cardExists = false;
-                sortedCards.forEach(function(newCard) {
-                    if(card.code === newCard.code) {
-                        newCard.quantity++;
-                        cardExists = true;
-                    }
-                });
-                if(!cardExists) {
+            if(card) {
+                card.quantity = 1;
+                card.borderColor = card.affinity.toLowerCase();
+                if(sortedCards.length === 0) {
                     sortedCards.push(card);
+                } else {
+                    var cardExists = false;
+                    sortedCards.forEach(function(newCard) {
+                        if(card.code === newCard.code) {
+                            newCard.quantity++;
+                            cardExists = true;
+                        }
+                    });
+                    if(!cardExists) {
+                        sortedCards.push(card);
+                    }
                 }
             }
-        });
-        console.log(sortedCards);
+        }.bind(this));
         return (
             <div className="deck-preview-wrapper">
                 <ul className="deck-preview">
                     {
                         sortedCards.map(function (card) {
-                            return (
-                                <li onMouseEnter={this.setTooltipContent.bind(this, card)}
-                                    onMouseOver={this.showTooltip}
-                                    onMouseLeave={this.hideTooltip}
-                                    key={ "deck-card-" + Helpers.uuid() }
-                                >
-                                    <div className="black-overlay"></div>
-                                    <div className={ "card-quantity " + card.borderColor }>{ card.quantity }</div>
-                                    <div className="card-preview-container"
-                                         style={{backgroundImage : this.getCardBackgroundURL(card)}}>
-                                    </div>
-                                </li>
-                            );
+                            if(card) {
+                                return (
+                                    <li onMouseEnter={this.setTooltipContent.bind(this, card)}
+                                        onMouseOver={this.showTooltip}
+                                        onMouseLeave={this.hideTooltip}
+                                        key={ "deck-card-" + Helpers.uuid() }
+                                    >
+                                        <div className="black-overlay"></div>
+                                        <div className={ "card-quantity " + card.borderColor }>{ card.quantity }</div>
+                                        <div className="card-preview-container"
+                                             style={{backgroundImage : 'url(' + Helpers.getCardImageURL(card, 'medium') + ')'}}>
+                                        </div>
+                                    </li>
+                                );
+                            }
+                            return "";
                         }.bind(this))
                     }
                 </ul>
@@ -141,28 +149,41 @@ var DeckPreview = React.createClass({
 
     },
     renderNewBadge() {
+
+        var badge = "new";
+        var type = "new";
+
         // TODO Check to see if the created_at date is today
+        var created_at = new Date(this.props.deck.created_at);
+        var updated_at = new Date(this.props.deck.updated_at);
+
+        var timeDiff = Math.abs(created_at.getTime() - updated_at.getTime());
+        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+        if(updated_at.getTime() > created_at.getTime()) {
+            badge = "recently updated";
+            type = "updated";
+        }
+
         return (
-            <span className="badge new">NEW</span>
+            <span className={"badge " + type}>{ badge }</span>
         );
     },
-    getCardBackgroundURL(card) {
-        return 'url(' + card.images.large + ')'
-    },
-    getRandomBackground: function() {
-        var index = Math.floor(Math.random() * ((this.props.deck.cards.length-1) - 0 + 1)) + 0;
-        //return { backgroundImage : this.getCardBackgroundURL(this.props.deck.cards[index]) };
+    showDetail: function() {
+        window.location = '/decks/' + this.props.deck.slug
     },
     render: function() {
         return (
-            <li style={ this.getRandomBackground() } className="deck-preview-container">
+            <li className="deck-preview-container"
+                onClick={ this.showDetail }
+            >
                 <div className="hero-portrait">
-                    <img src={ this.props.deck.hero.avatarURL } />
+                    <img src={ Helpers.getHeroImageURL(this.props.deck.hero) } />
                 </div>
 
                 <div className="title-wrapper">
                     <h3>{ this.props.deck.title }</h3>
-                    <span className="author">{ this.renderNewBadge() }<span className="subtext">Published by</span> <a href="#">{ this.props.deck.author.name }</a></span>
+                    <span className="author">{ this.renderNewBadge() }<span className="subtext">Published by</span> <a href="#">{ this.props.deck.author ? this.props.deck.author.username : "anonymous" }</a></span>
                 </div>
 
                 <div className="build-overview">
@@ -170,12 +191,10 @@ var DeckPreview = React.createClass({
                     <span className="large-text">{ this.props.deck.builds.length }<span className="subtext">BUILDS</span></span>
                 </div>
 
-
-
                 <div className="mid-section">
                     <div className="votes-panel">
                         <i className="fa fa-star"></i>
-                        <span>{ Helpers.delimitNumbers(this.props.deck.upvotes) }</span>
+                        <span>{ Helpers.delimitNumbers(this.props.deck.upvotes || 0) }</span>
                     </div>
                     { this.renderDeckPreview() }
                 </div>
@@ -186,8 +205,8 @@ var DeckPreview = React.createClass({
                         <a href="#">SHARE</a>
                     </div>
                     <div className="buttons-right">
-                        <span><i className="fa fa-comment"></i> { Helpers.delimitNumbers(this.props.deck.commentCount) }</span>
-                        <span><i className="fa fa-eye"></i> { Helpers.delimitNumbers(this.props.deck.viewCount) }</span>
+                        <span><i className="fa fa-comment"></i> { Helpers.delimitNumbers(this.props.deck.commentCount || 0) }</span>
+                        <span><i className="fa fa-eye"></i> { Helpers.delimitNumbers(this.props.deck.viewCount || 0) }</span>
                     </div>
                 </div>
                 <div className="black-overlay"></div>

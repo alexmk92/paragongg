@@ -1,6 +1,6 @@
 @extends('layouts/app')
 @section('body')
-    <div id="sidebar">
+    <div id="sidebar" class="sidebar-with-widgets">
     </div>
 
     <div id="deck-detail-wrapper">
