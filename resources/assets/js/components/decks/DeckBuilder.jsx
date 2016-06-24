@@ -19,6 +19,7 @@ var DeckBuilder = React.createClass({
             builds: [],
             selectedHero : HEROES[0],
 
+            affinities: [],
             modal: false,
             addedCard : false,
             showCardSection: false,
@@ -774,16 +775,20 @@ var DeckBuilder = React.createClass({
             this.refs.deckNameInput.focus();
         }
 
+        var newAffinities = this.getAffinities(hero);
+
         // PROMPT USER IF THEY WANT TO DO THIS
         if(hero.code !== currentHero.code && (deck.length > 0 || (builds.length > 0 && builds[0].cost > 0))) {
             var confirmNode = document.body.appendChild(document.createElement('div'));
             if(confirmNode) {
                 var confirm = ReactDOM.render(<ConfirmModal titleIcon="fa-info-circle" title="ATTENTION!" description="Changing your hero will permanently delete any existing builds and this deck, are you sure you want to continue?" cancelText="CANCEL" confirmText="YES CHANGE MY HERO" />, confirmNode);
                 confirm.deferred.promise.then(function(resolvedMessage) {
+
                     this.setState({
                         heroPanelActive : !this.state.heroPanelActive,
                         selectedHero    : hero,
                         showCardSection : true,
+                        affinities : newAffinities,
                         deck : [],
                         builds : []
                     });
@@ -797,6 +802,7 @@ var DeckBuilder = React.createClass({
                 heroPanelActive : !this.state.heroPanelActive,
                 selectedHero    : hero,
                 showCardSection : true,
+                affinities : newAffinities,
                 deck : deck,
                 builds : builds
             });
@@ -847,10 +853,10 @@ var DeckBuilder = React.createClass({
             }
         }
     },
-    getAffinities: function() {
+    getAffinities: function(hero) {
         var affinities = [];
-        if(this.state.selectedHero) {
-            affinities = this.state.selectedHero.affinities.map(function(affinity) {
+        if(hero) {
+            affinities = hero.affinities.map(function(affinity) {
                 return { name : affinity.replace("Affinity.", "") }
             });
         }
@@ -923,7 +929,6 @@ var DeckBuilder = React.createClass({
 
         var sidebarClass = this.state.activeTab === -1 ? "hidden" : "";
         var buildClass = "";
-        var stickSearchFilterTop = (Helpers.isClientMobile() && this.state.isMobileSearchShowing);
         var actionBarHidden = this.state.isMobileSearchShowing ? "hidden" : "";
         var buttonDisabled = this.isDeckValid() ? "" : "disabled";
         return (
@@ -988,8 +993,8 @@ var DeckBuilder = React.createClass({
                         </textarea>
                         <div id="cards-feed" className={ this.state.showCardSection ? "" : "hidden" }>
                             <CardsFeed forceRedraw={true}
-                                       stickTopOnMobile={stickSearchFilterTop}
-                                       affinities={this.getAffinities()}
+                                       stickTopOnMobile={(Helpers.isClientMobile() && this.state.isMobileSearchShowing)}
+                                       affinities={this.state.affinities}
                                        tooltip={this.tooltip}
                                        cards={CARDS.allCards}
                                        cardsRedirectOnClick={false}

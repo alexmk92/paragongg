@@ -28,31 +28,50 @@ var StatPanel = React.createClass({
 
         }
     },
-    getCardStats: function() {
-        if(typeof this.props.cardStats !== undefined && this.props.cardStats) {
-            var baseStats = this.getHeroStats();
-            var newStats = this.state.statistics;
-            this.props.cardStats.all.forEach(function(card) {
-                card.effects.forEach(function(effect) {
-                    if(typeof effect.stat !== "undefined" && effect.stat) {
-                        // This is the hero stats, we will eventually check for type but this is to
-                        // prove the concept that we can get multiple stats
-                        baseStats.some(function(stat, i) {
-                            effect.value += i * 1.75
-                        });
-                        // New stats is what we merge with the final array
-                        newStats.some(function(stat) {
-                            if(stat.ref === effect.stat.toUpperCase()) {
-                                stat.value = Helpers.dropZeroesAndDelimitNumbers(stat.value = effect.value);
-                                stat.modified = true;
-                                return true;
-                            }
-                            return false;
-                        })
-                    }
-                });
+    getModifiedStats: function(collection) {
+        var baseStats = this.getHeroStats();
+        var newStats = this.state.statistics;
+        collection.forEach(function(card) {
+            console.log(card);
+            card.effects.forEach(function(effect) {
+                if(typeof effect.stat !== "undefined" && effect.stat) {
+                    // This is the hero stats, we will eventually check for type but this is to
+                    // prove the concept that we can get multiple stats
+                    baseStats.some(function(stat, i) {
+                        effect.value += i * 1.75
+                    });
+                    // New stats is what we merge with the final array
+                    newStats.some(function(stat) {
+                        if(stat.ref === effect.stat.toUpperCase()) {
+                            stat.value = Helpers.dropZeroesAndDelimitNumbers(stat.value = effect.value);
+                            stat.modified = true;
+                            return true;
+                        }
+                        return false;
+                    })
+                }
             });
-            this.setState({ statistics : newStats });
+        });
+        return newStats;
+    },
+    getCardStats: function() {
+        if(this.props.build === null && (typeof this.props.cardStats !== undefined && this.props.cardStats)) {
+            var moddedSlots = this.getModifiedStats(this.props.cardStats.all);
+            this.setState({ statistics : moddedSlots });
+        } else if(this.props.build) {
+            var extractedCards = [];
+            this.props.build.slots.forEach(function(slot) {
+                if(slot.card) {
+                    extractedCards.push(slot.card);
+                    slot.upgrades.forEach(function(upgradeSlot) {
+                        if(upgradeSlot.card) {
+                            extractedCards.push(upgradeSlot.card);
+                        }
+                    })
+                }
+            });
+            var moddedSlots = this.getModifiedStats(extractedCards);
+            this.setState({ statistics : moddedSlots });
         }
     },
     render: function() {

@@ -4,5 +4,5 @@
     </div>
 @endsection
 <script>
-    var DECKS = [];
+    var DECKS = {!! json_encode($decks) !!};
 </script>

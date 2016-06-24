@@ -4,6 +4,7 @@ var Rcslider = require('rc-slider');
 var CardEffects = require('../cards/CardEffects');
 var Toptip = require('../libraries/tooltip/Toptip');
 var StatPanel = require('./StatPanel');
+var SelectBox = require('../SelectBox');
 var Helpers = require('../../helpers');
 var DeckWidget = require('./widgets/Deck');
 var CostCurveWidget = require('./widgets/CostCurve');
@@ -32,6 +33,7 @@ var DeckDetail = React.createClass({
             description: DECK.description,
             compareIndex : 0,
             compareAllBuilds: false,
+            selectedTab: 0,
             selectedBuild : this.props.deck.builds.length > 0 ? this.props.deck.builds[0] : null
         }
     },
@@ -69,8 +71,11 @@ var DeckDetail = React.createClass({
             footer.style.top = "100%";
         }
     },
-    showBuild: function(build) {
-        console.log("DISPLAYING BUILD: ", build);
+    showBuild: function(build, index) {
+        this.setState({
+            selectedTab: index,
+            selectedBuild: build
+        });
     },
     getCard: function(cardCode) {
         var cardToReturn = null;
@@ -128,12 +133,13 @@ var DeckDetail = React.createClass({
     renderBuildTabs: function() {
         var untitledCount = 1;
         return this.props.deck.builds.map(function(build, i) {
-            if(build.title.toLowerCase().indexOf("untitled") > -1) {
-                build.title = build.title.trim() + " " + untitledCount;
-                untitledCount++;
+            if(build.title === "") build.title = "untitled build";
+            if(build.title.toLowerCase().indexOf("untitled") > -1 && !(/\d/g.test(build.title))) {
+                build.title += " " + untitledCount;
+                untitledCount+=1;
             }
             return (
-                <li key={"build_tab_" + i} onClick={ this.showBuild.bind(this, build) }>
+                <li key={"build_tab_" + i} className={ (i === this.state.selectedTab ? "active" : "")} onClick={ this.showBuild.bind(this, build, i) }>
                     <span>{ build.title }</span>
                 </li>
             )
@@ -149,7 +155,7 @@ var DeckDetail = React.createClass({
     },
     renderBuildSlots: function() {
         var build = this.state.selectedBuild;
-        if(build.slots.length > 0) {
+        if(build && build.slots.length > 0) {
             return build.slots.map(function(slot, i) {
                 if(slot.card !== null) {
                     return (
@@ -228,14 +234,14 @@ var DeckDetail = React.createClass({
         if(Helpers.isClientMobile()) {
             return (
                 <div id="statistic-wrapper">
-                    <StatPanel title={ "Build stats" } heroStats={ this.state.hero.baseStats  } cardStats={ this.state.cards } />
+                    <StatPanel title={ "Build stats" } heroStats={ this.state.hero.baseStats  } cardStats={ this.state.cards } build={this.state.selectedBuild} />
                 </div>
             )
         } else {
             return (
                 <div id="statistic-wrapper">
                     <StatPanel title={ "Base stats (" + this.props.deck.hero.name + ")" } heroStats={ [] } />
-                    <StatPanel title={ "Build stats" } heroStats={ this.state.hero.baseStats } cardStats={ this.state.cards } />
+                    <StatPanel title={ "Build stats" } heroStats={ this.state.hero.baseStats } cardStats={ this.state.cards } build={this.state.selectedBuild} />
                 </div>
             )
         }
@@ -296,6 +302,7 @@ var DeckDetail = React.createClass({
             });
         } else {
             // Show build affinity weighting
+            console.log("RENDERING FOR BUUILD: ", this.state.selectedBuild.title);
             this.state.selectedBuild.slots.forEach(function(slot) {
                 if(slot.card) {
                     if(typeof affinityCounts[slot.card.affinity] === "undefined") {
@@ -315,6 +322,7 @@ var DeckDetail = React.createClass({
                 }
             }.bind(this));
         }
+        console.log(affintityCounts);
         for(var key in affinityCounts) {
             if(affinityCounts.hasOwnProperty(key)) {
                 var affinity = affinityCounts[key];
@@ -335,6 +343,9 @@ var DeckDetail = React.createClass({
         }
 
         return comparisonData;
+    },
+    updateComparisonType: function(index) {
+        this.setState({ compareIndex : index });
     },
     toggleAllBuildsComparison: function() {
         this.setState({ compareAllBuilds: !this.state.compareAllBuilds });
@@ -358,7 +369,7 @@ var DeckDetail = React.createClass({
                     </div>
                 </div>
 
-                <ul id="build_tabs">
+                <ul id="build-tabs">
                     { this.renderBuildTabs() }
                 </ul>
                 <div id="builds-wrapper">
@@ -369,7 +380,7 @@ var DeckDetail = React.createClass({
 
                 <div id="deck-stat-container">
                     <div id="statistic-title-wrapper">
-                        <h3>Build statistics</h3>
+                        <h3>{ this.state.selectedBuild !== null ? "Build" : "Deck" } statistics</h3>
                         <div id="rank-slider">
                             <Rcslider defaultValue={1} min={1} max={15} onChange={this.sliderChanged} tipFormatter={null}  />
                         </div>
@@ -379,17 +390,17 @@ var DeckDetail = React.createClass({
 
                 <div id="chart-wrapper">
                     <div className="chart left">
-                        <h3>Build Overview</h3>
+                        <h3>{ this.state.selectedBuild !== null ? "Build" : "Deck" }  Overview</h3>
                         <div className={ this.state.compareAllBuilds ? "toggle-button active" : "toggle-button" } onClick={this.toggleAllBuildsComparison}><span>Compare all builds in this deck</span></div>
                         <SpiderWebChart container="overview-container" />
                     </div>
                     <div className="chart right">
                         <div className="chart stacked">
-                            <h3>Build Comparison <span>COMPARE: DPS</span></h3>
+                            <h3>{ this.state.selectedBuild !== null ? "Build" : "Deck" }  Comparison <SelectBox optionSelectedAtIndex={this.updateComparisonType} label="compare:" value={this.state.comparisons[this.state.compareIndex].label} items={this.state.comparisons} /></h3>
                             <HorizontalBarChart container="build-comparison-container" max={statComparisonData.max} useValue={true} height={ statComparisonData.chartHeight } colors={ statComparisonData.chartColors } series={statComparisonData} />
                         </div>
                         <div className="chart stacked">
-                            <h3>Build Affinity Weighting</h3>
+                            <h3>{ this.state.selectedBuild !== null ? "Build" : "Deck" }  Affinity Weighting</h3>
                             <HorizontalBarChart container="affinity-weighting-container" max={affinityWeightingData.max} useValue={false} height={ affinityWeightingData.chartHeight } colors={ affinityWeightingData.chartColors } series={affinityWeightingData} />
                         </div>
                     </div>
@@ -406,7 +417,7 @@ if(container) {
 }
 // Render any widgets for the page, we add this here as we dont want
 // to override other sidebar instances
-var sidebar = document.querySelector("#sidebar");
+var sidebar = document.querySelector(".sidebar-with-widgets");
 if(sidebar) {
     var widgets = (
         <div>

@@ -74,17 +74,24 @@
                 }
 
                 .badge {
-                    width: 50px;
+                    width: auto;
                     font-size: 12px;
-                    padding: 5px 0px;
+                    padding: 5px 10px;
                     border-radius: 5px;
-                    color: $panel-color !important;
+                    color: white !important;
                     text-align: center;
                     display: inline-block;
-                    font-weight: bold;
+                    font-weight: 400;
+                    font-family: Roboto;
                     margin-right: 9px;
                     position: relative;
 
+                    &.updated {
+                        background: $color-intellect;
+                    }
+                    &.featured {
+                        background: $color-corruption;
+                    }
                     &.new {
                         background: $green;
                     }
@@ -221,8 +228,10 @@
                         margin: 25px 0px 10px 0px;
                         overflow: hidden;
                         max-height: 90px;
+                        background: rgba(0, 0, 0, 0.4);
 
                         li {
+                            vertical-align: top;
                             border: 1px solid $panel-color;
                             width: 40px;
                             height: 90px;

@@ -29,9 +29,13 @@ $avatar-height : $avatar-width;
 
     #comment-list {
         margin: 100px 0 150px 0;
+
+        &.no-comment-box {
+            margin-top: 25px;
+        }
+
         .no-comments {
             margin-bottom: 0;
-            margin-top: -85px;
             padding-left: 10px;
             font-size: 1.1em;
             border-left: 4px solid $secondary-highlight;
