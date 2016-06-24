@@ -36,11 +36,10 @@ $avatar-height : $avatar-width;
 
         .no-comments {
             margin-bottom: 0;
-            padding-left: 10px;
-            font-size: 1.1em;
-            border-left: 4px solid $secondary-highlight;
+            font-size: 16px;
             font-style: italic;
             color: $font-color-faded;
+            text-align: center;
         }
         .comment-item {
             &:nth-of-type(1) {
@@ -64,6 +63,17 @@ $avatar-height : $avatar-width;
             }
             .comment-actions {
             }
+        }
+    }
+    .login-required {
+        text-align: center;
+        &:after {
+            content: '';
+            display: block;
+            width: 70px;
+            margin: 30px auto;
+            height: 1px;
+            border-top: 1px solid $faded-line;
         }
     }
     .comment-list {

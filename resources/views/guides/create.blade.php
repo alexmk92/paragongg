@@ -23,9 +23,6 @@
                 <label><span class="required">*</span>Title</label>
                 <input name="title" type="text" placeholder="e.g. A guide to winning with Murdock" onkeyup="generateSlug(this)">
 
-                <label><span class="required">*</span>URL Slug (auto-generated)</label>
-                <input name="slug" id="url-slug" type="text">
-
                 <label><span class="required">*</span>Guide type</label>
                 <select name="type" onchange="heroOrGameplay(this)">
                     <option value="hero">Hero guide</option>

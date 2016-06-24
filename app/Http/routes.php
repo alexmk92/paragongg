@@ -31,7 +31,7 @@ Route::post('/news/create', 'NewsController@store')->middleware('mod');
 Route::get('/news/edit/{id}', 'NewsController@edit')->middleware('mod');
 Route::post('/news/edit/{id}', 'NewsController@update')->middleware('mod');
 Route::get('/news/delete/{id}', 'NewsController@delete')->middleware('mod');
-Route::get('/news/{slug}', 'NewsController@show');
+Route::get('/news/{id}/{slug?}', 'NewsController@show');
 
 /* USERS */
 Route::get('/users/{username}', 'UserController@show');

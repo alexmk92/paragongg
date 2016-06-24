@@ -34,7 +34,7 @@ class GuideController extends Controller
         $guide->user_id   = auth()->user()->id;
         $guide->type      = $request->type;
         $guide->title     = $request->title;
-        $guide->slug      = $request->slug;
+        $guide->slug      = createSlug($request->slug);
         $guide->body      = $request->body;
 
         if($guide->type == 'hero') {

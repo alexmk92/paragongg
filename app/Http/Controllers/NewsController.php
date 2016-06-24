@@ -61,9 +61,9 @@ class NewsController extends Controller
     }
 
     // Read
-    public function show(Request $request, $slug)
+    public function show(Request $request, $id)
     {
-        $news = News::where('slug', $slug)->firstOrFail();
+        $news = News::findOrFail($id);
         $thread = findOrCreateThread($request->path());
         $comments = $thread->comments;
 
@@ -71,7 +71,7 @@ class NewsController extends Controller
         $articleBody = (new TOC\MarkupFixer())->fix($articleBody);
         $articleTOC  = (new TOC\TocGenerator())->getHtmlMenu($articleBody,2);
 
-        $recent  = News::where('slug', '!=', $slug)->take('10')->get();
+        $recent  = News::where('id', '!=', $id)->take('10')->get();
         return view('news.show')->with('news', $news)
             ->with('articleBody', $articleBody)
             ->with('articleTOC', $articleTOC)

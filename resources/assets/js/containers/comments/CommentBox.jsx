@@ -106,7 +106,7 @@ var CommentBox = React.createClass({
         } else {
             return (
                 <div>
-                    <p id="login">Please <a href="/login">login</a> or <a href="/register">sign up</a> to post your own responses.</p>
+                    <p className="login-required">Please <a href="/login">login</a> or <a href="/register">sign up</a> to post your own responses.</p>
                 </div>
             )
         }

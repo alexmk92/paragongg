@@ -65,7 +65,7 @@ var NewsFeed = React.createClass({
         var childElements = this.state.news.map(function(element){
             return (
                 <a className="article-preview"
-                   href={"/news/" + element.slug}
+                   href={"/news/" + element.id + "/" + element.slug}
                    key={element.slug}>
                     <div className="preview-image">
                         <img src={"https://s3-eu-west-1.amazonaws.com/paragon.gg/images/news/thumbnails/" + element.thumbnail}/>
