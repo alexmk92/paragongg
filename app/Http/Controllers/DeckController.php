@@ -33,10 +33,11 @@ class DeckController extends Controller
     {
         $payload = json_decode($request->data);
 
+        $user = auth()->user();
         // Store item
         $deck = new Deck;
-        $deck->slug = $payload->title;
-        $deck->author_id = auth()->user()->id;
+        $deck->slug = createSlug($payload->title);
+        $deck->author_id = $user ? $user->id : null;
         $deck->title = $payload->title;
         $deck->description = $payload->description;
         $deck->hero = $payload->hero;

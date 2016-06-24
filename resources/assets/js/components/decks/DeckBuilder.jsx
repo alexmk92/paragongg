@@ -113,6 +113,9 @@ var DeckBuilder = React.createClass({
         }
     },
     shouldComponentUpdate: function(nextProps, nextState) {
+        if(this.state.selectedHero !== nextState.selectedHero) {
+            this.forceUpdate();
+        }
         return this.state !== nextState;
     },
     /* UTILITY FUNCTIONS */
@@ -852,6 +855,7 @@ var DeckBuilder = React.createClass({
             });
         }
         affinities.push({ name : "Universal" });
+        console.log("AFFINTIIES ARE NOW: ", affinities);
         return affinities;
     },
     // Always deselect the current card when this happens as its an error

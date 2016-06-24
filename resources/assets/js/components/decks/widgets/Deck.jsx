@@ -46,7 +46,7 @@ var Deck = React.createClass({
     renderCards: function(type) {
         if(typeof this.props.deck.cards[type] !== "undefined" && this.props.deck.cards[type].length > 0) {
             return this.props.deck.cards[type].map(function(card) {
-                var background = { backgroundImage : 'url(' + card.images.large + ')'};
+                var background = { backgroundImage : 'url(' + Helpers.getCardImageURL(card, "large") + ')'};
                 return (
                     <li style={background}
                         key={"deck-item-" + card.code }
@@ -77,7 +77,7 @@ var Deck = React.createClass({
             <div className="sidebox panel cf">
                 <div className="title-wrapper">
                     <h3>DECK</h3>
-                    <span className="subtext">{ this.props.deck.totalCards }/40 CARDS</span>
+                    <span className="subtext">{ this.props.deck.cards.all.length }/40 CARDS</span>
                 </div>
                 <span className="subtext">PRIME HELIX</span>
                 <ul className="deck-list">

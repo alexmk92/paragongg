@@ -1,6 +1,7 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var Helpers = require('../../helpers');
+var CardEffects = require('../cards/CardEffects');
 var StatPanel = require('./StatPanel');
 var Tooltip = require('../libraries/tooltip/Toptip');
 var ToggleFilter = require('../filter/ToggleFilter');
@@ -692,15 +693,18 @@ var Build = React.createClass({
             if(card !== null) {
                 content = (
                     <div className="pgg-tooltip pgg-tooltip-card">
-                        <div className={"head affinity-" + card.affinity.substring(9).toLowerCase()}>{card.name}</div>
-                        <div className="content">Description about the card {card.type}</div>
-                    </div>
-                );
-
-            } else if(message !== null) {
-                content = (
-                    <div className="pgg-tooltip pgg-tooltip-card">
-                        <div className="content">{message}</div>
+                        <div className="card-head">
+                            <span className="cost">{card.cost}</span>
+                            <div className="header">
+                                <span className="name">{card.name}</span>
+                                <span className={"rarity rarity-" + card.rarity.toLowerCase()}>{card.rarity}</span>
+                                <span className="type">{card.type}</span>
+                            </div>
+                            <i className={"affinity affinity-color pgg pgg-affinity-" + card.affinity.toLowerCase()}></i>
+                        </div>
+                        <div className="content">
+                            <CardEffects card={card} />
+                        </div>
                     </div>
                 );
             }

@@ -8,63 +8,7 @@
 #deck-detail-wrapper {
     width: 70%;
 
-    #deck-info {
-        position: relative;
-        padding-left: 75px;
-
-        #hero-avatar {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 75px;
-            height: 75px;
-            border-radius: 50%;
-            overflow: hidden;
-            display: inline-block;
-
-            img {
-                width: 100%;
-            }
-        }
-
-        #title-wrapper {
-            display: inline-block;
-            padding: 0 20px;
-            max-width: 90%;
-            h2 {
-                margin-bottom: 10px;
-            }
-        }
-
-        #vote-wrapper {
-            display: inline-block;
-            vertical-align: top;
-            padding-top: 14px;
-            float: right;
-            text-align: center;
-
-            i {
-                display: block;
-                font-size: 2em;
-                padding-bottom: 10px;
-                transition: all 200ms ease-in-out;
-
-                &.active {
-                    color: $primary-highlight;
-                }
-
-                &:hover {
-                    cursor: pointer;
-                    color: $secondary-highlight;
-                }
-            }
-        }
-    }
-
-
     #deck-container {
-        margin: 60px 0;
-
         .build-list {
             .no-builds {
                 display: block;
@@ -82,11 +26,78 @@
             }
         }
 
+        #deck-info {
+            position: relative;
+            padding-left: 75px;
+            margin-bottom: 110px;
+
+            #hero-avatar {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 75px;
+                height: 75px;
+                border-radius: 50%;
+                overflow: hidden;
+                display: inline-block;
+
+                img {
+                    width: 100%;
+                }
+            }
+
+            #title-wrapper {
+                display: inline-block;
+                padding: 0 20px;
+                max-width: 90%;
+                h2 {
+                    margin-bottom: 10px;
+                }
+            }
+
+            #vote-wrapper {
+                display: inline-block;
+                vertical-align: top;
+                padding-top: 14px;
+                float: right;
+                text-align: center;
+
+                i {
+                    display: block;
+                    font-size: 2em;
+                    padding-bottom: 10px;
+                    transition: all 200ms ease-in-out;
+
+                    &.active {
+                        color: $primary-highlight;
+                    }
+
+                    &:hover {
+                        cursor: pointer;
+                        color: $secondary-highlight;
+                    }
+                }
+            }
+        }
+
         #deck-stat-container {
-            margin-top: 120px;
+            margin-top: 80px;
 
             #statistic-wrapper {
-                margin-top: 20px;
+                margin: 20px 0 100px 0;
+            }
+
+            #statistic-title-wrapper {
+                height: 70px;
+                h3 {
+                    margin-top: 25px;
+                    float: left;
+                }
+                #rank-slider {
+                    margin-right: 35px;
+                    float: right;
+                    width: 300px;
+                }
             }
         }
 

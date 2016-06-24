@@ -20,6 +20,12 @@ module.exports = {
             .replace("</", "")
             .replace("keyBurning", "burning");
     },
+    getHeroImageURL: function(hero, size) {
+        if(!hero) return "";
+        
+        if(!size) size = "small";
+        return this.S3URL() + "images/heroes/" + hero.code + "/" + hero.image + "/portrait_" + size + ".png"
+    },
     // To be used by all components that consume all stats, such as the StatPanel
     getAllStatistics: function() {
         return [
@@ -70,6 +76,12 @@ module.exports = {
             case "WELLRIGPLACEMENTTIMER" : return { label : "Placement Time", icon: "pgg pgg-harvester-placement-time", modifier : "s" }; break;
             default : return { label : ("undefined label: " + statLabel), icon: "", modifier : "" };
         }
+    },
+    getCardImageURL: function(card, size) {
+        if(!card) return "";
+
+        if(!size) size = "medium";
+        return this.S3URL() + 'images/cards/' + card.code + '/' + card.background + '/background_' + size.toLowerCase() + '.png';
     },
     prettyDate : function(time)
     {
