@@ -6,17 +6,11 @@ var CommentBox = require('./CommentBox.jsx');
 var CommentListItem = React.createClass({
     getInitialState: function() {
         return {
-            voted : false,
             isReplying : false
         }
     },
     vote: function() {
-        if(!this.state.voted) {
-            this.props.upVoteComment(this.props.comment);
-             this.setState({
-                voted: true
-             });
-        }
+        this.props.upVoteComment(this.props.comment);
     },
     report: function() {
         // TODO
@@ -32,7 +26,8 @@ var CommentListItem = React.createClass({
         this.setState({ isReplying: false });
     },
     render: function() {
-        var toggleClass = 'fa fa-thumbs-up vote-button ' + (this.state.voted ? "active" : "");
+        console.log(this.props);
+        var toggleClass = 'fa fa-thumbs-up vote-button';
         var commentClass = 'comment-item ' + (this.props.comment.childComment ? "child-comment" : "");
         var comments = [];
         this.props.childComments.forEach(function(comment) {
@@ -47,7 +42,6 @@ var CommentListItem = React.createClass({
                 );
             }
         }.bind(this));
-        console.log(this.props.comment);
         return(
             <li className={commentClass}>
                 <div className="comment-details">
@@ -57,7 +51,7 @@ var CommentListItem = React.createClass({
                 <div className="comment-body">{ this.props.comment.body }</div>
                 <div className="comment-actions">
                     <button className="btn btn-small btn-faded" onClick={this.reply}>Reply</button>
-                    <button className="btn btn-small btn-faded" onClick={this.vote}>
+                    <button className={"btn btn-small btn-faded " + (this.props.comment.voted ? "active" : "")} onClick={this.vote}>
                         <i className={toggleClass} aria-hidden="true"></i> { this.props.comment.votes }
                     </button>
                     <button className="btn btn-small btn-faded btn-icon">

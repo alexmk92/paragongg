@@ -2,22 +2,21 @@
 var t = require('../actions/types');
 var update = require('react-addons-update');
 
-
 // State is not the application state, only the state this reducer is responsible for
 module.exports = function(state, action) {
     if(typeof state !== "undefined") {
         switch(action.type) {
-            //
             case t.COMMENT_UP_VOTED :
-                var newComments = state.comments;
-                var lastUpvotedComment = action.payload;
-                var commentIndex = newComments.indexOf(lastUpvotedComment);
-                if(commentIndex > -1) {
-                    console.log("PAYLOAD", action.payload);
-                    lastUpvotedComment.votes = action.payload.value;
-                    newComments[commentIndex] = lastUpvotedComment;
-                    return { comments : newComments, lastUpvotedComment : lastUpvotedComment }
-                }
+                var lastUpvotedComment = null;
+                var newComments = state.comments.map(function(comment) {
+                    if(comment.id === action.payload.data.node_id) {
+                        comment.voted = action.payload.data.voted;
+                        comment.votes = action.payload.data.value;
+                        lastUpvotedComment = comment;
+                    }
+                    return comment;
+                });
+                return { comments : newComments, lastUpvotedComment : lastUpvotedComment };
             case t.FETCH_COMMENTS :
                 return { comments : action.payload.data, lastUpvotedComment: state.lastUpvotedComment };
             case t.POSTED_COMMENT :

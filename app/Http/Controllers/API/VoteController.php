@@ -26,7 +26,7 @@ class VoteController extends Controller
             $node->votes--;
             $node->save();
             $exists->delete();
-            return response()->json(['code' => 200, 'message' => 'Vote removed successfully', 'value' => $node->votes]);
+            return response()->json(['code' => 200, 'message' => 'Vote removed successfully', 'value' => $node->votes, 'node_id' => $node->id, 'voted' => false]);
         } else {
             $vote = new Vote();
             $vote->type    = $request->type;
@@ -37,7 +37,7 @@ class VoteController extends Controller
             $node->votes++;
             $node->save();
 
-            return response()->json(['code' => 200, 'message' => 'Vote logged successfully', 'value' => $node->votes]);
+            return response()->json(['code' => 200, 'message' => 'Vote logged successfully', 'value' => $node->votes, 'node_id' => $node->id, 'voted' => true]);
         }
     }
 
