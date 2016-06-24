@@ -289,6 +289,7 @@ var DeckDetail = React.createClass({
         };
 
         var affinityCounts = [];
+        var maxCards = this.props.deck.cards.all.length;
 
         // On a null build, show deck affinity weighting
         if(this.state.selectedBuild === null || this.state.selectedBuild.slots.length === 0) {
@@ -302,20 +303,25 @@ var DeckDetail = React.createClass({
             });
         } else {
             // Show build affinity weighting
+            maxCards = 0;
             console.log("RENDERING FOR BUUILD: ", this.state.selectedBuild.title);
             this.state.selectedBuild.slots.forEach(function(slot) {
                 if(slot.card) {
                     if(typeof affinityCounts[slot.card.affinity] === "undefined") {
                         affinityCounts[slot.card.affinity] = { label : slot.card.affinity, value : 1 };
+                        maxCards++;
                     } else {
                         affinityCounts[slot.card.affinity].value += 1;
+                        maxCards++;
                     }
                     slot.upgrades.forEach(function(upgradeSlot) {
                         if(upgradeSlot.card) {
                             if(typeof affinityCounts[upgradeSlot.card.affinity] === "undefined") {
                                 affinityCounts[upgradeSlot.card.affinity] = { label : upgradeSlot.card.affinity, value : 1 };
+                                maxCards++;
                             } else {
                                 affinityCounts[upgradeSlot.card.affinity].value += 1;
+                                maxCards++;
                             }
                         }
                     });
@@ -326,7 +332,7 @@ var DeckDetail = React.createClass({
         for(var key in affinityCounts) {
             if(affinityCounts.hasOwnProperty(key)) {
                 var affinity = affinityCounts[key];
-                var percent = (affinity.value / this.props.deck.cards.all.length) * 100;
+                var percent = (affinity.value / maxCards) * 100;
                 if(affinity.value > comparisonData.max) {
                     comparisonData.max = affinity.value;
                 }
