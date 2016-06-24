@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 var Helpers  = require('../../helpers');
 
 var CardEffects = React.createClass({
@@ -31,22 +32,30 @@ var CardEffects = React.createClass({
             { type : "{attr:endmg}", value : "Energy Damage", icon : "pgg pgg-energy-damage" },
             { type : "{attr:critch}", value : "Crit Chance", icon : "pgg pgg-critical-strike-chance" }
         ];
-        
-        var formattedDescription = <span></span>;
 
-        description.forEach(function(string) {
-            
-            if(/({[a-zA-Z:]+})/.test(string)) {
-                statuses.forEach(function(status) {
-                    string.replace(status.type, status.value);
+        return description.map(function (string, i) {
+            if (/({[a-zA-Z:]+})/.test(string)) {
+                var node = null;
+                statuses.some(function (status) {
+                    if(status.type.toLowerCase() === string.toLowerCase()) {
+                        node = <span key={"status-"+i}><i className={status.icon}></i>{status.value} </span>
+                        return true;
+                    }
+                    return false;
                 });
-                attributes.forEach(function(attribute) {
-                    string.replace(attribute.type, attribute.value);
-                });
+                if(node === null) {
+                    attributes.some(function (attribute) {
+                        if(attribute.type.toLowerCase() === string.toLowerCase()) {
+                            node = <span key={"attr"+i}><i className={attribute.icon}></i>{attribute.value} </span>
+                            return true;
+                        }
+                        return false;
+                    });
+                }
+                return node;
             }
-        })
-
-        return description;
+            return <span key={"str-"+i}>{string} </span>;
+        });
     },
     getStats: function(effects) {
         var items = [];
