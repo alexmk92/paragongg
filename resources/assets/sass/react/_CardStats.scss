@@ -135,37 +135,39 @@ canvas {
             }
         }
     }
-    .stat-container {
+    .content {
         .pgg {
             font-size: 24px;
+            margin-left: 3px;
+            margin-right: 2px;
         }
         li {
-            font-size: 17px;
-            line-height: 22px;
+            font-size: 18px;
+            line-height: 24px;
+            margin-bottom: 15px;
             .value {
                 color: white;
             }
         }
     }
-    .passive-stats {
-        margin-top: 40px;
-    }
-    .fully-upgraded-stats {
-        margin-top: 40px;
+    .actipassive {
+        color: $tertiary-highlight;
+        font-style: italic;
     }
     label {
         font-family: $font-condensed;
-        font-size: 14px;
+        font-size: 16px;
         color : $font-color-faded;
         display: block;
-        margin-bottom: 5px;
+        margin-bottom: 10px;
         text-transform: uppercase;
-
-        &.upgraded {
-            color : $tertiary-highlight;
-            background: -webkit-linear-gradient($tertiary-highlight, #a58f50);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+    }
+    .maxedEffects {
+        margin-top: 30px;
+        padding-top: 30px;
+        border-top: 1px solid #222;
+        label {
+            color: $tertiary-highlight;
         }
     }
     #blur-layer {

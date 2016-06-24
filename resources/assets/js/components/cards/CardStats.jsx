@@ -1,5 +1,6 @@
 var React    = require('react');
 var Helpers  = require('../../helpers');
+var CardEffects = require('./CardEffects');
 var ParticleTheme = require('../../lib/ParticleThemes');
 
 require('rc-slider/assets/index.css');
@@ -155,9 +156,11 @@ var CardStats = React.createClass({
                         { this.getAffinity(this.props.card.affinity).toUpperCase() }
                     </div>
                 </div>
-                { this.renderStatistics() }
-                { this.renderPassives() }
-                { this.renderUpgradeBonuses() }
+
+                <div className="content">
+                    <label>Equipped Statistics</label>
+                    <CardEffects card={this.props.card} />
+                </div>
             </div>
         );
     }
