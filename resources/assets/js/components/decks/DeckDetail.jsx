@@ -44,6 +44,18 @@ var DeckDetail = React.createClass({
     showBuild: function(build) {
         console.log("DISPLAYING BUILD: ", build);
     },
+    getCard: function(cardCode) {
+        var cardToReturn = null;
+        DECK.cards.all.some(function(card) {
+            console.log("CHECKING IF: " + card.code + " IS EQUAL TO " + cardCode)
+            if(card.code === cardCode) {
+                cardToReturn = card;
+                return true;
+            }
+            return false;
+        });
+        return cardToReturn;
+    },
     /* TOOLTIP METHODS */
     setTooltipContent: function(card) {
         if(!Helpers.isClientMobile()) {
@@ -67,7 +79,7 @@ var DeckDetail = React.createClass({
             }
             if(content !== null) {
                 var tooltip = document.getElementById("toptip");
-                ReactDOM.render(content, tooltip);
+                if(!tooltip) ReactDOM.render(content, tooltip);
             }
         }
     },
@@ -84,7 +96,9 @@ var DeckDetail = React.createClass({
         }
     },
     hideTooltip: function() {
-        this.tooltip.hideTooltip();
+        if(this.tooltip) {
+            this.tooltip.hideTooltip();
+        }
     },
     renderBuildTabs: function() {
         var untitledCount = 1;
@@ -104,24 +118,30 @@ var DeckDetail = React.createClass({
         var build = this.state.selectedBuild;
         if(build.slots.length > 0) {
             return build.slots.map(function(slot, i) {
-               if(slot.card !== null) {
-                   return (
-                       <li id={"c_" + i}
-                           className={slot.type}
-                           key={"slot_" + i}
-                           onMouseEnter={this.setTooltipContent.bind(this, slot.card)}
-                           onMouseOver={this.showTooltip.bind(this, slot.card, "glow-layer")}
-                           onMouseLeave={this.hideTooltip}
-                       >
-                           <span className="slot-label">{slot.type}</span>
-                           { card }
-                           <div className="upgrade-slot-wrapper">
-                               { this.getUpgradeSlots(slot) }
-                           </div>
-                       </li>
-                   )
-               }
-            });
+                if(slot.card !== null) {
+                    slot.card = this.getCard(slot.card);
+                    return (
+                        <li id={"c_" + i}
+                            className={slot.type}
+                            key={"slot_" + i}
+                            onMouseEnter={this.setTooltipContent.bind(this, slot.card)}
+                            onMouseOver={this.showTooltip.bind(this, slot.card, "glow-layer")}
+                            onMouseLeave={this.hideTooltip}
+                        >
+                            <span className="slot-label">{slot.type}</span>
+                            <div style={{ backgroundImage : "url(" + slot.card.images.large + ")"}}
+                                 className="placed-card"
+                                 key={"card-" + i}
+                            >
+                                <span className="card-title">{ slot.card.name }</span>
+                            </div>
+                            <div className="upgrade-slot-wrapper">
+                                { this.renderUpgradeSlots(slot) }
+                            </div>
+                        </li>
+                    )
+                }
+            }.bind(this));
 
         }  else {
             return <li className="no-builds"><span>No builds exists for this deck, sorry!</span></li>
@@ -137,6 +157,7 @@ var DeckDetail = React.createClass({
                 if(upgradeSlot.card === null) {
                     label = <span className="upgrade-label">EMPTY SLOT</span>;
                 } else {
+                    upgradeSlot.card = this.getCard(upgradeSlot.card);
                     label = <span className="upgrade-label"><span className="subtext">{upgradeSlot.card.cost}CP </span>{upgradeSlot.card.name}</span>;
                     slotStyle = { backgroundImage: 'url('+upgradeSlot.card.images.large+')' }
                 }
@@ -153,7 +174,7 @@ var DeckDetail = React.createClass({
                         <div className="overlay"></div>
                     </div>
                 )
-            });
+            }.bind(this));
         }
     },
     renderStatPanel: function() {
