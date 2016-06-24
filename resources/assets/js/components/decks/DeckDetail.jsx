@@ -322,7 +322,7 @@ var DeckDetail = React.createClass({
                 }
             }.bind(this));
         }
-        console.log(affintityCounts);
+        console.log(affinityCounts);
         for(var key in affinityCounts) {
             if(affinityCounts.hasOwnProperty(key)) {
                 var affinity = affinityCounts[key];
