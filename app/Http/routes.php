@@ -38,6 +38,7 @@ Route::get('/users/{username}', 'UserController@show');
 
 /* PLAYERS */
 Route::get('/players', 'PlayerController@index');
+Route::post('/players/search', 'PlayerController@search');
 Route::get('/players/top', 'PlayerController@top');
 Route::get('/players/{username}', 'PlayerController@show');
 

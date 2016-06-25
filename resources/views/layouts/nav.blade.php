@@ -15,22 +15,30 @@
             <li><a href="/heroes" {{ Request::is( 'heroes*') ? 'class=active' : '' }}>Heroes</a></li>
              <li><a href="/community" {{ Request::is( 'community*') ? 'class=active' : '' }}>Community</a></li>
         </ul>
-        @if(auth()->check())
-        <div id="account-nav"
-              data-username="{{ auth()->user()->username }}" data-amber="{{ auth()->user()->amber }}"
-                @if(auth()->user()->isMod())
-                    data-mod=true
-                @endif
-                @if(auth()->user()->isAdmin())
-                    data-admin=true
-                @endif>
+        <div class="right-nav">
+            <div id="player-search-nav">
+                <form action="/players/search" method="POST">
+                    {!! csrf_field() !!}
+                    <input name="username" type="text" placeholder="Search player by name...">
+                </form>
+            </div>
+            @if(auth()->check())
+                <div id="account-nav"
+                      data-username="{{ auth()->user()->username }}" data-amber="{{ auth()->user()->amber }}"
+                        @if(auth()->user()->isMod())
+                            data-mod=true
+                        @endif
+                        @if(auth()->user()->isAdmin())
+                            data-admin=true
+                        @endif>
 
+                </div>
+            @else
+                <div id="account-noauth">
+                    <a href="/login" class="login">Login</a>
+                    <a href="/register" class="register">Sign up</a>
+                </div>
+            @endif
         </div>
-        @else
-        <div id="account-noauth">
-            <a href="/login" class="login">Login</a>
-            <a href="/register" class="register">Sign up</a>
-        </div>
-        @endif
     </div>
 </nav>

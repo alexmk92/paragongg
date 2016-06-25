@@ -5,6 +5,7 @@ nav {
     background: rgba(0,0,0,0.9);
     z-index: 1337;
     border-bottom: 1px solid $panel-color;
+
     .nav-wrapper {
         margin: 0 auto;
         max-width: 1350px;
@@ -21,6 +22,7 @@ nav {
     }
     .links {
         cursor: pointer;
+        display: inline-block;
         li {
             display: inline-block;
             text-transform: uppercase;
@@ -69,11 +71,29 @@ nav {
             }
         }
     }
-    #account-noauth {
-        float: right;
-        top: 25px;
-        right: 0;
+    .right-nav {
         position: absolute;
+        top: 14px;
+        right: 0;
+        display: inline-block;
+    }
+    #player-search-nav {
+        display: inline-block;
+        padding-right: 20px;
+        form {
+            margin-top: 0;
+            max-width: none;
+        }
+        input {
+            min-width: 250px;
+            font-size: 13px;
+            padding: 8px 10px;
+            background: $panel-color-dark;
+            border: none;
+        }
+    }
+    #account-noauth {
+        display: inline-block;
         font-size: 12px;
         z-index: 1337;
         user-select: none;
@@ -95,10 +115,7 @@ nav {
         }
     }
     #account-nav {
-        float: right;
-        top: 23px;
-        right: 0;
-        position: absolute;
+        display: inline-block;
         font-size: 13px;
         z-index: 1337;
         user-select: none;

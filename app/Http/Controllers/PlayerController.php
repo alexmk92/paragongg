@@ -51,4 +51,9 @@ class PlayerController extends Controller
 
         return $player;
     }
+
+    public function search(Request $request)
+    {
+        return redirect('/players/' . strtolower($request->username));
+    }
 }
