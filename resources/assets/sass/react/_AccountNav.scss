@@ -4,8 +4,9 @@
         text-align: right;
     }
     .account-nav-panel {
-        position: relative;
-        top: 18px;
+        position: absolute;
+        top: 45px;
+        right: 0;
         background: $panel-color;
         border: 1px solid $faded-line;
         box-shadow: 0px 0px 3px #000;
