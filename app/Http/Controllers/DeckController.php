@@ -62,6 +62,11 @@ class DeckController extends Controller
         return redirect('/decks/'.$deck->slug);
     }
 
+    public function success()
+    {
+        return view('decks.success');
+    }
+
     // Read
     public function show(Request $request, $slug)
     {

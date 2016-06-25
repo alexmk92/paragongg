@@ -66,6 +66,12 @@ body {
         //color: $primary-highlight;
     }
 }
+.copypasta {
+    display: inline-block;
+    cursor: text;
+    font-family: monospace;
+    text-align: center;
+}
 .hidden {
     display: none;
 }

@@ -64,6 +64,7 @@ Route::get('/heroes/{slug}', 'HeroController@show');
 Route::get('/decks', 'DeckController@index');
 Route::get('/decks/create', 'DeckController@create');
 Route::post('/decks/create', 'DeckController@store');
+Route::get('/decks/success', 'DeckController@success');
 Route::get('/decks/edit/{id}', 'DeckController@edit');
 Route::post('/decks/edit/{id}', 'DeckController@update');
 Route::get('/decks/delete/{id}', 'DeckController@delete');

@@ -264,6 +264,22 @@
     }
 }
 
+.create-success {
+    max-width: 800px;
+    margin: 100px auto 0 auto;
+    background: $panel-color-dark;
+    border: 1px solid #222;
+    box-shadow: 0px 0px 50px 50px #000;
+    padding: 30px;
+    text-align: center;
+    h3 {
+        color: $tertiary-highlight;
+    }
+    .copypasta {
+        margin-top: 20px;
+    }
+}
+
 @media screen and (max-width: $media-tablet) {
     .deck-list {
         li {
