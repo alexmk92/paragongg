@@ -24,7 +24,7 @@ module.exports = {
     upVoteComment: function (comment) {
         // upVoteComment is an ActionCreator, it needs to return an action, an object with a type property
         // the type decribes the action
-        Helpers.ajax({
+        var request = Helpers.ajax({
             type : "POST",
             url : ROOT_URL + "vote",
             headers : [{ "X-CSRF-TOKEN" : csrf }],
@@ -33,10 +33,10 @@ module.exports = {
             returnType: "json",
             data: [{ "ref_id" : comment.id, "type" : "comment" }]
         });
-
+        
         return {
             type: t.COMMENT_UP_VOTED,
-            payload: comment
+            payload: request
         }
     },
     postComment: function (comment, threadId, parentCommentId) {

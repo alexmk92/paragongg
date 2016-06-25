@@ -14,6 +14,10 @@
     transition: color 0.2s, border-color 0.2s;
 
     margin-right: 10px;
+    &.active {
+        color: $secondary-highlight !important;
+        border-color: $secondary-highlight !important;
+    }
     &.btn-warning {
         color: $primary-highlight;
         border-color: $primary-highlight;

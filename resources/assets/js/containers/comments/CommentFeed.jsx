@@ -13,45 +13,53 @@ var CommentFeed = React.createClass({
     },
     componentDidMount: function() {
         // update the time stamps for now, to give a real time feel
+        /*
         setInterval(function() {
             this.forceUpdate();
         }.bind(this), 15000);
+        */
+    },
+    componentWillReceiveProps() {
+        console.log("Received new props");
     },
     renderComments: function() {
         var comments = [];
         var initialCommentCollection = [];
         this.removePendingComments();
 
-        if(this.props.comments.length === 0) {
-            initialCommentCollection = COMMENTS;
-        } else {
-            initialCommentCollection = this.props.comments;
+        if(this.props.comments) {
+            if(this.props.comments.length === 0) {
+                initialCommentCollection = COMMENTS;
+            } else {
+                initialCommentCollection = this.props.comments;
+            }
+            if(initialCommentCollection.length > 0) {
+                initialCommentCollection.forEach(function(comment) {
+                    if(comment.parent_id === 0 || comment.parent_id === null) {
+                        comments.push(
+                            <CommentListItem
+                                key={Helpers.uuid()}
+                                comment={comment}
+                                voted={comment.voted}
+                                author={ USER }
+                                childComments={ this.props.comments }
+                                upVoteComment={ this.props.upVoteComment }
+                                onCommentSubmitted={this.appendPendingComment}
+                                postComment={this.props.postComment}
+                            />
+                        );
+                    }
+                }.bind(this));
+            }
+            if(comments.length === 0) {
+                return (
+                    <li className="no-comments">
+                        <span>No comments on this post yet, be the first to start the discussion!</span>
+                    </li>
+                );
+            }
+            return comments;
         }
-        if(initialCommentCollection.length > 0) {
-            initialCommentCollection.forEach(function(comment) {
-                if(comment.parent_id === 0 || comment.parent_id === null) {
-                    comments.push(
-                        <CommentListItem
-                            key={Helpers.uuid()}
-                            comment={comment}
-                            author={ USER }
-                            childComments={ this.props.comments }
-                            upVoteComment={ this.props.upVoteComment }
-                            onCommentSubmitted={this.appendPendingComment}
-                            postComment={this.props.postComment}
-                        />
-                    );
-                }
-            }.bind(this));
-        }
-        if(comments.length === 0) {
-            return (
-                <li className="no-comments">
-                    <span>No comments on this post yet, be the first to start the discussion!</span>
-                </li>
-            );
-        }
-        return comments;
     },
     removePendingComments: function() {
         var pendingComment = document.querySelector("#pending-comment");
