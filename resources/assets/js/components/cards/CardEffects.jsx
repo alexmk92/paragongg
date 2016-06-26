@@ -38,7 +38,7 @@ var CardEffects = React.createClass({
                 var node = null;
                 statuses.some(function (status) {
                     if(status.type.toLowerCase() === string.toLowerCase()) {
-                        node = <span key={"status-"+i}><i className={status.icon}></i>{status.value} </span>
+                        node = <span key={"status-"+i}><i className={status.icon + " pull-icon-left"}></i>{status.value} </span>
                         return true;
                     }
                     return false;
@@ -46,7 +46,7 @@ var CardEffects = React.createClass({
                 if(node === null) {
                     attributes.some(function (attribute) {
                         if(attribute.type.toLowerCase() === string.toLowerCase()) {
-                            node = <span key={"attr"+i}><i className={attribute.icon}></i>{attribute.value} </span>
+                            node = <span key={"attr"+i}><i className={attribute.icon + " pull-icon-left"}></i>{attribute.value} </span>
                             return true;
                         }
                         return false;
