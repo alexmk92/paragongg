@@ -23,21 +23,21 @@ module.exports = {
     // To be used by all components that consume all stats, such as the StatPanel
     getAllStatistics: function() {
         return [
-            { ref : "ATTACKSPEEDRATING", label : "Attack Speed", icon: "pgg pgg-attack-speed", modifier : "", value : 0, modified: false },
-            { ref : "COOLDOWNREDUCTIONPERCENTAGE", label : "Cooldown Reduction", icon: "pgg pgg-cooldown-reduction", modifier : "%", value : 0, modified: false  },
-            { ref : "MAXENERGY", label : "Max Mana", icon: "pgg pgg-max-mana", modifier : "", value : 0, modified: false  },
-            { ref : "MAXHEALTH", label : "Max Health", icon: "pgg pgg-max-health", modifier : "", value : 0, modified: false  },
-            { ref : "ENERGYREGENRATE", label : "Energy Regen", icon: "pgg pgg-mana-regeneration", modifier : "/s", value : 0, modified: false  },
-            { ref : "ATTACKRATING", label : "Physical Damage", icon: "pgg pgg-physical-damage", modifier : "", value : 0, modified: false  },
-            { ref : "LIFESTEALRATING", label : "Lifesteal", icon: "pgg pgg-lifesteal", modifier : "%", value : 0, modified: false  },
-            { ref : "PHYSICALPENETRATIONRATING", label : "Physical Pen", icon: "pgg pgg-physical-penetration", modifier : "%", value : 0, modified: false  },
-            { ref : "ENERGYPENETRATIONRATING", label : "Energy Pen", icon: "pgg pgg-armor-penetration", modifier : "%", value : 0, modified: false  },
-            { ref : "CRITICALDAMAGEBONUS", label : "Critical Damage", icon: "pgg pgg-critical-strike-damage", modifier : "", value : 0, modified: false  },
-            { ref : "CRITICALDAMAGECHANCE", label : "Critical Chance", icon: "pgg pgg-critical-strike-chance", modifier : "%", value : 0, modified: false  },
-            { ref : "HEALTHREGENRATE", label : "Health Regen", icon: "pgg pgg-health-regeneration", modifier : "/s", value : 0, modified: false  },
-            { ref : "ENERGYRESISTANCERATING", label : "Energy Armor", icon: "pgg pgg-energy-armor", modifier : "", value : 0, modified: false  },
-            { ref : "PHYSICALRESISTANCERATING", label : "Physical Armor", icon : "pgg pgg-physical-armor", modifier : "", value : 0, modified: false  },
-            { ref : "WELLRIGPLACEMENTTIMER", label : "Placement Time", icon: "pgg pgg-harvester-placement-time", modifier : "s", value : 0, modified: false  }
+            { ref : "ATTACKSPEEDRATING", label : "Attack Speed", icon: "pgg pgg-attack-speed", modifier : "", value : 0, modified: false, multiplier: 1 },
+            { ref : "COOLDOWNREDUCTIONPERCENTAGE", label : "Cooldown Reduction", icon: "pgg pgg-cooldown-reduction", modifier : "%", value : 0, modified: false, multiplier: 100  },
+            { ref : "MAXENERGY", label : "Max Mana", icon: "pgg pgg-max-mana", modifier : "", value : 0, modified: false, multiplier: 1  },
+            { ref : "MAXHEALTH", label : "Max Health", icon: "pgg pgg-max-health", modifier : "", value : 0, modified: false, multiplier: 1  },
+            { ref : "ENERGYREGENRATE", label : "Energy Regen", icon: "pgg pgg-mana-regeneration", modifier : "/s", value : 0, modified: false, multiplier: 1  },
+            { ref : "ATTACKRATING", label : "Physical Damage", icon: "pgg pgg-physical-damage", modifier : "", value : 0, modified: false, multiplier: 1  },
+            { ref : "LIFESTEALRATING", label : "Lifesteal", icon: "pgg pgg-lifesteal", modifier : "", value : 0, modified: false, multiplier: 1  },
+            { ref : "PHYSICALPENETRATIONRATING", label : "Physical Pen", icon: "pgg pgg-physical-penetration", modifier : "", value : 0, modified: false, multiplier: 1  },
+            { ref : "ENERGYPENETRATIONRATING", label : "Energy Pen", icon: "pgg pgg-armor-penetration", modifier : "", value : 0, modified: false, multiplier: 1  },
+            { ref : "CRITICALDAMAGEBONUS", label : "Critical Damage", icon: "pgg pgg-critical-strike-damage", modifier : "%", value : 0, modified: false, multiplier: 100  },
+            { ref : "CRITICALDAMAGECHANCE", label : "Critical Chance", icon: "pgg pgg-critical-strike-chance", modifier : "%", value : 0, modified: false, multiplier: 100  },
+            { ref : "HEALTHREGENRATE", label : "Health Regen", icon: "pgg pgg-health-regeneration", modifier : "/s", value : 0, modified: false, multiplier: 1 },
+            { ref : "ENERGYRESISTANCERATING", label : "Energy Armor", icon: "pgg pgg-energy-armor", modifier : "", value : 0, modified: false, multiplier: 1  },
+            { ref : "PHYSICALRESISTANCERATING", label : "Physical Armor", icon : "pgg pgg-physical-armor", modifier : "", value : 0, modified: false, multiplier: 1  },
+            { ref : "WELLRIGPLACEMENTTIMER", label : "Placement Time", icon: "pgg pgg-harvester-placement-time", modifier : "s", value : 0, modified: false, multiplier: 1  }
         ]
     },
     getAffinityColor: function(affinity) {
@@ -53,29 +53,86 @@ module.exports = {
     },
     getFormattedStatistic: function(statLabel) {
         switch(statLabel.toUpperCase()) {
-            case "ATTACKSPEEDRATING": return { label : "Attack Speed", icon: "pgg pgg-attack-speed", modifier : "" }; break;
-            case "COOLDOWNREDUCTIONPERCENTAGE": return { label : "Cooldown Reduction", icon: "pgg pgg-cooldown-reduction", modifier : "%" }; break;
-            case "MAXENERGY" : return { label : "Max Mana", icon: "pgg pgg-max-mana", modifier : "" }; break;
-            case "MAXHEALTH" : return { label : "Max Health", icon: "pgg pgg-max-health", modifier : "" }; break;
-            case "ENERGYREGENRATE" : return { label : "Energy Regen", icon: "pgg pgg-mana-regeneration", modifier : "/s" }; break;
-            case "ATTACKRATING" : return { label : "Physical Damage", icon: "pgg pgg-physical-damage", modifier : "" }; break;
-            case "LIFESTEALRATING" : return { label : "Lifesteal", icon: "pgg pgg-lifesteal", modifier : "%" }; break;
-            case "PHYSICALPENETRATIONRATING" : return { label : "Physical Pen", icon: "pgg pgg-physical-penetration", modifier : "%" }; break;
-            case "ENERGYPENETRATIONRATING" : return { label : "Energy Pen", icon: "pgg pgg-armor-penetration", modifier : "%" }; break;
-            case "CRITICALDAMAGEBONUS" : return { label : "Critical Damage", icon: "pgg pgg-critical-strike-damage", modifier : "" }; break;
-            case "CRITICALDAMAGECHANCE" : return { label : "Critical Chance", icon: "pgg pgg-critical-strike-chance", modifier : "%" }; break;
-            case "HEALTHREGENRATE" : return { label : "Health Regen", icon: "pgg pgg-health-regeneration", modifier : "/s" }; break;
-            case "ENERGYRESISTANCERATING" : return { label : "Energy Armor", icon: "pgg pgg-energy-armor", modifier : "" }; break;
-            case "PHYSICALRESISTANCERATING" : return { label : "Physical Armor", icon : "pgg pgg-physical-armor", modifier : "" }; break;
-            case "WELLRIGPLACEMENTTIMER" : return { label : "Placement Time", icon: "pgg pgg-harvester-placement-time", modifier : "s" }; break;
-            default : return { label : ("undefined label: " + statLabel), icon: "", modifier : "" };
+            case "ATTACKSPEEDRATING": return { label : "Attack Speed", icon: "pgg pgg-attack-speed", modifier : "", multiplier: 1 }; break;
+            case "COOLDOWNREDUCTIONPERCENTAGE": return { label : "Cooldown Reduction", icon: "pgg pgg-cooldown-reduction", modifier : "%", multiplier: 100 }; break;
+            case "MAXENERGY" : return { label : "Max Mana", icon: "pgg pgg-max-mana", modifier : "", multiplier: 1 }; break;
+            case "MAXHEALTH" : return { label : "Max Health", icon: "pgg pgg-max-health", modifier : "", multiplier: 1 }; break;
+            case "ENERGYREGENRATE" : return { label : "Energy Regen", icon: "pgg pgg-mana-regeneration", modifier : "/s", multiplier: 1 }; break;
+            case "ATTACKRATING" : return { label : "Physical Damage", icon: "pgg pgg-physical-damage", modifier : "", multiplier: 1 }; break;
+            case "LIFESTEALRATING" : return { label : "Lifesteal", icon: "pgg pgg-lifesteal", modifier : "", multiplier: 1 }; break;
+            case "PHYSICALPENETRATIONRATING" : return { label : "Physical Pen", icon: "pgg pgg-physical-penetration", modifier : "", multiplier: 1 }; break;
+            case "ENERGYPENETRATIONRATING" : return { label : "Energy Pen", icon: "pgg pgg-armor-penetration", modifier : "", multiplier: 1 }; break;
+            case "CRITICALDAMAGEBONUS" : return { label : "Critical Damage", icon: "pgg pgg-critical-strike-damage", modifier : "%", multiplier: 100 }; break;
+            case "CRITICALDAMAGECHANCE" : return { label : "Critical Chance", icon: "pgg pgg-critical-strike-chance", modifier : "%", multiplier: 100 }; break;
+            case "HEALTHREGENRATE" : return { label : "Health Regen", icon: "pgg pgg-health-regeneration", modifier : "/s", multiplier: 1 }; break;
+            case "ENERGYRESISTANCERATING" : return { label : "Energy Armor", icon: "pgg pgg-energy-armor", modifier : "", multiplier: 1 }; break;
+            case "PHYSICALRESISTANCERATING" : return { label : "Physical Armor", icon : "pgg pgg-physical-armor", modifier : "", multiplier: 1 }; break;
+            case "WELLRIGPLACEMENTTIMER" : return { label : "Placement Time", icon: "pgg pgg-harvester-placement-time", modifier : "s", multiplier: 1 }; break;
+            default : return { label : ("undefined label: " + statLabel), icon: "", modifier : "", multiplier: 1 }; break;
         }
     },
-    getCardImageURL: function(card, size) {
+    getStatisticCategory: function(stat) {
+        if(stat.includes("{ATTR:HP}")){
+            return "HEALTH";
+        }
+        else if(stat.includes("{ATTR:MANA}")) {
+            return "MANA";
+        }
+        else if(stat.includes("{ATTR:PHYSAR}") || stat.includes("{ATTR:ENAR}") || stat.includes("{ATTR:SHLD}")) {
+            return "MITIGATION";
+        }
+        else if(stat.includes("{ATTR:ATKSPD}")) {
+            return "ATTACK SPEED";
+        }
+        else if(stat.includes("{ATTR:SPD}") || stat.includes("{ATTR:MP}") || stat.includes("{ATTR:CDR}") ||
+            stat.includes("{ATTR:DMGBNS}") || stat.includes("{ATTR:PHYSDMG}") || stat.includes("{ATTR:ENDMG}") ||
+            stat.includes("{STATUS:BLEED}") || stat.includes("{STATUS:PSN}") || stat.includes("{STATUS:BURN}")) {
+            return "DAMAGE";
+        }
+        else if(stat.includes("{ATTR:PHYSPEN}") || stat.includes("{ATTR:ENPEN}") || stat.includes("{STATUS:PEN}")) {
+            return "PENETRATION"
+        }
+        else if(stat.includes("{ATTR:HPREG}") || stat.includes("{ATTR:LFSTL}")) {
+            return "HEALTH REGEN"
+        }
+        else if(stat.includes("{ATTR:MPREG}")) {
+            return "MANA REGEN";
+        }
+        else if(stat.includes("{ATTR:CRITCH}")) {
+            return "CRIT";
+        }
+        else if(stat.includes("{STATUS:SLOW}")) {
+            return "CROWD CONTROL";
+        }
+
+        // ATTR Strings dont work here as cant do includes ina  switch
+        switch(stat) {
+            case "ATTACKSPEEDRATING": return "ATTACK SPEED"; break;
+            case "COOLDOWNREDUCTIONPERCENTAGE" : return "DAMAGE"; break;
+            case "MAXENERGY" : return "MANA"; break;
+            case "MAXHEALTH": return "HEALTH"; break;
+            case "ENERGYREGENRATE" : return "ENERGY REGEN"; break;
+            case "ATTACKRATING" : return "DAMAGE"; break;
+            case "LIFESTEALRATING" : return "HEALTH REGEN"; break;
+            case "PHYSICALPENETRATIONRATING" : return "PENETRATION"; break;
+            case "ENERGYPENETRATIONRATING" : return "PENETRATION"; break;
+            case "CRITICALDAMAGEBONUS" : return "CRIT"; break;
+            case "CRITICALDAMAGECHANCE" : return "CRIT"; break;
+            case "HEALTHREGENRATE" : return "HEALTH REGEN"; break;
+            case "ENERGYRESISTANCERATING" : return "MITIGATION"; break;
+            case "PHYSICALRESISTANCERATING" : return "MITIGATION"; break;
+            case "WELLRIGPLACEMENTTIMER" : return ""; break;
+            default : return ""; break;
+        }
+    },
+    getCardImageURL: function(card, size, type) {
         if(!card) return "";
 
         if(!size) size = "medium";
-        return this.S3URL() + 'images/cards/' + card.code + '/' + card.background + '/background_' + size.toLowerCase() + '.png';
+        if(type === "icon")
+            return this.S3URL() + "images/cards/" + card.code + "/" + card.icon + "/icon_" + size + '.png';
+        else
+            return this.S3URL() + 'images/cards/' + card.code + '/' + card.background + '/background_' + size.toLowerCase() + '.png';
     },
     prettyDate : function(time)
     {
