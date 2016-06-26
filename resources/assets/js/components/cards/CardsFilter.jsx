@@ -29,7 +29,7 @@ var CardsFilter = React.createClass({
                 { name : "Energy Pen", iconName : "pgg-armor-penetration", checked : false },
                 { name : "Physical Pen", iconName : "pgg-physical-penetration", checked : false },
                 { name : "Energy Armor", iconName : "pgg-energy-armor", checked : false },
-                { name : "Physical Armor", iconName : "pgg-physical-armor-2", checked : false },
+                { name : "Physical Armor", iconName : "pgg-physical-armor", checked : false },
                 { name : "Crit Chance", iconName : "pgg-critical-strike-chance", checked : false },
                 { name : "Bonus Crit Damage", iconName : "pgg-critical-strike-damage", checked : false },
                 { name : "Max Mana", iconName : "pgg-max-mana", checked : false },
