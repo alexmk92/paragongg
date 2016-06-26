@@ -12,27 +12,25 @@ var SuggestedDecksWidget = require('./widgets/SuggestedDecks');
 var SpiderWebChart = require('../charts/SpiderWebChart');
 var HorizontalBarChart = require('../charts/HorizontalBarChart');
 
+
 require('rc-slider/assets/index.css');
 
 var DeckDetail = React.createClass({
     getInitialState: function() {
         return {
             comparisons: [
-                { label : "HEALING", icon : "pgg pgg-health-regeneration" },
-                { label : "REGEN", icon : "pgg pgg-health-regeneration" },
-                { label : "DPS", icon : "pgg pgg-cleave" },
-                { label : "DEFENSE", icon : "pgg pgg-physical-armor" },
-                { label : "CROWD CONTROL", icon : "pgg pgg-attack-speed" },
-                { label : "TANKING", icon : "pgg pgg-energy-armor" }
+                { label : "DAMAGE", icon : "pgg pgg-physical-damage" },
+                { label : "HEALTH REGEN", icon : "pgg pgg-health-regeneration" },
+                { label : "MANA REGEN", icon : "pgg pgg-mana-regeneration"},
+                { label : "PENETRATION", icon : "pgg pgg-mana-regeneration"},
+                { label : "HEALTH", icon : "pgg pgg-max-health" },
+                { label : "MITIGATION", icon : "pgg pgg-physical-armor" },
+                { label : "MANA", icon : "pgg pgg-max-mana" }
             ],
-            builds: DECK.builds,
-            cards: DECK.cards,
-            title: DECK.title,
-            hero: DECK.hero,
             currentRank: 1,
             description: DECK.description,
             compareIndex : 0,
-            compareAllBuilds: false,
+            compareAllBuilds: true,
             selectedTab: 0,
             selectedBuild : this.props.deck.builds.length > 0 ? this.props.deck.builds[0] : null
         }
@@ -41,6 +39,11 @@ var DeckDetail = React.createClass({
         this.setFooterHeight();
         window.tooltip = new Toptip();
         this.sliderChanged(1);
+        if(this.state.compareAllBuilds) {
+            setTimeout(function() {
+                this.setState({compareAllBuilds: false});
+            }.bind(this), 50);
+        }
     },
     componentWillMount: function() {
         var newBuilds = DECK.builds.map(function(build) {
@@ -58,7 +61,39 @@ var DeckDetail = React.createClass({
             }.bind(this));
         }.bind(this));
 
-        this.setState({ builds: newBuilds });
+
+        // Set up the appropriate stats that are in this build
+        var newComparisons = [];
+        DECK.builds.forEach(function(build) {
+            build.slots.forEach(function(slot) {
+                if(slot.card) {
+                    slot.card.effects.map(function(effect) {
+                        var statString = "";
+                        if(effect.stat) statString = effect.stat.toUpperCase();
+                        if(effect.description) statString = effect.description.toUpperCase();
+                        var statCategory = Helpers.getStatisticCategory(statString);
+
+                        if(!this.doesCategoryExistInArray(statCategory, newComparisons)) {
+                            if(statCategory !== "")
+                             newComparisons.push({ label : statCategory })
+                        }
+                    }.bind(this));
+                }
+            }.bind(this));
+        }.bind(this));
+
+        this.setState({ builds: newBuilds, comparisons : newComparisons });
+    },
+    doesCategoryExistInArray: function(category, comparisons) {
+        var found = false;
+        comparisons.some(function(comparison) {
+            if(comparison.label === category) {
+                found = true;
+                return true;
+            }
+            return false;
+        });
+        return found;
     },
     setFooterHeight: function() {
         var footer = document.querySelector("footer");
@@ -234,20 +269,55 @@ var DeckDetail = React.createClass({
         if(Helpers.isClientMobile()) {
             return (
                 <div id="statistic-wrapper">
-                    <StatPanel title={ "Build stats" } heroRank={this.state.currentRank} heroStats={ this.state.hero.baseStats  } cardStats={ this.state.cards } build={this.state.selectedBuild} />
+                    <StatPanel title={ "Build stats" } heroRank={this.state.currentRank} heroStats={ this.props.deck.hero.baseStats  } cardStats={ this.props.deck.cards } build={this.state.selectedBuild} />
                 </div>
             )
         } else {
             return (
                 <div id="statistic-wrapper">
                     <StatPanel title={ "Base stats (" + this.props.deck.hero.name + ")" } heroRank={this.state.currentRank} heroStats={ [] } />
-                    <StatPanel title={ "Build stats" } heroRank={this.state.currentRank} heroStats={ this.state.hero.baseStats } cardStats={ this.state.cards } build={this.state.selectedBuild} />
+                    <StatPanel title={ "Build stats" } heroRank={this.state.currentRank} heroStats={ this.props.deck.hero.baseStats } cardStats={ this.props.deck.cards } build={this.state.selectedBuild} />
                 </div>
             )
         }
     },
-    getDataForStat: function(statType, collection) {
+    getValueForEffect: function(effect, desiredEffect) {
+        var statString = "";
+        if(effect.stat) statString = effect.stat.toUpperCase();
+        if(effect.description) statString = effect.description.toUpperCase();
+        var statCategory = Helpers.getStatisticCategory(statString);
+        var statDetails = Helpers.getFormattedStatistic(statString);
 
+        if(statCategory === desiredEffect) {
+            console.log("GOT A " + desiredEffect + " STAT!");
+            console.log(effect);
+            if(effect.stat && effect.stat.toUpperCase() === "LIFESTEALRATING") {
+                return { value : (100 + effect.value) / 100, isPercentage : true }
+            } else {
+                return { value : effect.value, isPercentage : false };
+            }
+        } else {
+            return { value : 0, isPercentage : false };
+        }
+    },
+    computeDamageForEffect: function(effect, currentValues) {
+        var statString = "";
+        if(effect.stat) statString = effect.stat.toUpperCase();
+        if(effect.description) statString = effect.description.toUpperCase();
+        var statCategory = Helpers.getStatisticCategory(statString);
+        var statDetails = Helpers.getFormattedStatistic(statString);
+
+        if(statCategory === "DAMAGE" || statCategory === "CRIT" || statCategory === "ATTACK SPEED") {
+            switch(statDetails.label.toUpperCase()) {
+                case "PHYSICAL DAMAGE" : currentValues.attackDamage += effect.value; break;
+                case "ATTACK SPEED" : currentValues.attackSpeed += effect.value; break;
+                case "CRITICAL CHANCE" : currentValues.critChance += effect.value; break;
+                case "CRITICAL DAMAGE" : currentValues.critDamage += effect.value; break;
+                default: break;
+            }
+        }
+
+        return currentValues;
     },
     getComparisonData: function() {
         var stat = this.state.comparisons[this.state.compareIndex];
@@ -259,11 +329,87 @@ var DeckDetail = React.createClass({
             data : []
         };
 
-        if(stat) {
-            // TODO If not builds exist, then we will show deck stats
-            if(stat === "DAMAGE") {
+        // Get max details
 
-            } else if(stat.label === "REGEN") {
+        // Get build details
+        if(stat && this.state.selectedBuild) {
+            // TODO If not builds exist, then we will show deck stats
+            var build = this.state.selectedBuild;
+
+            if(stat.label === "DAMAGE") {
+                var d = {
+                     critChance : 0,
+                     critDamage : 0,
+                     attackDamage : 0,
+                     attackSpeed : 0
+                };
+
+                build.slots.forEach(function(slot) {
+                    if(slot.card) {
+                        slot.card.effects.forEach(function(effect) {
+                            d = this.computeDamageForEffect(effect, d);
+                            slot.upgrades.forEach(function(upgradeSlot) {
+                                if(upgradeSlot.card) {
+                                    upgradeSlot.card.effects.forEach(function(effect) {
+                                       d = this.computeDamageForEffect(effect, d);
+                                    }.bind(this));
+                                    if(upgradeSlot.card.maxedEffects) {
+                                        upgradeSlot.card.maxedEffects.forEach(function(effect) {
+                                            d = this.computeDamageForEffect(effect, d);
+                                        }.bind(this));
+                                    }
+                                }
+                            }.bind(this));
+                        }.bind(this));
+                        if(slot.card.maxedEffects) {
+                            slot.card.maxedEffects.forEach(function(effect) {
+                                d = this.computeDamageForEffect(effect, d);
+                            }.bind(this));
+                        }
+                    }
+                }.bind(this));
+
+                // BAT / (100+AS) / 100    --- BAT = base attack speed  (twinblast starts with 100)
+                if(d.critChance > 100) d.critChance /= 100;
+                console.log(d.attackSpeed);
+                d.attackSpeed = ((100 / d.attackSpeed) * 100) / 100;
+                d.critDamage += 1;
+
+                console.log("ATTACK SPEED IS: " + d.attackSpeed);
+                console.log("DAMAGE PARMS: ", d);
+                var totalDps = (d.attackSpeed * d.attackDamage) + (d.attackSpeed * d.critChance * (d.critDamage-1) * d.attackDamage);
+
+                if(totalDps > comparisonData.max) comparisonData.max = totalDps;
+                comparisonData.data.push({ data : [totalDps] });
+            } else if(stat.label === "HEALTH REGEN") {
+                var total = 0;
+                build.slots.forEach(function(slot) {
+                   if(slot.card) {
+                       slot.card.effects.forEach(function(effect) {
+                           var value = this.getValueForEffect(effect, "HEALTH REGEN");
+                           if(value.isPercentage) total *= value.value;
+                           else total += value.value;
+
+                           console.log("VALUE IS: " + value + " HEALTH REGEN IS NOW: " + total);
+
+                       }.bind(this));
+                   }
+                }.bind(this));
+
+                if(total > comparisonData.max) comparisonData.max = total;
+                comparisonData.data.push({ data : [total] });
+
+                // Push for maximum possible:
+                comparisonData.parts.push({
+                    start : "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible " + stat.label + " (",
+                    end : "/<span style='text-transform: lowercase'>s</span>)"
+                });
+                // Push for this build labels:
+                comparisonData.parts.push({
+                    start : "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds " + stat.label + " (",
+                    end : "/<span style='text-transform: lowercase'>s</span>)"
+                });
+            } else if(stat.label === "MANA REGEN") {
 
             } else if(stat.label === "HEALTH") {
 
@@ -271,25 +417,16 @@ var DeckDetail = React.createClass({
 
             } else if(stat.label === "MANA") {
 
+            } else if(stat.label === "PENETRATION") {
+
             }
-
-            // Push for maximum possible:
-            comparisonData.parts.push({
-                start : "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible (",
-                end : " " + stat.label + ")"
-            });
-
-            // Push for this build labels:
-            comparisonData.parts.push({
-                start : "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This build (",
-                end : " " + stat.label + ")"
-            });
 
             // Loop over the build and extract relevant info:
             // Push the data
-            comparisonData.data.push({ data : [1042]}, { data : [122] });
-            comparisonData.max = 1042;
+            //comparisonData.data.push({ data : [1042]}, { data : [122] });
         }
+
+        console.log(" ");
 
         return comparisonData;
     },
@@ -362,6 +499,102 @@ var DeckDetail = React.createClass({
 
         return comparisonData;
     },
+    getOverviewData: function() {
+        var spiderChartData = {
+            categories: [],
+            data: []
+        };
+
+        spiderChartData.categories = this.state.comparisons.map(function(comparisonData) {
+            return comparisonData.label
+        });
+
+        if(this.props.deck.builds.length > 0) {
+
+            var data = [];
+
+            if(this.state.selectedBuild && !this.state.compareAllBuilds) {
+                data.push({
+                    name : "",
+                    data : [],
+                    pointPlacement: 'on'
+                });
+                data[0].name = this.state.selectedBuild.title === "" ? "UNTITLED DECK" : this.state.selectedBuild.title;
+                for(var i = 0; i < spiderChartData.categories.length; i++) { data[0].data[i] = 0 }
+
+                this.state.selectedBuild.slots.forEach(function(slot) {
+                    if(slot.card) {
+                        slot.card.effects.forEach(function(effect) {
+                            var statString = "";
+                            if(effect.stat) statString = effect.stat.toUpperCase();
+                            if(effect.description) statString = effect.description.toUpperCase();
+                            var stat = Helpers.getStatisticCategory(statString);
+                            var statIndex = spiderChartData.categories.indexOf(stat);
+                            if(statIndex > -1) {
+                                data[0].data[statIndex]++
+                            }
+                            slot.upgrades.forEach(function(upgradeSlot) {
+                                if(upgradeSlot.card) {
+                                    upgradeSlot.card.effects.forEach(function(effect) {
+                                        var statString = "";
+                                        if(effect.stat) statString = effect.stat.toUpperCase();
+                                        if(effect.description) statString = effect.description.toUpperCase();
+                                        var stat = Helpers.getStatisticCategory(statString);
+                                        var statIndex = spiderChartData.categories.indexOf(stat);
+                                        if(statIndex > -1) {
+                                            data[0].data[statIndex]++
+                                        }
+                                    }.bind(this));
+                                }
+                            }.bind(this));
+                        }.bind(this))
+                    }
+                }.bind(this));
+            } else if(this.props.deck.builds.length > 0 && this.state.compareAllBuilds) {
+                this.props.deck.builds.forEach(function(build, index) {
+                    var title = build.title === "" ? ("Untitled Deck " + index) : build.title;
+                    data.push({
+                       name : title,
+                       data : [],
+                       pointPlacement: 'on'
+                    });
+
+                    for(var i = 0; i < spiderChartData.categories.length; i++) { data[index].data[i] = 0 }
+                    build.slots.forEach(function(slot) {
+                        if(slot.card) {
+                            slot.card.effects.forEach(function(effect) {
+                                var statString = "";
+                                if(effect.stat) statString = effect.stat.toUpperCase();
+                                if(effect.description) statString = effect.description.toUpperCase();
+                                var stat = Helpers.getStatisticCategory(statString);
+                                var statIndex = spiderChartData.categories.indexOf(stat);
+                                if(statIndex > -1) {
+                                    data[index].data[statIndex]++
+                                }
+                                slot.upgrades.forEach(function(upgradeSlot) {
+                                    if(upgradeSlot.card) {
+                                        upgradeSlot.card.effects.forEach(function(effect) {
+                                            var statString = "";
+                                            if(effect.stat) statString = effect.stat.toUpperCase();
+                                            if(effect.description) statString = effect.description.toUpperCase();
+                                            var stat = Helpers.getStatisticCategory(statString);
+                                            var statIndex = spiderChartData.categories.indexOf(stat);
+                                            if(statIndex > -1) {
+                                                data[index].data[statIndex]++
+                                            }
+                                        }.bind(this));
+                                    }
+                                }.bind(this));
+                            }.bind(this))
+                        }
+                    }.bind(this));
+                }.bind(this));
+            }
+            spiderChartData.data = data;
+        }
+
+        return spiderChartData;
+    },
     updateComparisonType: function(index) {
         this.setState({ compareIndex : index });
     },
@@ -371,16 +604,17 @@ var DeckDetail = React.createClass({
     render: function() {
         var affinityWeightingData = this.getAffinityWeighting();
         var statComparisonData = this.getComparisonData();
+        var spiderChartData = this.getOverviewData();
 
         return (
             <div>
                 <div id="deck-info">
                     <div id="hero-avatar">
-                        <img src={ Helpers.getHeroImageURL(this.state.hero)} alt={this.state.hero.name} />
+                        <img src={ Helpers.getHeroImageURL(this.props.deck.hero)} alt={this.props.deck.hero.name} />
                     </div>
                     <div id="title-wrapper">
-                        <h2>{this.state.title}</h2>
-                        <p>{this.state.description}</p>
+                        <h2>{this.props.deck.title}</h2>
+                        <p>{this.props.deck.description}</p>
                     </div>
                     <div id="vote-wrapper">
                         <i className="fa fa-star"></i> <span>{0}</span>
@@ -410,7 +644,7 @@ var DeckDetail = React.createClass({
                     <div className="chart left">
                         <h3>{ this.state.selectedBuild !== null ? "Build" : "Deck" }  Overview</h3>
                         <div className={ this.state.compareAllBuilds ? "toggle-button active" : "toggle-button" } onClick={this.toggleAllBuildsComparison}><span>Compare all builds in this deck</span></div>
-                        <SpiderWebChart container="overview-container" />
+                        <SpiderWebChart series={spiderChartData} container="overview-container" />
                     </div>
                     <div className="chart right">
                         <div className="chart stacked">

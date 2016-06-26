@@ -64,7 +64,7 @@ var CardEffects = React.createClass({
                 var statistic = Helpers.getFormattedStatistic(stat.stat);
                 items.push(
                     <li key={stat.label + "_" + i}>
-                        <span className="value">{ Helpers.dropZeroesAndDelimitNumbers(stat.value) + "" + statistic.modifier }</span>
+                        <span className="value">{ Helpers.dropZeroesAndDelimitNumbers((stat.value * statistic.multiplier)) + "" + statistic.modifier }</span>
                         <i className={statistic.icon} aria-hidden="true" /><span>{ statistic.label}</span>
                     </li>
                 );

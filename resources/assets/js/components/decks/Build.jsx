@@ -188,6 +188,7 @@ var Build = React.createClass({
                     var label = "";
                     var slotStyle = { backgroundImage : "" };
                     if(upgrade.card === null) {
+                        activeClass = "pulse-upgrade";
                         label = <span className="upgrade-label">EMPTY SLOT</span>;
                     } else {
                         activeClass = "";
@@ -435,7 +436,6 @@ var Build = React.createClass({
 
                 if(this.props.selectedCard && slot.card.upgradeSlots && slot.card.upgradeSlots > 0 && this.props.selectedCard.type === "Upgrade") {
                     if(this.props.selectedCard.affinity === slot.card.affinity || this.props.selectedCard.affinity === "Universal") {
-                        console.log("GOT UPGRADE");
                         upgradePulse = "pulse-upgrade";
                     }
                 }

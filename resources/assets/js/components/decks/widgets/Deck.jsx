@@ -46,7 +46,7 @@ var Deck = React.createClass({
     renderCards: function(type) {
         if(typeof this.props.deck.cards[type] !== "undefined" && this.props.deck.cards[type].length > 0) {
             return this.props.deck.cards[type].map(function(card) {
-                var background = { backgroundImage : 'url(' + Helpers.getCardImageURL(card, "large") + ')'};
+                var background = { backgroundImage : 'url(' + Helpers.getCardImageURL(card, "medium", "icon") + ')'};
                 return (
                     <li style={background}
                         key={"deck-item-" + card.code }
