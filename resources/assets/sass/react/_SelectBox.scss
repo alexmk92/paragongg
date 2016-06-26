@@ -24,14 +24,14 @@
 
     .menu {
         position: absolute;
-        z-index: 555;
+        z-index: -50000;
         max-height: 200px;
         height: 0;
         width: 200px;
         opacity: 0;
         right: 0;
         color: white;
-        transition: all 350ms ease-in-out;
+        transition: all 100ms ease-in-out;
 
         li {
             transition: all 350ms ease-in-out;
@@ -56,6 +56,7 @@
         }
 
         &.active {
+            z-index: 555;
             opacity: 1;
             height: 200px;
         }

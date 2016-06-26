@@ -7,6 +7,29 @@ var HorizontalBarChart = React.createClass({
         this.chart = this.renderChart(this.getBaseTheme());
     },
     shouldComponentUpdate: function(nextProps, nextState) {
+        console.log("NEXT PROPS: ", nextProps);
+        console.log("CURRENT PROPS: ", this.props);
+
+        var matchCount = 0;
+        var expectedMatches = this.props.series.parts.length;
+        this.props.series.parts.forEach(function(part) {
+            console.log(part);
+            var matches = false;
+            nextProps.series.parts.some(function(nextPart) {
+               if(part.start === nextPart.start && part.end === nextPart.end) {
+                   matches = true;
+                   matchCount += 1;
+                   return true;
+               }
+                return false;
+            });
+        });
+        if(matchCount === expectedMatches)
+            return true;
+
+        if(nextProps.series.max === this.props.series.max) {
+            return false;
+        }
         return nextProps !== this.props;
     },
     componentDidMount: function() {
