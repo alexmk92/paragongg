@@ -133,10 +133,18 @@
 
                 &.left {
                     float: left;
+                    
+                    &.hidden {
+                        display: none;
+                    }
                 }
 
                 &.right {
                     float: right;
+
+                    &.hidden {
+                        float: left;
+                    }
                 }
 
                 &.stacked {

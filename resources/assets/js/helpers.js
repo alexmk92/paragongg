@@ -23,21 +23,21 @@ module.exports = {
     // To be used by all components that consume all stats, such as the StatPanel
     getAllStatistics: function() {
         return [
-            { ref : "ATTACKSPEEDRATING", label : "Attack Speed", icon: "pgg pgg-attack-speed", modifier : "", value : 0, modified: false, multiplier: 1 },
-            { ref : "COOLDOWNREDUCTIONPERCENTAGE", label : "Cooldown Reduction", icon: "pgg pgg-cooldown-reduction", modifier : "%", value : 0, modified: false, multiplier: 100  },
-            { ref : "MAXENERGY", label : "Max Mana", icon: "pgg pgg-max-mana", modifier : "", value : 0, modified: false, multiplier: 1  },
-            { ref : "MAXHEALTH", label : "Max Health", icon: "pgg pgg-max-health", modifier : "", value : 0, modified: false, multiplier: 1  },
-            { ref : "ENERGYREGENRATE", label : "Energy Regen", icon: "pgg pgg-mana-regeneration", modifier : "/s", value : 0, modified: false, multiplier: 1  },
-            { ref : "ATTACKRATING", label : "Physical Damage", icon: "pgg pgg-physical-damage", modifier : "", value : 0, modified: false, multiplier: 1  },
-            { ref : "LIFESTEALRATING", label : "Lifesteal", icon: "pgg pgg-lifesteal", modifier : "", value : 0, modified: false, multiplier: 1  },
-            { ref : "PHYSICALPENETRATIONRATING", label : "Physical Pen", icon: "pgg pgg-physical-penetration", modifier : "", value : 0, modified: false, multiplier: 1  },
-            { ref : "ENERGYPENETRATIONRATING", label : "Energy Pen", icon: "pgg pgg-armor-penetration", modifier : "", value : 0, modified: false, multiplier: 1  },
-            { ref : "CRITICALDAMAGEBONUS", label : "Critical Damage", icon: "pgg pgg-critical-strike-damage", modifier : "%", value : 0, modified: false, multiplier: 100  },
-            { ref : "CRITICALDAMAGECHANCE", label : "Critical Chance", icon: "pgg pgg-critical-strike-chance", modifier : "%", value : 0, modified: false, multiplier: 100  },
-            { ref : "HEALTHREGENRATE", label : "Health Regen", icon: "pgg pgg-health-regeneration", modifier : "/s", value : 0, modified: false, multiplier: 1 },
-            { ref : "ENERGYRESISTANCERATING", label : "Energy Armor", icon: "pgg pgg-energy-armor", modifier : "", value : 0, modified: false, multiplier: 1  },
-            { ref : "PHYSICALRESISTANCERATING", label : "Physical Armor", icon : "pgg pgg-physical-armor", modifier : "", value : 0, modified: false, multiplier: 1  },
-            { ref : "WELLRIGPLACEMENTTIMER", label : "Placement Time", icon: "pgg pgg-harvester-placement-time", modifier : "s", value : 0, modified: false, multiplier: 1  }
+            { ref : "ATTACKSPEEDRATING", label : "Attack Speed", icon: "pgg pgg-attack-speed", modifier : "", value : 0, modified: false, multiplier: 1, statRef: "attack_speed" },
+            { ref : "COOLDOWNREDUCTIONPERCENTAGE", label : "Cooldown Reduction", icon: "pgg pgg-cooldown-reduction", modifier : "%", value : 0, modified: false, multiplier: 100, statRef: "cooldown_reduction" },
+            { ref : "MAXENERGY", label : "Max Mana", icon: "pgg pgg-max-mana", modifier : "", value : 0, modified: false, multiplier: 1, statRef: "max_mana" },
+            { ref : "MAXHEALTH", label : "Max Health", icon: "pgg pgg-max-health", modifier : "", value : 0, modified: false, multiplier: 1, statRef: "max_health" },
+            { ref : "ENERGYREGENRATE", label : "Energy Regen", icon: "pgg pgg-mana-regeneration", modifier : "/s", value : 0, modified: false, multiplier: 1, statRef: "mana_regen"   },
+            { ref : "ATTACKRATING", label : "Physical Damage", icon: "pgg pgg-physical-damage", modifier : "", value : 0, modified: false, multiplier: 1, statRef: "physical_damage"   },
+            { ref : "LIFESTEALRATING", label : "Lifesteal", icon: "pgg pgg-lifesteal", modifier : "", value : 0, modified: false, multiplier: 1, statRef: "lifesteal"   },
+            { ref : "PHYSICALPENETRATIONRATING", label : "Physical Pen", icon: "pgg pgg-physical-penetration", modifier : "", value : 0, modified: false, multiplier: 1, statRef: "physical_pen"   },
+            { ref : "ENERGYPENETRATIONRATING", label : "Energy Pen", icon: "pgg pgg-armor-penetration", modifier : "", value : 0, modified: false, multiplier: 1, statRef: "energy_pen"   },
+            { ref : "CRITICALDAMAGEBONUS", label : "Critical Damage", icon: "pgg pgg-critical-strike-damage", modifier : "%", value : 0, modified: false, multiplier: 100, statRef: "crit_bonus"   },
+            { ref : "CRITICALDAMAGECHANCE", label : "Critical Chance", icon: "pgg pgg-critical-strike-chance", modifier : "%", value : 0, modified: false, multiplier: 100, statRef: "crit_chance"   },
+            { ref : "HEALTHREGENRATE", label : "Health Regen", icon: "pgg pgg-health-regeneration", modifier : "/s", value : 0, modified: false, multiplier: 1, statRef: "health_regen"  },
+            { ref : "ENERGYRESISTANCERATING", label : "Energy Armor", icon: "pgg pgg-energy-armor", modifier : "", value : 0, modified: false, multiplier: 1, statRef: "energy_armor"   },
+            { ref : "PHYSICALRESISTANCERATING", label : "Physical Armor", icon : "pgg pgg-physical-armor", modifier : "", value : 0, modified: false, multiplier: 1, statRef: "physical_armor"   },
+            { ref : "WELLRIGPLACEMENTTIMER", label : "Placement Time", icon: "pgg pgg-harvester-placement-time", modifier : "s", value : 0, modified: false, multiplier: 1, statRef: ""   }
         ]
     },
     getAffinityColor: function(affinity) {
@@ -84,7 +84,7 @@ module.exports = {
         else if(stat.includes("{ATTR:ATKSPD}")) {
             return "ATTACK SPEED";
         }
-        else if(stat.includes("{ATTR:SPD}") || stat.includes("{ATTR:MP}") || stat.includes("{ATTR:CDR}") ||
+        else if(stat.includes("{ATTR:SPD}") || stat.includes("{ATTR:MP}") ||
             stat.includes("{ATTR:DMGBNS}") || stat.includes("{ATTR:PHYSDMG}") || stat.includes("{ATTR:ENDMG}") ||
             stat.includes("{STATUS:BLEED}") || stat.includes("{STATUS:PSN}") || stat.includes("{STATUS:BURN}")) {
             return "DAMAGE";
@@ -99,13 +99,16 @@ module.exports = {
             return "LIFESTEAL";
         }
         else if(stat.includes("{ATTR:MPREG}")) {
-            return "MANA REGEN";
+            return "ENERGY REGEN";
         }
         else if(stat.includes("{ATTR:CRITCH}")) {
             return "CRIT";
         }
         else if(stat.includes("{STATUS:SLOW}")) {
-            return "CROWD CONTROL";
+            return "";
+        }
+        else if(stat.includes("{ATTR:CDR}")) {
+            return "CDR";
         }
 
         // ATTR Strings dont work here as cant do includes ina  switch
@@ -116,7 +119,7 @@ module.exports = {
             case "MAXHEALTH": return "HEALTH"; break;
             case "ENERGYREGENRATE" : return "ENERGY REGEN"; break;
             case "ATTACKRATING" : return "DAMAGE"; break;
-            case "LIFESTEALRATING" : return "HEALTH REGEN"; break;
+            case "LIFESTEALRATING" : return "LIFESTEAL"; break;
             case "PHYSICALPENETRATIONRATING" : return "PENETRATION"; break;
             case "ENERGYPENETRATIONRATING" : return "PENETRATION"; break;
             case "CRITICALDAMAGEBONUS" : return "CRIT"; break;

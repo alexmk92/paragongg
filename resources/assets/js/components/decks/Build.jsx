@@ -283,7 +283,6 @@ var Build = React.createClass({
             return false;
         }
 
-        console.log("GOT HERE NP")
         // GET THE NEXT AVAILABLE SLOT
         if(this.validateQuantity(false) && this.props.selectedCard) {
             // Got here by clicking on parent card to bind child
@@ -604,10 +603,8 @@ var Build = React.createClass({
 
         if(this.validateQuantity(false) && this.validateSlot(index)) {
             var newSlots = this.props.build.slots;
-
-            console.log(this.props.selectedCard);
+            
             var upgradeSlots = typeof this.props.selectedCard.upgradeSlots !== "undefined" ? this.props.selectedCard.upgradeSlots : 0;
-            console.log(upgradeSlots);
             newSlots.forEach(function (slot, i) {
                 if (i === index) {
                     if (this.props.selectedCard) {
@@ -679,7 +676,6 @@ var Build = React.createClass({
     titleChanged: function() {
         var value = this.refs.buildTitleInput.value;
         if(typeof value !== "undefined" && value.length < 60) {
-            console.log("Setting build title to: ", value);
             var newBuild = this.props.build;
             newBuild.title = value;
 

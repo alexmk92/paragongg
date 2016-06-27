@@ -22,12 +22,14 @@ var CostCurve = React.createClass({
         costCounts[4] = { label : 4, count : 0 };
         costCounts[5] = { label : 5, count : 0 };
         costCounts[6] = { label : 6, count : 0 };
+        costCounts[7] = { label : 7, count : 0 };
 
         // On a null build, show deck affinity weighting
+        console.log("THIS IS THE DECK: ", this.props.deck.cards);
         this.props.deck.cards.all.forEach(function(card) {
             // Push for maximum possible:
             if(typeof costCounts[card.cost] !== "undefined") {
-                costCounts[card.cost].count += 1;
+                costCounts[card.cost].count += card.quantity;
             }
         });
 
@@ -45,7 +47,7 @@ var CostCurve = React.createClass({
                     name : costCount.label + "CP",
                     y : costCount.count
                 });
-                comparisonData.chartWidth += 40;
+                comparisonData.chartWidth += 35;
                 comparisonData.chartColors.push("#42a9e8");
             }
         }
