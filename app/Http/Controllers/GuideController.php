@@ -12,8 +12,9 @@ class GuideController extends Controller
     // Create
     public function index()
     {
-        $guides = Guide::select('type', 'title', 'user_id', 'created_at', 'votes', 'hero', 'slug')
-            ->where('status', 'published')
+        $guides = Guide::where('status', 'published')
+            ->join('users', 'users.id', '=', 'guides.user_id')
+            ->select('guides.id', 'type', 'title', 'user_id', 'guides.created_at', 'votes', 'hero_code', 'slug', 'users.username')
             ->get();
         $heroes = Hero::select('name', 'code', 'image')
             ->get();
@@ -24,7 +25,11 @@ class GuideController extends Controller
     // Create
     public function create()
     {
-        return view('guides.create');
+        $heroes = Hero::select('name', 'code', 'image')
+            ->orderBy('name')
+            ->get();
+
+        return view('guides.create', compact('heroes'));
     }
 
     // Store
@@ -34,7 +39,7 @@ class GuideController extends Controller
         $guide->user_id   = auth()->user()->id;
         $guide->type      = $request->type;
         $guide->title     = $request->title;
-        $guide->slug      = createSlug($request->slug);
+        $guide->slug      = createSlug($request->title);
         $guide->body      = $request->body;
 
         if($guide->type == 'hero') {
@@ -47,7 +52,7 @@ class GuideController extends Controller
                 }
             }
             $guide->deck      = $request->deck;
-            $guide->hero      = $request->hero;
+            $guide->hero_code   = $request->hero;
             $guide->abilities = $abilityString;
         }
 
@@ -61,13 +66,13 @@ class GuideController extends Controller
 
         session()->flash('notification', 'success|Guide saved.');
 
-        return redirect('/guides/show/'.$guide->slug);
+        return redirect('/guides/'.$guide->id.'/'.$guide->slug);
     }
 
     // Read
-    public function show($slug)
+    public function show($id)
     {
-        $guide = Guide::where('slug', $slug)->firstOrFail();
+        $guide = Guide::findOrFail($id);
         return view('guides.show')->with('guide', $guide);
     }
 

@@ -18,7 +18,7 @@ var GuidesFeed = React.createClass({
         return(
             <div>
                 <GuideHeroFilter heroes={this.state.heroes} />
-                <GuideResults guides={this.state.guides} />
+                <GuideResults guides={this.state.guides} heroes={this.state.heroes} />
             </div>
         )
     }
@@ -28,7 +28,7 @@ var HeroListItem = React.createClass({
     render: function() {
         return (
             <li>
-                <a href={"/guides?hero=" +this.props.hero.name }>
+                <a href={"/guides?hero=" +this.props.hero.slug }>
                     <img src={ Helpers.S3URL() + "images/heroes/" + this.props.hero.code + "/" + this.props.hero.image + "/portrait_small.png" } />
                     <span>{this.props.hero.name}</span>
                 </a>
@@ -80,20 +80,36 @@ var GuideHeroFilter = React.createClass({
 var GuideResults = React.createClass({
     getInitialState: function() {
         return {
+            heroes : this.props.heroes,
             guides : this.props.guides
         }
+    },
+    getHero: function(code) {
+        var foundHero = {};
+        this.props.heroes.some(function(hero) {
+            if(hero.code == code) {
+                foundHero = hero;
+                return true;
+            }
+            return false;
+        });
+        return foundHero;
     },
     render: function() {
         var guides = [];
         this.state.guides.forEach(function(guide) {
-            guides.push(<GuidePreview key={guide.slug}
+            var hero = this.getHero(guide.hero_code);
+            console.log(hero);
+            guides.push(<GuidePreview key={guide.id}
+                                      id={guide.id}
                                       slug={guide.slug}
                                       title={guide.title}
                                       created={guide.created}
                                       user_id={guide.user_id}
-                                      hero={guide.hero}
+                                      username={guide.username}
+                                      hero={hero}
             />);
-        });
+        }, this);
         return (
             <Tabs defaultSelected={0} expandable={false} className="padless">
 
@@ -125,20 +141,27 @@ var GuideResults = React.createClass({
 var GuidePreview = React.createClass({
     getPortrait: function() {
         if(this.props.hero) {
-            return <img src={"https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/"+ this.props.hero.code +"/portrait_small.png"}/>
+            return <img src={"https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/" + this.props.hero.code + "/" + this.props.hero.image + "/portrait_small.png"}/>
         } else {
             return <img src="/assets/images/heroes/null.png"/>
         }
     },
+    gameplayOrHero: function() {
+        if(this.props.hero) {
+            return this.props.hero.name;
+        } else {
+            return "Gameplay";
+        }
+    },
     render: function() {
         return(
-            <a className="guide-preview cf" href={"/guides/" + this.props.slug}>
+            <a className="guide-preview cf" href={"/guides/" + this.props.id + "/" + this.props.slug}>
                 <div className="guide-hero">
                     {this.getPortrait()}
                 </div>
                 <div className="guide-details">
                     <div class="title"><h3>{ this.props.title }</h3></div>
-                    <div class="author">by { this.props.user_id }</div>
+                    <div class="author"><strong>{this.gameplayOrHero()}</strong> guide by <strong>{ this.props.username }</strong></div>
                 </div>
             </a>
         )

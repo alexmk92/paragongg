@@ -11,13 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-});
-
+Route::get('/', 'HomeController@index');
 Route::auth();
 
-//Route::get('/home', 'HomeController@index');
 Route::get('/auth', 'Auth\OauthController@accountLink')->middleware('auth');;
 
 /* STATIC */
@@ -77,7 +73,7 @@ Route::post('/guides/create', 'GuideController@store');
 Route::get('/guides/edit/{id}', 'GuideController@edit');
 Route::post('/guides/edit/{id}', 'GuideController@update');
 Route::get('/guides/delete/{id}', 'GuideController@delete');
-Route::get('/guides/{slug}', 'GuideController@show');
+Route::get('/guides/{id}/{slug?}', 'GuideController@show');
 
 /* MISC */
 Route::get('/report/{id}', 'ReportController@store');
@@ -98,6 +94,15 @@ Route::group(['prefix' => 'account', 'middleware' => 'auth'], function () {
 Route::group(['prefix' => 'moderation', 'namespace' => 'Moderation', 'middleware' => ['auth', 'mod']], function () {
     Route::get('/', 'ModerationController@index');
     Route::get('/news', 'ModerationController@news');
+    Route::get('/news/feature/{id}', 'ModerationController@newsFeature');
+    Route::get('/guides', 'ModerationController@guides');
+    Route::get('/guides/feature/{id}', 'ModerationController@guidesFeature');
+    Route::get('/decks', 'ModerationController@decks');
+    Route::get('/decks/feature/{id}', 'ModerationController@decksFeature');
+    Route::get('/cards', 'ModerationController@cards');
+    Route::get('/cards/feature/{id}', 'ModerationController@cardsFeature');
+    Route::get('/heroes', 'ModerationController@heroes');
+    Route::get('/heroes/feature/{id}', 'ModerationController@heroesFeature');
     Route::get('/reports', 'ModerationController@reports');
 });
 

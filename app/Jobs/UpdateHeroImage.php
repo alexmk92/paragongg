@@ -71,5 +71,7 @@ class UpdateHeroImage extends Job implements ShouldQueue
             $hero->image = $filename;
             $hero->save();
         }
+
+        Cache::forever('heroes.images.'.$hero->code, $hero->image);
     }
 }

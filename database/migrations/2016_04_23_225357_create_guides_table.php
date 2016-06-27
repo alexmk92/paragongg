@@ -20,11 +20,12 @@ class CreateGuidesTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('title');
             $table->string('slug');
-            $table->string('hero')->nullable();
+            $table->string('hero_code')->nullable();
             $table->string('abilities')->nullable();
             $table->string('deck')->nullable();
             $table->integer('votes')->default(0);
             $table->text('body');
+            $table->boolean('featured')->default(false);
             $table->timestamps();
         });
     }

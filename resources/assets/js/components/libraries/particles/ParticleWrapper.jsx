@@ -6,7 +6,7 @@ require('particles.js');
 
 var ParticleWrapper = React.createClass({
     componentDidMount: function() {
-        particlesJS('particle-div', ParticleTheme.success());
+        particlesJS('particle-div', ParticleTheme.embersRising());
     },
     render: function() {
         return (

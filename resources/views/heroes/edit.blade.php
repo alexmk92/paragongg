@@ -10,46 +10,55 @@
         <label>Upload new hero cutout</label>
         <input name="cutout" type="file">
         <hr>
-        <h3>Hero Stats</h3>
-        <label>Max Health</label>
-        <input type="text" name="stat_max_health" value="{{ $hero->baseStats['max_health'] or '' }}">
-        <input type="text" name="stat_max_health_modifier" class="short" placeholder="+per level" value="{{ $hero->baseStats['max_health_modifier'] or '' }}"><span class="sublabel">(Per Level)</span>
-        <label>Max Mana</label>
-        <input type="text" name="stat_max_mana" value="{{ $hero->baseStats['max_mana'] or '' }}">
-        <input type="text" name="stat_max_mana_modifier" class="short" placeholder="+per level" value="{{ $hero->baseStats['max_mana_modifier'] or '' }}"><span class="sublabel">(Per Level)</span>
-        <label>Health Regen</label>
-        <input type="text" name="stat_health_regen" value="{{ $hero->baseStats['health_regen'] or '' }}">
-        <input type="text" name="stat_health_regen_modifier" class="short" placeholder="+per level" value="{{ $hero->baseStats['health_regen_modifier'] or '' }}"><span class="sublabel">(Per Level)</span>
-        <label>Mana Regen</label>
-        <input type="text" name="stat_mana_regen" value="{{ $hero->baseStats['mana_regen'] or '' }}">
-        <input type="text" name="stat_mana_regen_modifier" class="short" placeholder="+per level" value="{{ $hero->baseStats['mana_regen_modifier'] or '' }}"><span class="sublabel">(Per Level)</span>
-        <label>Energy Armor</label>
-        <input type="text" name="stat_energy_armor" value="{{ $hero->baseStats['energy_armor'] or '' }}">
-        <input type="text" name="stat_energy_armor_modifier" class="short" placeholder="+per level" value="{{ $hero->baseStats['energy_armor_modifier'] or '' }}"><span class="sublabel">(Per Level)</span>
-        <label>Physical Armor</label>
-        <input type="text" name="stat_physical_armor" value="{{ $hero->baseStats['physical_armor'] or '' }}">
-        <input type="text" name="stat_physical_armor_modifier" class="short" placeholder="+per level" value="{{ $hero->baseStats['physical_armor_modifier'] or '' }}"><span class="sublabel">(Per Level)</span>
-        <label>Movement Speed</label>
-        <input type="text" name="stat_movement_speed" value="{{ $hero->baseStats['movement_speed'] or '' }}">
-        <hr>
-        <label>Physical Damage (Default: 0)</label>
-        <input type="text" name="stat_physical_damage" value="0" value="{{ $hero->baseStats['physical_damage'] or '' }}">
-        <label>Energy Damage (Default: 0)</label>
-        <input type="text" name="stat_energy_damage" value="0" value="{{ $hero->baseStats['energy_damage'] or '' }}">
-        <label>Crit Chance (Default: 0%)</label>
-        <input type="text" name="stat_crit_chance" value="0" value="{{ $hero->baseStats['crit_chance'] or '' }}">
-        <label>Crit Bonus (Default: 150%)</label>
-        <input type="text" name="stat_crit_bonus" value="150" value="{{ $hero->baseStats['crit_bonus'] or '' }}">
-        <label>Attack Speed (Default: 100)</label>
-        <input type="text" name="stat_attack_speed" value="100" value="{{ $hero->baseStats['attack_speed'] or '' }}">
-        <label>Physical Pen (Default: 0)</label>
-        <input type="text" name="stat_physical_pen" value="0" value="{{ $hero->baseStats['physical_pen'] or '' }}">
-        <label>Energy Pen (Default: 0)</label>
-        <input type="text" name="stat_energy_pen" value="0" value="{{ $hero->baseStats['energy_pen'] or '' }}">
-        <label>Lifesteal (Default: 0)</label>
-        <input type="text" name="stat_lifesteal" value="0" value="{{ $hero->baseStats['lifesteal'] or '' }}">
-        <label>Cooldown Reduction (Default: 0%)</label>
-        <input type="text" name="stat_cooldown_reduction" value="0" value="{{ $hero->baseStats['stat_cooldown_reduction'] or '' }}">
+        <h3>Hero Stats</h3><br>
+        <label><i class="pgg pgg-max-health"></i> Max Health</label>
+        <input type="text" name="stat_max_health" class="medium" value="{{ $hero->baseStats['max_health']['value'] or 0 }}">
+        <input type="text" name="stat_max_health_scaling" class="short" placeholder="+p/level" value="{{ $hero->baseStats['max_health']['scaling'] or 0 }}">
+        <label><i class="pgg pgg-max-mana"></i> Max Mana</label>
+        <input type="text" name="stat_max_mana" class="medium" value="{{ $hero->baseStats['max_mana']['value'] or 0 }}">
+        <input type="text" name="stat_max_mana_scaling" class="short" placeholder="+p/level" value="{{ $hero->baseStats['max_health']['scaling'] or 0 }}">
+        <label><i class="pgg pgg-health-regeneration"></i> Health Regen</label>
+        <input type="text" name="stat_health_regen" class="medium" value="{{ $hero->baseStats['health_regen']['value'] or 0 }}">
+        <input type="text" name="stat_health_regen_scaling" class="short" placeholder="+p/level" value="{{ $hero->baseStats['health_regen']['scaling'] or 0 }}">
+        <label><i class="pgg pgg-mana-regeneration"></i> Mana Regen</label>
+        <input type="text" name="stat_mana_regen" class="medium" value="{{ $hero->baseStats['mana_regen']['value'] or 0 }}">
+        <input type="text" name="stat_mana_regen_scaling" class="short" placeholder="+p/level"  value="{{ $hero->baseStats['mana_regen']['scaling'] or 0 }}">
+        <label><i class="pgg pgg-energy-armor"></i> Energy Armor</label>
+        <input type="text" name="stat_energy_armor" class="medium" value="{{ $hero->baseStats['energy_armor']['value'] or 0 }}">
+        <input type="text" name="stat_energy_armor_scaling" class="short" placeholder="+p/level" value="{{ $hero->baseStats['energy_armor']['scaling'] or 0 }}">
+        <label><i class="pgg pgg-physical-armor"></i> Physical Armor</label>
+        <input type="text" name="stat_physical_armor" class="medium" value="{{ $hero->baseStats['physical_armor']['value'] or 0 }}">
+        <input type="text" name="stat_physical_armor_scaling" class="short" placeholder="+p/level" value="{{ $hero->baseStats['physical_armor']['scaling'] or 0 }}">
+        <label><i class="pgg pgg-movement-speed"></i> Movement Speed</label>
+        <input type="text" name="stat_movement_speed" class="medium" value="{{ $hero->baseStats['movement_speed']['value'] or 0 }}">
+        <input type="text" name="stat_movement_speed_scaling" class="short" placeholder="+p/level" value="{{ $hero->baseStats['movement_speed']['scaling'] or 0 }}">
+        <label><i class="pgg pgg-physical-damage"></i> Physical Damage (Default: 0)</label>
+        <input type="text" name="stat_physical_damage" class="medium" value="{{ $hero->baseStats['physical_damage']['value'] or 0 }}">
+        <input type="text" name="stat_physical_damage_scaling" class="short" placeholder="+p/level" value="{{ $hero->baseStats['physical_damage']['scaling'] or 0 }}">
+        <label><i class="pgg pgg-energy-damage"></i> Energy Damage (Default: 0)</label>
+        <input type="text" name="stat_energy_damage" class="medium" value="{{ $hero->baseStats['energy_damange']['value'] or 0 }}">
+        <input type="text" name="stat_energy_damage_scaling" class="short" placeholder="+p/level" value="{{ $hero->baseStats['energy_damange']['scaling'] or 0 }}">
+        <label><i class="pgg pgg-critical-strike-chance"></i> Crit Chance (Default: 0%)</label>
+        <input type="text" name="stat_crit_chance" class="medium" value="{{ $hero->baseStats['crit_chance']['value'] or 0 }}">
+        <input type="text" name="stat_crit_chance_scaling" class="short" placeholder="+p/level" value="{{ $hero->baseStats['crit_chance']['scaling'] or 0 }}">
+        <label><i class="pgg pgg-critical-strike-bonus"></i> Crit Bonus (Default: 150%)</label>
+        <input type="text" name="stat_crit_bonus" class="medium" value="{{ $hero->baseStats['crit_bonus']['value'] or 150 }}">
+        <input type="text" name="stat_crit_bonus_scaling" class="short" placeholder="+p/level"  value="{{ $hero->baseStats['crit_bonus']['scaling'] or 0 }}">
+        <label><i class="pgg pgg-attack-speed"></i> Attack Speed (Default: 100)</label>
+        <input type="text" name="stat_attack_speed" class="medium" value="{{ $hero->baseStats['attack_speed']['value'] or 0 }}">
+        <input type="text" name="stat_attack_speed_scaling" class="short" placeholder="+p/level"  value="{{ $hero->baseStats['attack_speed']['scaling'] or 0 }}">
+        <label><i class="pgg pgg-physical-penetration"></i> Physical Pen (Default: 0)</label>
+        <input type="text" name="stat_physical_pen" class="medium" value="{{ $hero->baseStats['physical_pen']['value'] or 0 }}">
+        <input type="text" name="stat_physical_pen_scaling" class="short" placeholder="+p/level" value="{{ $hero->baseStats['physical_pen']['scaling'] or 0 }}">
+        <label><i class="pgg pgg-energy-penetration"></i> Energy Pen (Default: 0)</label>
+        <input type="text" name="stat_energy_pen" class="medium" value="{{ $hero->baseStats['energy_pen']['value'] or 0 }}">
+        <input type="text" name="stat_energy_pen_scaling" class="short" placeholder="+p/level"  value="{{ $hero->baseStats['energy_pen']['scaling'] or 0 }}">
+        <label><i class="pgg pgg-lifesteal"></i> Lifesteal (Default: 0)</label>
+        <input type="text" name="stat_lifesteal" class="medium" value="{{ $hero->baseStats['lifesteal']['value'] or 0 }}">
+        <input type="text" name="stat_lifesteal_scaling" class="short" placeholder="+p/level"  value="{{ $hero->baseStats['lifesteal']['scaling'] or 0 }}">
+        <label><i class="pgg pgg-cooldown-reduction"></i> Cooldown Reduction (Default: 0%)</label>
+        <input type="text" name="stat_cooldown_reduction" class="medium" value="{{ $hero->baseStats['cooldown_reduction']['value'] or 0 }}">
+        <input type="text" name="stat_cooldown_reduction_scaling" class="short" placeholder="+p/level"  value="{{ $hero->baseStats['cooldown_reduction']['scaling'] or 0 }}">
         <hr>
         <button type="submit" class="btn"><i class="fa fa-check" aria-hidden="true"></i> Save changes</button>
     </form>

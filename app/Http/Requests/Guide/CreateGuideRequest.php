@@ -27,7 +27,6 @@ class CreateGuideRequest extends Request
             'hero'      => 'required',
             'title'     => 'required|min:3',
             'type'      => 'required',
-            'slug'      => 'required|unique:guides|min:3|alpha_dash',
             'body'      => 'required|min:3',
 
             'deck'      => 'min:6',

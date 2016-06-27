@@ -53,7 +53,7 @@
         width: 310px;
         height: 300px;
         margin-bottom: 20px;
-        background-size: contain;
+        background-size: cover;
         transition: all 0.3s;
         border: 1px solid #222222;
         .panel-title {
@@ -64,6 +64,9 @@
             filter: brightness(130%);
         }
     }
+}
+.summary-info {
+    vertical-align: top;
 }
 .summary-info-discussions {
     float: right;

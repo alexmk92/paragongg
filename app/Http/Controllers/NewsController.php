@@ -54,6 +54,15 @@ class NewsController extends Controller
         $storage->getDriver()->put('images/news/thumbnails/'.$path, fopen($image, 'r+'));
         $news->thumbnail = $path;
 
+        // IMPACT TO S3
+        if($request->hasFile('impact')) {
+            $image = $request->file('impact');
+            $filename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+            $path = uniqid(base64_encode($filename).'-',false).'.'.$image->getClientOriginalExtension();
+            $storage->getDriver()->put('images/news/impact/'.$path, fopen($image, 'r+'));
+            $news->impact = $path;
+        }
+
         $news->save();
 
         session()->flash('notification', 'success|News saved.');
@@ -119,6 +128,15 @@ class NewsController extends Controller
             $path = uniqid(base64_encode($filename) . '-', false) . '.' . $image->getClientOriginalExtension();
             $storage->getDriver()->put('images/news/thumbnails/' . $path, fopen($image, 'r+'));
             $news->thumbnail = $path;
+        }
+
+        if($request->hasFile('impact')) {
+            // IMPACT TO S3
+            $image = $request->file('impact');
+            $filename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+            $path = uniqid(base64_encode($filename).'-',false).'.'.$image->getClientOriginalExtension();
+            $storage->getDriver()->put('images/news/impact/'.$path, fopen($image, 'r+'));
+            $news->impact = $path;
         }
 
         $news->save();

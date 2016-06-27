@@ -107,6 +107,10 @@ input.short {
     max-width: 100px;
     display: inline-block;
 }
+input.medium {
+    max-width: 200px;
+    display: inline-block;
+}
 .sublabel {
     margin-left: 10px;
     font-family: $font-condensed;

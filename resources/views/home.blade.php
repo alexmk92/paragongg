@@ -2,29 +2,33 @@
 @section('body')
     <div class="featured-wrapper">
         <div class="featured-panel-wrapper">
-            <a href="/heroes/gadget" class="featured-panel" style="background-image:url(/assets/example-panel1.jpg);">
+            <a href="/heroes/{{ $featuredHero->slug }}" class="featured-panel" style="background-image:url({{ S3URL() }}/images/heroes/{{ $featuredHero->code }}/{{  $featuredHero->image }}/portrait_large.png);">
                 <div class="panel-title">
                     <span class="highlight">Featured Hero</span>
-                    <h4>Gadget</h4>
+                    <h4>{{ $featuredHero->name }}</h4>
                 </div>
             </a>
-            <a href="/cards/reptilian-claw" class="featured-panel" style="background-image:url(/assets/example-panel2.jpg);">
+            <a href="/cards/{{ $featuredCard->slug }}" class="featured-panel" style="background-image:url({{ S3URL() }}/images/cards/{{ $featuredCard->code }}/{{  $featuredCard->icon }}/icon_large.png);">
                 <div class="panel-title">
                     <span class="highlight">Featured Card</span>
-                    <h4>Reptilian Claw</h4>
+                    <h4>{{ $featuredCard->name }}</h4>
                 </div>
             </a>
         </div>
-        <a href="/news/iggy-and-scorch-release-date-announced" class="featured-panel-main">
-            <div class="panel-background anim-slowZoom" style="background-image:url(/assets/example-article-background.jpg);"></div>
+        <a href="/news/{{ $featuredNews->id  }}/{{ $featuredNews->slug  }}" class="featured-panel-main">
+            @if($featuredNews->impact)
+                <div class="panel-background anim-slowZoom" style="background-image:url({{ S3URL() }}/images/news/impact/{{ $news->impact }});"></div>
+            @else
+                <div class="panel-background anim-slowZoom" style="background-image:url(/assets/images/featuredNews.jpg);"></div>
+            @endif
             <div class="panel-title">
-                <span class="highlight">Featured News</span><span>26 May 2016</span><span>12 comments</span>
-                <h1>New Hero Reveal: Riktor</h1>
+                <span class="highlight">Featured News</span><span>{{ $featuredNews->created_at->diffForHumans() }}</span>
+                <h1>{{ $featuredNews->title }}</h1>
             </div>
         </a>
     </div>
     <div class="summary-info-wrapper cf">
-        <div class="summary-info-discussions">
+        <div class="summary-info summary-info-discussions">
             <h5>Recent discussion</h5>
             <ul>
                 <li><a href="" class="cf">
@@ -79,53 +83,35 @@
                 </a></li>
             </ul>
         </div>
-        <div class="summary-info-guides">
+        <div class="summary-info summary-info-guides">
             <h5>Featured guides</h5>
             <ul>
-                <li><a href="" class="cf">
-                    <img src="https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/HeroData_ArcBlade/portrait_small.png" class="hero-avatar"/>
-                    <span class="details"><i class="fa fa-user" aria-hidden="true"></i> jamieshepherd</span><span class="details"><i class="fa fa-star" aria-hidden="true"></i> 120</span>
-                    <span class="content">The Ultimate Sparrow Guide - So Good</span>
-                </a></li>
-                <li><a href="" class="cf">
-                    <img src="https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/HeroData_Coil/portrait_small.png" class="hero-avatar"/>
-                    <span class="details"><i class="fa fa-user" aria-hidden="true"></i> Andhoth</span><span class="details"><i class="fa fa-star" aria-hidden="true"></i> 92</span>
-                    <span class="content">The Ultimate Sparrow Guide - So Good</span>
-                </a></li>
-                <li><a href="" class="cf">
-                    <img src="https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/HeroData_Pyro/portrait_small.png" class="hero-avatar"/>
-                    <span class="details"><i class="fa fa-user" aria-hidden="true"></i> Alexmk92</span><span class="details"><i class="fa fa-star" aria-hidden="true"></i> 109</span>
-                    <span class="content">The Ultimate Sparrow Guide - So Good</span>
-                </a></li>
-                <li><a href="" class="cf">
-                    <img src="https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/HeroData_Totem/portrait_small.png" class="hero-avatar"/>
-                    <span class="details"><i class="fa fa-user" aria-hidden="true"></i> janellenoir</span><span class="details"><i class="fa fa-star" aria-hidden="true"></i> 83</span>
-                    <span class="content">The Ultimate Sparrow Guide - So Good</span>
-                </a></li>
+                @if($featuredGuides->count() > 0)
+                @foreach($featuredGuides as $guide)
+                    <li><a href="/guides/{{$guide->id}}/{{$guide->slug}}" class="cf">
+                        <img src="{{ S3URL() }}/images/heroes/{{ $guide->hero->code }}/{{ $guide->hero->image }}/portrait_small.png" class="hero-avatar"/>
+                        <span class="details"><i class="fa fa-user" aria-hidden="true"></i> {{ $guide->author->username }}</span><span class="details"><i class="fa fa-star" aria-hidden="true"></i> {{ $guide->votes }}</span>
+                        <span class="content">{{ $guide->title }}</span>
+                    </a></li>
+                @endforeach
+                @else
+                    <p>There are currently no featured guides.</p>
+                @endif
             </ul>
-        </div><div class="summary-info-decks">
+        </div><div class="summary-info summary-info-decks">
             <h5>Top rated decks</h5>
             <ul>
-                <li><a href="" class="cf">
-                    <img src="https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/HeroData_RiftMage/portrait_small.png" class="hero-avatar"/>
-                    <span class="details"><i class="fa fa-user" aria-hidden="true"></i> Destiny</span><span class="details"><i class="fa fa-star" aria-hidden="true"></i> 120</span>
-                    <span class="content">The Ultimate Sparrow Guide - So Good</span>
-                </a></li>
-                <li><a href="" class="cf">
-                    <img src="https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/HeroData_Rampage/portrait_small.png" class="hero-avatar"/>
-                    <span class="details"><i class="fa fa-user" aria-hidden="true"></i> Lirik</span><span class="details"><i class="fa fa-star" aria-hidden="true"></i> 164</span>
-                    <span class="content">The Ultimate Sparrow Guide - So Good</span>
-                </a></li>
-                <li><a href="" class="cf">
-                    <img src="https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/HeroData_Hammer/portrait_small.png" class="hero-avatar"/>
-                    <span class="details"><i class="fa fa-user" aria-hidden="true"></i> HeatoN</span><span class="details"><i class="fa fa-star" aria-hidden="true"></i> 127</span>
-                    <span class="content">The Ultimate Sparrow Guide - So Good</span>
-                </a></li>
-                <li><a href="" class="cf">
-                    <img src="https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/HeroData_Grux/portrait_small.png" class="hero-avatar"/>
-                    <span class="details"><i class="fa fa-user" aria-hidden="true"></i> Pott1</span><span class="details"><i class="fa fa-star" aria-hidden="true"></i> 109</span>
-                    <span class="content">The Ultimate Sparrow Guide - So Good</span>
-                </a></li>
+                @if($featuredDecks->count() > 0)
+                    @foreach($featuredDecks as $deck)
+                        <li><a href="" class="cf">
+                                <img src="{{ S3URL() }}/images/heroes/{{ $deck->hero->code }}/{{ $deck->hero->image }}/portrait_small.png" class="hero-avatar"/>
+                                <span class="details"><i class="fa fa-user" aria-hidden="true"></i> {{ $deck->author->username }}</span><span class="details"><i class="fa fa-star" aria-hidden="true"></i> {{ $deck->votes }}</span>
+                                <span class="content">{{ $deck->title }}</span>
+                            </a></li>
+                    @endforeach
+                @else
+                    <p>There are currently no featured guides.</p>
+                @endif
             </ul>
         </div>
     </div>

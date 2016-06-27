@@ -35,7 +35,7 @@ class HeroController extends Controller
     public function edit($code)
     {
         $hero = Hero::where('code', $code)->firstOrFail();
-        return view('heroes.edit')->with('hero', $hero);
+        return view('heroes.edit', compact('hero'));
     }
 
     // Update
@@ -60,28 +60,102 @@ class HeroController extends Controller
         }
 
         $baseStats = new Collection();
-        if($request->has('stat_physical_damage')) $baseStats->physical_damage = (float)$request->stat_physical_damage;
-        if($request->has('stat_energy_damage')) $baseStats->energy_damage = (float)$request->stat_energy_damage;
-        if($request->has('stat_crit_chance')) $baseStats->crit_chance = (float)$request->stat_crit_chance;
-        if($request->has('stat_crit_bonus')) $baseStats->crit_bonus = (float)$request->stat_crit_bonus;
-        if($request->has('stat_attack_speed')) $baseStats->attack_speed = (float)$request->stat_attack_speed;
-        if($request->has('stat_physical_pen')) $baseStats->physical_pen = (float)$request->stat_physical_pen;
-        if($request->has('stat_energy_pen')) $baseStats->energy_pen = (float)$request->stat_energy_pen;
-        if($request->has('stat_max_health')) $baseStats->max_health = (float)$request->stat_max_health;
-        if($request->has('stat_max_health_modifier')) $baseStats->max_health_modifier = (float)$request->stat_max_health_modifier;
-        if($request->has('stat_health_regen')) $baseStats->health_regen = (float)$request->stat_health_regen;
-        if($request->has('stat_health_regen_modifier')) $baseStats->health_regen_modifier = (float)$request->stat_health_regen_modifier;
-        if($request->has('stat_max_mana')) $baseStats->max_mana = (float)$request->stat_max_mana;
-        if($request->has('stat_max_mana_modifier')) $baseStats->max_mana_modifier = (float)$request->stat_max_mana_modifier;
-        if($request->has('stat_mana_regen')) $baseStats->mana_regen = (float)$request->stat_mana_regen;
-        if($request->has('stat_mana_regen_modifier')) $baseStats->mana_regen_modifier = (float)$request->stat_mana_regen_modifier;
-        if($request->has('stat_lifesteal')) $baseStats->lifesteal = (float)$request->stat_lifesteal;
-        if($request->has('stat_physical_armor')) $baseStats->physical_armor = (float)$request->stat_physical_armor;
-        if($request->has('stat_physical_armor_modifier')) $baseStats->physical_armor_modifier = (float)$request->stat_physical_armor_modifier;
-        if($request->has('stat_energy_armor')) $baseStats->energy_armor = (float)$request->stat_energy_armor;
-        if($request->has('stat_energy_armor_modifier')) $baseStats->energy_armor_modifier = (float)$request->stat_energy_armor_modifier;
-        if($request->has('stat_cooldown_reduction')) $baseStats->cooldown_reduction = (float)$request->stat_cooldown_reduction;
-        if($request->has('stat_movement_speed')) $baseStats->movement_speed = (float)$request->stat_movement_speed;
+        if($request->has('stat_physical_damage')) {
+            $baseStats->physical_damage = array(
+                "value" => (float) $request->stat_physical_damage,
+                "scaling" => (float) $request->stat_physical_damage_scaling
+            );
+        }
+        if($request->has('stat_energy_damage')) {
+            $baseStats->energy_damage = array(
+                "value" => (float) $request->stat_energy_damage,
+                "scaling" => (float) $request->stat_energy_damage_scaling
+            );
+        }
+        if($request->has('stat_crit_chance')) {
+            $baseStats->crit_chance = array(
+                "value" => (float) $request->stat_crit_chance,
+                "scaling" => (float) $request->stat_crit_chance_scaling
+            );
+        }
+        if($request->has('stat_crit_bonus')) {
+            $baseStats->crit_bonus = array(
+                "value" => (float) $request->stat_crit_bonus,
+                "scaling" => (float) $request->stat_crit_bonus_scaling
+            );
+        }
+        if($request->has('stat_attack_speed')) {
+            $baseStats->attack_speed = array(
+                "value" => (float) $request->stat_attack_speed,
+                "scaling" => (float) $request->stat_attack_speed_scaling
+            );
+        }
+        if($request->has('stat_physical_pen')) {
+            $baseStats->physical_pen = array(
+                "value" => (float) $request->stat_physical_pen,
+                "scaling" => (float) $request->stat_physical_pen_scaling
+            );
+        }
+        if($request->has('stat_energy_pen')) {
+            $baseStats->energy_pen = array(
+                "value" => (float) $request->stat_physical_pen,
+                "scaling" => (float) $request->stat_physical_pen_scaling
+            );
+        }
+        if($request->has('stat_max_health')) {
+            $baseStats->max_health = array(
+                "value" => (float) $request->stat_max_health,
+                "scaling" => (float) $request->stat_max_health_scaling
+            );
+        }
+        if($request->has('stat_health_regen')) {
+            $baseStats->health_regen = array(
+                "value" => (float) $request->stat_health_regen,
+                "scaling" => (float) $request->stat_health_regen_scaling
+            );
+        }
+        if($request->has('stat_max_mana')) {
+            $baseStats->max_mana = array(
+                "value" => (float) $request->stat_max_mana,
+                "scaling" => (float) $request->stat_max_mana_scaling
+            );
+        }
+        if($request->has('stat_mana_regen')) {
+            $baseStats->mana_regen = array(
+                "value" => (float) $request->stat_mana_regen,
+                "scaling" => (float) $request->stat_mana_regen_scaling
+            );
+        }
+        if($request->has('stat_lifesteal')) {
+            $baseStats->lifesteal = array(
+                "value" => (float) $request->stat_lifesteal,
+                "scaling" => (float) $request->stat_lifesteal_scaling
+            );
+        }
+        if($request->has('stat_physical_armor')) {
+            $baseStats->physical_armor = array(
+                "value" => (float) $request->stat_physical_armor,
+                "scaling" => (float) $request->stat_physical_armor_scaling
+            );
+        }
+        if($request->has('stat_energy_armor')) {
+            $baseStats->energy_armor = array(
+                "value" => (float) $request->stat_energy_armor,
+                "scaling" => (float) $request->stat_energy_armor_scaling
+            );
+        }
+        if($request->has('stat_cooldown_reduction')) {
+            $baseStats->cooldown_reduction = array(
+                "value" => (float) $request->stat_cooldown_reduction,
+                "scaling" => (float) $request->stat_cooldown_reduction_scaling
+            );
+        }
+        if($request->has('stat_movement_speed')) {
+            $baseStats->stat_movement_speed = array(
+                "value" => (float) $request->stat_stat_movement_speed,
+                "scaling" => (float) $request->stat_stat_movement_speed_scaling
+            );
+        }
 
         $hero->baseStats = $baseStats;
         $hero->save();

@@ -39,6 +39,9 @@
                 <label>Article thumbnail</label>
                 <input type="file" name="thumbnail">
 
+                <label>Article impact image (Large HD image for front page)</label>
+                <input type="file" name="impact">
+
                 <div class="article-body">
                     <label><span class="required">*</span> Article body</label>
                     <textarea name="body">

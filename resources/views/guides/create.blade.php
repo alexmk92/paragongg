@@ -32,21 +32,9 @@
                 <div id="hero-form">
                 <label><span class="required">*</span>Which Hero will your guide be about?</label>
                 <select name="hero">
-                    <option value="dekker">Dekker</option>
-                    <option value="feng-mao">Feng Mao</option>
-                    <option value="gadget">Gadget</option>
-                    <option value="gideon">Gideon</option>
-                    <option value="grux">Grux</option>
-                    <option value="howitzer">Howitzer</option>
-                    <option value="kallari">Kallari</option>
-                    <option value="iggy-and-scorch">Iggy &amp; Scorch</option>
-                    <option value="murdock">Murdock</option>
-                    <option value="muriel">Muriel</option>
-                    <option value="rampage">Rampage</option>
-                    <option value="sevarog">Sevarog</option>
-                    <option value="sparrow">Sparrow</option>
-                    <option value="steel">Steel</option>
-                    <option value="twinblast">Twinblast</option>
+                    @foreach($heroes as $hero)
+                        <option value="{{ $hero->code }}">{{ $hero->name }}</option>
+                    @endforeach
                 </select>
                 <hr>
 
