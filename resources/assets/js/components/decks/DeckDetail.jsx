@@ -29,7 +29,6 @@ var DeckDetail = React.createClass({
         }
     },
     componentDidMount: function() {
-        console.log("DECK IS: ", DECK);
         this.setFooterHeight();
         window.tooltip = new Toptip();
         this.sliderChanged(1);
@@ -263,7 +262,7 @@ var DeckDetail = React.createClass({
                     </li>
                 )
             }
-            jsx.push(<span style={{display: 'block', fontSize: '16px', marginTop: '-30px'}}>Sorry, there are no builds in this deck!</span>);
+            jsx.push(<span key="no-builds" style={{display: 'block', fontSize: '16px', marginTop: '-30px'}}>Sorry, there are no builds in this deck!</span>);
             return jsx;
         }
     },
@@ -355,7 +354,6 @@ var DeckDetail = React.createClass({
                             buildSlots.push(newCard);
                         } else {
                             // Bind cards with a higher value
-                            console.log("ALREADY BOUND ALL 6 SLOTS!");
                             buildSlots.some(function(oldCard, i) {
                                 if(oldCard.value > newCard.value) {
                                     upgradeCount = Math.min(upgradeCount - oldCard.upgradeSlots, 0);
@@ -378,14 +376,12 @@ var DeckDetail = React.createClass({
                     var statCategory = Helpers.getStatisticCategory(statString);
 
                     if(statCategory === type) {
-                        console.log("BINDING A UPGRADE CARD: ", upgradeCard);
                         if(effect.value > maxEquipmentValue){
                             maxUpgradeValue = effect.value;
                         }
                         var newUpgradeCard = {
                             value : effect.value
                         };
-                        console.log("CHECKING IF: " + upgradeSlots.length + " IS LESS THAN " + upgradeCount);
                         if(upgradeSlots.length < upgradeCount) {
                             upgradeSlots.push(newUpgradeCard);
                         } else {
@@ -406,10 +402,6 @@ var DeckDetail = React.createClass({
             var total = 0;
             buildSlots.forEach(function(card) { total += card.value; });
             upgradeSlots.forEach(function(upgradeCard) { total += upgradeCard.value });
-
-            console.log(buildSlots);
-            console.log(upgradeSlots);
-            console.log("TOTAL IS: " + total);
 
             return total;
         }
@@ -432,7 +424,6 @@ var DeckDetail = React.createClass({
         }
     },
     recurseSlotsAndGetValue: function(build, baseTotal, effectType) {
-        console.log("BASE ATTACK SPEED IS: " + baseTotal);
         build.slots.forEach(function(slot) {
             if(slot.card) {
                 slot.card.effects.forEach(function(effect) {
@@ -739,8 +730,6 @@ var DeckDetail = React.createClass({
                 end : endLabel
             });
         }
-
-        console.log(" ");
 
         return comparisonData;
     },
