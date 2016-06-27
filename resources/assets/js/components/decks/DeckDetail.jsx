@@ -707,7 +707,8 @@ var DeckDetail = React.createClass({
                 var maxTotal = total;
                 total = this.recurseSlotsAndGetValue(build, total, "ATTACK SPEED") / 100;
 
-                maxTotal += this.getMaxStat("ATTACK SPEED") / 100;
+                maxTotal += this.getMaxStat("ATTACK SPEED");
+                maxTotal /= 100;
                 maxTotal = maxTotal > total ? maxTotal : total;
 
                 if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;

@@ -39,23 +39,23 @@ var DeckPreview = React.createClass({
     renderAffinityBar: function() {
         // this will compute card %age and then set color accordingly
         var cardCounts = [];
-        this.props.deck.cards.forEach(function(card){
+        var total = 0;
+        this.props.deck.cards.all.forEach(function(card){
             if(card) {
                 if(cardCounts.length === 0 ){
-                    cardCounts.push({ affinity : card.affinity, value : Number(1) });
+                    total += card.quantity;
+                    cardCounts.push({ affinity : card.affinity, value : card.quantity });
                 } else {
                     var affinityFound = false;
                     var existingObject = null;
                     cardCounts.forEach(function(cardObject) {
                         if(cardObject.affinity === card.affinity && !affinityFound) {
                             affinityFound = true;
-                            existingObject = cardObject;
                         }
                     });
-                    if(affinityFound) {
-                        existingObject.value += 1;
-                    } else {
-                        cardCounts.push({ affinity : card.affinity, value : Number(1) });
+                    if(!affinityFound) {
+                        total += card.quantity;
+                        cardCounts.push({ affinity : card.affinity, value : card.quantity });
                     }
                 }
             }
@@ -69,7 +69,6 @@ var DeckPreview = React.createClass({
         });
 
         // find the width of each bar
-        var total = this.props.deck.cards.length;
         var bars = cardCounts.map(function(affinityInfo, i) {
             var percentage = ((affinityInfo.value / total) * 100) + "%";
             var affinityClass = "bar bar-color-" + affinityInfo.affinity.toLowerCase().trim();
@@ -100,9 +99,9 @@ var DeckPreview = React.createClass({
          </div>
          */
         var sortedCards = [];
-        this.props.deck.cards.forEach(function(card) {
+        this.props.deck.cards.all.forEach(function(card) {
             if(card) {
-                card.quantity = 1;
+                //card.quantity = 1;
                 card.borderColor = card.affinity.toLowerCase();
                 if(sortedCards.length === 0) {
                     sortedCards.push(card);
