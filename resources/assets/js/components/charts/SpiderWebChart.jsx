@@ -13,7 +13,10 @@ var SpiderWebChart = React.createClass({
         this.renderChart(this.getBaseTheme());
     },
     shouldComponentUpdate: function(nextProps, nextState) {
-        return true;
+        if(this.props.type && this.props.updateTarget) {
+            return ((nextProps.updateTarget === this.props.type) || (nextProps.updateTarget === "ALL"));
+        }
+        return nextProps !== this.props;
     },
     getBaseTheme: function() {
         return this.props.options || {

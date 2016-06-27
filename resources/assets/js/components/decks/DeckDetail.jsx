@@ -18,30 +18,25 @@ require('rc-slider/assets/index.css');
 var DeckDetail = React.createClass({
     getInitialState: function() {
         return {
-            comparisons: [
-                { label : "DAMAGE", icon : "pgg pgg-physical-damage" },
-                { label : "HEALTH REGEN", icon : "pgg pgg-health-regeneration" },
-                { label : "MANA REGEN", icon : "pgg pgg-mana-regeneration"},
-                { label : "PENETRATION", icon : "pgg pgg-mana-regeneration"},
-                { label : "HEALTH", icon : "pgg pgg-max-health" },
-                { label : "MITIGATION", icon : "pgg pgg-physical-armor" },
-                { label : "MANA", icon : "pgg pgg-max-mana" }
-            ],
+            comparisons: [],
             currentRank: 1,
             description: DECK.description,
             compareIndex : 0,
             compareAllBuilds: true,
             selectedTab: 0,
-            selectedBuild : this.props.deck.builds.length > 0 ? this.props.deck.builds[0] : null
+            selectedBuild : this.props.deck.builds.length > 0 ? this.props.deck.builds[0] : null,
+            updateTarget: "ALL"
         }
     },
     componentDidMount: function() {
+        console.log("DECK IS: ", DECK);
         this.setFooterHeight();
         window.tooltip = new Toptip();
         this.sliderChanged(1);
         if(this.state.compareAllBuilds) {
             setTimeout(function() {
-                this.setState({compareAllBuilds: false});
+                var newComparisons = this.getComparisonFields();
+                this.setState({compareAllBuilds: false, updateTarget : "BUILD-OVERVIEW",  comparisons : newComparisons });
             }.bind(this), 50);
         }
     },
@@ -63,26 +58,39 @@ var DeckDetail = React.createClass({
 
 
         // Set up the appropriate stats that are in this build
-        var newComparisons = [];
-        DECK.builds.forEach(function(build) {
-            build.slots.forEach(function(slot) {
-                if(slot.card) {
-                    slot.card.effects.map(function(effect) {
-                        var statString = "";
-                        if(effect.stat) statString = effect.stat.toUpperCase();
-                        if(effect.description) statString = effect.description.toUpperCase();
-                        var statCategory = Helpers.getStatisticCategory(statString);
-
-                        if(!this.doesCategoryExistInArray(statCategory, newComparisons)) {
-                            if(statCategory !== "")
-                             newComparisons.push({ label : statCategory })
-                        }
-                    }.bind(this));
-                }
-            }.bind(this));
-        }.bind(this));
+        var newComparisons = this.getComparisonFields();
 
         this.setState({ builds: newBuilds, comparisons : newComparisons });
+    },
+    getComparisonFields: function() {
+        if(!this.state.compareAllBuilds) {
+            var newComparisons = [];
+            DECK.builds.forEach(function(build) {
+                newComparisons = this.getComparison(newComparisons, build);
+            }.bind(this));
+            return newComparisons;
+        } else {
+            return this.getComparison([], this.state.selectedBuild);
+        }
+    },
+    getComparison: function(newComparisons, build) {
+        if(!build) { return newComparisons }
+        build.slots.forEach(function(slot) {
+            if(slot.card) {
+                slot.card.effects.map(function(effect) {
+                    var statString = "";
+                    if(effect.stat) statString = effect.stat.toUpperCase();
+                    if(effect.description) statString = effect.description.toUpperCase();
+                    var statCategory = Helpers.getStatisticCategory(statString);
+
+                    if(!this.doesCategoryExistInArray(statCategory, newComparisons)) {
+                        if(statCategory !== "")
+                            newComparisons.push({ label : statCategory });
+                    }
+                }.bind(this));
+            }
+        }.bind(this));
+        return newComparisons;
     },
     doesCategoryExistInArray: function(category, comparisons) {
         var found = false;
@@ -109,7 +117,10 @@ var DeckDetail = React.createClass({
     showBuild: function(build, index) {
         this.setState({
             selectedTab: index,
-            selectedBuild: build
+            selectedBuild: build,
+            updateTarget: "ALL",
+            compareIndex: 0,
+            comparisons: this.getComparison([], build)
         });
     },
     getCard: function(cardCode) {
@@ -185,7 +196,7 @@ var DeckDetail = React.createClass({
         var elem = document.querySelector(".rc-slider-handle");
         if(typeof elem !== "undefined" && elem !== null) {
             elem.innerHTML = domNode;
-            this.setState({ currentRank : value });
+            this.setState({ currentRank : value, updateTarget : "BUILD-COMPARISON" });
         }
     },
     renderBuildSlots: function() {
@@ -233,7 +244,27 @@ var DeckDetail = React.createClass({
             }.bind(this));
 
         }  else {
-            return <li className="no-builds"><span>No builds exists for this deck, sorry!</span></li>
+            var jsx = [];
+            for(var i = 0; i < 6; i++) {
+                var type = i < 5 ? "Active" : "Passive";
+                jsx.push(
+                    <li id={"c_" + i}
+                        className={type}
+                        key={"slot_" + i}
+                        onMouseEnter={this.hideTooltip}
+                        onMouseOver={this.hideTooltip}
+                        onMouseLeave={this.hideTooltip}
+                    >
+                        <span className="slot-label">{type}</span>
+                        <div className="placed-card"
+                             key={"card-" + i}
+                        >
+                        </div>
+                    </li>
+                )
+            }
+            jsx.push(<span style={{display: 'block', fontSize: '16px', marginTop: '-30px'}}>Sorry, there are no builds in this deck!</span>);
+            return jsx;
         }
     },
     renderUpgradeSlots: function(slot) {
@@ -275,10 +306,112 @@ var DeckDetail = React.createClass({
         } else {
             return (
                 <div id="statistic-wrapper">
-                    <StatPanel title={ "Base stats (" + this.props.deck.hero.name + ")" } heroRank={this.state.currentRank} heroStats={ [] } />
+                    <StatPanel title={ "Base stats (" + this.props.deck.hero.name + ")" } heroRank={this.state.currentRank} heroStats={ this.props.deck.hero.baseStats } />
                     <StatPanel title={ "Build stats" } heroRank={this.state.currentRank} heroStats={ this.props.deck.hero.baseStats } cardStats={ this.props.deck.cards } build={this.state.selectedBuild} />
                 </div>
             )
+        }
+    },
+    getMaxStat(type) {
+        var buildSlots = [];
+        var upgradeSlots = [];
+        var upgradeCount = 0;
+        var maxEquipmentValue = 0;
+        var maxUpgradeValue = 0;
+
+        var explodedEquipment = [];
+        var explodedUpgrades = [];
+        this.props.deck.cards.equipment.forEach(function(card) {
+            for(var i = 0; i < card.quantity; i++) {
+                explodedEquipment.push(card);
+            }
+        });
+        this.props.deck.cards.upgrades.forEach(function(card) {
+            for(var i = 0; i < card.quantity; i++) {
+                explodedUpgrades.push(card);
+            }
+        });
+
+        if(type === "DAMAGE") {
+
+        } else {
+            explodedEquipment.forEach(function(card) {
+                card.effects.forEach(function(effect) {
+                    var statString = "";
+                    if(effect.stat) statString = effect.stat.toUpperCase();
+                    if(effect.description) statString = effect.description.toUpperCase();
+                    var statCategory = Helpers.getStatisticCategory(statString);
+
+                    if(statCategory === type) {
+                        if(effect.value > maxEquipmentValue){
+                            maxEquipmentValue = effect.value;
+                        }
+                        var newCard = {
+                            value : effect.value,
+                            upgrades : card.upgradeSlots
+                        };
+                        if(buildSlots.length < 6) {
+                            upgradeCount += card.upgradeSlots;
+                            buildSlots.push(newCard);
+                        } else {
+                            // Bind cards with a higher value
+                            console.log("ALREADY BOUND ALL 6 SLOTS!");
+                            buildSlots.some(function(oldCard, i) {
+                                if(oldCard.value > newCard.value) {
+                                    upgradeCount = Math.min(upgradeCount - oldCard.upgradeSlots, 0);
+                                    upgradeCount = Math.min(upgradeCount + newCard.upgradeSlots, 0);
+                                    buildSlots[i] = newCard;
+                                    return true;
+                                }
+                                return false;
+                            });
+                        }
+                    }
+                }.bind(this));
+            }.bind(this));
+
+            explodedUpgrades.forEach(function(upgradeCard) {
+                upgradeCard.effects.forEach(function(effect) {
+                    var statString = "";
+                    if(effect.stat) statString = effect.stat.toUpperCase();
+                    if(effect.description) statString = effect.description.toUpperCase();
+                    var statCategory = Helpers.getStatisticCategory(statString);
+
+                    if(statCategory === type) {
+                        console.log("BINDING A UPGRADE CARD: ", upgradeCard);
+                        if(effect.value > maxEquipmentValue){
+                            maxUpgradeValue = effect.value;
+                        }
+                        var newUpgradeCard = {
+                            value : effect.value
+                        };
+                        console.log("CHECKING IF: " + upgradeSlots.length + " IS LESS THAN " + upgradeCount);
+                        if(upgradeSlots.length < upgradeCount) {
+                            upgradeSlots.push(newUpgradeCard);
+                        } else {
+                            // Bind cards with a higher value
+                            upgradeSlots.some(function(oldUpgradeCard, i) {
+                                if(oldUpgradeCard.value > newUpgradeCard.value) {
+                                    upgradeSlots[i] = newUpgradeCard;
+                                    return true;
+                                }
+                                return false;
+                            });
+                        }
+                    }
+                }.bind(this));
+            }.bind(this));
+
+            // Get the total for this build
+            var total = 0;
+            buildSlots.forEach(function(card) { total += card.value; });
+            upgradeSlots.forEach(function(upgradeCard) { total += upgradeCard.value });
+
+            console.log(buildSlots);
+            console.log(upgradeSlots);
+            console.log("TOTAL IS: " + total);
+
+            return total;
         }
     },
     getValueForEffect: function(effect, desiredEffect) {
@@ -289,16 +422,38 @@ var DeckDetail = React.createClass({
         var statDetails = Helpers.getFormattedStatistic(statString);
 
         if(statCategory === desiredEffect) {
-            console.log("GOT A " + desiredEffect + " STAT!");
-            console.log(effect);
             if(effect.stat && effect.stat.toUpperCase() === "LIFESTEALRATING") {
-                return { value : (100 + effect.value) / 100, isPercentage : true }
+                return { value : effect.value / 100, isPercentage : true }
             } else {
                 return { value : effect.value, isPercentage : false };
             }
         } else {
             return { value : 0, isPercentage : false };
         }
+    },
+    recurseSlotsAndGetValue: function(build, baseTotal, effectType) {
+        console.log("BASE ATTACK SPEED IS: " + baseTotal);
+        build.slots.forEach(function(slot) {
+            if(slot.card) {
+                slot.card.effects.forEach(function(effect) {
+                    var value = this.getValueForEffect(effect, effectType);
+                    if(typeof value.value !== "undefined") {
+                        baseTotal += value.value;
+                    }
+                }.bind(this));
+                slot.upgrades.forEach(function(upgradeSlot) {
+                    if(upgradeSlot.card) {
+                        upgradeSlot.card.effects.forEach(function(effect) {
+                            var value = this.getValueForEffect(effect, effectType);
+                            if(typeof value.value !== "undefined") {
+                                baseTotal += value.value;
+                            }
+                        }.bind(this));
+                    }
+                }.bind(this));
+            }
+        }.bind(this));
+        return baseTotal;
     },
     computeDamageForEffect: function(effect, currentValues) {
         var statString = "";
@@ -320,6 +475,8 @@ var DeckDetail = React.createClass({
         return currentValues;
     },
     getComparisonData: function() {
+        var baseStats = this.props.deck.hero.baseStats || null;
+
         var stat = this.state.comparisons[this.state.compareIndex];
         var comparisonData = {
             chartHeight: 120,
@@ -344,6 +501,13 @@ var DeckDetail = React.createClass({
                      attackSpeed : 0,
                      baseAttackSpeed : 100
                 };
+
+                if(baseStats) {
+                    d.baseAttackSpeed = (baseStats.attack_speed.value + (baseStats.attack_speed.scaling * this.state.currentRank));
+                    d.attackDamage = (baseStats.physical_damage.value + (baseStats.physical_damage.scaling * this.state.currentRank));
+                    d.critChance = (baseStats.crit_chance.value + (baseStats.crit_chance.scaling * this.state.currentRank)) / 100;
+                    d.critDamage = (baseStats.crit_bonus.value + (baseStats.crit_bonus.scaling * this.state.currentRank)) / 100;
+                }
 
                 build.slots.forEach(function(slot) {
                     if(slot.card) {
@@ -370,73 +534,210 @@ var DeckDetail = React.createClass({
                     }
                 }.bind(this));
 
+
                 // account for heroes that dont have AS cards
-                if(d.attackSpeed === 0) d.attackSpeed = 100;
+                if(d.attackSpeed < 100) d.attackSpeed += 100;
 
                 // (100/ASR) x BAT=Adj. Atk Time
-                if(d.critChance > 100) d.critChance /= 100;
-                d.attackSpeed = ((100 / d.attackSpeed) * d.baseAttackSpeed) / 100;
+                d.attackSpeed = Math.min(((100 / d.attackSpeed) * d.baseAttackSpeed) / 100, 2.5);
                 d.critDamage += 1;
 
                 var totalDps = (d.attackSpeed * d.attackDamage) + (d.attackSpeed * d.critChance * (d.critDamage-1) * d.attackDamage);
 
-                if(totalDps > comparisonData.max) comparisonData.max = totalDps;
-                comparisonData.data.push({ data : [totalDps] });
+                var maxTotal = d.attackDamage;
+                maxTotal += this.getMaxStat("DAMAGE");
+                maxTotal = maxTotal > total ? maxTotal : totalDps;
 
-                // Push for maximum possible:
-                comparisonData.parts.push({
-                    start : "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible basic " + stat.label + " (",
-                    end : "DPS)"
-                });
-                // Push for this build labels:
-                comparisonData.parts.push({
-                    start : "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds basic " + stat.label + " (",
-                    end : "DPS)"
-                });
+                if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
+                comparisonData.data.push({ data : [maxTotal] }, { data : [totalDps] });
+
+                var maxStartLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible " + stat.label + " (";
+                var maxEndLabel = "/<span style='text-transform: lowercase'>s</span>)";
+                var startLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds basic " + stat.label + " (";
+                var endLabel = "/<span style='text-transform: lowercase'>s</span>)";
 
             } else if(stat.label === "HEALTH REGEN") {
-                var total = 0;
-                build.slots.forEach(function(slot) {
-                   if(slot.card) {
-                       slot.card.effects.forEach(function(effect) {
-                           var value = this.getValueForEffect(effect, "HEALTH REGEN");
-                           total += value.value;
-                       }.bind(this));
-                   }
-                }.bind(this));
+                var total = (baseStats.health_regen.value + (baseStats.health_regen.scaling * this.state.currentRank)) || 0;
+                var maxTotal = total;
+                total = this.recurseSlotsAndGetValue(build, total, "HEALTH REGEN");
 
-                if(total > comparisonData.max) comparisonData.max = total;
-                comparisonData.data.push({ data : [total] });
+                maxTotal += this.getMaxStat("HEALTH REGEN");
+                maxTotal = maxTotal > total ? maxTotal : total;
 
-                // Push for maximum possible:
-                comparisonData.parts.push({
-                    start : "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible " + stat.label + " (",
-                    end : "/<span style='text-transform: lowercase'>s</span>)"
-                });
-                // Push for this build labels:
-                comparisonData.parts.push({
-                    start : "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds " + stat.label + " (",
-                    end : "/<span style='text-transform: lowercase'>s</span>)"
-                });
-            } else if(stat.label === "MANA REGEN") {
+                if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
+                comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
+
+                var maxStartLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible " + stat.label + " (";
+                var maxEndLabel = "/<span style='text-transform: lowercase'>s</span>)";
+                var startLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds " + stat.label + " (";
+                var endLabel = "/<span style='text-transform: lowercase'>s</span>)";
+
+            } else if(stat.label === "ENERGY REGEN") {
+                var total = (baseStats.mana_regen.value + (baseStats.mana_regen.scaling * this.state.currentRank)) || 0;
+                var maxTotal = total;
+                total = this.recurseSlotsAndGetValue(build, total, "ENERGY REGEN");
+
+                maxTotal += this.getMaxStat("ENERGY REGEN");
+                maxTotal = maxTotal > total ? maxTotal : total;
+
+                if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
+                comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
+
+                var maxStartLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible " + stat.label + " (";
+                var maxEndLabel = "/<span style='text-transform: lowercase'>s</span>)";
+                var startLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds " + stat.label + " (";
+                var endLabel = "/<span style='text-transform: lowercase'>s</span>)";
 
             } else if(stat.label === "HEALTH") {
+                var total = (baseStats.max_health.value + (baseStats.max_health.scaling * this.state.currentRank)) || 0;
+                var maxTotal = total;
+                total = this.recurseSlotsAndGetValue(build, total, "HEALTH");
 
+                maxTotal += this.getMaxStat("HEALTH");
+                maxTotal = maxTotal > total ? maxTotal : total;
+
+                if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
+                comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
+
+                var maxStartLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible " + stat.label + " (";
+                var maxEndLabel = ")";
+                var startLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds " + stat.label + " (";
+                var endLabel = ")";
             } else if(stat.label === "MITIGATION") {
+                var total = (baseStats.energy_armor.value + (baseStats.energy_armor.scaling * this.state.currentRank)) || 0;
+                total += (baseStats.physical_armor.value + (baseStats.physical_armor.scaling * this.state.currentRank)) || 0;
+                var maxTotal = total;
+                total = this.recurseSlotsAndGetValue(build, total, "MITIGATION");
 
+                maxTotal += this.getMaxStat("MITIGATION");
+                maxTotal = maxTotal > total ? maxTotal : total;
+
+                if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
+                comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
+
+                var maxStartLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible " + stat.label + " (";
+                var maxEndLabel = ")";
+                var startLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds " + stat.label + " (";
+                var endLabel = ")";
             } else if(stat.label === "MANA") {
+                var total = (baseStats.max_health.value + (baseStats.max_health.scaling * this.state.currentRank)) || 0;
+                var maxTotal = total;
+                total = this.recurseSlotsAndGetValue(build, total, "MANA");
 
+                maxTotal += this.getMaxStat("MANA");
+                maxTotal = maxTotal > total ? maxTotal : total;
+
+                if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
+                comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
+
+                var maxStartLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible " + stat.label + " (";
+                var maxEndLabel = ")";
+                var startLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds " + stat.label + " (";
+                var endLabel = ")";
             } else if(stat.label === "PENETRATION") {
+                var total = (baseStats.max_health.value + (baseStats.max_health.scaling * this.state.currentRank)) || 0;
+                var maxTotal = total;
+                total = this.recurseSlotsAndGetValue(build, total, "PENETRATION");
 
+                maxTotal += this.getMaxStat("PENETRATION");
+                maxTotal = maxTotal > total ? maxTotal : total;
+
+                if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
+                comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
+
+                var maxStartLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible " + stat.label + " (";
+                var maxEndLabel = ")";
+                var startLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds " + stat.label + " (";
+                var endLabel = ")";
             } else if(stat.label === "CDR") {
+                var total = (baseStats.cooldown_reduction.value + (baseStats.cooldown_reduction.scaling * this.state.currentRank)) || 0;
+                var maxTotal = total;
+                total = this.recurseSlotsAndGetValue(build, total, "CDR");
 
+                maxTotal += this.getMaxStat("CDR");
+                maxTotal = maxTotal > total ? maxTotal : total;
+
+                if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
+                comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
+
+                var maxStartLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible " + stat.label + " (";
+                var maxEndLabel = "%)";
+                var startLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds " + stat.label + " (";
+                var endLabel = "%)";
             } else if(stat.label === "LIFESTEAL") {
+                var total = (baseStats.lifesteal.value + (baseStats.lifesteal.scaling * this.state.currentRank)) || 0;
+                var maxTotal = total;
+                total = this.recurseSlotsAndGetValue(build, total, "LIFESTEAL");
 
+                maxTotal += this.getMaxStat("LIFESTEAL");
+                maxTotal = maxTotal > total ? maxTotal : total;
+
+                if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
+                comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
+
+                var maxStartLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible " + stat.label + " (";
+                var maxEndLabel = "%)";
+                var startLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds " + stat.label + " (";
+                var endLabel = "%)";
+            } else if(stat.label === "CRIT") {
+                var total = (baseStats.crit_chance.value + (baseStats.crit_chance.scaling * this.state.currentRank)) || 0;
+                //total += (baseStats.crit_bonus.value + (baseStats.crit_bonus.scaling * this.state.currentRank)) || 0;
+                var maxTotal = total;
+                total = this.recurseSlotsAndGetValue(build, total, "CRIT");
+
+                maxTotal += this.getMaxStat("CRIT");
+                maxTotal = maxTotal > total ? maxTotal : total;
+
+                if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
+                comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
+
+                var maxStartLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible " + stat.label + "ICAL STRIKE CHANCE (";
+                var maxEndLabel = "%)";
+                var startLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds " + stat.label + "ICAL STRIKE CHANCE (";
+                var endLabel = "%)";
+            } else if(stat.label === "MITIGATION") {
+                var total = (baseStats.physical_armor.value + (baseStats.physical_armor.scaling * this.state.currentRank)) || 0;
+                total += (baseStats.energy_armor.value + (baseStats.energy_armor.scaling * this.state.currentRank)) || 0;
+                var maxTotal = total;
+                total = this.recurseSlotsAndGetValue(build, total, "MITIGATION");
+
+                maxTotal += this.getMaxStat("MITIGATION");
+                maxTotal = maxTotal > total ? maxTotal : total;
+
+                if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
+                comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
+
+                var maxStartLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible " + stat.label + " (";
+                var maxEndLabel = "%)";
+                var startLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds " + stat.label + " (";
+                var endLabel = "%)";
+            } else if(stat.label === "ATTACK SPEED") {
+                var total = (baseStats.attack_speed.value + (baseStats.attack_speed.scaling * this.state.currentRank)) || 0;
+                var maxTotal = total;
+                total = this.recurseSlotsAndGetValue(build, total, "ATTACK SPEED") / 100;
+
+                maxTotal += this.getMaxStat("ATTACK SPEED") / 100;
+                maxTotal = maxTotal > total ? maxTotal : total;
+
+                if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
+                comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
+
+                var maxStartLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible " + stat.label + " (";
+                var maxEndLabel = "<span style='text-transform: lowercase;'> attacks p/s</span>)";
+                var startLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds " + stat.label + " (";
+                var endLabel = "<span style='text-transform: lowercase;'> attacks p/s</span>)";
             }
 
-            // Loop over the build and extract relevant info:
-            // Push the data
-            //comparisonData.data.push({ data : [1042]}, { data : [122] });
+            // Push for maximum possible:
+            comparisonData.parts.push({
+                start : maxStartLabel,
+                end : maxEndLabel
+            });
+            // Push for this build labels:
+            comparisonData.parts.push({
+                start : startLabel,
+                end : endLabel
+            });
         }
 
         console.log(" ");
@@ -609,15 +910,19 @@ var DeckDetail = React.createClass({
         return spiderChartData;
     },
     updateComparisonType: function(index) {
-        this.setState({ compareIndex : index });
+        this.setState({ compareIndex : index, updateTarget : "BUILD-COMPARISON" });
     },
     toggleAllBuildsComparison: function() {
-        this.setState({ compareAllBuilds: !this.state.compareAllBuilds });
+        var newComparisons = this.getComparisonFields();
+        this.setState({ compareAllBuilds: !this.state.compareAllBuilds, updateTarget : "BUILD-OVERVIEW", comparisons : newComparisons });
     },
     render: function() {
         var affinityWeightingData = this.getAffinityWeighting();
         var statComparisonData = this.getComparisonData();
         var spiderChartData = this.getOverviewData();
+
+        var hiddenStyle = this.props.deck.builds.length > 0 ? {} : { display: "none" };
+        var hiddenClass = this.props.deck.builds.length > 0 ? "" : "hidden"
 
         return (
             <div>
@@ -654,19 +959,19 @@ var DeckDetail = React.createClass({
                 </div>
 
                 <div id="chart-wrapper">
-                    <div className="chart left">
+                    <div className={"chart left " + hiddenClass} style={hiddenStyle}>
                         <h3>{ this.state.selectedBuild !== null ? "Build" : "Deck" }  Overview</h3>
                         <div className={ this.state.compareAllBuilds ? "toggle-button active" : "toggle-button" } onClick={this.toggleAllBuildsComparison}><span>Compare all builds in this deck</span></div>
-                        <SpiderWebChart series={spiderChartData} container="overview-container" />
+                        <SpiderWebChart updateTarget={this.state.updateTarget} type="BUILD-OVERVIEW" series={spiderChartData} container="overview-container" />
                     </div>
-                    <div className="chart right">
-                        <div className="chart stacked">
-                            <h3>{ this.state.selectedBuild !== null ? "Build" : "Deck" }  Comparison <SelectBox optionSelectedAtIndex={this.updateComparisonType} label="compare:" value={this.state.comparisons[this.state.compareIndex].label} items={this.state.comparisons} /></h3>
-                            <HorizontalBarChart container="build-comparison-container" max={statComparisonData.max} useValue={true} height={ statComparisonData.chartHeight } colors={ statComparisonData.chartColors } series={statComparisonData} />
+                    <div className={"chart right " + hiddenClass}>
+                        <div className="chart stacked" style={hiddenStyle}>
+                            <h3>{ this.state.selectedBuild !== null ? "Build" : "Deck" }  Comparison <SelectBox optionSelectedAtIndex={this.updateComparisonType} label="compare:" value={this.state.comparisons[this.state.compareIndex] ? this.state.comparisons[this.state.compareIndex].label : ""} items={this.state.comparisons} /></h3>
+                            <HorizontalBarChart updateTarget={this.state.updateTarget} type="BUILD-COMPARISON" container="build-comparison-container" max={statComparisonData.max} useValue={true} height={ statComparisonData.chartHeight } colors={ statComparisonData.chartColors } series={statComparisonData} />
                         </div>
                         <div className="chart stacked">
                             <h3>{ this.state.selectedBuild !== null ? "Build" : "Deck" }  Affinity Weighting</h3>
-                            <HorizontalBarChart container="affinity-weighting-container" max={affinityWeightingData.max} useValue={false} height={ affinityWeightingData.chartHeight } colors={ affinityWeightingData.chartColors } series={affinityWeightingData} />
+                            <HorizontalBarChart updateTarget={this.state.updateTarget} type="AFFINITY-WEIGHTING" container="affinity-weighting-container" max={affinityWeightingData.max} useValue={false} height={ affinityWeightingData.chartHeight } colors={ affinityWeightingData.chartColors } series={affinityWeightingData} />
                         </div>
                     </div>
                 </div>

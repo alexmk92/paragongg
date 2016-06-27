@@ -76,7 +76,7 @@ class DeckController extends Controller
         $deck = Deck::where('slug', $slug)->firstOrFail();
         // pass back a dummy object for now
         $deck->hero = Hero::where('code', $deck->hero)->firstOrFail();
-        $deck->cards = Card::whereIn('code', $deck->cards)->get();
+        $uniqueCards = Card::whereIn('code', $deck->cards)->get();
 
         // Sort the cards to quantity, we set the totalCards before as this
         // will directly modify the state of the cards array, removing some
@@ -85,40 +85,53 @@ class DeckController extends Controller
             "prime" => [],
             "equipment" => [],
             "upgrades" => [],
-            "all" => $deck->cards
+            "all" => []
         ];
 
-        foreach($deck->cards as $card) {
-            $key = "";
-            switch($card["type"]) {
+        foreach($uniqueCards as $card) {
+            switch($card->type) {
                 case "Prime": $key = "prime" ; break;
                 case "Active": $key = "equipment"; break;
                 case "Passive": $key = "equipment"; break;
                 case "Upgrade": $key = "upgrades"; break;
                 default : break;
             }
-            if(count($sortedCards) == 0){
-                $card["quantity"] = 1;
-                array_push($sortedCards[$key], $card);
 
+            if(count($sortedCards[$key]) == 0){
+                $card->quantity = 0;
+                array_push($sortedCards[$key], $card);
             } else {
-                $exists = false;
-                $index = 0;
-                foreach($sortedCards[$key] as $sortedCard) {
-                    if($card["code"] == $sortedCard["code"]) {
-                        $exists = true;
-                        $sortedCards[$key][$index]["quantity"] += 1;
-                    }
-                    $index++;
+                if(!isset($card->quantity)) {
+                    $card->quantity = 0;
                 }
-                if($exists == false) {
-                    if(!isset($card["quantity"])) {
-                        $card["quantity"] = 1;
-                    }
-                    array_push($sortedCards[$key], $card);
+                array_push($sortedCards[$key], $card);
+            }
+        }
+        // Find a better way to do this so we get the quants
+        foreach($sortedCards['prime'] as $sortedCard) {
+            foreach($deck->cards as $cardCode) {
+                if($cardCode == $sortedCard->code) {
+                    $sortedCard->quantity++;
                 }
             }
         }
+        foreach($sortedCards['equipment'] as $sortedCard) {
+            foreach($deck->cards as $cardCode) {
+                if($cardCode == $sortedCard->code) {
+                    $sortedCard->quantity++;
+                }
+            }
+        }
+        foreach($sortedCards['upgrades'] as $sortedCard) {
+            foreach($deck->cards as $cardCode) {
+                if($cardCode == $sortedCard->code) {
+                    $sortedCard->quantity++;
+                }
+            }
+        }
+        $sortedCards["all"] = array_merge($sortedCards["equipment"], $sortedCards["upgrades"], $sortedCards["prime"]);
+
+        // Finally sorted the collection
         $deck->cards = $sortedCards;
 
         return view('decks.show')->with('deck', $deck)

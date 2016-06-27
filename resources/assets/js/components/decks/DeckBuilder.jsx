@@ -124,13 +124,19 @@ var DeckBuilder = React.createClass({
         if(!this.isDeckValid()) {
             this.notificationPanel.addNotification("warning", "You must select at least one card, one hero and enter a title for this deck before you can save.");
         } else {
+            // We need to do this as we store only the card code so we lose the quantity of cards
+            var compressedCards = [];
+            this.state.deck.forEach(function(card) {
+                for(var i = 0; i < card.quantity; i++) {
+                    compressedCards.push(card.code);
+                }
+            });
+
             var deckAndBuilds = {
                 title : this.state.title,
                 description : this.state.description,
                 author : USER_ID,
-                cards : this.state.deck.map(function(card) {
-                    return card.code;
-                }),
+                cards : compressedCards,
                 builds : this.state.builds.map(function(build) {
                     return {
                             title: build.title,

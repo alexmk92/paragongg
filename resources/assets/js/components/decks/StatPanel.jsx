@@ -27,27 +27,28 @@ var StatPanel = React.createClass({
             );
         });
     },
-    getHeroStats: function() {
-        return [{}, {}, {}];
+    getBaseStats: function() {
+        var allStats = this.state.statistics;
+        // Loop over base stats here too...
         if(this.props.heroStats) {
-
+            allStats.forEach(function(baseStat) {
+                if(this.props.heroStats[baseStat.statRef]) {
+                    var heroStat = this.props.heroStats[baseStat.statRef];
+                    baseStat.value = (heroStat.value + (this.props.heroRank * heroStat.scaling));
+                }
+            }.bind(this));
         }
+        return allStats;
     },
     getModifiedStats: function(collection) {
-        var baseStats = this.getHeroStats();
-        var newStats = this.state.statistics;
+        var newStats = this.getBaseStats();
         collection.forEach(function(card) {
             card.effects.forEach(function(effect) {
                 if(typeof effect.stat !== "undefined" && effect.stat) {
-                    // This is the hero stats, we will eventually check for type but this is to
-                    // prove the concept that we can get multiple stats
-                    baseStats.some(function(stat, i) {
-                        //effect.value += i * 1.75
-                    });
                     // New stats is what we merge with the final array
                     newStats.some(function(stat) {
                         if(stat.ref === effect.stat.toUpperCase()) {
-                            stat.value = Helpers.dropZeroesAndDelimitNumbers(stat.value = effect.value);
+                            stat.value = Helpers.dropZeroesAndDelimitNumbers(stat.value = (stat.value + effect.value));
                             stat.modified = true;
                             return true;
                         }
@@ -59,8 +60,8 @@ var StatPanel = React.createClass({
         return newStats;
     },
     getCardStats: function() {
-        if(this.props.build === null && (typeof this.props.cardStats !== undefined && this.props.cardStats)) {
-            var moddedSlots = this.getModifiedStats(this.props.cardStats.all);
+        if(typeof this.props.build === "undefined" && typeof this.props.cardStats === "undefined") {
+            var moddedSlots = this.getBaseStats();
             this.setState({ statistics : moddedSlots });
         } else if(this.props.build) {
             var extractedCards = [];
