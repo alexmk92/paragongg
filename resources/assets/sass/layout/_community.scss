@@ -1,0 +1,59 @@
+.community {
+    h1 {
+        margin-bottom: 50px;
+    }
+    .recent-posts {
+        width: 50%;
+        display: inline-block;
+        margin-bottom: 50px;
+        padding-right: 50px;
+    }
+    .stream-preview {
+        display: inline-block;
+        width: 30%;
+        margin-right: 4%;
+        margin-top: 30px;
+        position: relative;
+        border: 1px solid $faded-line;
+        color: white;
+        &:nth-of-type(3n) {
+            margin-right: 0;
+        }
+        &:hover {
+            .details .description {
+                height: auto;
+                opacity: 1;
+                margin-top: 10px;
+                margin-bottom: 5px;
+            }
+        }
+        .details {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: rgba(0,0,0,0.8);
+            padding: 10px;
+            font-family: $font-condensed;
+            text-transform: uppercase;
+            font-size: 13px;
+            .fa {
+                margin-right: 2px;
+                font-size: 12px;
+            }
+            .viewers {
+                color: $primary-highlight;
+                margin-right: 5px;
+            }
+            .description {
+                display: block;
+                height: 0;
+                opacity: 0;
+                transition: all 0.2s;
+            }
+        }
+        img {
+            width: 100%;
+            vertical-align: top;
+        }
+    }
+}

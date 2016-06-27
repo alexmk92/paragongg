@@ -75,6 +75,9 @@ Route::post('/guides/edit/{id}', 'GuideController@update');
 Route::get('/guides/delete/{id}', 'GuideController@delete');
 Route::get('/guides/{id}/{slug?}', 'GuideController@show');
 
+/* COMMUNITY */
+Route::get('/community', 'CommunityController@index');
+
 /* MISC */
 Route::get('/report/{id}', 'ReportController@store');
 
