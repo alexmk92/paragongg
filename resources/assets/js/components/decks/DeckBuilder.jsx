@@ -462,7 +462,7 @@ var DeckBuilder = React.createClass({
                 var cardMarkup = (
                     <li className={className}
                         key={card.code + "_" + Helpers.uuid() }
-                        style={{backgroundImage: 'url('+card.images.large+')'}}
+                        style={{backgroundImage: 'url('+Helpers.getCardImageURL(card, "medium")+')'}}
                         onContextMenu={this.deleteCardFromDeck.bind(this, card)}
                         onClick={this.selectCard.bind(this, card)}
                         onMouseEnter={this.setTooltipContent.bind(this, card)}
@@ -571,7 +571,7 @@ var DeckBuilder = React.createClass({
             var slotIcons = build.slots.map(function(slot, i) {
                 var imageURL = "/assets/images/cards/card-placeholder.png";
                 if(slot.card !== null)
-                    imageURL = slot.card.images.large;
+                    imageURL = Helpers.getCardImageURL(slot.card, "small", "icon");
 
                 if(i === 0) wrapperBackgroundImageURL = imageURL;
                 var upgradeBadge = "";
@@ -818,7 +818,7 @@ var DeckBuilder = React.createClass({
                     <span>SELECTED: <span className="subtext">{this.state.selectedCard.name} ({cardType})</span> <i className="fa fa-close"></i></span>
                     <div className="black-overlay"></div>
                     <div className="selected-card-background"
-                         style={{backgroundImage: 'url(' + this.state.selectedCard.images.large + ')'}}
+                         style={{backgroundImage: 'url(' + Helpers.getCardImageURL(this.state.selectedCard, "small", "icon") + ')'}}
                     ></div>
                 </div>
             )
@@ -829,7 +829,7 @@ var DeckBuilder = React.createClass({
                     <span>Currently selected: <span className="subtext">{this.lastSelectedCard.name}</span> <i className="fa fa-close"></i></span>
                     <div className="black-overlay"></div>
                     <div className="selected-card-background"
-                         style={{backgroundImage: 'url(' + this.lastSelectedCard.images.large + ')'}}
+                         style={{backgroundImage: 'url(' + Helpers.getCardImageURL(this.lastSelectedCard, "small", "icon") + ')'}}
                     ></div>
                 </div>
             )

@@ -341,7 +341,8 @@ var DeckDetail = React.createClass({
                      critChance : 0,
                      critDamage : 0,
                      attackDamage : 0,
-                     attackSpeed : 0
+                     attackSpeed : 0,
+                     baseAttackSpeed : 100
                 };
 
                 build.slots.forEach(function(slot) {
@@ -369,29 +370,37 @@ var DeckDetail = React.createClass({
                     }
                 }.bind(this));
 
-                // BAT / (100+AS) / 100    --- BAT = base attack speed  (twinblast starts with 100)
+                // account for heroes that dont have AS cards
+                if(d.attackSpeed === 0) d.attackSpeed = 100;
+
+                // (100/ASR) x BAT=Adj. Atk Time
                 if(d.critChance > 100) d.critChance /= 100;
-                console.log(d.attackSpeed);
-                d.attackSpeed = ((100 / d.attackSpeed) * 100) / 100;
+                d.attackSpeed = ((100 / d.attackSpeed) * d.baseAttackSpeed) / 100;
                 d.critDamage += 1;
 
-                console.log("ATTACK SPEED IS: " + d.attackSpeed);
-                console.log("DAMAGE PARMS: ", d);
                 var totalDps = (d.attackSpeed * d.attackDamage) + (d.attackSpeed * d.critChance * (d.critDamage-1) * d.attackDamage);
 
                 if(totalDps > comparisonData.max) comparisonData.max = totalDps;
                 comparisonData.data.push({ data : [totalDps] });
+
+                // Push for maximum possible:
+                comparisonData.parts.push({
+                    start : "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible basic " + stat.label + " (",
+                    end : "DPS)"
+                });
+                // Push for this build labels:
+                comparisonData.parts.push({
+                    start : "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds basic " + stat.label + " (",
+                    end : "DPS)"
+                });
+
             } else if(stat.label === "HEALTH REGEN") {
                 var total = 0;
                 build.slots.forEach(function(slot) {
                    if(slot.card) {
                        slot.card.effects.forEach(function(effect) {
                            var value = this.getValueForEffect(effect, "HEALTH REGEN");
-                           if(value.isPercentage) total *= value.value;
-                           else total += value.value;
-
-                           console.log("VALUE IS: " + value + " HEALTH REGEN IS NOW: " + total);
-
+                           total += value.value;
                        }.bind(this));
                    }
                 }.bind(this));
@@ -418,6 +427,10 @@ var DeckDetail = React.createClass({
             } else if(stat.label === "MANA") {
 
             } else if(stat.label === "PENETRATION") {
+
+            } else if(stat.label === "CDR") {
+
+            } else if(stat.label === "LIFESTEAL") {
 
             }
 

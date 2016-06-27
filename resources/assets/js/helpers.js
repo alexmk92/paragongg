@@ -90,10 +90,13 @@ module.exports = {
             return "DAMAGE";
         }
         else if(stat.includes("{ATTR:PHYSPEN}") || stat.includes("{ATTR:ENPEN}") || stat.includes("{STATUS:PEN}")) {
-            return "PENETRATION"
+            return "PENETRATION";
         }
-        else if(stat.includes("{ATTR:HPREG}") || stat.includes("{ATTR:LFSTL}")) {
-            return "HEALTH REGEN"
+        else if(stat.includes("{ATTR:HPREG}")) {
+            return "HEALTH REGEN";
+        }
+        else if(stat.includes("{ATTR:LFSTL}")) {
+            return "LIFESTEAL";
         }
         else if(stat.includes("{ATTR:MPREG}")) {
             return "MANA REGEN";
@@ -108,7 +111,7 @@ module.exports = {
         // ATTR Strings dont work here as cant do includes ina  switch
         switch(stat) {
             case "ATTACKSPEEDRATING": return "ATTACK SPEED"; break;
-            case "COOLDOWNREDUCTIONPERCENTAGE" : return "DAMAGE"; break;
+            case "COOLDOWNREDUCTIONPERCENTAGE" : return "CDR"; break;
             case "MAXENERGY" : return "MANA"; break;
             case "MAXHEALTH": return "HEALTH"; break;
             case "ENERGYREGENRATE" : return "ENERGY REGEN"; break;
