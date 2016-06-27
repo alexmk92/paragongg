@@ -117,7 +117,16 @@
 
         #chart-wrapper {
             margin: 50px 0 80px 0;
-            overflow: hidden;
+            padding: 0 5px;
+            overflow: auto;
+
+            .highcharts-container {
+                overflow: visible !important;
+
+                svg {
+                    overflow: visible !important;
+                }
+            }
 
             .chart {
                 display: inline-block;

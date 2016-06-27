@@ -135,7 +135,7 @@ var DeckPreview = React.createClass({
                                         <div className="black-overlay"></div>
                                         <div className={ "card-quantity " + card.borderColor }>{ card.quantity }</div>
                                         <div className="card-preview-container"
-                                             style={{backgroundImage : 'url(' + Helpers.getCardImageURL(card, 'medium') + ')'}}>
+                                             style={{backgroundImage : 'url(' + Helpers.getCardImageURL(card, 'small', 'icon') + ')'}}>
                                         </div>
                                     </li>
                                 );

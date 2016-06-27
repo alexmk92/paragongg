@@ -1,11 +1,22 @@
 var React = require('react');
 var Highcharts = require('highcharts');
-require("highcharts/highcharts-more")(Highcharts);
-
 
 var SpiderWebChart = React.createClass({
     componentDidMount: function() {
-        var theme = this.props.options || {
+        var theme = this.getBaseTheme();
+        this.renderChart(theme);
+    },
+    componentWillUnmout: function() {
+        this.chart.destroy();
+    },
+    componentDidUpdate: function() {
+        this.renderChart(this.getBaseTheme());
+    },
+    shouldComponentUpdate: function(nextProps, nextState) {
+        return true;
+    },
+    getBaseTheme: function() {
+        return this.props.options || {
             colors: ["#ff6f00", "#64bf22", "#42a9e8", "#aa2ed3", "#2ed3ba", "#e634c2", "#e4e22e"],
             chart: {
                 style: {
@@ -127,10 +138,6 @@ var SpiderWebChart = React.createClass({
             contrastTextColor: '#F0F0F3',
             maskColor: 'rgba(255,255,255,0.3)'
         };
-        this.renderChart(theme);
-    },
-    componentWillUnmout: function() {
-        this.chart.destroy();
     },
     renderChart: function(theme) {
         Highcharts.setOptions(theme);
@@ -151,8 +158,7 @@ var SpiderWebChart = React.createClass({
                 size: '80%'
             },
             xAxis: {
-                categories: ['HEALING', 'DPS', 'CROWD CONTROL', 'TANKING',
-                    'DEFENSE', 'REGEN'],
+                categories: this.props.series.categories,
                 tickmarkPlacement: 'on',
                 lineWidth: 0
             },
@@ -163,7 +169,7 @@ var SpiderWebChart = React.createClass({
             },
             tooltip: {
                 shared: true,
-                valuePrefix: '$'
+                valueSuffix: ' cards/effects'
             },
             legend: {
                 align: 'right',
@@ -171,15 +177,7 @@ var SpiderWebChart = React.createClass({
                 y: 100,
                 layout: 'vertical'
             },
-            series: this.props.data || [{
-                name: 'Allocated Budget',
-                data: [43000, 19000, 60000, 35000, 17000, 10000],
-                pointPlacement: 'on'
-            }, {
-                name: 'Actual Spending',
-                data: [50000, 39000, 42000, 31000, 26000, 14000],
-                pointPlacement: 'on'
-            }]
+            series: this.props.series.data
         });
     },
     render: function() {

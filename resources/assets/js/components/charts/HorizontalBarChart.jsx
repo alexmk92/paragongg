@@ -7,9 +7,8 @@ var HorizontalBarChart = React.createClass({
         this.chart = this.renderChart(this.getBaseTheme());
     },
     shouldComponentUpdate: function(nextProps, nextState) {
-        console.log("NEXT PROPS: ", nextProps);
-        console.log("CURRENT PROPS: ", this.props);
 
+        /*
         var matchCount = 0;
         var expectedMatches = this.props.series.parts.length;
         this.props.series.parts.forEach(function(part) {
@@ -30,6 +29,8 @@ var HorizontalBarChart = React.createClass({
         if(nextProps.series.max === this.props.series.max) {
             return false;
         }
+        */
+        
         return nextProps !== this.props;
     },
     componentDidMount: function() {
@@ -242,17 +243,7 @@ var HorizontalBarChart = React.createClass({
                     }
                 }
             },
-            series: this.props.series.data || [
-                {
-                    data: [297]
-                },
-                {
-                    data: [55]
-                },
-                {
-                    data: [107]
-                }
-            ]
+            series: this.props.series.data
         });
     },
     render: function() {

@@ -1,6 +1,5 @@
 var React = require('react');
 var Highcharts = require('highcharts');
-require("highcharts/highcharts-more")(Highcharts);
 
 var VerticalBarChart = React.createClass({
     componentDidMount: function() {

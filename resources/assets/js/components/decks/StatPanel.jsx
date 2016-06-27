@@ -37,7 +37,6 @@ var StatPanel = React.createClass({
         var baseStats = this.getHeroStats();
         var newStats = this.state.statistics;
         collection.forEach(function(card) {
-            console.log(card);
             card.effects.forEach(function(effect) {
                 if(typeof effect.stat !== "undefined" && effect.stat) {
                     // This is the hero stats, we will eventually check for type but this is to
