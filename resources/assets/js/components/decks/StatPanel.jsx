@@ -14,7 +14,12 @@ var StatPanel = React.createClass({
     shouldComponentUpdate: function(nextProps, nextState) {
         return nextProps !== this.props;
     },
-    componentWillUpdate: function(nextProps, nextState) {
+    componentWillReceiveProps: function(nextProps, nextState) {
+        var newStatistics = this.state.statistics.map(function(stat) {
+            stat.modified = false;
+            return stat;
+        });
+        this.setState({ statistics : newStatistics });
         this.getCardStats();
     },
     getStatisticList: function() {
@@ -48,8 +53,11 @@ var StatPanel = React.createClass({
                     // New stats is what we merge with the final array
                     newStats.some(function(stat) {
                         if(stat.ref === effect.stat.toUpperCase()) {
+                            var oldValue = stat.value;
                             stat.value = Helpers.dropZeroesAndDelimitNumbers(stat.value = (stat.value + effect.value));
-                            stat.modified = true;
+                            if(stat.value !== oldValue) stat.modified = true;
+                            else stat.modified = false;
+
                             return true;
                         }
                         return false;

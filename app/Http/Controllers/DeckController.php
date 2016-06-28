@@ -84,7 +84,7 @@ class DeckController extends Controller
     // Create
     public function create()
     {
-        $heroes = Hero::select('affinities', 'code', 'name', 'image')->orderBy('name', 'asc')->get();
+        $heroes = Hero::select('affinities', 'code', 'name', 'image', 'images', 'baseStats')->orderBy('name', 'asc')->get();
         $cards = app('App\Http\Controllers\CardController')->getCards();
         $userId = Auth::user() ? Auth::user()->id : "null";
 

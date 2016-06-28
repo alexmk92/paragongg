@@ -6,6 +6,10 @@ var SpiderWebChart = React.createClass({
         var theme = this.getBaseTheme();
         this.renderChart(theme);
     },
+    componentWillMount: function() {
+        if(this.props.requireModuleDependencies)
+            require('highcharts/highcharts-more')(Highcharts);
+    },
     componentWillUnmout: function() {
         this.chart.destroy();
     },

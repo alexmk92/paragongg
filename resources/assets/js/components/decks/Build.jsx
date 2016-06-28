@@ -2,9 +2,9 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var Helpers = require('../../helpers');
 var CardEffects = require('../cards/CardEffects');
-var StatPanel = require('./StatPanel');
 var Tooltip = require('../libraries/tooltip/Toptip');
 var ToggleFilter = require('../filter/ToggleFilter');
+var BuildStats = require('./BuildStats');
 
 var Build = React.createClass({
     componentWillMount: function() {
@@ -188,7 +188,7 @@ var Build = React.createClass({
                     var label = "";
                     var slotStyle = { backgroundImage : "" };
                     if(upgrade.card === null) {
-                        activeClass = "pulse-upgrade";
+                        activeClass = "";
                         label = <span className="upgrade-label">EMPTY SLOT</span>;
                     } else {
                         activeClass = "";
@@ -435,7 +435,7 @@ var Build = React.createClass({
 
                 if(this.props.selectedCard && slot.card.upgradeSlots && slot.card.upgradeSlots > 0 && this.props.selectedCard.type === "Upgrade") {
                     if(this.props.selectedCard.affinity === slot.card.affinity || this.props.selectedCard.affinity === "Universal") {
-                        upgradePulse = "pulse-upgrade";
+                        upgradePulse = "";
                     }
                 }
 
@@ -734,6 +734,31 @@ var Build = React.createClass({
         });
         return total;
     },
+    // Sort cards for the build stats component, sorts into all, equipment, upgrades, prime
+    sortCards: function(cards) {
+        var sortedCards = {
+            all : [],
+            upgrades : [],
+            equipment : [],
+            prime : []
+        };
+
+        cards.forEach(function(card) {
+            for(var i = 0; i < card.quantity; i++) {
+                sortedCards.all.push(card);
+                switch(card.type.toUpperCase()) {
+                    case "UPGRADE": sortedCards.upgrades.push(card);break;
+                    case "ACTIVE": sortedCards.equipment.push(card);break;
+                    case "PASSIVE": sortedCards.equipment.push(card);break;
+                    case "PRIME": sortedCards.prime.push(card);break;
+                    default: break;
+                }
+            }
+        });
+
+        console.log(sortedCards);
+        return sortedCards;
+    },
     render: function() {
         var newTitle = Helpers.debounce(function() {
             this.titleChanged();
@@ -746,22 +771,6 @@ var Build = React.createClass({
          </li>
          </ul>
          */
-        var panels = "";
-        // ONLY SHOW UPGRADE PANEL ON MOBILE
-        if(Helpers.isClientMobile()) {
-            panels = (
-                <div id="statistic-wrapper">
-                    <StatPanel  />
-                </div>
-            )
-        } else {
-            panels = (
-                <div id="statistic-wrapper">
-                    <StatPanel  />
-                    <StatPanel />
-                </div>
-            )
-        }
         var tooltipMessage = ("Any selected equipment card will automatically be bound to the next available slot, upgrade cards must still need to be manually added to equipment cards.");
         var buildListClass = this.numberOfCardsPlaced() > 0 ? " upgrades-showing" : "";
 
@@ -772,7 +781,7 @@ var Build = React.createClass({
                 <ul className={"build-list " + buildListClass }>
                     { this.getBuildSlots() }
                 </ul>
-                { panels }
+                <BuildStats requireModuleDependencies={false} resetStatPanel={true} selectedBuild={this.props.build} hero={this.props.hero} cards={this.sortCards(this.props.deck)} builds={[this.props.build]} />
             </div>
         )
     }
