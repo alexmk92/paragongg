@@ -78,6 +78,17 @@ Route::get('/guides/{id}/{slug?}', 'GuideController@show');
 /* COMMUNITY */
 Route::get('/community', 'CommunityController@index');
 
+/* DISCUSSION */
+Route::get('/discussion', 'DiscussionController@index');
+Route::get('/discussion/create', 'DiscussionController@create');
+Route::post('/discussion/create', 'DiscussionController@store');
+Route::get('/discussion/edit/{id}', 'DiscussionController@edit');
+Route::post('/discussion/edit/{id}', 'DiscussionController@update');
+Route::get('/discussion/delete/{id}', 'DiscussionController@delete');
+Route::post('/discussion/{id}/reply', 'DiscussionController@reply');
+Route::get('/discussion/{id}/{slug?}', 'DiscussionController@show');
+Route::post('/discussion/{id}/{slug?}/reply', 'DiscussionController@reply');
+
 /* MISC */
 Route::get('/report/{id}', 'ReportController@store');
 
