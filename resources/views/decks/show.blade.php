@@ -5,8 +5,8 @@
 
     <div id="deck-detail-wrapper">
         <div id="deck-container"></div>
+        @include('layouts.commentFeed')
     </div>
-    @include('layouts.commentFeed')
 @endsection
 <script>
     var DECK = {!! json_encode($deck) !!};

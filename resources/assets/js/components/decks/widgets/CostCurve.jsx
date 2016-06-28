@@ -3,6 +3,9 @@ var VerticalBarChart = require('../../charts/VerticalBarChart');
 var Helpers = require('../../../helpers');
 
 var CostCurve = React.createClass({
+    componentWillReceiveProps: function(nextProps, nextState) {
+        console.log("NEXT PROPS COST CURVE: ", nextProps);
+    },
     getCostCurveData: function() {
         var comparisonData = {
             chartHeight : 225,
@@ -26,8 +29,15 @@ var CostCurve = React.createClass({
 
         // On a null build, show deck affinity weighting
         console.log("THIS IS THE DECK: ", this.props.deck.cards);
-        this.props.deck.cards.all.forEach(function(card) {
+        var collection = [];
+        if(typeof this.props.deck.all === "undefined")
+            collection = this.props.deck;
+        else
+            collection = this.props.deck.cards.all;
+
+        collection.forEach(function(card) {
             // Push for maximum possible:
+            console.log("LOOPING WITH CARD: ", card);
             if(typeof costCounts[card.cost] !== "undefined") {
                 costCounts[card.cost].count += card.quantity;
             }
@@ -62,7 +72,7 @@ var CostCurve = React.createClass({
                     <h3>COST CURVE</h3>
                 </div>
                 <div id="cost-curve-wrapper">
-                    <VerticalBarChart container="cost-curve-container" max={costCurveData.max} useValue={false} width={ costCurveData.chartWidth } height={ costCurveData.chartHeight } colors={ costCurveData.chartColors } series={costCurveData} />
+                    <VerticalBarChart animated={this.props.animateChart} container="cost-curve-container" max={costCurveData.max} useValue={false} width={ costCurveData.chartWidth } height={ costCurveData.chartHeight } colors={ costCurveData.chartColors } series={costCurveData} />
                 </div>
             </div>
         );

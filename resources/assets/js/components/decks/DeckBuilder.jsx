@@ -7,6 +7,7 @@ var Tooltip = require('../libraries/tooltip/Toptip');
 var HeroPanel = require('../heroes/HeroPanel');
 var Build = require('./Build');
 var ConfirmModal = require('../ConfirmModal');
+var CostCurve = require('./widgets/CostCurve');
 var Notification = require('../libraries/notification/Notification');
 
 var DeckBuilder = React.createClass({
@@ -468,7 +469,7 @@ var DeckBuilder = React.createClass({
                 var cardMarkup = (
                     <li className={className}
                         key={card.code + "_" + Helpers.uuid() }
-                        style={{backgroundImage: 'url('+Helpers.getCardImageURL(card, "medium")+')'}}
+                        style={{backgroundImage: 'url('+Helpers.getCardImageURL(card, "medium", "icon")+')'}}
                         onContextMenu={this.deleteCardFromDeck.bind(this, card)}
                         onClick={this.selectCard.bind(this, card)}
                         onMouseEnter={this.setTooltipContent.bind(this, card)}
@@ -577,7 +578,7 @@ var DeckBuilder = React.createClass({
             var slotIcons = build.slots.map(function(slot, i) {
                 var imageURL = "/assets/images/cards/card-placeholder.png";
                 if(slot.card !== null)
-                    imageURL = Helpers.getCardImageURL(slot.card, "small", "icon");
+                    imageURL = Helpers.getCardImageURL(slot.card, "medium", "icon");
 
                 if(i === 0) wrapperBackgroundImageURL = imageURL;
                 var upgradeBadge = "";
@@ -789,7 +790,6 @@ var DeckBuilder = React.createClass({
             if(confirmNode) {
                 var confirm = ReactDOM.render(<ConfirmModal titleIcon="fa-info-circle" title="ATTENTION!" description="Changing your hero will permanently delete any existing builds and this deck, are you sure you want to continue?" cancelText="CANCEL" confirmText="YES CHANGE MY HERO" />, confirmNode);
                 confirm.deferred.promise.then(function(resolvedMessage) {
-
                     this.setState({
                         heroPanelActive : !this.state.heroPanelActive,
                         selectedHero    : hero,
@@ -824,7 +824,7 @@ var DeckBuilder = React.createClass({
                     <span>SELECTED: <span className="subtext">{this.state.selectedCard.name} ({cardType})</span> <i className="fa fa-close"></i></span>
                     <div className="black-overlay"></div>
                     <div className="selected-card-background"
-                         style={{backgroundImage: 'url(' + Helpers.getCardImageURL(this.state.selectedCard, "small", "icon") + ')'}}
+                         style={{backgroundImage: 'url(' + Helpers.getCardImageURL(this.state.selectedCard, "medium", "icon") + ')'}}
                     ></div>
                 </div>
             )
@@ -835,7 +835,7 @@ var DeckBuilder = React.createClass({
                     <span>Currently selected: <span className="subtext">{this.lastSelectedCard.name}</span> <i className="fa fa-close"></i></span>
                     <div className="black-overlay"></div>
                     <div className="selected-card-background"
-                         style={{backgroundImage: 'url(' + Helpers.getCardImageURL(this.lastSelectedCard, "small", "icon") + ')'}}
+                         style={{backgroundImage: 'url(' + Helpers.getCardImageURL(this.lastSelectedCard, "medium", "icon") + ')'}}
                     ></div>
                 </div>
             )
@@ -976,6 +976,7 @@ var DeckBuilder = React.createClass({
                             </div>
                         </div>
                     </div>
+                    <CostCurve animateChart={false} deck={this.state.deck} />
                 </div>
                 <div className={"deck-builder wrapper " + (this.state.isBuildsPanelShowing ? "hidden" : "") + buildClass}>
                     <div className="content-wrapper">
@@ -1017,6 +1018,7 @@ var DeckBuilder = React.createClass({
                     {
                         this.state.selectedBuild ? (
                             <Build
+                                hero={this.state.selectedHero}
                                 autoPlaceIndex={tmpPlacementSlotIndex}
                                 deck={this.state.deck}
                                 tooltip={this.tooltip}
