@@ -8,7 +8,7 @@
         <div class="wrapper">
             <div class="recent-posts">
                 <div class="listbox cf">
-                    <h5>General discussion <a class="sub" href="/discussion/category/general">View More</a><a class="sub" href="/discussion/category/general">New</a></h5>
+                    <h5>General discussion <a class="sub" href="/discussion/category/general">View More</a></h5>
                     <ul>
                         <li><a href="" class="cf">
                                 <img src="https://randomuser.me/api/portraits/women/10.jpg" class="user-avatar"/>

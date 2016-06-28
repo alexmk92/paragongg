@@ -5,17 +5,27 @@
 @section('body')
     <div class="discussion wrapper">
         <div class="content-wrapper solo">
-            <h2>{{ $discussion->title }}</h2>
-            <div class="article-body">
-                {!! (new Parsedown())->text($discussion->body) !!}
+            <span class="breadcrumb"><a href="/discussion">Discussion</a> / <a href="/discussion/category/{{ $discussion->category }}">{{ $discussion->category }}</a> / <a href="/discussion/{{ $discussion->id }}/{{ createSlug($discussion->title) }}">{{ $discussion->title }}</a></span>
+            <div class="original-post">
+                <h2>{{ $discussion->title }}</h2>
+                <div class="details cf">
+                    <img src="https://randomuser.me/api/portraits/women/10.jpg" class="user-avatar"/>
+                    <span class="username">{{ $discussion->author->username }}</span>
+                    <span class="created_at">{{ $discussion->created_at->diffForHumans() }}</span>
+                </div>
+                <div class="article-body">
+                    {!! (new Parsedown())->text($discussion->body) !!}
+                </div>
             </div>
             @if($discussion->responses && $discussion->responses->count() > 0)
                 @foreach($discussion->responses as $response)
                     <div class="discussion-response">
-                        <div class="details">
-                            {{ $response->author->username }}
+                        <div class="details cf">
+                            <img src="https://randomuser.me/api/portraits/women/10.jpg" class="user-avatar"/>
+                            <span class="username">{{ $response->author->username }}</span>
+                            <span class="created_at">{{ $response->created_at->diffForHumans() }}</span>
                         </div>
-                        {!! (new Parsedown())->text($response->body) !!}
+                        <div class="body">{!! (new Parsedown())->text($response->body) !!}</div>
                     </div>
                 @endforeach
             @endif

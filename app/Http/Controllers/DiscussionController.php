@@ -13,7 +13,16 @@ class DiscussionController extends Controller
 {
     public function index()
     {
+        $discussions = Discussion::take(10)->get();
 
+        return view('discussion.index', compact('discussions'));
+    }
+
+    public function category($category)
+    {
+        $discussions = Discussion::where('category', $category)->take(10)->get();
+
+        return view('discussion.index', compact('discussions', 'category'));
     }
 
     public function show($id)

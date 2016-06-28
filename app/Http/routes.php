@@ -80,6 +80,7 @@ Route::get('/community', 'CommunityController@index');
 
 /* DISCUSSION */
 Route::get('/discussion', 'DiscussionController@index');
+Route::get('/discussion/category/{category}', 'DiscussionController@category');
 Route::get('/discussion/create', 'DiscussionController@create');
 Route::post('/discussion/create', 'DiscussionController@store');
 Route::get('/discussion/edit/{id}', 'DiscussionController@edit');

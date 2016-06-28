@@ -1,5 +1,64 @@
 .discussion {
+    .original-post {
+        .details {
+            .user-avatar {
+                width: 28px;
+                height: 28px;
+            }
+        }
+    }
+    .create-post {
+        float: right;
+    }
     .post-response {
         margin-top: 100px;
+    }
+    .listbox {
+        .user-avatar {
+            width: 42px;
+            height: 42px;
+        }
+        .details {
+            font-size: 14px;
+        }
+        .content {
+            font-size: 22px;
+            font-weight: bold;
+        }
+    }
+    .article-body {
+        border-bottom: 1px solid $faded-line;
+        padding-bottom: 30px;
+        font-size: 18px;
+        line-height: 24px;
+    }
+    .discussion-response {
+        border: 1px solid #222;
+        margin: 40px 0;
+        background: #060606;
+        .details {
+            font-size: 16px;
+            background: $panel-color-dark;
+            padding: 15px;
+            .user-avatar {
+                width: 18px;
+                height: 18px;
+                margin-right: 10px;
+            }
+            .username {
+                color: white;
+            }
+            .created_at {
+                margin-left: 10px;
+                font-family: $font-condensed;
+                font-size: 14px;
+                color: $font-color-faded;
+            }
+        }
+        .body {
+            font-size: 16px;
+            line-height: 24px;
+            padding: 20px;
+        }
     }
 }
