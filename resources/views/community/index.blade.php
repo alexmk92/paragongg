@@ -3,12 +3,12 @@
     <div class="community">
         <h1>Community</h1>
         <div id="sidebar">
-            <iframe class="side-box discord" src="https://discordapp.com/widget?id=122787649290371074&theme=dark" width="100%" height="500" allowtransparency="true" frameborder="0"></iframe>
+            <iframe src="https://discordapp.com/widget?id=122787649290371074&theme=dark{!!  Auth::check() ? '&username='.Auth::user()->username : '' !!}" width="100%" height="500" allowtransparency="true" frameborder="0"></iframe>
         </div>
         <div class="wrapper">
             <div class="recent-posts">
                 <div class="listbox cf">
-                    <h5>General discussion</h5>
+                    <h5>General discussion <a class="sub" href="/discussion/category/general">View More</a><a class="sub" href="/discussion/category/general">New</a></h5>
                     <ul>
                         <li><a href="" class="cf">
                                 <img src="https://randomuser.me/api/portraits/women/10.jpg" class="user-avatar"/>
@@ -29,7 +29,7 @@
                 </div>
             </div><div class="recent-posts">
                 <div class="listbox cf">
-                    <h5>Theorycrafting</h5>
+                    <h5>Theorycrafting <a class="sub" href="/discussion/category/theorycrafting">View More</a></h5>
                     <ul>
                         <li><a href="" class="cf">
                                 <img src="https://randomuser.me/api/portraits/women/10.jpg" class="user-avatar"/>
@@ -50,7 +50,7 @@
                 </div>
             </div><div class="recent-posts">
                 <div class="listbox cf">
-                    <h5>Questions &amp; Answers</h5>
+                    <h5>Questions &amp; Answers <a class="sub" href="/discussion/category/questions">View More</a></h5>
                     <ul>
                         <li><a href="" class="cf">
                                 <img src="https://randomuser.me/api/portraits/women/10.jpg" class="user-avatar"/>
@@ -71,7 +71,7 @@
                 </div>
             </div><div class="recent-posts">
                 <div class="listbox cf">
-                    <h5>Articles</h5>
+                    <h5>Articles <a class="sub" href="/discussion/category/articles">View More</a></h5>
                     <ul>
                         <li><a href="" class="cf">
                                 <img src="https://randomuser.me/api/portraits/women/10.jpg" class="user-avatar"/>

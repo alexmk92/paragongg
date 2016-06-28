@@ -121,12 +121,12 @@ class DeckController extends Controller
     }
 
     // Read
-    public function show(Request $request, $slug)
+    public function show(Request $request, $id)
     {
         $thread = findOrCreateThread($request->path());
         $comments = $thread->comments;
 
-        $deck = Deck::where('slug', $slug)->firstOrFail();
+        $deck = Deck::findOrFail($id);
         // pass back a dummy object for now
         $deck->hero = Hero::where('code', $deck->hero)->firstOrFail();
         $uniqueCards = Card::whereIn('code', $deck->cards)->get();

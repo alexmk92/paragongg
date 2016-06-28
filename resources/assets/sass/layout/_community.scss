@@ -8,6 +8,24 @@
         margin-bottom: 50px;
         padding-right: 50px;
     }
+    .listbox {
+        h5 {
+            display: inline-block;
+            .sub {
+                display: inline-block;
+                font-size: 13px;
+                color: $font-color-faded;
+                border-top: none;
+                margin-left: 10px;
+                padding: 0;
+                &:hover {
+                    color: $secondary-highlight;
+                    background: none;
+                    padding: 0;
+                }
+            }
+        }
+    }
     .stream-preview {
         display: inline-block;
         width: 30%;

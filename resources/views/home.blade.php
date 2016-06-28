@@ -101,9 +101,9 @@
         </div><div class="summary-info summary-info-decks">
             <h5>Top rated decks</h5>
             <ul>
-                @if($featuredDecks->count() > 0)
-                    @foreach($featuredDecks as $deck)
-                        <li><a href="" class="cf">
+                @if($topDecks->count() > 0)
+                    @foreach($topDecks as $deck)
+                        <li><a href="/decks/{{  $deck->id }}/{{ $deck->slug }}" class="cf">
                                 <img src="{{ S3URL() }}/images/heroes/{{ $deck->hero->code }}/{{ $deck->hero->image }}/portrait_small.png" class="hero-avatar"/>
                                 <span class="details"><i class="fa fa-user" aria-hidden="true"></i> {{ $deck->author->username }}</span><span class="details"><i class="fa fa-star" aria-hidden="true"></i> {{ $deck->votes }}</span>
                                 <span class="content">{{ $deck->title }}</span>

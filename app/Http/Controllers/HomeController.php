@@ -36,8 +36,8 @@ class HomeController extends Controller
         $featuredHero = Hero::where('_id', $settings->where('key', 'featuredHero')->first()->value)->first();
         $featuredNews = News::where('id', $settings->where('key', 'featuredNews')->first()->value)->first();
         $featuredGuides = $this->featuredGuides();
-        $featuredDecks = $this->featuredDecks();
-        return view('home', compact('featuredCard', 'featuredHero', 'featuredNews', 'featuredGuides', 'featuredDecks'));
+        $topDecks = $this->topDecks();
+        return view('home', compact('featuredCard', 'featuredHero', 'featuredNews', 'featuredGuides', 'topDecks'));
     }
 
     public function featuredGuides()
@@ -55,14 +55,14 @@ class HomeController extends Controller
         }
     }
 
-    public function featuredDecks()
+    public function topDecks()
     {
-        if (Cache::has('featuredDecks')) {
-            return Cache::get('featuredDecks');
+        if (Cache::has('topDecks')) {
+            return Cache::get('topDecks');
         } else {
-            $decks = Deck::where('featured', true)->get();
+            $decks = Deck::orderBy('votes', 'DESC')->get();
             foreach($decks as $deck) {
-                $deck->hero = Hero::where('code', $deck->hero_code)->first();
+                $deck->hero = Hero::where('code', $deck->hero)->first();
             }
             $expires = Carbon::now()->addHours(1);
             //Cache::put('featuredDecks', $guides, $expires);

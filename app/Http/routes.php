@@ -64,7 +64,7 @@ Route::get('/decks/success', 'DeckController@success');
 Route::get('/decks/edit/{id}', 'DeckController@edit');
 Route::post('/decks/edit/{id}', 'DeckController@update');
 Route::get('/decks/delete/{id}', 'DeckController@delete');
-Route::get('/decks/{slug}', 'DeckController@show');
+Route::get('/decks/{id}/{slug?}', 'DeckController@show');
 
 /* GUIDES */
 Route::get('/guides', 'GuideController@index');
