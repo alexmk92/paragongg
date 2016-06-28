@@ -18,7 +18,7 @@ var DeckDetail = React.createClass({
         }
     },
     componentDidMount: function() {
-        this.setFooterHeight();
+        //this.setFooterHeight();
         window.tooltip = new Toptip();
     },
     componentWillMount: function() {
@@ -265,7 +265,7 @@ if(sidebar) {
     var widgets = (
         <div>
             <DeckWidget           deck={ DECK } sharedTooltip={ window.tooltip } />
-            <CostCurveWidget      deck={ DECK } />
+            <CostCurveWidget      deck={ DECK } animateChart={true} />
             <SuggestedDecksWidget hero={ DECK.hero } />
         </div>
     );
