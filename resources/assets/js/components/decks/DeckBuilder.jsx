@@ -107,7 +107,7 @@ var DeckBuilder = React.createClass({
             }
         }
         // Update the footer style so we can keep animation
-        this.setFooterHeight();
+        //this.setFooterHeight();
     },
     componentWillUpdate: function(nextProps, nextState) {
         if((nextState.deck.length > this.state.deck.length) && (nextState.activeTab === 1 || nextState.activeTab === -1)) {
@@ -189,7 +189,7 @@ var DeckBuilder = React.createClass({
                 selectedCardWrapper.className = "visible";
             }
         }
-        this.setFooterHeight();
+        //this.setFooterHeight();
     },
     toggleModal: function() {
         var modal = this.state.modal ? false : true;

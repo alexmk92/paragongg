@@ -30,14 +30,16 @@ var CostCurve = React.createClass({
         // On a null build, show deck affinity weighting
         console.log("THIS IS THE DECK: ", this.props.deck.cards);
         var collection = [];
-        if(typeof this.props.deck.all === "undefined")
+        if(typeof this.props.deck.cards === "undefined") {
             collection = this.props.deck;
-        else
-            collection = this.props.deck.cards.all;
+        }
+        else {
+            collection = this.props.deck.cards.all
+        }
+        console.log("COLLECTION IS: ", collection);
 
         collection.forEach(function(card) {
             // Push for maximum possible:
-            console.log("LOOPING WITH CARD: ", card);
             if(typeof costCounts[card.cost] !== "undefined") {
                 costCounts[card.cost].count += card.quantity;
             }
