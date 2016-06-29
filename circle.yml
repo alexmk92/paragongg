@@ -9,7 +9,7 @@ machine:
   environment:
     APP_KEY: base64:HWAbzPcsTpNhgN1KSLV+cAhylyIBxCXYY6ZLYARlr+0=
   python:
-    version: 3.4
+    version: 3.4.0
 
 dependencies:
   pre:
