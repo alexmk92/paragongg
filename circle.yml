@@ -5,6 +5,7 @@ machine:
 dependencies:
   pre:
     - yes | pecl install mongodb
+    - echo "extension=mongodb.so" > /opt/circleci/php/$(phpenv global)/etc/php.ini
 
 test:
   override:
