@@ -152,7 +152,7 @@ var DeckPreview = React.createClass({
         )
 
     },
-    renderNewBadge() {
+    renderNewBadge: function() {
 
         var badge = "new";
         var type = "new";

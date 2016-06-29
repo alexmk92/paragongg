@@ -19,7 +19,7 @@ var CommentFeed = React.createClass({
         }.bind(this), 15000);
         */
     },
-    componentWillReceiveProps() {
+    componentWillReceiveProps: function() {
         console.log("Received new props");
     },
     renderComments: function() {

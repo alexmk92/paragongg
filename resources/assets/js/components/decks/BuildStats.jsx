@@ -92,7 +92,7 @@ var BuildStats = React.createClass({
             )
         }
     },
-    getMaxStat(type) {
+    getMaxStat: function(type) {
         var buildSlots = [];
         var upgradeSlots = [];
         var upgradeCount = 0;
