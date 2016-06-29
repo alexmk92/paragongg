@@ -9,13 +9,13 @@ machine:
   environment:
     APP_KEY: base64:HWAbzPcsTpNhgN1KSLV+cAhylyIBxCXYY6ZLYARlr+0=
   python:
-    version: 3.4.0
+    version: 3.4.2
 
 dependencies:
   pre:
     - yes | pecl install mongodb
     - echo "extension=mongodb.so" > /opt/circleci/php/$(phpenv global)/etc/php.ini
-    - sudo pip install awsebcli
+    - pip install awsebcli
 
 test:
   override:
