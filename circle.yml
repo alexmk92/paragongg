@@ -6,6 +6,8 @@ general:
 machine:
   environment:
     APP_KEY: base64:HWAbzPcsTpNhgN1KSLV+cAhylyIBxCXYY6ZLYARlr+0=
+  python:
+    version: 2.7
 
 dependencies:
   pre:
