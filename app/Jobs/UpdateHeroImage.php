@@ -7,6 +7,7 @@ use GuzzleHttp\Client;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
@@ -71,7 +72,5 @@ class UpdateHeroImage extends Job implements ShouldQueue
             $hero->image = $filename;
             $hero->save();
         }
-
-        Cache::forever('heroes.images.'.$hero->code, $hero->image);
     }
 }
