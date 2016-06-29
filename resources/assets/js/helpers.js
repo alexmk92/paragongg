@@ -282,7 +282,7 @@ module.exports = {
             .replace(/ +/g,'-');
     },
     S3URL: function() {
-        return 'https://s3-eu-west-1.amazonaws.com/paragon.gg/';
+        return 'https://s3.amazonaws.com/paragongg-us/';
     },
     isClientMobile: function() {
         var check = false;
