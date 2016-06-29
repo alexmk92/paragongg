@@ -15,7 +15,7 @@ dependencies:
   pre:
     - yes | pecl install mongodb
     - echo "extension=mongodb.so" > /opt/circleci/php/$(phpenv global)/etc/php.ini
-    - sudo pip install 'awsebcli==3.7.4' --force-reinstall
+    - sudo pip install awsebcli
 
 test:
   override:
