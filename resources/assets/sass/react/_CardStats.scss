@@ -89,6 +89,10 @@ canvas {
             font-size: 18px;
             text-transform: uppercase;
 
+            label {
+                margin-bottom: 0;
+            }
+
             .attribute {
                 vertical-align: middle;
                 display: inline-block;
@@ -163,7 +167,6 @@ canvas {
         font-size: 16px;
         color : $font-color-faded;
         display: block;
-        margin-bottom: 10px;
         text-transform: uppercase;
     }
     .maxedEffects {

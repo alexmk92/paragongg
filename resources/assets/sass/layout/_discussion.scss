@@ -1,9 +1,26 @@
 .discussion {
+    .details {
+        .user-avatar {
+            width: 18px;
+            height: 18px;
+            margin-right: 10px;
+        }
+        .username {
+            color: white;
+        }
+        .created_at {
+            margin-left: 10px;
+            font-family: $font-condensed;
+            font-size: 14px;
+            color: $font-color-faded;
+        }
+    }
     .original-post {
         .details {
+            margin-bottom: 20px;
             .user-avatar {
-                width: 28px;
-                height: 28px;
+                width: 18px;
+                height: 18px;
             }
         }
     }
@@ -33,27 +50,16 @@
         line-height: 24px;
     }
     .discussion-response {
-        border: 1px solid #222;
+        border: 1px solid #111;
         margin: 40px 0;
         background: #060606;
+        &:hover {
+            border-color: $faded-line;
+        }
         .details {
             font-size: 16px;
             background: $panel-color-dark;
             padding: 15px;
-            .user-avatar {
-                width: 18px;
-                height: 18px;
-                margin-right: 10px;
-            }
-            .username {
-                color: white;
-            }
-            .created_at {
-                margin-left: 10px;
-                font-family: $font-condensed;
-                font-size: 14px;
-                color: $font-color-faded;
-            }
         }
         .body {
             font-size: 16px;
