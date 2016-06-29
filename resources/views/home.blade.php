@@ -2,19 +2,24 @@
 @section('body')
     <div class="featured-wrapper">
         <div class="featured-panel-wrapper">
+            @if(isset($featuredHero))
             <a href="/heroes/{{ $featuredHero->slug }}" class="featured-panel" style="background-image:url({{ S3URL() }}/images/heroes/{{ $featuredHero->code }}/{{  $featuredHero->image }}/portrait_large.png);">
                 <div class="panel-title">
                     <span class="highlight">Featured Hero</span>
                     <h4>{{ $featuredHero->name }}</h4>
                 </div>
             </a>
+            @endif
+            @if(isset($featuredCard))
             <a href="/cards/{{ $featuredCard->slug }}" class="featured-panel" style="background-image:url({{ S3URL() }}/images/cards/{{ $featuredCard->code }}/{{  $featuredCard->icon }}/icon_large.png);">
                 <div class="panel-title">
                     <span class="highlight">Featured Card</span>
                     <h4>{{ $featuredCard->name }}</h4>
                 </div>
             </a>
+            @endif
         </div>
+        @if(isset($featuredNews))
         <a href="/news/{{ $featuredNews->id  }}/{{ $featuredNews->slug  }}" class="featured-panel-main">
             @if($featuredNews->impact)
                 <div class="panel-background anim-slowZoom" style="background-image:url({{ S3URL() }}/images/news/impact/{{ $news->impact }});"></div>
@@ -26,6 +31,7 @@
                 <h1>{{ $featuredNews->title }}</h1>
             </div>
         </a>
+        @endif
     </div>
     <div class="summary-info-wrapper cf">
         <div class="summary-info summary-info-discussions">
