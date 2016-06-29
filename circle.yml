@@ -14,7 +14,6 @@ dependencies:
     - yes | pecl install mongodb
     - echo "extension=mongodb.so" > /opt/circleci/php/$(phpenv global)/etc/php.ini
     - pip install awsebcli
-    - eb init paragongg -p Node.js -r us-west-2
 test:
   override:
     - phpunit
