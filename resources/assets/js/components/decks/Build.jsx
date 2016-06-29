@@ -239,7 +239,7 @@ var Build = React.createClass({
             }.bind(this));
         }
     },
-    validateAffinity: function(upgradeSlot) {
+    validateCardType: function(upgradeSlot) {
         var affinityMatches = false;
         if(upgradeSlot && this.props.selectedCard) {
             if(upgradeSlot.requiredAffinity.toLowerCase().indexOf(this.props.selectedCard.affinity.toLowerCase()) > -1)
@@ -294,7 +294,7 @@ var Build = React.createClass({
                         nextAvailableSlot = i;
                     }
                 });
-                if (nextAvailableSlot !== null && this.validateAffinity(upgradeSlot.upgrades[nextAvailableSlot])) {
+                if (nextAvailableSlot !== null && this.validateCardType(upgradeSlot.upgrades[nextAvailableSlot])) {
                     var newBuild = this.props.build;
                     var slotIndex = newBuild.slots.indexOf(upgradeSlot);
                     if (slotIndex > -1 && this.props.selectedCard) {
@@ -304,7 +304,7 @@ var Build = React.createClass({
                 }
             }
             // Got here by clicking on card
-            else if(this.validateAffinity(upgradeSlot) && !bindUpgradeAtNextAvailableIndex) {
+            else if(this.validateCardType(upgradeSlot) && !bindUpgradeAtNextAvailableIndex) {
                 // ATTEMPT TO BIND THE CARD
                 newBuild = this.props.build;
                 newSlots = newBuild.slots;

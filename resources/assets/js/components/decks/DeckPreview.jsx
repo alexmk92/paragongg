@@ -5,6 +5,11 @@ var ReactDOM = require('react-dom');
 var CardEffects = require('../cards/CardEffects');
 
 var DeckPreview = React.createClass({
+    getInitialState: function() {
+        return {
+            deckURL : '/decks/' + this.props.deck._id + '/' + this.props.deck.slug
+        }
+    },
     componentDidMount: function() {
         this.tooltip = this.props.sharedTooltip;
     },
@@ -169,7 +174,15 @@ var DeckPreview = React.createClass({
         );
     },
     showDetail: function() {
-        window.location = '/decks/' + this.props.deck.slug
+        console.log(this.props.deck);
+        window.location = this.state.deckURL;
+    },
+    getCardTotal: function() {
+        var total = 0;
+        this.props.deck.cards.all.forEach(function(card) {
+            total += card.quantity;
+        });
+        return total;
     },
     render: function() {
         return (
@@ -181,12 +194,12 @@ var DeckPreview = React.createClass({
                 </div>
 
                 <div className="title-wrapper">
-                    <h3>{ this.props.deck.title }</h3>
+                    <h3><a href={this.state.deckURL}>{ this.props.deck.title }</a></h3>
                     <span className="author">{ this.renderNewBadge() }<span className="subtext">Published by</span> <a href="#">{ this.props.deck.author ? this.props.deck.author.username : "anonymous" }</a></span>
                 </div>
 
                 <div className="build-overview">
-                    <span className="large-text">{ this.props.deck.cards.length }<span className="subtext">CARDS</span></span>
+                    <span className="large-text">{ this.getCardTotal() }<span className="subtext">CARDS</span></span>
                     <span className="large-text">{ this.props.deck.builds.length }<span className="subtext">BUILDS</span></span>
                 </div>
 
