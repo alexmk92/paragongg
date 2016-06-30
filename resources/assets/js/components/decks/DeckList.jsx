@@ -3,6 +3,7 @@ var ReactDOM = require('react-dom');
 var Helpers    = require('../../helpers');
 var DeckPreview = require('./DeckPreview');
 var Tooltip = require('../libraries/tooltip/Toptip');
+var Notification = require('../libraries/notification/Notification');
 
 var DeckList = React.createClass({
     getInitialState: function() {
@@ -14,29 +15,38 @@ var DeckList = React.createClass({
         this.tooltip = new Tooltip();
         this.setState({ decks : DECKS })
     },
+    componentDidMount: function() {
+        // Replace the current notification panel.
+        this.notificationPanel = new Notification();
+        this.notificationPanel.initialiseNotifications();
+    },
     upvoteDeck: function(deck) {
-        console.log("Upvoting deck: ", deck);
-        Helpers.ajax({
-            type : "POST",
-            url :  "/api/v1/vote",
-            headers : [{ "X-CSRF-TOKEN" : csrf }],
-            contentType: "application/x-www-form-urlencoded",
-            cache: false,
-            returnType: "json",
-            data: [{ "ref_id" : deck._id, "type" : "deck" }]
-        }).then(function(payload) {
-            deck.voted = payload.data.voted;
-            deck.votes = payload.data.value;
-            var newDecks = this.state.decks.map(function(oldDeck) {
-                if(oldDeck._id === deck._id) {
-                    oldDeck = deck;
-                }
-                return oldDeck;
+        if(AUTHED) {
+            Helpers.ajax({
+                type : "POST",
+                url :  "/api/v1/vote",
+                headers : [{ "X-CSRF-TOKEN" : csrf }],
+                contentType: "application/x-www-form-urlencoded",
+                cache: false,
+                returnType: "json",
+                data: [{ "ref_id" : deck._id, "type" : "deck" }]
+            }).then(function(payload) {
+                console.log("PAYLOAD IS: ", payload);
+                deck.voted = payload.data.voted;
+                deck.votes = payload.data.value;
+                var newDecks = this.state.decks.map(function(oldDeck) {
+                    if(oldDeck._id === deck._id) {
+                        oldDeck = deck;
+                    }
+                    return oldDeck;
+                });
+                this.setState({ decks : newDecks });
+            }.bind(this), function(err) {
+                console.log("ERROR WHEN UPVOTING: ", err);
             });
-            this.setState({ decks : newDecks });
-        }.bind(this), function(err) {
-            console.log("ERROR WHEN UPVOTING: ", err);
-        });
+        } else {
+            this.notificationPanel.addNotification('warning', 'Sorry, you must be logged in to up-vote a deck.');
+        }
     },
     renderDeckList: function() {
         var decks = this.state.decks.map(function(deck) {
