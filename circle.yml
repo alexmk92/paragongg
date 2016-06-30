@@ -1,29 +1,9 @@
-general:
-  branches:
-    only:
-      - master
-    ignore:
-      - develop
-
-machine:
-  python:
-    version: 3.4.2
-
 dependencies:
   pre:
     - yes | pecl install mongodb
     - echo "extension=mongodb.so" > /opt/circleci/php/$(phpenv global)/etc/php.ini
-    - pip install awsebcli
   cache_directories:
-      - ~/.composer/cache
       - ./vendor
 test:
   override:
     - phpunit
-
-deployment:
-  production:
-      branch: master
-      commands:
-        - eb init -r us-east-1 paragongg
-        - eb deploy --profile default
