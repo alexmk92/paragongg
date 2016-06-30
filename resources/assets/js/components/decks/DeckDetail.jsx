@@ -7,6 +7,7 @@ var DeckWidget = require('./widgets/Deck');
 var CostCurveWidget = require('./widgets/CostCurve');
 var SuggestedDecksWidget = require('./widgets/SuggestedDecks');
 var BuildStats = require('./BuildStats');
+var Notification = require('../libraries/notification/Notification');
 
 var DeckDetail = React.createClass({
     getInitialState: function() {
@@ -21,6 +22,10 @@ var DeckDetail = React.createClass({
     componentDidMount: function() {
         //this.setFooterHeight();
         window.tooltip = new Toptip();
+
+        // Replace the current notification panel.
+        this.notificationPanel = new Notification();
+        this.notificationPanel.initialiseNotifications();
     },
     componentWillMount: function() {
         var newBuilds = this.state.deck.builds.map(function(build) {
@@ -224,22 +229,26 @@ var DeckDetail = React.createClass({
         }
     },
     upvoteDeck: function() {
-        var newDeck = this.state.deck;
-        Helpers.ajax({
-            type : "POST",
-            url :  "/api/v1/vote",
-            headers : [{ "X-CSRF-TOKEN" : csrf }],
-            contentType: "application/x-www-form-urlencoded",
-            cache: false,
-            returnType: "json",
-            data: [{ "ref_id" : newDeck._id, "type" : "deck" }]
-        }).then(function(payload) {
-            newDeck.voted = payload.data.voted;
-            newDeck.votes = payload.data.value;
-            this.setState({ deck : newDeck });
-        }.bind(this), function(err) {
-            console.log("ERROR WHEN UPVOTING: ", err);
-        });
+        if(AUTHED) {
+            var newDeck = this.state.deck;
+            Helpers.ajax({
+                type : "POST",
+                url :  "/api/v1/vote",
+                headers : [{ "X-CSRF-TOKEN" : csrf }],
+                contentType: "application/x-www-form-urlencoded",
+                cache: false,
+                returnType: "json",
+                data: [{ "ref_id" : newDeck._id, "type" : "deck" }]
+            }).then(function(payload) {
+                newDeck.voted = payload.data.voted;
+                newDeck.votes = payload.data.value;
+                this.setState({ deck : newDeck });
+            }.bind(this), function(err) {
+                console.log("ERROR WHEN UPVOTING: ", err);
+            });
+        } else {
+            this.notificationPanel.addNotification('warning', 'Sorry, you must be logged in to up-vote a deck.');
+        }
     },
     render: function() {
         return (
