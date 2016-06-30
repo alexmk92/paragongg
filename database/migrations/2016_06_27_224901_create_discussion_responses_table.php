@@ -15,7 +15,7 @@ class CreateDiscussionResponsesTable extends Migration
         Schema::create('discussion_responses', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('parent_id')->unsigned();
-            $table->foreign('parent_id')->references('id')->on('discussion');
+            $table->foreign('parent_id')->references('id')->on('discussion')->onDelete('cascade');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->text('body');
@@ -32,6 +32,6 @@ class CreateDiscussionResponsesTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('discussion_responses');
     }
 }
