@@ -14,7 +14,6 @@ dependencies:
     - yes | pecl install mongodb
     - echo "extension=mongodb.so" > /opt/circleci/php/$(phpenv global)/etc/php.ini
     - pip install awsebcli
-    - eb init -r us-east-1 paragongg
 test:
   override:
     - phpunit
@@ -23,4 +22,6 @@ deployment:
   production:
       branch: master
       commands:
+        - bash ./deploy.sh
+        - eb init -r us-east-1 paragongg
         - eb deploy --profile default
