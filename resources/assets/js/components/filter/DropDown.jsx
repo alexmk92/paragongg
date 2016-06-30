@@ -8,7 +8,6 @@ var DropDown = React.createClass({
         };
     },
     optionClicked: function(option) {
-        console.log("SETTING OPTION: ", option);
         option.checked = !option.checked;
         this.props.onOptionChanged(option);
         this.forceUpdate();
@@ -49,34 +48,53 @@ var DropDown = React.createClass({
     dropDownClicked: function() {
         this.setState({ isVisible : !this.state.isVisible });
     },
-    render: function() {
-        /*
-         <input type="checkbox"
-         defaultChecked={ option.checked }
-         onChange={function() { this.optionClicked(option) }.bind(this) }
-         />
-         */
-
-        var active = this.state.isVisible ? "active" : "";
-        var options = this.props.options.map(function(option) {
-            return (
-                <li className={ "cols-" + this.props.columns }
-                    key={option.name}
-                    onClick={ this.optionClicked.bind(this, option) }
-                >
+    renderOptionItem: function(option) {
+        return (
+            <li className={ "cols-" + this.props.columns }
+                key={option.name}
+                onClick={ this.optionClicked.bind(this, option) }
+            >
                     <span className={ "option " + (option.checked ? "checked" : "") }>
                         <i className={ "pgg " + option.iconName } />
                         { option.name.toUpperCase() }
                     </span>
-                </li>
-            );
+            </li>
+        );
+    },
+    renderOptions: function() {
+        var groups = [];
+        var isGroupSection = false;
+
+        this.props.options.forEach(function(option) {
+            if(option.group) {
+                isGroupSection = true;
+                var group = option.group.map(function(optionGroup) {
+                   return this.renderOptionItem(optionGroup);
+                }.bind(this));
+                groups.push(group);
+            } else {
+                isGroupSection = false;
+                groups.push(this.renderOptionItem(option));
+            }
         }.bind(this));
+
+        if(isGroupSection) {
+            return groups.map(function(group, i) {
+                return <ul key={"option_list_" + i}>{group}</ul>
+            });
+        } else {
+            return <ul key={"option_list_1"}>{ groups }</ul>
+        }
+    },
+    render: function() {
+        var active = this.state.isVisible ? "active" : "";
+        var options = this.renderOptions();
         return (
             <div className="drop-down-menu">
                 <label>{ this.props.label }</label>
                 <div className="button"
                      onClick={ this.dropDownClicked }>
-                    <i className="pgg pgg-armor-penetration" aria-hidden="true"></i>
+                    <i className={ this.props.buttonIcon } aria-hidden="true"></i>
                 </div>
                 <div className={ "menu " + active }>
                     <div className="tooltip-triangle"></div>
@@ -84,9 +102,7 @@ var DropDown = React.createClass({
                         <span>{ this.props.title }</span>
                         <div className="divider"></div>
                     </div>
-                    <ul>
-                        { options }
-                    </ul>
+                    { options }
                 </div>
             </div>
         );
