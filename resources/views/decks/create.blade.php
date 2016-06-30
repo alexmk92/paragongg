@@ -4,6 +4,12 @@
 @endsection
 @section('scripts')
     <script>
+        @if(Auth::check() && Auth::user()->oauth_epic_code != null)
+            var AUTHED = true;
+        @else
+            var AUTHED = false;
+        @endif
+
         var rawCards = {!! json_encode($cards) !!};
         var HEROES = {!! json_encode($heroes) !!};
         var USER_ID = {{ $userId }};
@@ -27,10 +33,5 @@
                 default : break;
             }
         });
-        @if(Auth::check() && Auth::user()->oauth_epic_code != null)
-            var AUTHED = true;
-        @else
-            var AUTHED = false;
-        @endif
     </script>
 @endsection

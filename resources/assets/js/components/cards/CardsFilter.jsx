@@ -15,6 +15,12 @@ var CardsFilter = React.createClass({
             filter_affinities : [],
             filter_type : 'All',
             search_term : "",
+            costOrder : "ASC",
+            showOwnedCards : true,
+            showActiveCards : true,
+            showPassiveCards : true,
+            showPrimeHelixCards : true,
+            showUpgradeCards : true,
             affinities : [
                 { name : "Fury" },
                 { name : "Order" },
@@ -24,24 +30,23 @@ var CardsFilter = React.createClass({
                 { name : "Universal" }
             ],
             statistics : [
-                { name : "Energy Damage", iconName : "pgg-energy-damage", checked : false },
-                { name : "Physical Damage", iconName : "pgg-physical-damage", checked : false },
-                { name : "Energy Pen", iconName : "pgg-armor-penetration", checked : false },
-                { name : "Physical Pen", iconName : "pgg-physical-penetration", checked : false },
-                { name : "Energy Armor", iconName : "pgg-energy-armor", checked : false },
-                { name : "Physical Armor", iconName : "pgg-physical-armor", checked : false },
-                { name : "Crit Chance", iconName : "pgg-critical-strike-chance", checked : false },
-                { name : "Bonus Crit Damage", iconName : "pgg-critical-strike-damage", checked : false },
-                { name : "Max Mana", iconName : "pgg-max-mana", checked : false },
-                { name : "Max Health", iconName : "pgg-max-health", checked : false },
-                { name : "Mana Regen", iconName : "pgg-mana-regeneration", checked : false },
-                { name : "Health Regen", iconName : "pgg-health-regeneration", checked : false },
-                { name : "Max Movement Speed", iconName : "pgg-movement-speed", checked : false },
-                { name : "Cooldown Reduction", iconName : "pgg-cooldown-reduction", checked : false },
-                { name : "Lifesteal", iconName : "pgg-lifesteal", checked : false },
-                { name : "Attack Speed", iconName : "pgg-attack-speed", checked : false },
-                { name : "Harvester Placement Time", iconName : "pgg-harvester-placement-time", checked : false }
+                { name : "Physical Damage", iconName : "pgg-physical-damage", ref : "ATTACKRATING", checked : true },
+                { name : "Energy Pen", iconName : "pgg-energy-damage", ref : "ENERGYPENETRATIONRATING", checked : true },
+                { name : "Physical Pen", iconName : "pgg-physical-penetration", ref : "PHYSICALPENETRATIONRATING", checked : true },
+                { name : "Energy Armor", iconName : "pgg-energy-armor", ref : "ENERGYRESISTANCERATING", checked : true },
+                { name : "Physical Armor", iconName : "pgg-physical-armor", ref : "PHYSICALRESISTANCERATING", checked : true },
+                { name : "Crit Chance", iconName : "pgg-critical-strike-chance", ref : "CRITICALDAMAGECHANCE", checked : true },
+                { name : "Crit Damage", iconName : "pgg-critical-strike-damage", ref : "CRITICALDAMAGEBONUS", checked : true },
+                { name : "Max Mana", iconName : "pgg-max-mana", ref : "MAXENERGY", checked : true },
+                { name : "Max Health", iconName : "pgg-max-health", ref : "MAXHEALTH", checked : true },
+                { name : "Mana Regen", iconName : "pgg-mana-regeneration", ref : "ENERGYREGENRATE", checked : true },
+                { name : "Health Regen", iconName : "pgg-health-regeneration", ref : "HEALTHREGENRATE", checked : true },
+                { name : "Cooldown Reduction", iconName : "pgg-cooldown-reduction", ref : "COOLDOWNREDUCTIONPERCENTAGE", checked : true },
+                { name : "Lifesteal", iconName : "pgg-lifesteal", ref : "LIFESTEALRATING", checked : true },
+                { name : "Attack Speed", iconName : "pgg-attack-speed", ref : "ATTACKSPEEDRATING", checked : true },
+                { name : "Harvester Place Time", iconName : "pgg-harvester-placement-time", ref : "WELLRIGPLACEMENTTIMER", checked : true }
             ],
+            moreOptions : [],
             types : [
                 { "name" : "Prime Helix" },
                 { "name" : "Passive" },
@@ -49,6 +54,28 @@ var CardsFilter = React.createClass({
                 { "name" : "Upgrade" }
             ]
         }
+    },
+    componentWillMount: function() {
+        var options = [];
+
+        if(AUTHED) {
+            options.push({ group : [
+                { name : "Show cards I don't own", iconName : "", ref: "TOGGLE_OWNED", checked : true}
+            ] });
+        }
+
+        options.push({ group : [
+                { name : "Show Active Cards", iconName : "", ref: "TOGGLE_ACTIVE", checked : true},
+                { name : "Show Passive Cards", iconName : "", ref: "TOGGLE_PASSIVE", checked : true},
+                { name : "Show Upgrade Cards", iconName : "", ref: "TOGGLE_UPGRADE", checked : true},
+                { name : "Show Prime Helix Cards", iconName : "", ref: "TOGGLE_PRIME", checked : true}
+            ]},
+            { group : [
+                { name : "Cost (Ascending)", iconName : "", ref: "SORT_ASC", checked : true},
+                { name : "Cost (Descending)", iconName : "", ref: "SORT_DESC", checked : false}
+            ]});
+
+        this.setState({ moreOptions : options });
     },
     filter: function(element) {
         switch(element.target.name) {
@@ -93,6 +120,43 @@ var CardsFilter = React.createClass({
         // SEARCH TERM ONLY
         else if((hasSearchTerm && card.name.toLowerCase().indexOf(this.state.search_term.toLowerCase()) > -1) || !hasSearchTerm) {
             matches = true;
+        }
+        // CHECK OTHER PARAMETERS
+        if(!this.state.showUpgradeCards && card.type.toUpperCase() === "UPGRADE")
+            matches = false;
+        if(!this.state.showActiveCards && card.type.toUpperCase() === "ACTIVE")
+            matches = false;
+        if(!this.state.showPassiveCards && card.type.toUpperCase() === "PASSIVE")
+            matches = false;
+        if(!this.state.showPrimeHelixCards && card.type.toUpperCase() === "PRIME")
+            matches = false;
+        if(!this.state.showOwnedCards && AUTHED && card.owned && card.owned === false)
+            matches = false;
+        if(card.effects) {
+            card.effects.forEach(function(effect) {
+               if(effect.stat) {
+                   this.state.statistics.some(function(stat) {
+                      if(stat.ref === effect.stat.toUpperCase()) {
+                          matches = stat.checked;
+                          return true;
+                      }
+                       return false;
+                   }.bind(this));
+               }
+            }.bind(this));
+        }
+        if(card.maxedEffects && matches === false) {
+            card.maxedEffects.forEach(function(effect) {
+                if(effect.stat) {
+                    this.state.statistics.some(function(stat) {
+                        if(stat.ref === effect.stat.toUpperCase()) {
+                            matches = stat.checked;
+                            return true;
+                        }
+                        return false;
+                    }.bind(this));
+                }
+            }.bind(this));
         }
 
         return matches;
@@ -142,9 +206,77 @@ var CardsFilter = React.createClass({
             statistics : newStats
         });
     },
+    moreOptionsChanged: function(newOption) {
+        var newHelixOption = this.state.showPrimeHelixCards;
+        var newPassiveOption = this.state.showPassiveCards;
+        var newActiveOption = this.state.showActiveCards;
+        var newUpgradeOption = this.state.showUpgradeCards;
+        var newOwnedOption = this.state.showOwnedCards;
+        var newCostOrder = this.state.costOrder;
+
+        var newOptions = this.state.moreOptions.map(function(option) {
+            if(newOption.ref === "SORT_ASC") {
+                if(option.group) {
+                    option.group = option.group.map(function(groupOption) {
+                       if(groupOption.ref === "SORT_DESC")  {
+                           groupOption.checked = false;
+                       }
+                       return groupOption
+                    }.bind(this));
+                } else if(option.ref === "SORT_DESC") {
+                    option.checked = false;
+                }
+            } else if(newOption.ref === "SORT_DESC") {
+                if(option.group) {
+                    option.group = option.group.map(function(groupOption) {
+                        if(groupOption.ref === "SORT_ASC")  {
+                            groupOption.checked = false;
+                        }
+                        return groupOption
+                    }.bind(this));
+                } else if(option.ref === "SORT_ASC") {
+                    option.checked = false;
+                }
+            }
+
+           if(newOption === option) {
+               return newOption;
+           }
+           return option;
+        }.bind(this));
+
+        switch(newOption.ref.toUpperCase()) {
+            case "TOGGLE_ACTIVE": newActiveOption = !this.state.showActiveCards;break;
+            case "TOGGLE_PASSIVE": newPassiveOption = !this.state.showPassiveCards;break;
+            case "TOGGLE_UPGRADE": newUpgradeOption = !this.state.showUpgradeCards;break;
+            case "TOGGLE_PRIME": newHelixOption = !this.state.showPrimeHelixCards;break;
+            case "TOGGLE_OWNED": newOwnedOption = !this.state.showOwnedCards;break;
+            case "SORT_DESC": newCostOrder = "DESC";break;
+            case "SORT_ASC": newCostOrder = "ASC";break;
+        }
+
+        this.setState({
+            moreOptions : newOptions,
+            showPrimeHelixCards : newHelixOption,
+            showPassiveCards : newPassiveOption,
+            showActiveCards : newActiveOption,
+            showUpgradeCards : newUpgradeOption,
+            showOwnedCards : newOwnedOption,
+            costOrder : newCostOrder
+        });
+    },
+    sortCardsByCost: function() {
+        return this.props.cards.sort(function(cardA, cardB) {
+            if(this.state.costOrder === "ASC")
+                return parseFloat(cardA.cost) - parseFloat(cardB.cost);
+            else
+                return parseFloat(cardB.cost) - parseFloat(cardA.cost);
+        }.bind(this));
+    },
     updateCards: function() {
+        var sortedCards = this.sortCardsByCost();
         var cards = [];
-        this.props.cards.forEach(function(card) {
+        sortedCards.forEach(function(card) {
             if(this.shouldBeVisible(card) === true) {
                 cards.push(<CardPreview card={card}
                                         key={card.code}
@@ -219,8 +351,16 @@ var CardsFilter = React.createClass({
                 <DropDown label="Stats"
                           columns={ 2 }
                           title="FILTER BY STATS"
+                          buttonIcon="pgg pgg-armor-penetration"
                           options={ this.state.statistics }
                           onOptionChanged={this.dropDownChanged}
+                />
+                <DropDown label="More"
+                          columns={ 2 }
+                          title="MORE OPTIONS"
+                          buttonIcon="fa fa-ellipsis-h"
+                          options={ this.state.moreOptions }
+                          onOptionChanged={this.moreOptionsChanged}
                 />
             </div>
         )
