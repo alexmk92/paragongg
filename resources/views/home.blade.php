@@ -9,6 +9,8 @@
                     <h4>{{ $featuredHero->name }}</h4>
                 </div>
             </a>
+            @else
+                <p>No featured hero.</p>
             @endif
             @if(isset($featuredCard))
             <a href="/cards/{{ $featuredCard->slug }}" class="featured-panel" style="background-image:url({{ S3URL() }}/images/cards/{{ $featuredCard->code }}/{{  $featuredCard->icon }}/icon_large.png);">
@@ -17,6 +19,8 @@
                     <h4>{{ $featuredCard->name }}</h4>
                 </div>
             </a>
+            @else
+                <p>No featured card.</p>
             @endif
         </div>
         @if(isset($featuredNews))
@@ -31,6 +35,8 @@
                 <h1>{{ $featuredNews->title }}</h1>
             </div>
         </a>
+        @else
+            <p>No featured news.</p>
         @endif
     </div>
     <div class="summary-info-wrapper cf">
