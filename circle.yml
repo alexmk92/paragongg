@@ -16,7 +16,7 @@ dependencies:
     - pip install awsebcli
   cache_directories:
       - ~/.composer/cache
-      - ~/vendor
+      - ./vendor
 test:
   override:
     - phpunit
