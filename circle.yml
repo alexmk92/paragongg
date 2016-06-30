@@ -14,6 +14,8 @@ dependencies:
     - yes | pecl install mongodb
     - echo "extension=mongodb.so" > /opt/circleci/php/$(phpenv global)/etc/php.ini
     - pip install awsebcli
+  cache_directories:
+      - ~/.composer/cache
 test:
   override:
     - phpunit

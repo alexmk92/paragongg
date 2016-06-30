@@ -1,6 +1,6 @@
 # ParagonGG 2.0
 
-[![Build Status](https://semaphoreci.com/api/v1/projects/a3268a9b-eca2-44e5-961b-32e8594ad5ee/819627/badge.svg)](https://semaphoreci.com/jamieshepherd/paragongg)
+[![CircleCI](https://circleci.com/gh/jamieshepherd/paragongg/tree/master.svg?style=svg&circle-token=2886abb8ed3f95a61da55889de6888f9dc4e54e3)](https://circleci.com/gh/jamieshepherd/paragongg/tree/master)
 
 This repository hosts the code for the application layer of ParagonGG, a news, strategy, and stats website for the MOBA title from Epic Games: Paragon.
 
