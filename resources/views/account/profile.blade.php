@@ -3,7 +3,7 @@
     @include('account.nav')
     <div class="wrapper">
         <h3>Edit profile</h3>
-        <form role="form" method="POST" action="{{ Request::url() }}">
+        <form role="form" method="POST" action="{{ Request::url() }}" enctype="multipart/form-data">
             @if (count($errors) > 0)
                 <div class="alert alert-danger">
                     <ul>
@@ -15,6 +15,8 @@
             @endif
 
             {!! csrf_field() !!}
+            <label>User avatar (64x64 minimum)</label>
+            <input type="file" name="avatar">
             <label>Username</label>
             <input type="text" name="username" value="{{ $user->username }}">
             <label>Full name</label>

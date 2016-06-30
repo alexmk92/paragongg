@@ -6,6 +6,8 @@ use App\Http\Requests;
 use App\Http\Requests\Account\UpdatePasswordRequest;
 use App\Http\Requests\Account\UpdateProfileRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class AccountController extends Controller
 {
@@ -27,6 +29,17 @@ class AccountController extends Controller
     public function updateProfile(UpdateProfileRequest $request)
     {
         $user = Auth::user();
+
+        if($request->hasFile('avatar')) {
+            $storage = Storage::disk('s3');
+            $image  = Image::make($request->file('avatar'))->resize(64,64)->stream()->getContents();
+
+            //$image = $request->file('avatar');
+            $filename = pathinfo($request->file('avatar')->getClientOriginalName(), PATHINFO_FILENAME);
+            $path = uniqid(base64_encode($filename).'-',false).'.'.$request->file('avatar')->getClientOriginalExtension();
+            $storage->getDriver()->put('images/users/'.$user->id.'/avatars/'.$path, $image);
+            $user->avatar = $path;
+        }
         $user->username  = $request->username;
         $user->email     = $request->email;
         $user->website   = $request->website;

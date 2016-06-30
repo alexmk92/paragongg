@@ -7,7 +7,6 @@
         <div class="content-wrapper solo">
             <span class="breadcrumb"><a href="/discussion">Discussion</a> / <a href="/discussion/create">Create</a></span>
             <h2>Start a discussion</h2>
-            <p>Ask a question, post a strategy, strike up a conversation.</p>
             <form role="form" method="POST" action="{{ Request::url() }}">
                 @if (count($errors) > 0)
                     <div class="alert alert-danger">
@@ -29,7 +28,6 @@
                     <option value="general">General discussion</option>
                     <option value="theorycrafting">Theorycrafting</option>
                     <option value="questions">Questions &amp; Answers</option>
-                    <option value="articles">Articles</option>
                 </select>
 
                 <hr>

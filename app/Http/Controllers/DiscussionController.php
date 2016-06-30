@@ -28,8 +28,13 @@ class DiscussionController extends Controller
     public function show($id)
     {
         $discussion = Discussion::findOrFail($id);
+        $bestAnswer = null;
 
-        return view('discussion.show', compact('discussion'));
+        if($discussion->accepted_answer != null) {
+            $bestAnswer = DiscussionResponse::findOrFail($discussion->accepted_answer);
+        }
+
+        return view('discussion.show', compact('discussion', 'bestAnswer'));
     }
 
     public function create()
@@ -73,6 +78,22 @@ class DiscussionController extends Controller
         $response->body      = $request->body;
         $response->save();
 
+        return redirect()->back();
+    }
+
+    public function bestAnswer($id, $rid)
+    {
+        $discussion = Discussion::where('category', 'questions')->where('id', $id)->firstOrFail();
+        $response   = DiscussionResponse::where('id', $rid)->where('parent_id', $id)->firstOrFail();
+
+        if($discussion && $response) {
+            $discussion->accepted_answer = $rid;
+            $discussion->save();
+        } else {
+            abort(404);
+        }
+
+        session()->flash('notification', 'success|Your post has been marked as answered.');
         return redirect()->back();
     }
     

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Discussion;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,12 @@ class CommunityController extends Controller
     public function index()
     {
         $streams = $this->getStreams();
-        return view('community.index', compact('streams'));
+
+        $recentGeneral = Discussion::where('category', 'general')->take(3)->get();
+        $recentTheorycrafting = Discussion::where('category', 'theorycrafting')->take(3)->get();
+        $recentQuestions = Discussion::where('category', 'questions')->take(3)->get();
+        $recentArticles = null;
+        return view('community.index', compact('streams', 'recentGeneral', 'recentTheorycrafting', 'recentQuestions', 'recentArticles'));
     }
 
     public function getStreams()

@@ -1,4 +1,13 @@
 .community {
+    .answered, .unanswered {
+        margin-right: 3px;
+    }
+    .answered {
+        color: $green;
+    }
+    .unanswered {
+        color: $font-color-faded;
+    }
     h1 {
         margin-bottom: 50px;
     }
@@ -7,6 +16,7 @@
         display: inline-block;
         margin-bottom: 50px;
         padding-right: 50px;
+        vertical-align: top;
     }
     .listbox {
         h5 {

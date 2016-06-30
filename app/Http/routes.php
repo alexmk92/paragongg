@@ -86,6 +86,7 @@ Route::post('/discussion/create', 'DiscussionController@store');
 Route::get('/discussion/edit/{id}', 'DiscussionController@edit');
 Route::post('/discussion/edit/{id}', 'DiscussionController@update');
 Route::get('/discussion/delete/{id}', 'DiscussionController@delete');
+Route::get('/discussion/{id}/best-answer/{rid}', 'DiscussionController@bestAnswer');
 Route::post('/discussion/{id}/reply', 'DiscussionController@reply');
 Route::get('/discussion/{id}/{slug?}', 'DiscussionController@show');
 Route::post('/discussion/{id}/{slug?}/reply', 'DiscussionController@reply');

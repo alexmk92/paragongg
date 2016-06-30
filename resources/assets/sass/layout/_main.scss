@@ -46,6 +46,9 @@ body {
     &.solo {
         margin: 20px auto 50px;
     }
+    &.wider {
+        max-width: 1000px;
+    }
 }
 .panel {
     padding: 20px;
@@ -56,6 +59,7 @@ body {
     font-size: 14px;
     text-transform: uppercase;
     color: $font-color-faded;
+    margin-bottom: 5px;
     a {
         color: $font-color-faded;
         &:hover {

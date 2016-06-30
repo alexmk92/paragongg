@@ -16,6 +16,21 @@
         }
     }
     .original-post {
+        border-bottom: 1px solid $faded-line;
+        h5 {
+            color: $font-color-faded;
+            font-size: 14px;
+            .fa {
+                color: $green;
+            }
+        }
+        .best-answer {
+            margin: 50px 0 50px 30px;
+            .discussion-response {
+                margin: 0;
+                border-left: 1px solid $green;
+            }
+        }
         .details {
             margin-bottom: 20px;
             .user-avatar {
@@ -29,6 +44,9 @@
     }
     .post-response {
         margin-top: 100px;
+        form {
+            margin: 0 auto;
+        }
     }
     .listbox {
         .user-avatar {
@@ -44,22 +62,30 @@
         }
     }
     .article-body {
-        border-bottom: 1px solid $faded-line;
         padding-bottom: 30px;
         font-size: 18px;
         line-height: 24px;
     }
     .discussion-response {
-        border: 1px solid #111;
-        margin: 40px 0;
-        background: #060606;
+        border: 1px solid $faded-line;
+        background: $panel-color-dark;
+        margin: 50px 0;
         &:hover {
             border-color: $faded-line;
         }
         .details {
             font-size: 16px;
-            background: $panel-color-dark;
+            background: $panel-color;
             padding: 15px;
+        }
+        .mark-best-answer {
+            float: right;
+            font-size: 14px;
+            font-family: $font-condensed;
+            color: $font-color-faded;
+            &:hover {
+                color: $green;
+            }
         }
         .body {
             font-size: 16px;

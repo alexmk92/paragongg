@@ -28,6 +28,7 @@ class CreateUsersTable extends Migration
             $table->string('website')->nullable();
             $table->string('twitter')->nullable();
             $table->string('twitch_tv')->nullable();
+            $table->string('avatar')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

@@ -10,84 +10,74 @@
                 <div class="listbox cf">
                     <h5>General discussion <a class="sub" href="/discussion/category/general">View More</a></h5>
                     <ul>
-                        <li><a href="" class="cf">
-                                <img src="https://randomuser.me/api/portraits/women/10.jpg" class="user-avatar"/>
-                                <span class="details highlight">Question</span><span class="details">0 Responses</span>
-                                <span class="content">What is the respawn time for ju...</span>
-                            </a></li>
-                        <li><a href="" class="cf">
-                                <img src="https://randomuser.me/api/portraits/women/10.jpg" class="user-avatar"/>
-                                <span class="details highlight">Question</span><span class="details">0 Responses</span>
-                                <span class="content">What is the respawn time for ju...</span>
-                            </a></li>
-                        <li><a href="" class="cf">
-                                <img src="https://randomuser.me/api/portraits/women/10.jpg" class="user-avatar"/>
-                                <span class="details highlight">Question</span><span class="details">0 Responses</span>
-                                <span class="content">What is the respawn time for ju...</span>
-                            </a></li>
+                        @if(isset($recentGeneral) && $recentGeneral->count() > 0)
+                        @foreach($recentGeneral as $post)
+                            <li><a href="/discussion/{{ $post->id }}/{{ createSlug($post->title) }}" class="cf">
+                                    <img src="https://randomuser.me/api/portraits/women/10.jpg" class="user-avatar"/>
+                                    <span class="details highlight">{{ $post->category }}</span><span class="details">{{ $post->responses->count() }} Responses</span>
+                                    <span class="content">{{ substr($post->title,0,50) }}@if(strlen($post->title) > 50)...@endif</span>
+                                </a></li>
+                        @endforeach
+                        @else
+                            <p>No recent general.</p>
+                        @endif
                     </ul>
                 </div>
             </div><div class="recent-posts">
                 <div class="listbox cf">
                     <h5>Theorycrafting <a class="sub" href="/discussion/category/theorycrafting">View More</a></h5>
                     <ul>
-                        <li><a href="" class="cf">
-                                <img src="https://randomuser.me/api/portraits/women/10.jpg" class="user-avatar"/>
-                                <span class="details highlight">Question</span><span class="details">0 Responses</span>
-                                <span class="content">What is the respawn time for ju...</span>
-                            </a></li>
-                        <li><a href="" class="cf">
-                                <img src="https://randomuser.me/api/portraits/women/10.jpg" class="user-avatar"/>
-                                <span class="details highlight">Question</span><span class="details">0 Responses</span>
-                                <span class="content">What is the respawn time for ju...</span>
-                            </a></li>
-                        <li><a href="" class="cf">
-                                <img src="https://randomuser.me/api/portraits/women/10.jpg" class="user-avatar"/>
-                                <span class="details highlight">Question</span><span class="details">0 Responses</span>
-                                <span class="content">What is the respawn time for ju...</span>
-                            </a></li>
+                        @if(isset($recentTheorycrafting) && $recentTheorycrafting->count() > 0)
+                        @foreach($recentTheorycrafting as $post)
+                                <li><a href="/discussion/{{ $post->id }}/{{ createSlug($post->title) }}" class="cf">
+                                    <img src="https://randomuser.me/api/portraits/women/10.jpg" class="user-avatar"/>
+                                    <span class="details highlight">{{ $post->category }}</span><span class="details">{{ $post->responses->count() }} Responses</span>
+                                    <span class="content">{{ $post->title }}</span>
+                                </a></li>
+                        @endforeach
+                        @else
+                            <p>No recent theorycrafting.</p>
+                        @endif
                     </ul>
                 </div>
             </div><div class="recent-posts">
                 <div class="listbox cf">
                     <h5>Questions &amp; Answers <a class="sub" href="/discussion/category/questions">View More</a></h5>
                     <ul>
-                        <li><a href="" class="cf">
-                                <img src="https://randomuser.me/api/portraits/women/10.jpg" class="user-avatar"/>
-                                <span class="details highlight">Question</span><span class="details">0 Responses</span>
-                                <span class="content">What is the respawn time for ju...</span>
-                            </a></li>
-                        <li><a href="" class="cf">
-                                <img src="https://randomuser.me/api/portraits/women/10.jpg" class="user-avatar"/>
-                                <span class="details highlight">Question</span><span class="details">0 Responses</span>
-                                <span class="content">What is the respawn time for ju...</span>
-                            </a></li>
-                        <li><a href="" class="cf">
-                                <img src="https://randomuser.me/api/portraits/women/10.jpg" class="user-avatar"/>
-                                <span class="details highlight">Question</span><span class="details">0 Responses</span>
-                                <span class="content">What is the respawn time for ju...</span>
-                            </a></li>
+                        @if(isset($recentQuestions) && $recentQuestions->count() > 0)
+                        @foreach($recentQuestions as $post)
+                                <li><a href="/discussion/{{ $post->id }}/{{ createSlug($post->title) }}" class="cf">
+                                    <img src="https://randomuser.me/api/portraits/women/10.jpg" class="user-avatar"/>
+                                    <span class="details highlight">{{ $post->category }}</span><span class="details">{{ $post->responses->count() }} Responses</span>
+                                    <span class="content">
+                                        @if($post->accepted_answer)
+                                            <i class="fa fa-check-circle answered" aria-hidden="true"></i>
+                                        @else
+                                            <i class="fa fa-question-circle unanswered" aria-hidden="true"></i>
+                                        @endif
+                                        {{ $post->title }}</span>
+                                </a></li>
+                        @endforeach
+                        @else
+                            <p>No recent questions.</p>
+                        @endif
                     </ul>
                 </div>
             </div><div class="recent-posts">
                 <div class="listbox cf">
                     <h5>Articles <a class="sub" href="/discussion/category/articles">View More</a></h5>
                     <ul>
-                        <li><a href="" class="cf">
-                                <img src="https://randomuser.me/api/portraits/women/10.jpg" class="user-avatar"/>
-                                <span class="details highlight">Question</span><span class="details">0 Responses</span>
-                                <span class="content">What is the respawn time for ju...</span>
-                            </a></li>
-                        <li><a href="" class="cf">
-                                <img src="https://randomuser.me/api/portraits/women/10.jpg" class="user-avatar"/>
-                                <span class="details highlight">Question</span><span class="details">0 Responses</span>
-                                <span class="content">What is the respawn time for ju...</span>
-                            </a></li>
-                        <li><a href="" class="cf">
-                                <img src="https://randomuser.me/api/portraits/women/10.jpg" class="user-avatar"/>
-                                <span class="details highlight">Question</span><span class="details">0 Responses</span>
-                                <span class="content">What is the respawn time for ju...</span>
-                            </a></li>
+                        @if(isset($recentArticles) && $recentArticles->count() > 0)
+                        @foreach($recentArticles as $post)
+                                <li><a href="/discussion/{{ $post->id }}/{{ createSlug($post->title) }}" class="cf">
+                                    <img src="https://randomuser.me/api/portraits/women/10.jpg" class="user-avatar"/>
+                                    <span class="details highlight">{{ $post->category }}</span><span class="details">{{ $post->responses->count() }} Responses</span>
+                                    <span class="content">{{ $post->title }}</span>
+                                </a></li>
+                        @endforeach
+                        @else
+                            <p>No recent articles.</p>
+                        @endif
                     </ul>
                 </div>
             </div>
