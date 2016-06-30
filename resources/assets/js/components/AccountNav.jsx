@@ -1,10 +1,13 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
+var Helpers  = require('../helpers');
 
 var AccountNav = React.createClass({
     getInitialState: function() {
         return {
             username: this.props.username,
+            userid: this.props.userid,
+            avatar: this.props.avatar || null,
             //amber: this.props.amber,
             achievements: 1365,
             active: false,
@@ -24,6 +27,13 @@ var AccountNav = React.createClass({
     isActive: function() {
         return (this.state.active) ? 'account-nav-panel active' : 'account-nav-panel inactive';
     },
+    getAvatar: function() {
+        var $avatar = '/assets/images/avatar.png';
+        if(this.state.avatar != null) {
+            $avatar = Helpers.S3URL() + 'images/users/' + this.state.userid + '/avatars/' + this.state.avatar;
+        }
+        return $avatar;
+    },
     render: function() {
         var isAdmin, isMod = false;
         if(this.isMod()) {
@@ -36,7 +46,7 @@ var AccountNav = React.createClass({
             <div className="account-dropdown">
                 <div className="account-nav-trigger" onClick={this.showContent}>
 
-                    <img className="account-avatar" src="https://www.gravatar.com/avatar/d5d3310834b43c6f96e200339734c949?s=20&amp;d=https%3A%2F%2Fparagon.gg%2Fimages%2Fdefault-avatar.png" alt="Your avatar" />
+                    <img className="account-avatar" src={this.getAvatar()} alt="Your avatar" />
                     <span>{this.state.username}</span>
                     {/*<span className="account-amber"><i className="pgg pgg-amber" aria-hidden="true"></i>{this.state.amber}</span>*/}
                     <i className="fa fa-caret-down" aria-hidden="true"></i>
@@ -61,4 +71,4 @@ var AccountNav = React.createClass({
 });
 
 var element = document.getElementById('account-nav');
-if(element) ReactDOM.render(<AccountNav username={element.dataset.username} amber={element.dataset.amber} mod={element.dataset.mod} admin={element.dataset.admin}/>, element);
+if(element) ReactDOM.render(<AccountNav username={element.dataset.username} userid={element.dataset.userid} avatar={element.dataset.avatar} amber={element.dataset.amber} mod={element.dataset.mod} admin={element.dataset.admin}/>, element);

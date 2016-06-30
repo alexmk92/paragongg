@@ -24,13 +24,19 @@
             </div>
             @if(auth()->check())
                 <div id="account-nav"
-                      data-username="{{ auth()->user()->username }}" data-amber="{{ auth()->user()->amber }}"
-                        @if(auth()->user()->isMod())
-                            data-mod=true
+                     data-username="{{ auth()->user()->username }}"
+                     data-userid="{{ auth()->user()->id }}"
+                         @if(auth()->user()->avatar)
+                            data-avatar="{{ auth()->user()->avatar }}"
                         @endif
-                        @if(auth()->user()->isAdmin())
-                            data-admin=true
-                        @endif>
+
+                     data-amber="{{ auth()->user()->amber }}"
+                         @if(auth()->user()->isMod())
+                             data-mod=true
+                         @endif
+                         @if(auth()->user()->isAdmin())
+                             data-admin=true
+                         @endif>
 
                 </div>
             @else
