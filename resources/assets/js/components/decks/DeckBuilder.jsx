@@ -437,6 +437,32 @@ var DeckBuilder = React.createClass({
         }
         return -1;
     },
+    validateCardType: function(selectedCard, upgradeCard) {
+        if(selectedCard === null || upgradeCard === null)
+            return true;
+        
+        var hasSamePassiveEffect = false;
+        if(upgradeCard && selectedCard) {
+            selectedCard.effects.some(function(effect) {
+                var statString = "";
+                if(effect.stat) statString = effect.stat.toUpperCase();
+                if(effect.description) statString = effect.description.toUpperCase();
+                var selectedEffectType = Helpers.getFormattedStatistic(statString);
+                if(upgradeCard.effects) {
+                    upgradeCard.effects.forEach(function(upgradeEffect) {
+                        if(upgradeEffect.stat) statString = upgradeEffect.stat.toUpperCase();
+                        if(upgradeEffect.description) statString = upgradeEffect.description.toUpperCase();
+                        var slotEffectType = Helpers.getFormattedStatistic(statString);
+                        if(selectedEffectType.label === slotEffectType.label) {
+                            hasSamePassiveEffect = true;
+                        }
+                    });
+                } else { hasSamePassiveEffect = false }
+                return hasSamePassiveEffect;
+            });
+        }
+        return hasSamePassiveEffect;
+    },
     getCardsInDeck : function(types) {
         var cardList = [];
         this.state.deck.forEach(function(card) {
@@ -461,9 +487,14 @@ var DeckBuilder = React.createClass({
                     var finalQuantity = this.getCardQuantityInCurrentDeck(card);
                     disableCardRow = finalQuantity === card.quantity;
                     quantityLabel = finalQuantity + "/" + card.quantity;
-                }
-                if(disableCardRow) {
-                    className += " disabled";
+
+                    if(disableCardRow) {
+                        className += " disabled";
+                    }
+
+                    if(types[0] === "Upgrade" && !this.validateCardType(this.state.selectedCard, card)) {
+                        className += " invalid";
+                    }
                 }
 
                 var cardMarkup = (
@@ -815,7 +846,6 @@ var DeckBuilder = React.createClass({
         }
     },
     getSelectedCardPopup: function() {
-        console.log(this.lastSelectedCard);
         if(this.state.selectedCard && Helpers.isClientMobile()) {
             var cardType = "UPGRADE";
             if(this.state.selectedCard.type === "Active" || this.state.selectedCard.type === "Passive") cardType = "EQUIPMENT";
@@ -867,7 +897,6 @@ var DeckBuilder = React.createClass({
             });
         }
         affinities.push({ name : "Universal" });
-        console.log("AFFINTIIES ARE NOW: ", affinities);
         return affinities;
     },
     // Always deselect the current card when this happens as its an error
@@ -888,7 +917,6 @@ var DeckBuilder = React.createClass({
     updateDescription: function() {
         var value = this.refs.deckDescriptionInput.value;
         if(value) {
-            console.log("UPDATING DESCRIPTION TO: ", value);
             this.setState({ description : value });
         }
     },

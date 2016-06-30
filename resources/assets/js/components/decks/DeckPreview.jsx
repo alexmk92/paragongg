@@ -174,7 +174,6 @@ var DeckPreview = React.createClass({
         );
     },
     showDetail: function() {
-        console.log(this.props.deck);
         window.location = this.state.deckURL;
     },
     getCardTotal: function() {
