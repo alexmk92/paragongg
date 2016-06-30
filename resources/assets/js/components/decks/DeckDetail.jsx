@@ -11,6 +11,7 @@ var BuildStats = require('./BuildStats');
 var DeckDetail = React.createClass({
     getInitialState: function() {
         return {
+            deck : this.props.deck,
             builds: [],
             description: DECK.description,
             selectedTab: 0,
@@ -22,7 +23,7 @@ var DeckDetail = React.createClass({
         window.tooltip = new Toptip();
     },
     componentWillMount: function() {
-        var newBuilds = this.props.deck.builds.map(function(build) {
+        var newBuilds = this.state.deck.builds.map(function(build) {
             build.slots = build.slots.map(function(slot) {
                 if(slot.card) {
                     slot.card = this.getCard(slot.card);
@@ -112,7 +113,7 @@ var DeckDetail = React.createClass({
     },
     renderBuildTabs: function() {
         var untitledCount = 1;
-        return this.props.deck.builds.map(function(build, i) {
+        return this.state.deck.builds.map(function(build, i) {
             if(build.title === "") build.title = "untitled build";
             if(build.title.toLowerCase().indexOf("untitled") > -1 && !(/\d/g.test(build.title))) {
                 build.title += " " + untitledCount;
@@ -222,19 +223,37 @@ var DeckDetail = React.createClass({
             }.bind(this));
         }
     },
+    upvoteDeck: function() {
+        var newDeck = this.state.deck;
+        Helpers.ajax({
+            type : "POST",
+            url :  "/api/v1/vote",
+            headers : [{ "X-CSRF-TOKEN" : csrf }],
+            contentType: "application/x-www-form-urlencoded",
+            cache: false,
+            returnType: "json",
+            data: [{ "ref_id" : newDeck._id, "type" : "deck" }]
+        }).then(function(payload) {
+            newDeck.voted = payload.data.voted;
+            newDeck.votes = payload.data.value;
+            this.setState({ deck : newDeck });
+        }.bind(this), function(err) {
+            console.log("ERROR WHEN UPVOTING: ", err);
+        });
+    },
     render: function() {
         return (
             <div>
                 <div id="deck-info">
                     <div id="hero-avatar">
-                        <img src={ Helpers.getHeroImageURL(this.props.deck.hero)} alt={this.props.deck.hero.name} />
+                        <img src={ Helpers.getHeroImageURL(this.state.deck.hero)} alt={this.state.deck.hero.name} />
                     </div>
                     <div id="title-wrapper">
-                        <h2>{this.props.deck.title}</h2>
-                        <p>{this.props.deck.description}</p>
+                        <h2>{this.state.deck.title}</h2>
+                        <p>{this.state.deck.description}</p>
                     </div>
                     <div id="vote-wrapper">
-                        <i className="fa fa-star"></i> <span>{0}</span>
+                        <i className={"fa fa-star " + (this.state.deck.voted ? "active" : "")} onClick={this.upvoteDeck}></i> <span>{this.state.deck.votes || 0}</span>
                     </div>
                 </div>
 
@@ -247,7 +266,7 @@ var DeckDetail = React.createClass({
                     </ul>
                 </div>
 
-                <BuildStats requireModuleDependencies={true} selectedBuild={this.state.selectedBuild} hero={this.props.deck.hero} cards={this.props.deck.cards} builds={this.state.builds} />
+                <BuildStats requireModuleDependencies={false} selectedBuild={this.state.selectedBuild} hero={this.state.deck.hero} cards={this.state.deck.cards} builds={this.state.builds} />
             </div>
         );
     }

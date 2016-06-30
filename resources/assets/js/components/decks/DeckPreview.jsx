@@ -84,25 +84,10 @@ var DeckPreview = React.createClass({
 
         return bars;
     },
-    shiftPreviewLeft: function() {
-        console.log("SCROLL LEFT");
-    },
-    shiftPreviewRight: function() {
-        console.log("SCROLL RIGHT");
+    upvoteDeck: function() {
+        this.props.onDeckUpvoted(this.props.deck);
     },
     renderDeckPreview: function() {
-        /*
-         <div className="slide-left"
-         onClick={this.shiftPreviewLeft}
-         >
-         LEFT ARROW
-         </div>
-         <div className="slide-right"
-         onClick={this.shiftPreviewRight}
-         >
-         RIGHT ARROW
-         </div>
-         */
         var sortedCards = [];
         this.props.deck.cards.all.forEach(function(card) {
             if(card) {
@@ -173,9 +158,6 @@ var DeckPreview = React.createClass({
             <span className={"badge " + type}>{ badge }</span>
         );
     },
-    showDetail: function() {
-        window.location = this.state.deckURL;
-    },
     getCardTotal: function() {
         var total = 0;
         this.props.deck.cards.all.forEach(function(card) {
@@ -184,10 +166,9 @@ var DeckPreview = React.createClass({
         return total;
     },
     render: function() {
+        var userVoted = this.props.deck.voted ? "active" : "";
         return (
-            <li className="deck-preview-container"
-                onClick={ this.showDetail }
-            >
+            <li className="deck-preview-container">
                 <div className="hero-portrait">
                     <img src={ Helpers.getHeroImageURL(this.props.deck.hero) } />
                 </div>
@@ -204,8 +185,8 @@ var DeckPreview = React.createClass({
 
                 <div className="mid-section">
                     <div className="votes-panel">
-                        <i className="fa fa-star"></i>
-                        <span>{ Helpers.delimitNumbers(this.props.deck.upvotes || 0) }</span>
+                        <i className={"fa fa-star " + userVoted} onClick={ this.upvoteDeck }></i>
+                        <span>{ Helpers.delimitNumbers(this.props.deck.votes || 0) }</span>
                     </div>
                     { this.renderDeckPreview() }
                 </div>
