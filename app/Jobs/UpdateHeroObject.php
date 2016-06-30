@@ -51,7 +51,7 @@ class UpdateHeroObject extends Job implements ShouldQueue
             }
         }
 
-        $heroDetails = $client->request('GET', 'https://oriondata-public-service-prod09.ol.epicgames.com/v1/hero/' . $this->object->id, [
+        $heroDetails = $client->request('GET', 'https://developer-paragon.epicgames.com/v1/hero/' . $this->object->id, [
             'headers' => [
                 'Accept' => 'application/json',
                 'Authorization' => 'Bearer ' . APIToken(),

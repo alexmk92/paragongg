@@ -70,9 +70,12 @@ function APIToken()
     return Cache::get('APITOKEN');
 }
 
-function OAuthToken()
+function OAuthToken($code = false)
 {
     $user = Auth::user();
+
+    if(!$code) $code = getOAuthToken();
+    Cache::forget('user.'.$user->id.'.token');
     if(!Cache::has('user.'.$user->id.'.token')) {
 
         $auth = base64_encode(env('EPIC_API_CLIENT_ID').':'.env('EPIC_API_CLIENT_SECRET'));
@@ -86,11 +89,17 @@ function OAuthToken()
             ],
             'form_params' => [
                 'grant_type' => 'authorization_code',
-                'code'       => $user->oauth_epic_code
+                'code'       => $code
             ]
         ])->getBody();
         $response = json_decode($res);
-        $user->epic_account_id = $response->account_id;
+
+        $user->epic_account_id       = $response->account_id;
+        $user->oauth_token           = $response->access_token;
+        $user->oauth_expires         = Carbon::now()->addSeconds($response->expires_in);
+        $user->oauth_refresh_token   = $response->refresh_token;
+        $user->oauth_refresh_expires = Carbon::now()->addSeconds($response->refresh_expires);
+
         $user->save();
         $expires = Carbon::now()->addSeconds($response->expires_in);
 

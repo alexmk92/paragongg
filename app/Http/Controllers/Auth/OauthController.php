@@ -21,7 +21,7 @@ class OauthController extends Controller
                 $user->save();
 
                 try {
-                    OAuthToken();
+                    OAuthToken($_GET['code']);
                 } catch(Exception $e) {
                     Log::error("Couldn't fetch OAuth token for user: ".$user->username."(".$user->id.")");
                     abort(500);

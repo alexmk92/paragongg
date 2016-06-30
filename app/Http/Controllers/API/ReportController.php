@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Report;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;

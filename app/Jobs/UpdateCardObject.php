@@ -55,7 +55,7 @@ class UpdateCardObject extends Job implements ShouldQueue
             }
         }
 
-        $cardDetails = $client->request('GET', 'https://oriondata-public-service-prod09.ol.epicgames.com/v1/card/' . $this->object->id, [
+        $cardDetails = $client->request('GET', 'https://developer-paragon.epicgames.com/v1/card/' . $this->object->id, [
             'headers' => [
                 'Accept' => 'application/json',
                 'Authorization' => 'Bearer ' . APIToken(),
