@@ -437,6 +437,32 @@ var DeckBuilder = React.createClass({
         }
         return -1;
     },
+    validateCardType: function(selectedCard, upgradeCard) {
+        if(selectedCard === null || upgradeCard === null)
+            return true;
+
+        var hasSamePassiveEffect = false;
+        if(upgradeCard && selectedCard) {
+            selectedCard.effects.some(function(effect) {
+                var statString = "";
+                if(effect.stat) statString = effect.stat.toUpperCase();
+                if(effect.description) statString = effect.description.toUpperCase();
+                var selectedEffectType = Helpers.getFormattedStatistic(statString);
+                if(upgradeCard.effects) {
+                    upgradeCard.effects.forEach(function(upgradeEffect) {
+                        if(upgradeEffect.stat) statString = upgradeEffect.stat.toUpperCase();
+                        if(upgradeEffect.description) statString = upgradeEffect.description.toUpperCase();
+                        var slotEffectType = Helpers.getFormattedStatistic(statString);
+                        if(selectedEffectType.label === slotEffectType.label) {
+                            hasSamePassiveEffect = true;
+                        }
+                    });
+                } else { hasSamePassiveEffect = false }
+                return hasSamePassiveEffect;
+            });
+        }
+        return hasSamePassiveEffect;
+    },
     getCardsInDeck : function(types) {
         var cardList = [];
         this.state.deck.forEach(function(card) {
@@ -445,6 +471,7 @@ var DeckBuilder = React.createClass({
                 if(!hasType) hasType = card.type === type;
             });
             if(hasType) {
+                var shouldHideCard = false;
                 var className = "";
                 var childClassName = "";
                 if(this.state.lastSelectedCard.code === card.code && this.state.playFlashAnimation) {
@@ -461,43 +488,38 @@ var DeckBuilder = React.createClass({
                     var finalQuantity = this.getCardQuantityInCurrentDeck(card);
                     disableCardRow = finalQuantity === card.quantity;
                     quantityLabel = finalQuantity + "/" + card.quantity;
-                }
-                if(disableCardRow) {
-                    className += " disabled";
-                }
 
-                var cardMarkup = (
-                    <li className={className}
-                        key={card.code + "_" + Helpers.uuid() }
-                        style={{backgroundImage: 'url('+Helpers.getCardImageURL(card, "medium", "icon")+')'}}
-                        onContextMenu={this.deleteCardFromDeck.bind(this, card)}
-                        onClick={this.selectCard.bind(this, card)}
-                        onMouseEnter={this.setTooltipContent.bind(this, card)}
-                        onMouseOver={this.showTooltip.bind(this, card)}
-                        onMouseLeave={this.hideTooltip}
-                    >
-                        <div className={ "wrapper " + childClassName }>
-                            <span className="count">{ quantityLabel }</span>
-                            <span className="name">{card.name}</span>
-                            <span className="cost">{card.cost} CP</span>
-                        </div>
-                        <div className="delete-icon" onClick={this.deleteCardFromDeck.bind(this, card)}>
-                            <i className="fa fa-trash" aria-hidden="true" />
-                        </div>
-                    </li>
-                );
-
-                if(this.state.selectedCard && this.state.selectedCard.type !== "Upgrade" && card.type === "Upgrade" && this.state.isBuildsPanelShowing && Helpers.isClientMobile()) {
-                    var cardAffinity = card.affinity.toLowerCase();
-                    var selectedAffinity = this.state.selectedCard.affinity.toLowerCase();
-                    if(cardAffinity.indexOf("universal") > -1) {
-                        cardList.push( cardMarkup );
-                    } else if(cardAffinity.indexOf(selectedAffinity) > -1) {
-                        cardList.push( cardMarkup );
+                    if(disableCardRow) {
+                        className += " disabled";
                     }
-                } else {
+
+                    if(types[0] === "Upgrade" && !this.validateCardType(this.state.selectedCard, card)) {
+                        className += " invalid";
+                        if(Helpers.isClientMobile())
+                            shouldHideCard = true;
+                    }
+                }
+
+                if(!shouldHideCard) {
                     cardList.push(
-                        cardMarkup
+                        <li className={className}
+                            key={card.code + "_" + Helpers.uuid() }
+                            style={{backgroundImage: 'url('+Helpers.getCardImageURL(card, "medium", "icon")+')'}}
+                            onContextMenu={this.deleteCardFromDeck.bind(this, card)}
+                            onClick={this.selectCard.bind(this, card)}
+                            onMouseEnter={this.setTooltipContent.bind(this, card)}
+                            onMouseOver={this.showTooltip.bind(this, card)}
+                            onMouseLeave={this.hideTooltip}
+                        >
+                            <div className={ "wrapper " + childClassName }>
+                                <span className="count">{ quantityLabel }</span>
+                                <span className="name">{card.name}</span>
+                                <span className="cost">{card.cost} CP</span>
+                            </div>
+                            <div className="delete-icon" onClick={this.deleteCardFromDeck.bind(this, card)}>
+                                <i className="fa fa-trash" aria-hidden="true" />
+                            </div>
+                        </li>
                     );
                 }
             }
@@ -815,7 +837,6 @@ var DeckBuilder = React.createClass({
         }
     },
     getSelectedCardPopup: function() {
-        console.log(this.lastSelectedCard);
         if(this.state.selectedCard && Helpers.isClientMobile()) {
             var cardType = "UPGRADE";
             if(this.state.selectedCard.type === "Active" || this.state.selectedCard.type === "Passive") cardType = "EQUIPMENT";
@@ -867,7 +888,6 @@ var DeckBuilder = React.createClass({
             });
         }
         affinities.push({ name : "Universal" });
-        console.log("AFFINTIIES ARE NOW: ", affinities);
         return affinities;
     },
     // Always deselect the current card when this happens as its an error
@@ -888,7 +908,6 @@ var DeckBuilder = React.createClass({
     updateDescription: function() {
         var value = this.refs.deckDescriptionInput.value;
         if(value) {
-            console.log("UPDATING DESCRIPTION TO: ", value);
             this.setState({ description : value });
         }
     },

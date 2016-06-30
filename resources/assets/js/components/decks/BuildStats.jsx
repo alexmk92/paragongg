@@ -112,11 +112,6 @@ var BuildStats = React.createClass({
             }
         });
 
-        console.log("CARDS: ", this.props.cards);
-
-        console.log("EXPLODED EQUIP IS: ", explodedEquipment);
-        console.log("EXPLODED UPGRADES IS: ", explodedUpgrades);
-
         if(type === "DAMAGE") {
 
         } else {
@@ -188,10 +183,6 @@ var BuildStats = React.createClass({
             var total = 0;
             buildSlots.forEach(function(card) { total += card.value; });
             upgradeSlots.forEach(function(upgradeCard) { total += upgradeCard.value });
-
-            console.log("BUILD SLOTS: ", buildSlots);
-            console.log("UPGRADE SLOTS: ", upgradeSlots);
-            console.log("MAX TOTAL IS: ", total);
 
             return total;
         }
@@ -536,7 +527,6 @@ var BuildStats = React.createClass({
         var affinityCounts = [];
         var maxCards = this.props.cards.all.length;
 
-        console.log(this.props);
         // On a null build, show deck affinity weighting
         if(this.props.selectedBuild === null || this.props.selectedBuild.slots.length === 0) {
             this.props.cards.all.forEach(function(card) {
@@ -647,7 +637,6 @@ var BuildStats = React.createClass({
                 }.bind(this));
             } else if(this.props.builds.length > 0 && this.state.compareAllBuilds) {
                 this.props.builds.forEach(function(build, index) {
-                    console.log(build);
                     var title = build.title === "" ? ("Untitled Deck " + index) : build.title;
                     data.push({
                         name : title,

@@ -234,6 +234,10 @@
             }
         }
 
+        &.invalid {
+            opacity: 0.5;
+        }
+
         &:hover {
             .wrapper {
                 background: rgba($panel-color-dark,0.2);
@@ -288,6 +292,11 @@
             }
             .delete-icon {
                 width: 60px;
+            }
+
+
+            &.invalid {
+                display: none;
             }
         }
     }
