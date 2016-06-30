@@ -531,6 +531,9 @@
                     }
                 }
             }
+            #cost-curve-wrapper {
+                display: none;
+            }
             #filter {
                 display: none;
                 transition: all 200ms ease-in-out;

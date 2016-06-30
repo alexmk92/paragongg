@@ -240,25 +240,49 @@ var Build = React.createClass({
         }
     },
     validateCardType: function(upgradeSlot) {
-        var affinityMatches = false;
+        var hasSamePassiveEffect = false;
         if(upgradeSlot && this.props.selectedCard) {
+            /*
             if(upgradeSlot.requiredAffinity.toLowerCase().indexOf(this.props.selectedCard.affinity.toLowerCase()) > -1)
-                affinityMatches = true;
+                hasSamePassiveEffect = true;
             if(this.props.selectedCard.affinity.toLowerCase().indexOf("universal") > -1)
-                affinityMatches = true;
+                hasSamePassiveEffect = true;
+            */
+            var passiveList = "";
+            this.props.selectedCard.effects.some(function(effect) {
+                var statString = "";
+                if(effect.stat) statString = effect.stat.toUpperCase();
+                if(effect.description) statString = effect.description.toUpperCase();
+                var selectedEffectType = Helpers.getFormattedStatistic(statString);
+                if(upgradeSlot.parentCard.effects) {
+                    passiveList = "";
+                    upgradeSlot.parentCard.effects.forEach(function(slotEffect) {
+                        if(slotEffect.stat) statString = slotEffect.stat.toUpperCase();
+                        if(slotEffect.description) statString = slotEffect.description.toUpperCase();
+                        var slotEffectType = Helpers.getFormattedStatistic(statString);
+                        passiveList += slotEffectType.label + ", ";
+                        if(selectedEffectType.label === slotEffectType.label) {
+                            console.log("THIS IS VALID");
+                            hasSamePassiveEffect = true;
+                        }
+                    });
+                } else { hasSamePassiveEffect = false }
+                return hasSamePassiveEffect;
+            });
 
-            if(!affinityMatches) {
-                var requiredAffinity = upgradeSlot.requiredAffinity.toLowerCase().replace("affinity.", "");
-                var attemptedAffinity = this.props.selectedCard.affinity.toLowerCase().replace("affinity.", "");
-                this.invokeNotification("warning", "You must apply a " + requiredAffinity + " to this slot, you tried to use " + attemptedAffinity + ".");
+            console.log("HAS SAME PASSIVE EFFECT IS: ", hasSamePassiveEffect);
+
+            if(!hasSamePassiveEffect) {
+                this.invokeNotification("warning", "You must slot an upgrade card which has the following passives: " + passiveList);
             }
+
             // MUST BE AN UPGRADE
             if(this.props.selectedCard.type !== "Upgrade") {
                 this.invokeNotification("warning", "Only upgrade cards may be fitted into that slot!");
-                affinityMatches = false;
+                hasSamePassiveEffect = false;
             }
         }
-        return affinityMatches;
+        return hasSamePassiveEffect;
     },
     validateSlot: function(slotIndex) {
         var valid = false;
@@ -613,7 +637,7 @@ var Build = React.createClass({
 
                         slot.upgrades = [];
                         for (var j = 0; j < upgradeSlots; j++) {
-                            slot.upgrades.push({requiredAffinity: this.props.selectedCard.affinity, card: null})
+                            slot.upgrades.push({requiredAffinity: this.props.selectedCard.affinity, card: null, parentCard: slot.card})
                         }
                     }
                     newSlots[index] = slot;
@@ -755,8 +779,7 @@ var Build = React.createClass({
                 }
             }
         });
-
-        console.log(sortedCards);
+        
         return sortedCards;
     },
     render: function() {

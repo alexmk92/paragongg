@@ -9,5 +9,6 @@
     </div>
 @endsection
 <script>
+    var csrf = '{{ csrf_token() }}';
     var DECK = {!! json_encode($deck) !!};
 </script>

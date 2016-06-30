@@ -4,7 +4,6 @@ var Helpers = require('../../../helpers');
 
 var CostCurve = React.createClass({
     componentWillReceiveProps: function(nextProps, nextState) {
-        console.log("NEXT PROPS COST CURVE: ", nextProps);
     },
     getCostCurveData: function() {
         var comparisonData = {
@@ -28,7 +27,6 @@ var CostCurve = React.createClass({
         costCounts[7] = { label : 7, count : 0 };
 
         // On a null build, show deck affinity weighting
-        console.log("THIS IS THE DECK: ", this.props.deck.cards);
         var collection = [];
         if(typeof this.props.deck.cards === "undefined") {
             collection = this.props.deck;
@@ -36,7 +34,6 @@ var CostCurve = React.createClass({
         else {
             collection = this.props.deck.cards.all
         }
-        console.log("COLLECTION IS: ", collection);
 
         collection.forEach(function(card) {
             // Push for maximum possible:

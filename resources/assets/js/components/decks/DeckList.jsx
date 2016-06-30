@@ -5,16 +5,47 @@ var DeckPreview = require('./DeckPreview');
 var Tooltip = require('../libraries/tooltip/Toptip');
 
 var DeckList = React.createClass({
+    getInitialState: function() {
+        return {
+            decks: []
+        }
+    },
     componentWillMount: function() {
         this.tooltip = new Tooltip();
+        this.setState({ decks : DECKS })
+    },
+    upvoteDeck: function(deck) {
+        console.log("Upvoting deck: ", deck);
+        Helpers.ajax({
+            type : "POST",
+            url :  "/api/v1/vote",
+            headers : [{ "X-CSRF-TOKEN" : csrf }],
+            contentType: "application/x-www-form-urlencoded",
+            cache: false,
+            returnType: "json",
+            data: [{ "ref_id" : deck._id, "type" : "deck" }]
+        }).then(function(payload) {
+            deck.voted = payload.data.voted;
+            deck.votes = payload.data.value;
+            var newDecks = this.state.decks.map(function(oldDeck) {
+                if(oldDeck._id === deck._id) {
+                    oldDeck = deck;
+                }
+                return oldDeck;
+            });
+            this.setState({ decks : newDecks });
+        }.bind(this), function(err) {
+            console.log("ERROR WHEN UPVOTING: ", err);
+        });
     },
     renderDeckList: function() {
-        var decks = DECKS.map(function(deck) {
-            console.log(deck);
+        var decks = this.state.decks.map(function(deck) {
+            if(!deck.voted) deck.voted = false;
             return (
                 <DeckPreview key={Helpers.uuid()}
                              deck={deck}
                              sharedTooltip={this.tooltip}
+                             onDeckUpvoted={this.upvoteDeck}
                 />
             );
         }.bind(this));
@@ -22,6 +53,7 @@ var DeckList = React.createClass({
         return decks;
     },
     render: function() {
+        console.log("RE RENDERING");
         return(
             <div>
                 <h2>Decks index</h2>
