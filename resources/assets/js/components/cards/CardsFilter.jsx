@@ -132,31 +132,33 @@ var CardsFilter = React.createClass({
             matches = false;
         if(!this.state.showOwnedCards && AUTHED && card.owned && card.owned === false)
             matches = false;
-        if(card.effects) {
-            card.effects.forEach(function(effect) {
-               if(effect.stat) {
-                   this.state.statistics.some(function(stat) {
-                      if(stat.ref === effect.stat.toUpperCase()) {
-                          matches = stat.checked;
-                          return true;
-                      }
-                       return false;
-                   }.bind(this));
-               }
-            }.bind(this));
-        }
-        if(card.maxedEffects && matches === false) {
-            card.maxedEffects.forEach(function(effect) {
-                if(effect.stat) {
-                    this.state.statistics.some(function(stat) {
-                        if(stat.ref === effect.stat.toUpperCase()) {
-                            matches = stat.checked;
-                            return true;
-                        }
-                        return false;
-                    }.bind(this));
-                }
-            }.bind(this));
+        if(matches !== false) {
+            if(card.effects) {
+                card.effects.forEach(function(effect) {
+                    if(effect.stat) {
+                        this.state.statistics.some(function(stat) {
+                            if(stat.ref === effect.stat.toUpperCase()) {
+                                matches = stat.checked;
+                                return true;
+                            }
+                            return false;
+                        }.bind(this));
+                    }
+                }.bind(this));
+            }
+            if(card.maxedEffects && matches === false) {
+                card.maxedEffects.forEach(function (effect) {
+                    if (effect.stat) {
+                        this.state.statistics.some(function (stat) {
+                            if (stat.ref === effect.stat.toUpperCase()) {
+                                matches = stat.checked;
+                                return true;
+                            }
+                            return false;
+                        }.bind(this));
+                    }
+                }.bind(this));
+            }
         }
 
         return matches;
