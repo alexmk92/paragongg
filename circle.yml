@@ -24,4 +24,4 @@ deployment:
       commands:
         - bash ./deploy.sh
         - eb init -r us-east-1 paragongg
-        - eb deploy --profile default
+        - eb deploy
