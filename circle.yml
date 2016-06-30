@@ -16,6 +16,7 @@ dependencies:
     - pip install awsebcli
   cache_directories:
       - ~/.composer/cache
+      - ~/vendor
 test:
   override:
     - phpunit
@@ -24,6 +25,4 @@ deployment:
   production:
       branch: master
       commands:
-        - bash ./deploy.sh
-        - eb init -r us-east-1 paragongg
-        - eb deploy
+        - eb deploy --profile default
