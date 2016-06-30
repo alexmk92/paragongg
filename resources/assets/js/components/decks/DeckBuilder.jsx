@@ -440,7 +440,7 @@ var DeckBuilder = React.createClass({
     validateCardType: function(selectedCard, upgradeCard) {
         if(selectedCard === null || upgradeCard === null)
             return true;
-        
+
         var hasSamePassiveEffect = false;
         if(upgradeCard && selectedCard) {
             selectedCard.effects.some(function(effect) {
@@ -471,6 +471,7 @@ var DeckBuilder = React.createClass({
                 if(!hasType) hasType = card.type === type;
             });
             if(hasType) {
+                var shouldHideCard = false;
                 var className = "";
                 var childClassName = "";
                 if(this.state.lastSelectedCard.code === card.code && this.state.playFlashAnimation) {
@@ -494,41 +495,31 @@ var DeckBuilder = React.createClass({
 
                     if(types[0] === "Upgrade" && !this.validateCardType(this.state.selectedCard, card)) {
                         className += " invalid";
+                        if(Helpers.isClientMobile())
+                            shouldHideCard = true;
                     }
                 }
 
-                var cardMarkup = (
-                    <li className={className}
-                        key={card.code + "_" + Helpers.uuid() }
-                        style={{backgroundImage: 'url('+Helpers.getCardImageURL(card, "medium", "icon")+')'}}
-                        onContextMenu={this.deleteCardFromDeck.bind(this, card)}
-                        onClick={this.selectCard.bind(this, card)}
-                        onMouseEnter={this.setTooltipContent.bind(this, card)}
-                        onMouseOver={this.showTooltip.bind(this, card)}
-                        onMouseLeave={this.hideTooltip}
-                    >
-                        <div className={ "wrapper " + childClassName }>
-                            <span className="count">{ quantityLabel }</span>
-                            <span className="name">{card.name}</span>
-                            <span className="cost">{card.cost} CP</span>
-                        </div>
-                        <div className="delete-icon" onClick={this.deleteCardFromDeck.bind(this, card)}>
-                            <i className="fa fa-trash" aria-hidden="true" />
-                        </div>
-                    </li>
-                );
-
-                if(this.state.selectedCard && this.state.selectedCard.type !== "Upgrade" && card.type === "Upgrade" && this.state.isBuildsPanelShowing && Helpers.isClientMobile()) {
-                    var cardAffinity = card.affinity.toLowerCase();
-                    var selectedAffinity = this.state.selectedCard.affinity.toLowerCase();
-                    if(cardAffinity.indexOf("universal") > -1) {
-                        cardList.push( cardMarkup );
-                    } else if(cardAffinity.indexOf(selectedAffinity) > -1) {
-                        cardList.push( cardMarkup );
-                    }
-                } else {
+                if(!shouldHideCard) {
                     cardList.push(
-                        cardMarkup
+                        <li className={className}
+                            key={card.code + "_" + Helpers.uuid() }
+                            style={{backgroundImage: 'url('+Helpers.getCardImageURL(card, "medium", "icon")+')'}}
+                            onContextMenu={this.deleteCardFromDeck.bind(this, card)}
+                            onClick={this.selectCard.bind(this, card)}
+                            onMouseEnter={this.setTooltipContent.bind(this, card)}
+                            onMouseOver={this.showTooltip.bind(this, card)}
+                            onMouseLeave={this.hideTooltip}
+                        >
+                            <div className={ "wrapper " + childClassName }>
+                                <span className="count">{ quantityLabel }</span>
+                                <span className="name">{card.name}</span>
+                                <span className="cost">{card.cost} CP</span>
+                            </div>
+                            <div className="delete-icon" onClick={this.deleteCardFromDeck.bind(this, card)}>
+                                <i className="fa fa-trash" aria-hidden="true" />
+                            </div>
+                        </li>
                     );
                 }
             }
