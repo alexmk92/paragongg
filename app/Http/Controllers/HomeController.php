@@ -23,10 +23,16 @@ class HomeController extends Controller
     public function index()
     {
         $settings = Setting::all();
-        
-        $featuredCard = Card::where('_id', $settings->where('key', 'featuredCard')->first()->value)->first();
-        $featuredHero = Hero::where('_id', $settings->where('key', 'featuredHero')->first()->value)->first();
-        $featuredNews = News::where('id', $settings->where('key', 'featuredNews')->first()->value)->first();
+
+        if($settings->where('key', 'featuredCard')->first())
+            $featuredCard = Card::where('_id', $settings->where('key', 'featuredCard')->first()->value)->first();
+
+        if($settings->where('key', 'featuredHero')->first())
+            $featuredHero = Hero::where('_id', $settings->where('key', 'featuredHero')->first()->value)->first();
+
+        if($settings->where('key', 'featuredNews')->first())
+            $featuredNews = News::where('id', $settings->where('key', 'featuredNews')->first()->value)->first();
+
         $featuredGuides = $this->featuredGuides();
         $topDecks = $this->topDecks();
         return view('home', compact('featuredCard', 'featuredHero', 'featuredNews', 'featuredGuides', 'topDecks'));
@@ -34,31 +40,23 @@ class HomeController extends Controller
 
     public function featuredGuides()
     {
-        if (Cache::has('featuredGuides')) {
-            return Cache::get('featuredGuides');
-        } else {
+        if (!Cache::has('featuredGuides')) {
             $guides = Guide::where('featured', true)->get();
             foreach($guides as $guide) {
                 $guide->hero = Hero::where('code', $guide->hero_code)->first();
             }
-            $expires = Carbon::now()->addHours(1);
-            //Cache::put('featuredGuides', $guides, $expires);
-            return $guides;
+            $expires = Carbon::now()->addMinutes(1);
+            Cache::put('featuredGuides', $guides, $expires);
         }
+        return Cache::get('featuredGuides');
     }
 
     public function topDecks()
     {
-        if (Cache::has('topDecks')) {
-            return Cache::get('topDecks');
-        } else {
-            $decks = Deck::orderBy('votes', 'DESC')->get();
-            foreach($decks as $deck) {
-                $deck->hero = Hero::where('code', $deck->hero)->first();
-            }
-            $expires = Carbon::now()->addHours(1);
-            //Cache::put('featuredDecks', $guides, $expires);
-            return $decks;
+        $decks = Deck::orderBy('votes', 'DESC')->take(5)->get();
+        foreach($decks as $deck) {
+            $deck->hero = Hero::where('code', $deck->hero)->first();
         }
+        return $decks;
     }
 }

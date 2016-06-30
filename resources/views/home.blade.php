@@ -92,7 +92,7 @@
         <div class="summary-info summary-info-guides">
             <h5>Featured guides</h5>
             <ul>
-                @if($featuredGuides->count() > 0)
+                @if(isset($featuredGuides) && $featuredGuides->count() > 0)
                 @foreach($featuredGuides as $guide)
                     <li><a href="/guides/{{$guide->id}}/{{$guide->slug}}" class="cf">
                         <img src="{{ S3URL() }}/images/heroes/{{ $guide->hero->code }}/{{ $guide->hero->image }}/portrait_small.png" class="hero-avatar"/>
@@ -107,9 +107,9 @@
         </div><div class="summary-info summary-info-decks">
             <h5>Top rated decks</h5>
             <ul>
-                @if($topDecks->count() > 0)
+                @if(isset($topDecks) && $topDecks->count() > 0)
                     @foreach($topDecks as $deck)
-                        <li><a href="/decks/{{  $deck->id }}/{{ $deck->slug }}" class="cf">
+                        <li><a href="/decks/{{  $deck->_id }}/{{ createSlug($deck->title) }}" class="cf">
                                 <img src="{{ S3URL() }}/images/heroes/{{ $deck->hero->code }}/{{ $deck->hero->image }}/portrait_small.png" class="hero-avatar"/>
                                 <span class="details"><i class="fa fa-user" aria-hidden="true"></i> {{ $deck->author->username }}</span><span class="details"><i class="fa fa-star" aria-hidden="true"></i> {{ $deck->votes }}</span>
                                 <span class="content">{{ $deck->title }}</span>

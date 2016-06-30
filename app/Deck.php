@@ -10,6 +10,10 @@ class Deck extends Model
 
     //protected $hidden = [ '_id', 'created_at', 'updated_at'  ];
 
+    public function hero() {
+        return $this->hasOne('App\Hero');
+    }
+
     public function author() {
         return $this->belongsTo('App\User');
     }
