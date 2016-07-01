@@ -9,6 +9,7 @@ use App\CommentThreadComment;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use PhpParser\Comment;
 
 class CommentController extends Controller
@@ -22,12 +23,20 @@ class CommentController extends Controller
         if(isset($_GET['take'])) $take = $_GET['take'];
 
         $comments = CommentThreadComment::where('thread_id', $id)
-            ->select('comment_thread_comments.*', 'users.avatar', 'users.username')
+            ->select('comment_thread_comments.*', 'users.avatar', 'users.username', DB::raw('votes.id as user_voted'))
             ->join('users', 'users.id', '=', 'comment_thread_comments.user_id')
-            ->orderBy('created_at', 'desc')
-            ->skip($skip)
-            ->take($take)
+            ->leftJoin('votes', function($join)
+            {
+                $join->on('votes.ref_id', '=', 'comment_thread_comments.id');
+                $join->where('votes.user_id', '=', auth()->user()->id);
+            })
+            //->orderBy('created_at', 'desc')
+            //->skip($skip)
+            //->take($take)
+            //->toSql();
             ->get();
+
+        //dd($comments);
 
         return response()->json($comments);
     }
