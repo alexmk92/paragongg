@@ -15,7 +15,7 @@
             @endif
 
             {!! csrf_field() !!}
-            <label>User avatar (64x64 minimum)</label>
+            <label>User avatar (jpg/png, 64x64 recommended)</label>
             <input type="file" name="avatar">
             <label>Username</label>
             <input type="text" name="username" value="{{ $user->username }}">

@@ -345,7 +345,7 @@ var CardsFilter = React.createClass({
 
         return(
             <div className="filter-wrapper">
-                <SearchBar label={ "DISPLAYING " + this.props.visibleCardCount + " OF " + this.props.totalCardCount + " CARDS" }
+                <SearchBar label={ "Displaying " + this.props.visibleCardCount + " of " + this.props.totalCardCount + " cards" + " (" + this.props.ownedCardCount + " owned )" }
                            placeholder="Enter card name..."
                            onSearchTermChanged={this.inputChanged}
                 />

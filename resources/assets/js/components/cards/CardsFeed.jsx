@@ -20,13 +20,11 @@ var CardsFeed = React.createClass({
     onCardClicked : function(card) {
         this.props.onCardClicked(card);
     },
-    getTotalCardCount: function() {
-        if (this.props.affinities) {
-            return this.props.cards.length
-        }
-        else {
-            return this.props.cards.length
-        }
+    getOwnedCardCount: function() {
+        var owned = this.props.cards.filter(function (card){
+            return card.owned == true;
+        });
+        return owned.length;
     },
     render: function() {
         var title = this.props.showTitle ? <h1>Paragon Cards</h1> : "";
@@ -49,7 +47,8 @@ var CardsFeed = React.createClass({
                                  tooltip={this.props.tooltip || null}
                                  cards={this.props.cards}
                                  visibleCardCount={ this.state.cards.length }
-                                 totalCardCount={ this.getTotalCardCount() }
+                                 totalCardCount={ this.props.cards.length }
+                                 ownedCardCount={ this.getOwnedCardCount() }
                                  onFilterChanged={this.renderCards}
                                  cardsRedirectOnClick={ this.props.cardsRedirectOnClick }
                                  onCardClicked={this.onCardClicked}
