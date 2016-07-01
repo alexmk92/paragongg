@@ -15,7 +15,17 @@ class DeckController extends Controller
     // Create
     public function index()
     {
-        $decks = Deck::orderBy('updated_at', 'desc')->get();
+        $skip = 0;
+        $take = 10;
+        
+        if(isset($_GET['skip'])) $skip = $_GET['skip'];
+        if(isset($_GET['take'])) $take = $_GET['take'];
+        
+        $decks = Deck::orderBy('updated_at', 'desc')
+            ->skip($skip)
+            ->take($take)
+            ->get();
+        
         foreach($decks as $deck) {
             $uniqueCards = Card::whereIn('code', $deck->cards)->get();
             $deck->hero = Hero::where('code', $deck->hero)->first();

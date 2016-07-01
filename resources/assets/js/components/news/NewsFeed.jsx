@@ -42,7 +42,6 @@ var NewsFeed = React.createClass({
                     _this.addResults(data);
                 } else {
                     _this.setState({newsEnd: true});
-                    console.log('END OF NEWS');
                 }
             }
         });

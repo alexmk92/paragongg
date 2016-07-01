@@ -5,9 +5,10 @@ var ROOT_URL = '/api/v1/';
 
 module.exports = {
     fetchComments: function (threadId, skip) {
+        if(typeof skip === "undefined" || skip === null) skip = 0;
         var request = Helpers.ajax({
             type: "GET",
-            url: ROOT_URL + "comments/thread/" + threadId,
+            url: ROOT_URL + "comments/thread/" + threadId + "?skip=" + skip + "&take=5",
             contentType: "application/json",
             cache: true
         });

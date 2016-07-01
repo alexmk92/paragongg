@@ -10,17 +10,34 @@ var CommentBox = require('./CommentBox');
 
 var CommentFeed = React.createClass({
     componentWillMount: function() {
-        this.props.fetchComments(THREAD_ID);
+        this.props.fetchComments(THREAD_ID, 0);
     },
     componentDidMount: function() {
+        this.skip = 0;
+        this.updating = false;
         this.notificationPanel = new Notification();
         this.notificationPanel.initialiseNotifications();
-
-
+        window.addEventListener('scroll', this.handleScroll);
+    },
+    handleScroll: function() {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+            this.getResults();
+        }
+    },
+    getResults: function() {
+        if(!this.updating && !this.props.endOfComments) {
+            this.updating = true;
+            this.skip += 5;
+            this.props.fetchComments(THREAD_ID, this.skip).then(function() {
+                setTimeout(function() {
+                    this.updating = false;
+                }.bind(this), 50);
+            }.bind(this))
+        }
     },
     reportComment: function(comment) {
         this.props.reportComment(comment).then(function() {
-            this.notificationPanel.addNotification('success', 'Thanks, we\'ll investigate this content as soon as possible!');
+            this.notificationPanel.addNotification('success', 'Thanks, we\'ll investigate this comment as soon as possible!');
         }.bind(this), function(err) {
             this.notificationPanel.addNotification('warning', 'Sorry, we couldn\t handle your request at this time, please try again.');
         }.bind(this));
@@ -118,6 +135,7 @@ var CommentFeed = React.createClass({
                 <ul id="comment-list" className={ AUTHED ? "" : "no-comment-box"}>
                     { comments }
                 </ul>
+                <div className={"infinite-scroll-end " + (this.props.endOfComments ? "" : "hidden")}><i className="fa fa-check"></i> You've reached the end of the page</div>
             </div>
         );
     }
@@ -127,7 +145,8 @@ var CommentFeed = React.createClass({
 function mapStateToProps(state) {
     return {
         comments : state.commentsReducer.comments,
-        lastUpVotedComment : state.commentsReducer.lastUpvotedComment
+        lastUpVotedComment : state.commentsReducer.lastUpvotedComment,
+        endOfComments : state.commentsReducer.endOfComments
     }
 }
 // Whenever upVoteComment is called, the result should be passed to all of our reducers.
