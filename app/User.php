@@ -21,7 +21,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'oauth_token', 'oauth_expires', 'oauth_refresh_token', 'oauth_refresh_expires',
     ];
 
     public function isAdmin()
@@ -35,7 +35,7 @@ class User extends Authenticatable
     public function isMod()
     {
         if($this->role == 'administrator' ||
-            $this->role == 'moderator') {
+           $this->role == 'moderator') {
             return true;
         }
         return false;
