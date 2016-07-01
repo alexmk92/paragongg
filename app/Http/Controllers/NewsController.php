@@ -74,26 +74,20 @@ class NewsController extends Controller
     {
         $news = News::findOrFail($id);
         $thread = findOrCreateThread($request->path());
-        $comments = $thread->comments;
 
         $articleBody = (new Parsedown())->text($news->body);
         $articleBody = (new TOC\MarkupFixer())->fix($articleBody);
         $articleTOC  = (new TOC\TocGenerator())->getHtmlMenu($articleBody,2);
 
         $recent  = News::where('id', '!=', $id)->take('10')->get();
-        return view('news.show')->with('news', $news)
-            ->with('articleBody', $articleBody)
-            ->with('articleTOC', $articleTOC)
-            ->with('recent', $recent)
-            ->with('comments', $comments)
-            ->with('threadId', $thread->id);
+        return view('news.show', compact('news', 'articleBody', 'articleTOC', 'recent', 'thread'));
     }
 
     // Edit
     public function edit($id)
     {
         $news = News::findOrFail($id);
-        return view('news.edit')->with('news', $news);
+        return view('news.edit', compact('news'));
     }
 
     // Update
@@ -142,7 +136,7 @@ class NewsController extends Controller
         $news->save();
 
         session()->flash('notification', 'success|News updated.');
-        return view('news.edit')->with('news', $news);
+        return view('news.edit', compact('news'));
     }
 
     // Delete

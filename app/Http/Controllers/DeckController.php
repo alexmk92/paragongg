@@ -124,7 +124,6 @@ class DeckController extends Controller
     public function show(Request $request, $id)
     {
         $thread = findOrCreateThread($request->path());
-        $comments = $thread->comments;
 
         $deck = Deck::findOrFail($id);
         // pass back a dummy object for now
@@ -187,9 +186,7 @@ class DeckController extends Controller
         // Finally sorted the collection
         $deck->cards = $sortedCards;
 
-        return view('decks.show')->with('deck', $deck)
-            ->with('comments', $comments)
-            ->with('threadId', $thread->id);
+        return view('decks.show', compact('deck', 'thread'));
     }
 
     // Edit
