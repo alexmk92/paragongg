@@ -18,11 +18,18 @@ function findOrCreateThread($uri)
 
     $comments = CommentThreadComment::where('thread_id', $thread->id)
         ->select('comment_thread_comments.*', 'users.avatar', 'users.username')
+        ->select('comment_thread_comments.*', 'users.avatar', 'users.username', DB::raw('votes.id as user_voted'))
         ->join('users', 'users.id', '=', 'comment_thread_comments.user_id')
-        ->orderBy('created_at', 'desc')
-        ->take(10)->get();
-    $thread->comments = $comments;
+        ->leftJoin('votes', function($join)
+        {
+            $join->on('votes.ref_id', '=', 'comment_thread_comments.id');
+            $join->where('votes.user_id', '=', auth()->user()->id);
+        })
+        ->orderBy('created_at', 'asc')
+        //->toSql();
+        ->get();
 
+    $thread->comments = $comments;
     return $thread;
 }
 
