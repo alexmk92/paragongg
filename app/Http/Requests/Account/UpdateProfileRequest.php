@@ -25,7 +25,7 @@ class UpdateProfileRequest extends Request
     public function rules()
     {
         return [
-            'avatar'    => 'image|mimes:jpeg,png|max:100',
+            'avatar'    => 'image|mimes:jpeg,png|max:500',
             'username'  => 'required|max:20|unique:users,username,'.Auth::user()->id,
             'email'     => 'required|email|max:255|unique:users,email,'.Auth::user()->id,
             'name'      => 'min:3',
