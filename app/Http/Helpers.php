@@ -16,7 +16,11 @@ function findOrCreateThread($uri)
         $thread->save();
     }
 
-    $comments = CommentThreadComment::where('thread_id', $thread->id)->take(10)->get();
+    $comments = CommentThreadComment::where('thread_id', $thread->id)
+        ->select('comment_thread_comments.*', 'users.avatar', 'users.username')
+        ->join('users', 'users.id', '=', 'comment_thread_comments.user_id')
+        ->orderBy('created_at', 'desc')
+        ->take(10)->get();
     $thread->comments = $comments;
 
     return $thread;
