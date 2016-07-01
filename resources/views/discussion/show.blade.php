@@ -9,7 +9,7 @@
             <div class="original-post">
                 <h2>{{ $discussion->title }}</h2>
                 <div class="details cf">
-                    <img src="https://randomuser.me/api/portraits/women/10.jpg" class="user-avatar"/>
+                    <img src="{{ getAvatar($discussion->author) }}" class="user-avatar"/>
                     <span class="username">{{ $discussion->author->username }}</span>
                     <span class="created_at">{{ $discussion->created_at->diffForHumans() }}</span>
                 </div>
@@ -22,7 +22,7 @@
                         <i class="fa fa-check-circle-o" aria-hidden="true"></i> This was marked as the best answer by the thread owner</h5>
                     <div class="discussion-response">
                         <div class="details cf">
-                            <img src="https://randomuser.me/api/portraits/women/10.jpg" class="user-avatar"/>
+                            <img src="{{ getAvatar($discussion->author) }}" class="user-avatar"/>
                             <span class="username">{{ $bestAnswer->author->username }}</span>
                             <span class="created_at">{{ $bestAnswer->created_at->diffForHumans() }}</span>
                         </div>
@@ -35,7 +35,7 @@
                 @foreach($discussion->responses as $response)
                     <div class="discussion-response">
                         <div class="details cf">
-                            <img src="https://randomuser.me/api/portraits/women/10.jpg" class="user-avatar"/>
+                            <img src="{{ getAvatar($discussion->author) }}" class="user-avatar"/>
                             <span class="username">{{ $response->author->username }}</span>
                             <span class="created_at">{{ $response->created_at->diffForHumans() }}</span>
                             @if($discussion->category == 'questions')

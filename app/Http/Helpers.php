@@ -75,6 +75,14 @@ function S3URL()
     return 'https://s3-eu-west-1.amazonaws.com/paragon.gg';
 }
 
+function getAvatar($user)
+{
+    if(!$user->avatar) {
+        return "/assets/images/avatar.png";
+    }
+    return S3URL() . "/images/users/" . $user->id . "/avatars/ " . $user->avatar;
+}
+
 function createSlug($string)
 {
     $string = strtolower($string);

@@ -66,6 +66,7 @@ class CardController extends Controller
     {
         $user = Auth::user();
 
+        Cache::forget('user.'.$user->id.'.cards');
         if(!Cache::has('user.'.$user->id.'.cards')) {
             $client = new Client();
             try {
