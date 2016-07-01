@@ -1,6 +1,7 @@
 <?php
 
 use App\CommentThread;
+use App\CommentThreadComment;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Cache;
@@ -14,6 +15,9 @@ function findOrCreateThread($uri)
         $thread->uri = $uri;
         $thread->save();
     }
+
+    $comments = CommentThreadComment::where('thread_id', $thread->id)->take(10)->get();
+    $thread->comments = $comments;
 
     return $thread;
 }

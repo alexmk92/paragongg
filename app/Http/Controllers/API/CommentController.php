@@ -62,9 +62,15 @@ class CommentController extends Controller
         if(!$comment)
             return response()->json(['code' => 400, 'message' => 'Comment could not be found or bad request', 'comment' => $comment]);
 
-        $comment->body = '';
-        $comment->status = 'deleted';
-        $comment->save();
+        $commentChildren = CommentThreadComment::where('parent_id', $comment->id)->get();
+
+        if($commentChildren->count > 0) {
+            $comment->body = '';
+            $comment->status = 'deleted';
+            $comment->save();
+        } else {
+            $comment->delete();
+        }
 
         return response()->json(['code' => 200, 'message' => 'Comment deleted', 'comment' => $comment]);
     }
