@@ -63,7 +63,6 @@ var CardsFilter = React.createClass({
                 { name : "Show cards I don't own", iconName : "", ref: "TOGGLE_OWNED", checked : true}
             ] });
         }
-
         options.push({ group : [
                 { name : "Show Active Cards", iconName : "", ref: "TOGGLE_ACTIVE", checked : true},
                 { name : "Show Passive Cards", iconName : "", ref: "TOGGLE_PASSIVE", checked : true},
@@ -130,7 +129,7 @@ var CardsFilter = React.createClass({
             matches = false;
         if(!this.state.showPrimeHelixCards && card.type.toUpperCase() === "PRIME")
             matches = false;
-        if(!this.state.showOwnedCards && AUTHED && card.owned && card.owned === false)
+        if(!this.state.showOwnedCards && AUTHED && card.owned === false)
             matches = false;
         if(matches !== false) {
             if(card.effects) {

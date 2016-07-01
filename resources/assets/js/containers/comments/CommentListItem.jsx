@@ -43,7 +43,6 @@ var CommentListItem = React.createClass({
         return <div className={"comment-body" + commentBodyClass}>{ commentBody }</div>
     },
     render: function() {
-        console.log(this.props);
         var toggleClass = 'fa fa-thumbs-up vote-button';
         var commentClass = 'comment-item ' + (this.props.comment.childComment ? "child-comment" : "");
         var comments = [];
@@ -54,7 +53,7 @@ var CommentListItem = React.createClass({
                                      onCommentSubmitted={this.props.onCommentSubmitted}
                                      childComment={ true } key={Helpers.uuid()}
                                      comment={comment} childComments={this.props.childComments}
-                                     author={ USER }
+                                     author={{ id : comment.user_id, username : comment.username, avatar : comment.avatar }}
                                      reportComment={this.props.reportComment}
                                      deleteComment={this.props.deleteComment}
                                      upVoteComment={this.props.upVoteComment} />
@@ -75,17 +74,16 @@ var CommentListItem = React.createClass({
                 </button>
             );
         }
-
         return(
             <li className={commentClass}>
                 <div className="comment-details">
-                    <img className="user-avatar" src={Helpers.getUserAvatarImageURL(USER)} alt="Your avatar" />
+                    <img className="user-avatar" src={Helpers.getUserAvatarImageURL(this.props.author)} alt="Your avatar" />
                     <a href="">{ this.props.author.username } </a> <span><time className="created-at">{ Helpers.prettyDate(this.props.comment.created_at) }</time></span>
                 </div>
                 { this.getCommentBody() }
                 <div className="comment-actions">
                     <button className="btn btn-small btn-faded" onClick={this.reply}>Reply</button>
-                    <button className={"btn btn-small btn-faded " + (this.props.comment.voted ? "active" : "")} onClick={this.vote}>
+                    <button className={"btn btn-small btn-faded " + ((typeof this.props.comment.user_voted !== "undefined" && this.props.comment.user_voted !== null) ? "active" : "")} onClick={this.vote}>
                         <i className={toggleClass} aria-hidden="true"></i> { this.props.comment.votes }
                     </button>
                     { moreOptionsButton }
