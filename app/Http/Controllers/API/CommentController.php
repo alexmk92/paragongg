@@ -53,4 +53,16 @@ class CommentController extends Controller
         return response()->json(['code' => 200, 'message' => 'Comment upvoted', 'comment' => $comment]);
     }
 
+    public function delete($id)
+    {
+        $comment = CommentThreadComment::where('user_id', auth()->user()->id)->where('id', $id)->first();
+
+        if(!$comment)
+            return response()->json(['code' => 400, 'message' => 'Comment could not be found or bad request', 'comment' => $comment]);
+
+        $comment->delete();
+
+        return response()->json(['code' => 200, 'message' => 'Comment deleted', 'comment' => $comment]);
+    }
+
 }
