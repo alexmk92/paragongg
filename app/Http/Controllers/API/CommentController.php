@@ -64,17 +64,15 @@ class CommentController extends Controller
 
         $commentChildren = CommentThreadComment::where('parent_id', $comment->id)->get();
 
-        if($commentChildren->count > 0) {
+        if($commentChildren->count() > 0) {
             $comment->body = '';
             $comment->status = 'deleted';
             $comment->save();
-            return response()->json(['code' => 200, 'message' => 'Comment deleted', 'deleted' => 0]);
+            return response()->json(['code' => 200, 'message' => 'Comment deleted', 'commentId' => $id, 'deletion' => 0]);
         }
 
         $comment->delete();
-        return response()->json(['code' => 200, 'message' => 'Comment deleted', 'deleted' => 1]);
-
-
+        return response()->json(['code' => 200, 'message' => 'Comment deleted', 'commentId' => $id, 'deletion' => 1]);
     }
 
 }
