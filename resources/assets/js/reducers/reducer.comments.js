@@ -18,7 +18,15 @@ module.exports = function(state, action) {
                 });
                 return { comments : newComments, lastUpvotedComment : lastUpvotedComment };
             case t.FETCH_COMMENTS :
-                return { comments : action.payload.data, lastUpvotedComment: state.lastUpvotedComment };
+                var oldLength = state.comments.length;
+                var newComments = state.comments.map(function(comment) {
+                    return comment;
+                });
+                action.payload.data.forEach(function(comment) {
+                   newComments.push(comment);
+                });
+                var end = oldLength === newComments.length;
+                return { comments : newComments, lastUpvotedComment: state.lastUpvotedComment, endOfComments: end };
             case t.COMMENT_REPORTED :
                 var newComments = state.comments.map(function(comment) {
                     if(parseInt(comment.id) === parseInt(action.payload.data.ref_id)) {
@@ -56,6 +64,7 @@ module.exports = function(state, action) {
 
     return {
         comments: [],
-        lastUpvotedComment: null
+        lastUpvotedComment: null,
+        endOfComments: false
     };
 };

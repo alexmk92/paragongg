@@ -17,7 +17,7 @@ class CommentController extends Controller
     public function thread($id)
     {
         $skip = 0;
-        $take = 10;
+        $take = 5;
 
         if(isset($_GET['skip'])) $skip = $_GET['skip'];
         if(isset($_GET['take'])) $take = $_GET['take'];
@@ -30,7 +30,7 @@ class CommentController extends Controller
                 $join->on('votes.ref_id', '=', 'comment_thread_comments.id');
                 $join->where('votes.user_id', '=', auth()->check() ? auth()->user()->id : 0);
             })
-            ->orderBy('created_at', 'asc')
+            ->orderBy('created_at', 'desc')
             ->skip($skip)
             ->take($take)
             //->toSql();
