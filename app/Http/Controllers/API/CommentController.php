@@ -30,13 +30,11 @@ class CommentController extends Controller
                 $join->on('votes.ref_id', '=', 'comment_thread_comments.id');
                 $join->where('votes.user_id', '=', auth()->user()->id);
             })
-            //->orderBy('created_at', 'desc')
-            //->skip($skip)
-            //->take($take)
+            ->orderBy('created_at', 'desc')
+            ->skip($skip)
+            ->take($take)
             //->toSql();
             ->get();
-
-        //dd($comments);
 
         return response()->json($comments);
     }
