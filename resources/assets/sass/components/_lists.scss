@@ -10,4 +10,11 @@ ul {
             margin-right: 5px;
         }
     }
+    &.default {
+        margin-bottom: 20px;
+        list-style: disc inside;
+        li {
+            list-style: disc inside;
+        }
+    }
 }
