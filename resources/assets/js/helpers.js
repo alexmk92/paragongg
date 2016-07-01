@@ -14,6 +14,13 @@ module.exports = {
         if(!element) { return false; }
         return element.className.indexOf(selector) > -1;
     },
+    getUserAvatarImageURL: function(user) {
+        if(!user.avatar) {
+            return "/assets/images/avatar.png";
+        }
+
+        return this.S3URL() + "images/users/" + user.id + "/avatars/" + user.avatar;
+    },
     getHeroImageURL: function(hero, size) {
         if(!hero) return "";
         

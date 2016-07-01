@@ -1,4 +1,5 @@
 var React = require("react");
+var Helpers = require("../../helpers");
 
 var CommentBox = React.createClass({
     getInitialState: function() {
@@ -92,7 +93,7 @@ var CommentBox = React.createClass({
                             value={this.state.commentBody}>
                         </textarea>
                         <div className="user-details">
-                            <img className="user-avatar" src="https://s.gravatar.com/avatar/bae38bd358b0325c7a3c049a4671a9cf?s=28" alt="Your avatar"/>
+                            <img className="user-avatar" src={Helpers.getUserAvatarImageURL(USER)} alt="Your avatar"/>
                             <span>Posting as <a href="">{ USER.username }</a></span>
                         </div>
                         <div className="post-comment-actions">

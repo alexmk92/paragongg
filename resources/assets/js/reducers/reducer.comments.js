@@ -19,6 +19,23 @@ module.exports = function(state, action) {
                 return { comments : newComments, lastUpvotedComment : lastUpvotedComment };
             case t.FETCH_COMMENTS :
                 return { comments : action.payload.data, lastUpvotedComment: state.lastUpvotedComment };
+            case t.COMMENT_REPORTED :
+                var newComments = state.comments.map(function(comment) {
+                    if(parseInt(comment.id) === parseInt(action.payload.data.ref_id)) {
+                        comment.reported = true;
+                    }
+                    return comment;
+                });
+                return { comments : newComments };
+            case t.DELETE_COMMENT:
+                var newComments = state.comments.map(function(comment) {
+                    if((parseInt(comment.id) === parseInt(action.payload.data.comment.id))) {
+                        comment.body = "The author deleted this comment...";
+                        comment.status = "deleted";
+                    }
+                    return comment;
+                });
+                return { comments : newComments };
             case t.POSTED_COMMENT :
                 // Add our comment to the very start of the array by pushing the original state
                 // onto it using reacts immutable update function.

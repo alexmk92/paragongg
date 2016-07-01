@@ -39,6 +39,37 @@ module.exports = {
             payload: request
         }
     },
+    deleteComment: function(comment) {
+        var request = Helpers.ajax({
+            type : "GET",
+            url : ROOT_URL + "comments/delete/" + comment.id,
+            headers : [{ "X-CSRF-TOKEN" : csrf }],
+            contentType: "application/x-www-form-urlencoded",
+            cache: false,
+            returnType: "json"
+        });
+
+        return {
+            type: t.DELETE_COMMENT,
+            payload: request
+        }
+    },
+    reportComment: function(comment) {
+        var request = Helpers.ajax({
+            type : "POST",
+            url : ROOT_URL + "report",
+            headers : [{ "X-CSRF-TOKEN" : csrf }],
+            contentType: "application/x-www-form-urlencoded",
+            cache: false,
+            returnType: "json",
+            data: [{ "ref_id" : comment.id, "type" : "comment" }]
+        });
+
+        return {
+            type: t.COMMENT_REPORTED,
+            payload: request
+        }
+    },
     postComment: function (comment, threadId, parentCommentId) {
         // This method now returns a promise for us to consume
         var request = Helpers.ajax({
