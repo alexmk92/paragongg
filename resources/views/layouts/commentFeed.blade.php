@@ -19,4 +19,6 @@
     var THREAD_ID = Number('{{ $thread->id }}');
     var COMMENTS  = {!! json_encode($thread->comments) !!};
 
+    console.log("COMMENTS IS: ", COMMENTS);
+
 </script>

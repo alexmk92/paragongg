@@ -6,7 +6,7 @@
     <script>
         var CARDS = {!! json_encode($cards) !!};
 
-        @if(Auth::check() && Auth::user()->oauth_epic_code != null)
+        @if(Auth::check() && Auth::user()->epic_account_id != null)
             var AUTHED = true;
         @else
             var AUTHED = false;

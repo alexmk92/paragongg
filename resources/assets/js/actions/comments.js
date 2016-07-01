@@ -16,7 +16,6 @@ module.exports = {
             type: t.FETCH_COMMENTS,
             payload: request
         }
-
     },
     // Wire this action creator to Redux.  This will update the state through the
     // dispatchProps method in CommentFeed

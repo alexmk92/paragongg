@@ -13,17 +13,10 @@ var CommentFeed = React.createClass({
         this.props.fetchComments(THREAD_ID);
     },
     componentDidMount: function() {
-        // update the time stamps for now, to give a real time feel
-        /*
-        setInterval(function() {
-            this.forceUpdate();
-        }.bind(this), 15000);
-        */
         this.notificationPanel = new Notification();
         this.notificationPanel.initialiseNotifications();
-    },
-    componentWillReceiveProps: function() {
-        console.log("Received new props");
+
+
     },
     reportComment: function(comment) {
         this.props.reportComment(comment).then(function() {
@@ -41,44 +34,40 @@ var CommentFeed = React.createClass({
     },
     renderComments: function() {
         var comments = [];
-        var initialCommentCollection = [];
+        var initialCommentCollection = this.props.comments;
         this.removePendingComments();
 
-        if(this.props.comments) {
-            if(this.props.comments.length === 0) {
-                initialCommentCollection = COMMENTS;
-            } else {
-                initialCommentCollection = this.props.comments;
-            }
-            if(initialCommentCollection.length > 0) {
-                initialCommentCollection.forEach(function(comment) {
-                    if(comment.parent_id === 0 || comment.parent_id === null) {
-                        comments.push(
-                            <CommentListItem
-                                key={Helpers.uuid()}
-                                comment={comment}
-                                voted={comment.voted}
-                                author={ USER }
-                                childComments={ this.props.comments }
-                                upVoteComment={ this.props.upVoteComment }
-                                reportComment={ this.reportComment }
-                                deleteComment={ this.deleteComment }
-                                onCommentSubmitted={this.appendPendingComment}
-                                postComment={this.props.postComment}
-                            />
-                        );
-                    }
-                }.bind(this));
-            }
-            if(comments.length === 0) {
-                return (
-                    <li className="no-comments">
-                        <span>No comments on this post yet, be the first to start the discussion!</span>
-                    </li>
-                );
-            }
-            return comments;
+        if(initialCommentCollection.length === 0) {
+            initialCommentCollection = COMMENTS;
         }
+        if(initialCommentCollection.length > 0) {
+            initialCommentCollection.forEach(function(comment) {
+                if(comment.parent_id === 0 || comment.parent_id === null) {
+                    comments.push(
+                        <CommentListItem
+                            key={Helpers.uuid()}
+                            comment={comment}
+                            voted={comment.voted}
+                            author={{ id : comment.user_id, username : comment.username, avatar : comment.avatar }}
+                            childComments={ this.props.comments }
+                            upVoteComment={ this.props.upVoteComment }
+                            reportComment={ this.reportComment }
+                            deleteComment={ this.deleteComment }
+                            onCommentSubmitted={this.appendPendingComment}
+                            postComment={this.props.postComment}
+                        />
+                    );
+                }
+            }.bind(this));
+        }
+        if(comments.length === 0) {
+            return (
+                <li className="no-comments">
+                    <span>No comments on this post yet, be the first to start the discussion!</span>
+                </li>
+            );
+        }
+        return comments;
     },
     removePendingComments: function() {
         var pendingComment = document.querySelector("#pending-comment");
@@ -96,12 +85,21 @@ var CommentFeed = React.createClass({
         tempComment.id = "pending-comment";
 
         // TODO React way of creating element here
-        tempComment.innerHTML += "<img class='comment-avatar' src='' alt='Your avatar' />";
-        tempComment.innerHTML += "<span class='author-name'>" + USER.username + " <span class='created-at'>" + Helpers.prettyDate(new Date())+ "</span></span>";
-        tempComment.innerHTML += "<p class='comment-body'>" + commentContent + "</p>";
-        tempComment.innerHTML += "<a href='#'>Reply</a>";
-        tempComment.innerHTML += "<i class='fa fa-thumbs-up vote-button' aria-hidden='true'><span>0</span></i>";
-        tempComment.innerHTML += "<a class='report' href='#'>Report</a>";
+        tempComment.innerHTML += "<div class='comment-details'>";
+        tempComment.innerHTML += "  <img class='user-avatar' src='" + Helpers.getUserAvatarImageURL(USER) + "' alt='Your avatar' />";
+        tempComment.innerHTML += "  <a href=''>" + USER.username + "</a>";
+        tempComment.innerHTML += "  <span><time class='created-at'>" + Helpers.prettyDate(new Date())+ "</time></span>";
+        tempComment.innerHTML += "</div>";
+        tempComment.innerHTML += "<div class='comment-body'>" + commentContent + "</div>";
+        tempComment.innerHTML += "<div class='comment-actions'>";
+        tempComment.innerHTML += "  <button class='btn btn-small btn-faded'>Reply</button>";
+        tempComment.innerHTML += "  <button class='btn btn-small btn-faded'>";
+        tempComment.innerHTML += "      <i class='fa fa-thumbs-up vote-button' aria-hidden='true'></i> 0";
+        tempComment.innerHTML += "  </button>";
+        tempComment.innerHTML += "  <button class='btn btn-small btn-faded btn-icon more-button'>";
+        tempComment.innerHTML += "      <i class='fa fa-ellipsis-h' aria-hidden='true'></i>";
+        tempComment.innerHTML += "  </button>";
+        tempComment.innerHTML += "</div>";
 
         var commentList = document.querySelector("#comment-list");
         if(parentId > 0) {
