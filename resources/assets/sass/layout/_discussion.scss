@@ -17,6 +17,7 @@
     }
     .original-post {
         border-bottom: 1px solid $faded-line;
+        margin-bottom: 30px;
         h5 {
             color: $font-color-faded;
             font-size: 14px;
@@ -66,10 +67,13 @@
         font-size: 18px;
         line-height: 24px;
     }
+    .discussion-responses {
+        margin-top: 20px;
+    }
     .discussion-response {
         border: 1px solid $faded-line;
         background: $panel-color-dark;
-        margin: 50px 0;
+        margin-bottom: 50px;
         &:hover {
             border-color: $faded-line;
         }

@@ -31,8 +31,10 @@
                 </div>
                 @endif
             </div>
-            @if($discussion->responses && $discussion->responses->count() > 0)
-                @foreach($discussion->responses as $response)
+            <div class="pagination-wrapper right cf">{!! $responses->render() !!}</div>
+            <div class="discussion-responses">
+            @if($responses && $responses->count() > 0)
+                @foreach($responses as $response)
                     <div class="discussion-response">
                         <div class="details cf">
                             <img src="{{ getAvatar($discussion->author) }}" class="user-avatar"/>
@@ -46,6 +48,8 @@
                     </div>
                 @endforeach
             @endif
+            </div>
+            <div class="pagination-wrapper right cf">{!! $responses->render() !!}</div>
             <div class="post-response">
                 <h3 class="section-heading">Reply to this</h3>
                 <form action="/discussion/{{ $discussion->id }}/reply" method="POST">

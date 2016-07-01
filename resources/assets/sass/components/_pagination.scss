@@ -1,0 +1,32 @@
+.pagination-wrapper {
+    &.right {
+        .pagination {
+            float: right;
+        }
+    }
+}
+.pagination {
+    display: inline-block;
+
+    li {
+        display: inline-block;
+        cursor: pointer;
+        a, span {
+            display: inline-block;
+            color: white;
+            background: $panel-color;
+            padding: 10px 15px;
+            cursor: pointer;
+            &:hover {
+                background: $secondary-highlight;
+            }
+        }
+        &.disabled, &.active {
+            a, span {
+                cursor: default;
+                color: $font-color-faded;
+                background: $panel-color-dark;
+            }
+        }
+    }
+}
