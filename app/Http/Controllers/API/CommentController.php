@@ -60,9 +60,11 @@ class CommentController extends Controller
         if(!$comment)
             return response()->json(['code' => 400, 'message' => 'Comment could not be found or bad request', 'comment' => $comment]);
 
-        $comment->delete();
+        $comment->body = '';
+        $comment->status = 'deleted';
+        $comment->save();
 
-        return response()->json(['code' => 200, 'message' => 'Comment deleted', 'comment' => $comment]);
+        return response()->json(['code' => 200, 'message' => 'Comment deleted']);
     }
 
 }
