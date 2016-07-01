@@ -68,11 +68,13 @@ class CommentController extends Controller
             $comment->body = '';
             $comment->status = 'deleted';
             $comment->save();
-        } else {
-            $comment->delete();
+            return response()->json(['code' => 200, 'message' => 'Comment deleted', 'deleted' => 0]);
         }
 
-        return response()->json(['code' => 200, 'message' => 'Comment deleted', 'comment' => $comment]);
+        $comment->delete();
+        return response()->json(['code' => 200, 'message' => 'Comment deleted', 'deleted' => 1]);
+
+
     }
 
 }
