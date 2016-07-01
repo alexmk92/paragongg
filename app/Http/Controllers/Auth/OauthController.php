@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Log;
 class OAuthController extends Controller
 {
     // Index
-    public function accountLink()
+    public function linkAccount()
     {
         // If code exists
         if(isset($_GET['code'])) {
@@ -29,22 +29,40 @@ class OAuthController extends Controller
                 }
                 
                 session()->flash('notification', 'success|Epic account linked.');
-                
-                return redirect('account/link')->with('user', Auth::user());
+
+                if(isset($_GET['state'])) {
+                    return redirect($_GET['state']);
+                }
+                return redirect()->back();
             }
         } elseif (isset($_GET['error']) && $_GET['error'] == 'cancelled') {
             // If user is authenticated
             if(Auth::check()) {
                 $user = Auth::user();
+                $user->epic_account_id   = null;
+                $user->epic_display_name = null;
+                $user->oauth_token = null;
                 $user->save();
 
-                session()->flash('notification', 'success|Epic account unlinked.');
-
-                return redirect('account/link')->with('user', Auth::user());
+                session()->flash('notification', 'danger|Something went wrong.');
+                return redirect()->back();
             }
         } else {
             session()->flash('notification', 'danger|Something went wrong.');
-            abort(403);
+            return redirect()->back();
         }
+    }
+
+    public function unlinkAccount()
+    {
+        // Log out of Epic services
+        $user = Auth::user();
+        $user->epic_account_id   = null;
+        $user->epic_display_name = null;
+        $user->oauth_token = null;
+        $user->save();
+
+        session()->flash('notification', 'success|Account unlinked.');
+        return redirect()->back();
     }
 }

@@ -14,7 +14,7 @@
 Route::get('/', 'HomeController@index');
 Route::auth();
 
-Route::get('/auth', 'Auth\OAuthController@accountLink')->middleware('auth');;
+Route::get('/auth', 'Auth\OAuthController@linkAccount')->middleware('auth');;
 
 /* STATIC */
 Route::get('/terms',   function(){ return view('static.terms');   });
@@ -99,6 +99,7 @@ Route::group(['prefix' => 'account', 'middleware' => 'auth'], function () {
     Route::get('/', 'AccountController@index');
     Route::get('/profile', 'AccountController@editProfile');
     Route::get('/link', 'AccountController@linkAccount');
+    Route::get('/unlink', 'Auth\OAuthController@unlinkAccount');
     Route::post('/profile', 'AccountController@updateProfile');
     Route::get('/password', 'AccountController@editPassword');
     Route::post('/password', 'AccountController@updatePassword');
