@@ -66,7 +66,6 @@ class CardController extends Controller
     {
         $user = Auth::user();
 
-        Cache::forget('user.'.$user->id.'.cards');
         if(!Cache::has('user.'.$user->id.'.cards')) {
             $client = new Client();
             try {
@@ -88,7 +87,6 @@ class CardController extends Controller
             }
 
             $response = json_decode($res, true);
-            dd($response->getContents());
 
             $expires = Carbon::now()->addMinutes(5);
             Cache::put('user.'.$user->id.'.cards', $response, $expires);
