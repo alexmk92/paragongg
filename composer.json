@@ -30,7 +30,8 @@
             "App\\": "app/"
         },
         "files" : [
-            "app/Http/Helpers.php"
+            "app/Http/Helpers.php",
+            "app/Http/OAuth.php"
         ]
     },
     "autoload-dev": {

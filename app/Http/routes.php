@@ -14,7 +14,7 @@
 Route::get('/', 'HomeController@index');
 Route::auth();
 
-Route::get('/auth', 'Auth\OauthController@accountLink')->middleware('auth');;
+Route::get('/auth', 'Auth\OAuthController@accountLink')->middleware('auth');;
 
 /* STATIC */
 Route::get('/terms',   function(){ return view('static.terms');   });

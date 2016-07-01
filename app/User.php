@@ -43,7 +43,7 @@ class User extends Authenticatable
 
     public function epicAccountLinked()
     {
-        if($this->oauth_epic_code != null && $this->epic_account_id != null) {
+        if($this->epic_account_id != null && $this->epic_account_id != null) {
             return true;
         }
         return false;

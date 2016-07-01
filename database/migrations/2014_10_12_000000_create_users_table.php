@@ -28,7 +28,7 @@ class CreateUsersTable extends Migration
             $table->string('twitch_tv')->nullable();
             $table->string('avatar')->nullable();
             //
-            $table->string('oauth_access_token')->nullable();
+            $table->string('oauth_token')->nullable();
             $table->string('oauth_expires')->nullable();
             $table->string('oauth_refresh_token')->nullable();
             $table->string('oauth_refresh_expires')->nullable();

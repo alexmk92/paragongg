@@ -8,9 +8,12 @@ use App\Jobs\UpdateCardImage;
 use App\Jobs\UpdateCardObject;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ServerException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class CardController extends Controller
 {
@@ -40,16 +43,19 @@ class CardController extends Controller
         if(Auth::check() && Auth::user()->epicAccountLinked()) {
             $cardsOwned = $this->cardCollection();
 
-            foreach($cards as $card) {
-                $key = array_search($card->code, array_column($cardsOwned, 'id'));
+            if($cardsOwned) {
+                foreach($cards as $card) {
+                    $key = array_search($card->code, array_column($cardsOwned, 'id'));
 
-                if($key) {
-                    $card->owned = true;
-                    $card->count = $cardsOwned[$key]['count'];
-                } else {
-                    $card->owned = false;
+                    if($key) {
+                        $card->owned = true;
+                        $card->count = $cardsOwned[$key]['count'];
+                    } else {
+                        $card->owned = false;
+                    }
                 }
             }
+
         }
 
         return $cards;
@@ -60,23 +66,31 @@ class CardController extends Controller
     {
         $user = Auth::user();
 
+        Cache::forget('user.'.$user->id.'.cards');
         if(!Cache::has('user.'.$user->id.'.cards')) {
-
             $client = new Client();
-            $res = $client->request('GET', 'https://developer-paragon.epicgames.com/v1/account/'.$user->epic_account_id.'/cards', [
-                'headers' => [
-                    'Accept'        => 'application/json',
-                    'Authorization' => 'Bearer '.OAuthToken(),
-                    'X-Epic-ApiKey' => env('EPIC_API_KEY'),
-                ],
-                'form_params' => [
-                    'grant_type' => 'authorization',
-                    'code'       => $user->oauth_epic_code
-                ]
-            ])->getBody();
-            $response = json_decode($res, true);
-            $expires = Carbon::now()->addMinutes(5);
+            try {
+                $res = $client->request('GET', 'https://developer-paragon.epicgames.com/v1/account/'.$user->epic_account_id.'/cards', [
+                    'headers' => [
+                        'Accept'        => 'application/json',
+                        'Authorization' => 'Bearer '.getOAuthToken($user),
+                        'X-Epic-ApiKey' => env('EPIC_API_KEY'),
+                    ]
+                ])->getBody();
+            } catch (ClientException $e) {
+                $error = $e->getResponse()->getBody()->getContents();
+                Log::error("ClientException while trying to get user's cards: ".$error);
+                return false;
+            } catch (ServerException $e) {
+                $error = $e->getResponse()->getBody()->getContents();
+                Log::error("ServerException while trying to get user's cards: ".$error);
+                return false;
+            }
 
+            $response = json_decode($res, true);
+            dd($response->getContents());
+
+            $expires = Carbon::now()->addMinutes(5);
             Cache::put('user.'.$user->id.'.cards', $response, $expires);
         }
 
