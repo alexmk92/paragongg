@@ -16,7 +16,7 @@
         }
     @endif;
 
-    var THREAD_ID = Number('{{ $threadId }}');
-    var COMMENTS  = {!! json_encode($comments) !!};
+    var THREAD_ID = Number('{{ $thread->id }}');
+    var COMMENTS  = {!! json_encode($thread->comments) !!};
 
 </script>

@@ -31,7 +31,7 @@ class CardController extends Controller
         $card = Card::where('slug', $slug)->firstOrFail();
         $thread = findOrCreateThread($request->path());
 
-        return view('cards.show')->with('card', $card)->with('threadId', $thread->id);
+        return view('cards.show', compact('card', 'thread'));
     }
 
     public function getCards()
