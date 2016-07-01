@@ -3,6 +3,7 @@ var Redux      = require('redux');
 var ReactRedux = require('react-redux');
 var Action     = require('../../actions/comments');
 var Helpers    = require('../../helpers');
+var Notification = require('../../components/libraries/notification/Notification');
 
 var CommentListItem = require('./CommentListItem');
 var CommentBox = require('./CommentBox');
@@ -18,9 +19,25 @@ var CommentFeed = React.createClass({
             this.forceUpdate();
         }.bind(this), 15000);
         */
+        this.notificationPanel = new Notification();
+        this.notificationPanel.initialiseNotifications();
     },
     componentWillReceiveProps: function() {
         console.log("Received new props");
+    },
+    reportComment: function(comment) {
+        this.props.reportComment(comment).then(function() {
+            this.notificationPanel.addNotification('success', 'Thanks, we\'ll investigate this content as soon as possible!');
+        }.bind(this), function(err) {
+            this.notificationPanel.addNotification('warning', 'Sorry, we couldn\t handle your request at this time, please try again.');
+        }.bind(this));
+    },
+    deleteComment: function(comment) {
+        this.props.deleteComment(comment).then(function() {
+            this.notificationPanel.addNotification('success', 'Deleted your comment successfully.');
+        }.bind(this), function(err) {
+            this.notificationPanel.addNotification('warning', 'Sorry, we couldn\'t delete that comment, try again later.');
+        }.bind(this));
     },
     renderComments: function() {
         var comments = [];
@@ -44,6 +61,8 @@ var CommentFeed = React.createClass({
                                 author={ USER }
                                 childComments={ this.props.comments }
                                 upVoteComment={ this.props.upVoteComment }
+                                reportComment={ this.reportComment }
+                                deleteComment={ this.deleteComment }
                                 onCommentSubmitted={this.appendPendingComment}
                                 postComment={this.props.postComment}
                             />
@@ -120,7 +139,9 @@ function mapDispatchToProps(dispatch) {
     return Redux.bindActionCreators({
         upVoteComment : Action.upVoteComment,
         fetchComments : Action.fetchComments,
-        postComment : Action.postComment
+        postComment : Action.postComment,
+        reportComment: Action.reportComment,
+        deleteComment: Action.deleteComment
     }, dispatch)
 }
 // Promote CommentFeed from a component to a container

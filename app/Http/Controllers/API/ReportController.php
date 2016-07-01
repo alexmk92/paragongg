@@ -14,16 +14,16 @@ class ReportController extends Controller
     public function store(Request $request)
     {
         if(!Auth::check()) return response()->json(['code' => 403, 'message' => 'You must be logged in to report a comment']);
-        $exists = Report::where('user_id', Auth::user()->id)->where('ref_id', (int) $request->id)->first();
+        $exists = Report::where('user_id', Auth::user()->id)->where('ref_id', (int) $request->ref_id)->first();
         if($exists) {
-            return response()->json(['code' => 403, 'message' => 'This account has already reported this ref']);
+            return response()->json(['code' => 403, 'message' => 'This account has already reported this ref', 'ref_id' => $request->ref_id]);
         } else {
             $report = new Report();
             $report->user_id = Auth::user()->id;
-            $report->ref_id  = (int) $request->id;
+            $report->ref_id  = (int) $request->ref_id;
             $report->save();
 
-            return response()->json(['code' => 200, 'message' => 'Report logged']);
+            return response()->json(['code' => 200, 'message' => 'Report logged', 'ref_id' => $request->ref_id]);
         }
     }
 }

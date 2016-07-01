@@ -4,11 +4,14 @@
     @if(Auth::check())
         var AUTHED = true;
         var USER = {
-            username : '{{ Auth::user()->username }}'
-        }
+            id : '{{ Auth::user()->id }}',
+            username : '{{ Auth::user()->username }}',
+            avatar : '{{ Auth::user()->avatar }}'
+        };
     @else
         var AUTHED = false;
         var USER = {
+            id : null,
             username : "guest"
         }
     @endif;

@@ -34,6 +34,54 @@ $avatar-height : $avatar-width;
             margin-top: 25px;
         }
 
+        .more-button {
+            position: relative;
+            z-index: 1;
+            outline: 0;
+            box-shadow:none;
+
+            &.active {
+                border: 1px solid $secondary-highlight;
+                color: $secondary-highlight;
+            }
+
+            .more-container {
+                color: $font-color-faded !important;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 0;
+                height: 32px;
+                overflow: hidden;
+                z-index: 0;
+                transition: all 150ms ease-in-out;
+
+                span {
+                    vertical-align: middle;
+                    display: inline-block;
+                    margin-right: 10px;
+
+                    &.active {
+                        color: $secondary-highlight !important;
+                    }
+
+                    &:hover {
+                        color: $secondary-highlight !important;
+                    }
+                }
+
+                &.visible {
+                    border: 1px solid $faded-line;
+                    opacity: 1;
+                    width: 150px;
+                    text-align: left;
+                    margin-left: 31px;
+                    padding-left: 10px;
+                    padding-top: 3px;
+                }
+            }
+        }
+
         .no-comments {
             margin-bottom: 0;
             font-size: 16px;
@@ -60,6 +108,11 @@ $avatar-height : $avatar-width;
             .comment-body {
                 margin: 30px 0;
                 line-height: 150%;
+
+                &.deleted-comment {
+                    font-style: italic;
+                    color: $font-color-faded;
+                }
             }
             .comment-actions {
             }
