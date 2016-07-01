@@ -28,7 +28,7 @@ class CommentController extends Controller
             ->leftJoin('votes', function($join)
             {
                 $join->on('votes.ref_id', '=', 'comment_thread_comments.id');
-                $join->where('votes.user_id', '=', auth()->user()->id);
+                $join->where('votes.user_id', '=', auth()->check() ? auth()->user()->id : 0);
             })
             ->orderBy('created_at', 'asc')
             ->skip($skip)
