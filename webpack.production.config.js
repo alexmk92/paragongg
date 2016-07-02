@@ -1,6 +1,5 @@
 const webpack           = require('webpack');
 const path              = require('path');
-const nodeExternals     = require('webpack-node-externals');
 const autoprefixer      = require('autoprefixer');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
@@ -11,9 +10,10 @@ const sassLoaders = [
 ];
 
 module.exports = {
-    //devtool: 'source-map',
+    devtool: 'source-map',
     target: 'node',
-    externals: [nodeExternals()],
+    externals: [
+    ],
     context: path.join(__dirname, "resources/assets"),
     entry: {
         "app" : "./js/app.js"
@@ -33,6 +33,7 @@ module.exports = {
             {
                 test: /\.jsx?$/,
                 loader: 'babel-loader',
+                exclude: /node_modules/,
                 query: {
                     presets: ['react'],
                     compact: false
@@ -43,7 +44,12 @@ module.exports = {
                 loader: 'imports?define=>false&this=>window'
             },
             {
+                test: /\.css$/,
+                loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+            },
+            {
                 test: /\.scss$/,
+                exclude: /node_modules/,
                 loader: ExtractTextPlugin.extract('style-loader', sassLoaders.join('!'))
             },
             {

@@ -14,7 +14,7 @@
 Route::get('/', 'HomeController@index');
 Route::auth();
 
-Route::get('/auth', 'Auth\OAuthController@linkAccount')->middleware('auth');;
+Route::get('/auth', 'Auth\OAuthController@linkAccount')->middleware('auth');
 
 /* STATIC */
 Route::get('/terms',   function(){ return view('static.terms');   });
@@ -81,15 +81,15 @@ Route::get('/community', 'CommunityController@index');
 /* DISCUSSION */
 Route::get('/discussion', 'DiscussionController@index');
 Route::get('/discussion/category/{category}', 'DiscussionController@category');
-Route::get('/discussion/create', 'DiscussionController@create');
-Route::post('/discussion/create', 'DiscussionController@store');
-Route::get('/discussion/edit/{id}', 'DiscussionController@edit');
-Route::post('/discussion/edit/{id}', 'DiscussionController@update');
-Route::get('/discussion/delete/{id}', 'DiscussionController@delete');
-Route::get('/discussion/{id}/best-answer/{rid}', 'DiscussionController@bestAnswer');
-Route::post('/discussion/{id}/reply', 'DiscussionController@reply');
+Route::get('/discussion/create', 'DiscussionController@create')->middleware('auth');
+Route::post('/discussion/create', 'DiscussionController@store')->middleware('auth');
+Route::get('/discussion/edit/{id}', 'DiscussionController@edit')->middleware('auth');
+Route::post('/discussion/edit/{id}', 'DiscussionController@update')->middleware('auth');
+Route::get('/discussion/delete/{id}', 'DiscussionController@delete')->middleware('auth');
+Route::get('/discussion/{id}/best-answer/{rid}', 'DiscussionController@bestAnswer')->middleware('auth');
+Route::post('/discussion/{id}/reply', 'DiscussionController@reply')->middleware('auth');
 Route::get('/discussion/{id}/{slug?}', 'DiscussionController@show');
-Route::post('/discussion/{id}/{slug?}/reply', 'DiscussionController@reply');
+Route::post('/discussion/{id}/{slug?}/reply', 'DiscussionController@reply')->middleware('auth');
 
 /* MISC */
 Route::get('/report/{id}', 'ReportController@store');
