@@ -1,6 +1,9 @@
 # ParagonGG 2.0
 
+#### Master
 [![CircleCI](https://circleci.com/gh/jamieshepherd/paragongg/tree/master.svg?style=svg&circle-token=2886abb8ed3f95a61da55889de6888f9dc4e54e3)](https://circleci.com/gh/jamieshepherd/paragongg/tree/master)
+#### Develop
+[![CircleCI](https://circleci.com/gh/jamieshepherd/paragongg.svg?style=svg&circle-token=2886abb8ed3f95a61da55889de6888f9dc4e54e3)](https://circleci.com/gh/jamieshepherd/paragongg)
 
 This repository hosts the code for the application layer of ParagonGG, a news, strategy, and stats website for the MOBA title from Epic Games: Paragon.
 
