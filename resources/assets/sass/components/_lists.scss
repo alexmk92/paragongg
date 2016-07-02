@@ -17,4 +17,25 @@ ul {
             list-style: disc inside;
         }
     }
+    &.side-select {
+        margin-top: 20px;
+        li {
+            margin-bottom: 5px;
+            a {
+                display: block;
+                border-left: 3px solid $faded-line;
+                background: darken($panel-color, 3%);
+                padding: 15px 20px;
+                transition: all 0.2s;
+                color: $font-color-faded;
+                &:hover {
+                    border-color: $secondary-highlight;
+                    margin-left: 10px;
+                }
+            }
+            h5 {
+                margin-bottom: 10px;
+            }
+        }
+    }
 }

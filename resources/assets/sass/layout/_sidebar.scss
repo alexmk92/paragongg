@@ -24,6 +24,9 @@
             background: $panel-color;
             padding: 20px;
             //border: 1px solid $faded-line;
+            &.dark {
+                background: $panel-color-dark;
+            }
         }
         &.navigation {
             background: $panel-color-dark;

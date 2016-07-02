@@ -13,15 +13,21 @@ class DiscussionController extends Controller
 {
     public function index()
     {
-        $discussions = Discussion::take(10)->get();
+        $discussions = Discussion::orderBy('created_at', 'DESC')
+            ->paginate(10);
 
         return view('discussion.index', compact('discussions'));
     }
 
     public function category($category)
     {
-        $discussions = Discussion::where('category', $category)->take(10)->get();
+        $categories = ['general', 'questions', 'theorycrafting'];
+        if(!in_array($category, $categories)) abort(404);
 
+        $discussions = Discussion::where('category', $category)
+            ->orderBy('created_at', 'DESC')
+            ->paginate(10);
+        $category = ucfirst($category);
         return view('discussion.index', compact('discussions', 'category'));
     }
 

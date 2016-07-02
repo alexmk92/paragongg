@@ -49,19 +49,6 @@
             margin: 0 auto;
         }
     }
-    .listbox {
-        .user-avatar {
-            width: 42px;
-            height: 42px;
-        }
-        .details {
-            font-size: 14px;
-        }
-        .content {
-            font-size: 22px;
-            font-weight: bold;
-        }
-    }
     .article-body {
         padding-bottom: 30px;
         font-size: 18px;
@@ -95,6 +82,28 @@
             font-size: 16px;
             line-height: 24px;
             padding: 20px;
+        }
+    }
+}
+.create-post {
+    float: right;
+}
+
+.discussion-index-wrapper {
+    h2 {
+        margin-bottom: 30px;
+    }
+    .listbox {
+        .user-avatar {
+            width: 42px;
+            height: 42px;
+        }
+        .details {
+            font-size: 14px;
+        }
+        .content {
+            font-size: 22px;
+            font-weight: bold;
         }
     }
 }
