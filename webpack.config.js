@@ -11,8 +11,6 @@ const sassLoaders = [
 
 module.exports = {
     devtool: 'cheap-eval-source-map',
-    target: 'node',
-    externals: [nodeExternals()],
     context: path.join(__dirname, "resources/assets"),
     entry: {
         "app" : "./js/app.js"

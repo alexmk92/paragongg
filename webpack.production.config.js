@@ -11,9 +11,6 @@ const sassLoaders = [
 
 module.exports = {
     devtool: 'source-map',
-    target: 'node',
-    externals: [
-    ],
     context: path.join(__dirname, "resources/assets"),
     entry: {
         "app" : "./js/app.js"
