@@ -196,7 +196,7 @@ var VerticalBarChart = React.createClass({
                 column: {
                     grouping: true,
                     groupPadding:0,
-                    pointWidth:35,
+                    pointWidth:28,
                     pointPadding: 0,
                     dataLabels: {
                         enabled : true,

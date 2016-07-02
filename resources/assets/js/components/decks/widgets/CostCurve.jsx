@@ -17,7 +17,6 @@ var CostCurve = React.createClass({
 
         var costCounts = [];
 
-        costCounts[0] = { label : 0, count : 0 };
         costCounts[1] = { label : 1, count : 0 };
         costCounts[2] = { label : 2, count : 0 };
         costCounts[3] = { label : 3, count : 0 };
@@ -25,6 +24,9 @@ var CostCurve = React.createClass({
         costCounts[5] = { label : 5, count : 0 };
         costCounts[6] = { label : 6, count : 0 };
         costCounts[7] = { label : 7, count : 0 };
+        costCounts[8] = { label : 8, count : 0 };
+        costCounts[9] = { label : 9, count : 0 };
+        costCounts[10] = { label : 10, count : 0 };
 
         // On a null build, show deck affinity weighting
         var collection = [];
@@ -56,7 +58,7 @@ var CostCurve = React.createClass({
                     name : costCount.label + "CP",
                     y : costCount.count
                 });
-                comparisonData.chartWidth += 35;
+                comparisonData.chartWidth += 28;
                 comparisonData.chartColors.push("#42a9e8");
             }
         }

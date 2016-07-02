@@ -150,7 +150,7 @@ var Build = React.createClass({
                 }
             }.bind(this));
         }
-        // JUST DELETE ALL NOT FOUND CARDS
+        /* This was buggy, I dont think we need it
         else {
             var newBuild = this.props.build;
             this.props.build.slots.forEach(function(slot, slotIndex) {
@@ -172,9 +172,11 @@ var Build = React.createClass({
                 }
             }.bind(this));
         }
+        */
     },
     getUpgradeSlots: function(slot, activeClass) {
         // Dont show this section on unplaced cards
+        console.log("FIRING FROM: GET UPGRADE SLOTS");
         var deleteWrapper = "";
         if(typeof slot.card === "undefined" || slot.card === null) {
             return "";
@@ -196,28 +198,28 @@ var Build = React.createClass({
                             if (this.lastSelectedUpgradeSlot.parentSlot === slot && slot.upgrades.indexOf(upgrade) === this.lastSelectedUpgradeSlot.upgradeSlotIndex) {
                                 activeClass = " selected";
                                 /* TODO ADD THIS CODE TO SHOW DELETE WRAPPER FOR UPGRADE SLOTS
-                                if(this.props.selectedCard !== null && this.props.selectedCard.type === "Upgrade") {
-                                    deleteWrapper = (
-                                        <div key={"action-buttons-upgrade-slot"} className="delete-wrapper" onClick={this.bindUpgradeToCard.bind(this, upgrade, slot.card, false)}
-                                             onContextMenu={this.removeUpgradeFromCard.bind(this, upgrade, slot.card)}>
-                                            <i onClick={this.removeUpgradeFromCard.bind(this, upgrade, slot.card)} className="fa fa-trash"
-                                               aria-hidden="true"/>
-                                            <i onClick={this.bindUpgradeToCard.bind(this, upgrade, slot.card, false)} className="fa fa-refresh"
-                                               aria-hidden="true"/>
-                                        </div>
-                                    );
-                                } else {
-                                    deleteWrapper = (
-                                        <div key={"action-buttons-upgrade-slot"} className="delete-wrapper" onClick={this.bindUpgradeToCard.bind(this, upgrade, slot.card, false)} onContextMenu={this.removeUpgradeFromCard.bind(this, upgrade, slot.card)}>
-                                            <i onClick={this.removeUpgradeFromCard.bind(this, upgrade, slot.card)} className="fa fa-trash" aria-hidden="true" />
-                                        </div>
-                                    );
-                                }
-                                */
+                                 if(this.props.selectedCard !== null && this.props.selectedCard.type === "Upgrade") {
+                                 deleteWrapper = (
+                                 <div key={"action-buttons-upgrade-slot"} className="delete-wrapper" onClick={this.bindUpgradeToCard.bind(this, upgrade, slot.card, false)}
+                                 onContextMenu={this.removeUpgradeFromCard.bind(this, upgrade, slot.card)}>
+                                 <i onClick={this.removeUpgradeFromCard.bind(this, upgrade, slot.card)} className="fa fa-trash"
+                                 aria-hidden="true"/>
+                                 <i onClick={this.bindUpgradeToCard.bind(this, upgrade, slot.card, false)} className="fa fa-refresh"
+                                 aria-hidden="true"/>
+                                 </div>
+                                 );
+                                 } else {
+                                 deleteWrapper = (
+                                 <div key={"action-buttons-upgrade-slot"} className="delete-wrapper" onClick={this.bindUpgradeToCard.bind(this, upgrade, slot.card, false)} onContextMenu={this.removeUpgradeFromCard.bind(this, upgrade, slot.card)}>
+                                 <i onClick={this.removeUpgradeFromCard.bind(this, upgrade, slot.card)} className="fa fa-trash" aria-hidden="true" />
+                                 </div>
+                                 );
+                                 }
+                                 */
                             }
                         }
                         label = <span className="upgrade-label"><span className="subtext">{upgrade.card.cost}CP </span>{upgrade.card.name}</span>;
-                        slotStyle = { backgroundImage: 'url('+upgrade.card.images.large+')' }
+                        slotStyle = { backgroundImage: 'url('+Helpers.getCardImageURL(upgrade.card, "medium", "icon")+')' }
                     }
 
                     return (
@@ -243,11 +245,11 @@ var Build = React.createClass({
         var hasSamePassiveEffect = false;
         if(upgradeSlot && this.props.selectedCard) {
             /*
-            if(upgradeSlot.requiredAffinity.toLowerCase().indexOf(this.props.selectedCard.affinity.toLowerCase()) > -1)
-                hasSamePassiveEffect = true;
-            if(this.props.selectedCard.affinity.toLowerCase().indexOf("universal") > -1)
-                hasSamePassiveEffect = true;
-            */
+             if(upgradeSlot.requiredAffinity.toLowerCase().indexOf(this.props.selectedCard.affinity.toLowerCase()) > -1)
+             hasSamePassiveEffect = true;
+             if(this.props.selectedCard.affinity.toLowerCase().indexOf("universal") > -1)
+             hasSamePassiveEffect = true;
+             */
             var passiveList = "";
             this.props.selectedCard.effects.some(function(effect) {
                 var statString = "";
@@ -301,8 +303,8 @@ var Build = React.createClass({
         return valid;
     },
     bindUpgradeToCard: function(upgradeSlot, card, bindUpgradeAtNextAvailableIndex) {
-
-        if((this.getBuildCost() + this.props.selectedCard.cost) > 60) {
+        console.log("FIRING FROM: BIND UPGRADE TO CARD");
+        if(this.props.selectedCard !== null && (this.getBuildCost() + this.props.selectedCard.cost) > 60) {
             this.invokeNotification("warning", "You cannot add that card because you would exceed the card points total for this build!");
             return false;
         }
@@ -311,6 +313,8 @@ var Build = React.createClass({
         if(this.validateQuantity(false) && this.props.selectedCard) {
             // Got here by clicking on parent card to bind child
             this.lastSelectedUpgradeSlot = null;
+            // Ensure we dont get a callstack error when trying to replace an existing card slot
+            if(upgradeSlot.card !== null) upgradeSlot.card === null;
             if(bindUpgradeAtNextAvailableIndex) {
                 var nextAvailableSlot = null;
                 upgradeSlot.upgrades.forEach(function (slot, i) {
@@ -348,22 +352,22 @@ var Build = React.createClass({
             }
         } else {
             /*
-            var parentSlot = null;
-            var upgradeIndex = -1;
-            this.props.build.slots.some(function(slot) {
-                if(slot.card !== null && slot.card.code === card.code) {
-                    parentSlot = slot;
-                    upgradeIndex = slot.upgrades.indexOf(upgradeSlot);
-                    return true;
-                }
-                return false;
-            });
-            this.lastSelectedUpgradeSlot = { parentSlot : parentSlot, upgradeSlotIndex : upgradeIndex }
-            */
+             var parentSlot = null;
+             var upgradeIndex = -1;
+             this.props.build.slots.some(function(slot) {
+             if(slot.card !== null && slot.card.code === card.code) {
+             parentSlot = slot;
+             upgradeIndex = slot.upgrades.indexOf(upgradeSlot);
+             return true;
+             }
+             return false;
+             });
+             this.lastSelectedUpgradeSlot = { parentSlot : parentSlot, upgradeSlotIndex : upgradeIndex }
+             */
         }
         // Force fire a left click event if we get here so we can set the trash can on an active
         // upgrade slot
-        this.forceUpdate();
+        //this.forceUpdate();
     },
     removeUpgradeFromCard: function(upgradeSlot, card, event) {
         event.preventDefault();
@@ -388,7 +392,7 @@ var Build = React.createClass({
     renderQueuedCards: function() {
         if(this.queuedCards) {
             this.queuedCards.forEach(function(action) {
-                 this.bindCard(action.index);
+                this.bindCard(action.index);
             }.bind(this));
             this.queuedCards = [];
         }
@@ -463,7 +467,7 @@ var Build = React.createClass({
                     }
                 }
 
-                var cardStyles = { backgroundImage : "url(" + slot.card.images.large + ")"}
+                var cardStyles = { backgroundImage : "url(" + Helpers.getCardImageURL(slot.card, "medium") + ")"};
                 card = (
                     <div style={cardStyles}
                          className="placed-card"
@@ -609,7 +613,7 @@ var Build = React.createClass({
             var slot = this.props.build.slots[index];
             var elem = event.target;
             if(!slot.card) {
-                if(Helpers.hasClass(elem, "glow-layer")) this.requestActiveTab(0, index, null);
+                if(Helpers.hasClass(elem, "glow-layer")) this.requestActiveTab(0, index, "EQUIPMENT");
             } else if(slot.card && this.lastSelectedSlot === index) {
                 if(Helpers.hasClass(elem, "fa-refresh")) this.requestActiveTab(0, index, slot.card);
                 if(Helpers.hasClass(elem, "upgrade-label") || Helpers.hasClass(elem, "overlay")) this.requestActiveTab(0, index, "UPGRADES", slot.card);
@@ -617,7 +621,7 @@ var Build = React.createClass({
         }
     },
     bindCard: function(index) {
-        if((this.getBuildCost() + this.props.selectedCard.cost) > 60) {
+        if(this.props.selectedCard !== null && (this.getBuildCost() + this.props.selectedCard.cost) > 60) {
             this.invokeNotification("warning", "You cannot add that card because you would exceed the card points total for this build!");
             return false;
         }
@@ -627,12 +631,15 @@ var Build = React.createClass({
 
         if(this.validateQuantity(false) && this.validateSlot(index)) {
             var newSlots = this.props.build.slots;
-            
+
             var upgradeSlots = typeof this.props.selectedCard.upgradeSlots !== "undefined" ? this.props.selectedCard.upgradeSlots : 0;
             newSlots.forEach(function (slot, i) {
                 if (i === index) {
                     if (this.props.selectedCard) {
-                        slot.card = this.props.selectedCard;
+                        var card = (JSON.parse(JSON.stringify(this.props.selectedCard)));
+                        card.quantity = 1;
+                        console.log("CARD IS: ", card);
+                        slot.card = card;
                         slot.occupied = true;
 
                         slot.upgrades = [];
@@ -657,9 +664,9 @@ var Build = React.createClass({
                 if(typeof slot.card !== "undefined" && slot.card !== null) {
                     points += slot.card.cost;
                     slot.upgrades.forEach(function(upgradeSlot) {
-                       if(upgradeSlot.card) {
-                           points += upgradeSlot.card.cost;
-                       }
+                        if(upgradeSlot.card) {
+                            points += upgradeSlot.card.cost;
+                        }
                     });
                 }
             });
@@ -779,7 +786,7 @@ var Build = React.createClass({
                 }
             }
         });
-        
+
         return sortedCards;
     },
     render: function() {

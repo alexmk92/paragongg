@@ -62,6 +62,116 @@ $card-height : 180px;
     .card-preview {
 
     }
+    // responsive sticky search head
+    #filter {
+        display: none;
+        transition: all 200ms ease-in-out;
+
+        &.fixed {
+            left: 0%;
+            display: block;
+            position: fixed;
+            top: 0;
+            z-index: 99999;
+            margin-bottom: 0px;
+            width: 100%;
+            height: 100%;
+            background: $panel-color-dark;
+            padding: 50px 0px 100px 0px;
+
+            #confirm-search-button {
+                width: 100%;
+                display: block;
+                position: fixed;
+                z-index: 100;
+                padding: 15px 20px;
+                box-shadow: 0px 0px 50px #000;
+                background: #181d27;
+                border-bottom: 1px solid #212735;
+                top: 60px;
+
+                i {
+                    float: right;
+                }
+            }
+
+            .filter-wrapper {
+                overflow-y: scroll;
+                position: relative;
+                padding: 15px;
+                height: 100%;
+                overflow-x: hidden;
+
+                .search-bar-wrapper {
+                    width: 100%;
+                    margin-bottom: 10px;
+                    margin-top: 30px;
+                }
+
+                .toggle-filter {
+                    display: inline-block;
+                    margin-right: 15px;
+                    text-align: center;
+                    width: 34px;
+                    cursor: pointer;
+                    margin-bottom: 20px;
+
+                    label {
+                        margin-bottom: 15px;
+                    }
+                }
+
+                .drop-down-menu {
+                    position: relative;
+                    z-index: 100;
+                    top: -5px;
+                    display: block;
+                    margin-left: 0px;
+                    margin-top: 30px;
+
+                    .button {
+                        display: none;
+                    }
+                    .menu {
+                        position: relative;
+                        display: block;
+                        margin-top: 10px;
+                        left: 0;
+                        top: 0;
+                        width: 100%;
+                        max-height: 100%;
+                        min-width: 100%;
+                        border: none;
+                        z-index: 100;
+                        background: none;
+                        padding: 20px;
+                        opacity: 1;
+
+                        .tooltip-triangle {
+                            display: none;
+                        }
+                        .title {
+                            display: none;
+                        }
+
+                        ul {
+                            width: 100%;
+                            padding: 0;
+
+                            li {
+                                width: 100%;
+                                font-size: 1.2em;
+                                cursor: pointer;
+                                margin-bottom: 23px;
+                                margin-left: -15px;
+                                padding: 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 @media screen and (max-width: $media-desktop) {
     .wrapper.bordered-right {

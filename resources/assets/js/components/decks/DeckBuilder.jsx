@@ -47,15 +47,17 @@ var DeckBuilder = React.createClass({
         window.addEventListener("resize", this.updateViewForDimensions);
 
         // HANDLE STICKY BAR
-        var sidebar = document.querySelector("#sidebar");
-        if(sidebar) {
-            sidebar.addEventListener("mouseleave", function() {
-                document.body.className = "";
-            });
-            sidebar.addEventListener("scroll", function() {
-                document.body.className = "no-scroll";
-            });
-        }
+        /*
+         var sidebar = document.querySelector("#sidebar");
+         if(sidebar) {
+         sidebar.addEventListener("mouseleave", function() {
+         document.body.className = "";
+         });
+         sidebar.addEventListener("scroll", function() {
+         document.body.className = "no-scroll";
+         });
+         }
+         */
 
         var textareaA = document.querySelector('textarea.h2');
         var textareaB = document.querySelector('textarea.p');
@@ -64,8 +66,6 @@ var DeckBuilder = React.createClass({
             var el = this;
             setTimeout(function(){
                 el.style.cssText = 'height:auto; padding:0';
-                // for box-sizing other than "content-box" use:
-                // el.style.cssText = '-moz-box-sizing:content-box';
                 el.style.cssText = 'height:' + el.scrollHeight + 'px';
             },0);
         }
@@ -74,8 +74,6 @@ var DeckBuilder = React.createClass({
             var el = this;
             setTimeout(function(){
                 el.style.cssText = 'height:auto; padding:0';
-                // for box-sizing other than "content-box" use:
-                // el.style.cssText = '-moz-box-sizing:content-box';
                 el.style.cssText = 'height:' + (el.scrollHeight + 60) + 'px';
             },0);
         }
@@ -95,19 +93,19 @@ var DeckBuilder = React.createClass({
         if(this.lastHoveredCard && !Helpers.isClientMobile()) {
             this.setTooltipContent(this.lastHoveredCard);
         }
-        if(Helpers.isClientMobile()) {
-            if(this.state.activeTab !== -1 || this.state.isMobileSearchShowing) {
-                if(typeof document.body.className === "undefined" || document.body.className === "") {
-                    document.body.className = "no-scroll";
-                }
-            } else {
-                if(typeof document.body.className === "undefined" || document.body.className === "no-scroll"){
-                    document.body.className = "";
-                }
-            }
-        }
-        // Update the footer style so we can keep animation
-        //this.setFooterHeight();
+        /* STICKY BAR CODE
+         if(Helpers.isClientMobile()) {
+         if(this.state.activeTab !== -1 || this.state.isMobileSearchShowing) {
+         if(typeof document.body.className === "undefined" || document.body.className === "") {
+         document.body.className = "no-scroll";
+         }
+         } else {
+         if(typeof document.body.className === "undefined" || document.body.className === "no-scroll"){
+         document.body.className = "";
+         }
+         }
+         }
+         */
     },
     componentWillUpdate: function(nextProps, nextState) {
         if((nextState.deck.length > this.state.deck.length) && (nextState.activeTab === 1 || nextState.activeTab === -1)) {
@@ -140,17 +138,17 @@ var DeckBuilder = React.createClass({
                 cards : compressedCards,
                 builds : this.state.builds.map(function(build) {
                     return {
-                            title: build.title,
-                            slots: build.slots.map(function(slot) {
-                                if(slot.card) slot.card = slot.card.code;
-                                slot.upgrades = slot.upgrades.map(function(upgradeSlot) {
-                                    if(upgradeSlot.card) upgradeSlot.card = upgradeSlot.card.code;
-                                    return upgradeSlot;
-                                });
-                                return slot;
-                            }),
-                            cost: build.cost
-                        }
+                        title: build.title,
+                        slots: build.slots.map(function(slot) {
+                            if(slot.card) slot.card = slot.card.code;
+                            slot.upgrades = slot.upgrades.map(function(upgradeSlot) {
+                                if(upgradeSlot.card) upgradeSlot.card = upgradeSlot.card.code;
+                                return upgradeSlot;
+                            });
+                            return slot;
+                        }),
+                        cost: build.cost
+                    }
                 }),
                 hero : this.state.selectedHero.code
             };
@@ -168,14 +166,16 @@ var DeckBuilder = React.createClass({
             if(selectedCardWrapper) {
                 selectedCardWrapper.className = "";
             }
-            if(sidebar) {
-                sidebar.className = "fixed-desktop";
+            /*
+             if(sidebar) {
+             sidebar.className = "fixed-desktop";
 
-                // COMPUTE THE RIGHT HAND MARGIN
-                var containerRect = document.querySelector("#deck-builder").getBoundingClientRect();
-                var newRight = (containerRect.right - containerRect.width) - 20;
-                sidebar.style.right = newRight + "px";
-            }
+             // COMPUTE THE RIGHT HAND MARGIN
+             var containerRect = document.querySelector("#deck-builder").getBoundingClientRect();
+             var newRight = (containerRect.right - containerRect.width) - 20;
+             sidebar.style.right = newRight + "px";
+             }
+             */
             if(this.state.activeTab === -1) {
                 this.setState({ activeTab : 0 });
             }
@@ -189,24 +189,10 @@ var DeckBuilder = React.createClass({
                 selectedCardWrapper.className = "visible";
             }
         }
-        //this.setFooterHeight();
     },
     toggleModal: function() {
         var modal = this.state.modal ? false : true;
         this.setState({modal: modal});
-    },
-    setFooterHeight: function() {
-        var footer = document.querySelector("footer");
-        if(this.state.isBuildsPanelShowing) {
-            var buildWindow = document.querySelector("#builds-wrapper");
-            if(footer && buildWindow) {
-                var buildBottom = buildWindow.getBoundingClientRect().bottom;
-                var footerHeight = footer.getBoundingClientRect().height;
-                footer.style.top = (buildBottom + footerHeight) + "px";
-            }
-        } else {
-            footer.style.top = "100%";
-        }
     },
     /** TOOLTIP FUNCTIONS **/
     setTooltipContent: function(card) {
@@ -298,11 +284,11 @@ var DeckBuilder = React.createClass({
         if(elem.className !== "fa fa-trash" && elem.className !== "delete-icon" && elem.className.indexOf("delete-build-wrapper") < 0) {
 
             /* PREVENT CARD SELECTION
-            var disableSelectedCard = false;
-            if(this.state.selectedBuild !== null && this.state.isBuildsPanelShowing) {
-                disableSelectedCard = this.getCardQuantityInCurrentDeck(card) >= card.quantity;
-            }
-            */
+             var disableSelectedCard = false;
+             if(this.state.selectedBuild !== null && this.state.isBuildsPanelShowing) {
+             disableSelectedCard = this.getCardQuantityInCurrentDeck(card) >= card.quantity;
+             }
+             */
 
             if(this.placementSlotIndex != -1 && Helpers.isClientMobile()) {
                 this.hideSelectedCardPopup();
@@ -312,7 +298,8 @@ var DeckBuilder = React.createClass({
 
             if(((this.state.selectedCard && this.state.selectedCard.code == card.code) || card.type === "Prime")) {
                 this.hideSelectedCardPopup();
-                this.setState({selectedCard: null, playFlashAnimation: false});
+                var selectedCard = this.state.isBuildsPanelShowing ? null : card;
+                this.setState({selectedCard: selectedCard, playFlashAnimation: false});
             } else {
                 this.showSelectedCardPopup();
                 var activeTab = this.state.activeTab;
@@ -397,6 +384,16 @@ var DeckBuilder = React.createClass({
                     </ul>
                 </div>
             );
+        } else if(Helpers.isClientMobile() && this.deckOptionFilter && this.deckOptionFilter === "EQUIPMENT") {
+            return(
+                <div className={ "sidebox panel cf" + this.isActiveTab(0) }>
+                    { editDeckButton }
+                    <span className="subtext">EQUIPMENT</span>
+                    <ul className="deck-list">
+                        {this.getCardsInDeck(["Passive", "Active"])}
+                    </ul>
+                </div>
+            );
         } else {
             return (
                 <div className={ "sidebox panel cf" + this.isActiveTab(0) }>
@@ -442,7 +439,7 @@ var DeckBuilder = React.createClass({
             return true;
 
         var hasSamePassiveEffect = false;
-        if(upgradeCard && selectedCard) {
+        if(upgradeCard && selectedCard && typeof selectedCard.effects !== "undefined") {
             selectedCard.effects.some(function(effect) {
                 var statString = "";
                 if(effect.stat) statString = effect.stat.toUpperCase();
@@ -586,11 +583,11 @@ var DeckBuilder = React.createClass({
             var deleteWrapperClass = "";
             if(this.state.selectedBuild !== null) {
                 /*
-                if(this.state.lastSelectedBuild !== null && (this.state.lastSelectedBuild.code === build.code && this.state.playFlashAnimation)) {
-                    className += "pulse-card-outer";
-                    childClassName += "pulse-card-inner";
-                }
-                */
+                 if(this.state.lastSelectedBuild !== null && (this.state.lastSelectedBuild.code === build.code && this.state.playFlashAnimation)) {
+                 className += "pulse-card-outer";
+                 childClassName += "pulse-card-inner";
+                 }
+                 */
                 if(this.state.selectedBuild.code === build.code) {
                     childClassName += " selected";
                     deleteWrapperClass = " visible";
@@ -752,9 +749,9 @@ var DeckBuilder = React.createClass({
         if(Helpers.isClientMobile())
             this.deckOptionFilter = filter;
 
-         if(this.state.addedCard && this.state.isBuildsPanelShowing) {
-             flashTab = true;
-         }
+        if(this.state.addedCard && this.state.isBuildsPanelShowing) {
+            flashTab = true;
+        }
 
         if(index === this.state.activeTab && Helpers.isClientMobile()) {
             index = -1;
@@ -837,7 +834,8 @@ var DeckBuilder = React.createClass({
         }
     },
     getSelectedCardPopup: function() {
-        if(this.state.selectedCard && Helpers.isClientMobile()) {
+        console.log("selected card is: ", this.state.selectedCard);
+        if(this.state.selectedCard && typeof this.state.selectedCard.code !== "undefined" && Helpers.isClientMobile()) {
             var cardType = "UPGRADE";
             if(this.state.selectedCard.type === "Active" || this.state.selectedCard.type === "Passive") cardType = "EQUIPMENT";
             return (
@@ -850,7 +848,7 @@ var DeckBuilder = React.createClass({
                 </div>
             )
         }
-        else if((this.lastSelectedCard && Helpers.isClientMobile())) {
+        else if((this.lastSelectedCard && typeof this.lastSelectedCard.code !== "undefined" && Helpers.isClientMobile())) {
             return (
                 <div onClick={this.hideSelectedCardPopup} id="selected-card-wrapper" className="visible">
                     <span>Currently selected: <span className="subtext">{this.lastSelectedCard.name}</span> <i className="fa fa-close"></i></span>
@@ -956,6 +954,8 @@ var DeckBuilder = React.createClass({
         var buildClass = "";
         var actionBarHidden = this.state.isMobileSearchShowing ? "hidden" : "";
         var buttonDisabled = this.isDeckValid() ? "" : "disabled";
+
+        console.log("IS SEARCH PANEL SHOWING? " + this.state.isMobileSearchShowing + " AND IS MOBILE ? " + Helpers.isClientMobile());
         return (
             <div>
                 <div id="sidebar" className={sidebarClass}>

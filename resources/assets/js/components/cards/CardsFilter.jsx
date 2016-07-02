@@ -289,7 +289,7 @@ var CardsFilter = React.createClass({
                 />);
             }
         }.bind(this));
-        this.props.onFilterChanged(cards);
+        this.props.onFilterChanged(cards, this.state.costOrder);
     },
     setTooltipContent: function(card) {
         var content = (
