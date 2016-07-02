@@ -1,7 +1,8 @@
-const webpack           = require('webpack');
-const path              = require('path');
-const autoprefixer      = require('autoprefixer');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+var webpack           = require('webpack'),
+    pkg               = require('./package.json'),
+    path              = require('path'),
+    autoprefixer      = require('autoprefixer'),
+    ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const sassLoaders = [
     'css-loader',
@@ -10,10 +11,11 @@ const sassLoaders = [
 ];
 
 module.exports = {
-    devtool: 'source-map',
+    //devtool: 'source-map',
     context: path.join(__dirname, "resources/assets"),
     entry: {
-        "app" : "./js/app.js"
+        app : "./js/app.js",
+        vendor  : Object.keys(pkg.dependencies)
     },
     resolve: {
         extensions: ['', '.js', '.jsx']
@@ -48,14 +50,6 @@ module.exports = {
                 test: /\.scss$/,
                 exclude: /node_modules/,
                 loader: ExtractTextPlugin.extract('style-loader', sassLoaders.join('!'))
-            },
-            {
-                test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-                loader: "url-loader?limit=10000&minetype=application/font-woff"
-            },
-            {
-                test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-                loader: "file-loader"
             }
         ]
     },
@@ -66,11 +60,14 @@ module.exports = {
             }
         }),
         new ExtractTextPlugin("css/[name].css"),
-        new webpack.optimize.DedupePlugin(),
+        new webpack.optimize.CommonsChunkPlugin('vendor', 'js/vendor.min.js'),
+        //new webpack.optimize.DedupePlugin(),
         new webpack.optimize.UglifyJsPlugin({
             compress: {
+                unused: false,
                 warnings: false
-            }
+            },
+            sourceMap: false
         }),
         new webpack.optimize.AggressiveMergingPlugin()
     ],

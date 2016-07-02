@@ -19,7 +19,7 @@
     <link rel="shortcut icon" href="/assets/images/favicon.ico" />
 
     <!-- Styles -->
-    <link media="all" type="text/css" rel="stylesheet" href="/build/css/app.css">
+    <link media="all" type="text/css" rel="stylesheet" href="/build/css/app.min.css">
 
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -27,7 +27,6 @@
 
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.7/es5-shim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.7/es5-sham.min.js"></script>
     @yield('libraries')
 
 </head>
@@ -54,6 +53,7 @@
 
 {{-- Webpack --}}
 @yield('scripts')
+<script type="text/javascript" src="/build/js/vendor.min.js"></script>
 <script type="text/javascript" src="/build/js/app.min.js"></script>
 
 @if(!isset($hideAnalytics))
