@@ -73,7 +73,8 @@ nav {
     }
     .right-nav {
         position: absolute;
-        top: 14px;
+        //top: 14px;
+        top: 21px;
         right: 0;
         display: inline-block;
     }
@@ -139,7 +140,7 @@ nav {
             height: 0px;
             display: none;
             transition: all 200ms ease-in-out;
-            
+
             li {
                 display: block;
 

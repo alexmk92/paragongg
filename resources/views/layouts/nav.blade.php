@@ -16,12 +16,12 @@
              <li><a href="/community" {{ Request::is( 'community*') ? 'class=active' : '' }}>Community</a></li>
         </ul>
         <div class="right-nav">
-            <div id="player-search-nav">
-                <form action="/players/search" method="POST">
-                    {!! csrf_field() !!}
-                    <input name="username" type="text" placeholder="Search player by name...">
-                </form>
-            </div>
+            {{--<div id="player-search-nav">--}}
+                {{--<form action="/players/search" method="POST">--}}
+                    {{--{!! csrf_field() !!}--}}
+                    {{--<input name="username" type="text" placeholder="Search player by name...">--}}
+                {{--</form>--}}
+            {{--</div>--}}
             @if(auth()->check())
                 <div id="account-nav"
                      data-username="{{ auth()->user()->username }}"
