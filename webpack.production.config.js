@@ -14,8 +14,8 @@ module.exports = {
     //devtool: 'source-map',
     context: path.join(__dirname, "resources/assets"),
     entry: {
-        app : "./js/app.js",
-        vendor  : Object.keys(pkg.dependencies)
+        app    : "./js/app.js",
+        vendor : Object.keys(pkg.dependencies)
     },
     resolve: {
         extensions: ['', '.js', '.jsx']
@@ -59,7 +59,7 @@ module.exports = {
                 'NODE_ENV': JSON.stringify('production')
             }
         }),
-        new ExtractTextPlugin("css/[name].css"),
+        new ExtractTextPlugin("css/[name].min.css"),
         new webpack.optimize.CommonsChunkPlugin('vendor', 'js/vendor.min.js'),
         //new webpack.optimize.DedupePlugin(),
         new webpack.optimize.UglifyJsPlugin({

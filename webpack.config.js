@@ -1,7 +1,8 @@
-const webpack           = require('webpack');
-const path              = require('path');
-const autoprefixer      = require('autoprefixer');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+var webpack           = require('webpack'),
+    pkg               = require('./package.json'),
+    path              = require('path'),
+    autoprefixer      = require('autoprefixer'),
+    ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const sassLoaders = [
     'css-loader',
@@ -13,7 +14,8 @@ module.exports = {
     devtool: 'cheap-eval-source-map',
     context: path.join(__dirname, "resources/assets"),
     entry: {
-        "app" : "./js/app.js"
+        app    : "./js/app.js",
+        vendor : Object.keys(pkg.dependencies)
     },
     resolve: {
         extensions: ['', '.js', '.jsx']
