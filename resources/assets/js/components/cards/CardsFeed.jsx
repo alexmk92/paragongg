@@ -11,11 +11,31 @@ var CardsFeed = React.createClass({
             filter_affinity : 'All',
             filter_type : 'All',
             search_term : "",
+            cost_order : "ASC",
             cards : []
         }
     },
-    renderCards : function(newCards) {
-        this.setState({cards: newCards});
+    shouldComponentUpdate: function(nextProps, nextState) {
+        if(nextProps.stickTopOnMobile !== this.props.stickTopOnMobile) {
+            return true;
+        }
+        if(nextState.cost_order !== this.state.cost_order) {
+            return true;
+        }
+
+        if(nextState.cards.length === this.state.cards.length) {
+            if(nextState.cards.length > 0 && this.state.cards.length > 0) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        return this.state !== nextState;
+    },
+    renderCards : function(newCards, costOrder) {
+        console.log("RENDERING CARDS");
+        this.setState({cards: newCards, cost_order : costOrder});
     },
     onCardClicked : function(card) {
         this.props.onCardClicked(card);
@@ -30,6 +50,7 @@ var CardsFeed = React.createClass({
         var title = this.props.showTitle ? <h1>Paragon Cards</h1> : "";
         var stickTop = this.props.stickTopOnMobile ? "fixed" : "";
         var doneMobileButton = "";
+        console.log("STICK TOP ON MOBILE IS: ", stickTop);
         if(this.props.stickTopOnMobile) {
             doneMobileButton = (
                 <div id="confirm-search-button" onClick={this.props.onDismissFilter}>
