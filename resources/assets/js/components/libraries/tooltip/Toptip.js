@@ -2,7 +2,13 @@ var Toptip = function() {
     this.active = false;
     this.tooltip = document.createElement("div");
     this.tooltip.setAttribute("id", "toptip");
-    document.body.appendChild(this.tooltip);
+
+    var existingNode = document.querySelector('#toptip');
+    if(!existingNode) {
+        document.body.appendChild(this.tooltip);
+    } else {
+        this.tooltip = existingNode;
+    }
 
     /**
      * Show the tooltip, add mousemove listener

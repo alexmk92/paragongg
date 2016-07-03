@@ -8,11 +8,19 @@ var PreloadImage = React.createClass({
     },
     imageLoaded: function() {
         this.setState({ imageLoaded : true });
-        if(this.props.onImageLoaded !== null) {
+        if(typeof this.props.onImageLoaded !== "undefined" && this.props.onImageLoaded !== null) {
             this.props.onImageLoaded();
         }
     },
+    componentWillReceiveProps: function(nextProps) {
+        if(nextProps.src !== this.props.src) {
+            this.setState({ imageLoaded : false });
+        }
+    },
     shouldComponentUpdate: function(nextProps, nextState) {
+        // This will force the component to update, happens only when component forcefully updates state
+        if(nextState.imageLoaded === false) return true;
+        // Prevents refires in this component when the image is loaded
         return (this.state.imageLoaded === false && (nextState.imageLoaded === true));
     },
     render: function() {

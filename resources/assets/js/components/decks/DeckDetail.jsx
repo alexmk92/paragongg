@@ -1,11 +1,10 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var CardEffects = require('../cards/CardEffects');
-var Toptip = require('../libraries/tooltip/Toptip');
 var Helpers = require('../../helpers');
-var DeckSidebarList = require('./widgets/DeckSidebarList');
 var BuildStats = require('./BuildStats');
 var Notification = require('../libraries/notification/Notification');
+var BuildPanel = require('./BuildPanel');
 
 var DeckDetail = React.createClass({
     getInitialState: function() {
@@ -13,19 +12,13 @@ var DeckDetail = React.createClass({
             deck : this.props.deck,
             builds: [],
             description: DECK.description,
-            selectedTab: 0,
             selectedBuild : this.props.deck.builds.length > 0 ? this.props.deck.builds[0] : null
         }
     },
-    componentDidMount: function() {
-        //this.setFooterHeight();
-        window.tooltip = new Toptip();
-
+    componentWillMount: function() {
         // Replace the current notification panel.
         this.notificationPanel = new Notification();
         this.notificationPanel.initialiseNotifications();
-    },
-    componentWillMount: function() {
         var newBuilds = this.state.deck.builds.map(function(build) {
             build.slots = build.slots.map(function(slot) {
                 if(slot.card) {
@@ -55,12 +48,6 @@ var DeckDetail = React.createClass({
             footer.style.top = "100%";
         }
     },
-    showBuild: function(build, index) {
-        this.setState({
-            selectedTab: index,
-            selectedBuild: build
-        });
-    },
     getCard: function(cardCode) {
         var cardToReturn = null;
         DECK.cards.all.some(function(card) {
@@ -71,160 +58,6 @@ var DeckDetail = React.createClass({
             return false;
         });
         return cardToReturn;
-    },
-    /* TOOLTIP METHODS */
-    setTooltipContent: function(card, message) {
-        if(!Helpers.isClientMobile()) {
-            var content = null;
-            if(card !== null) {
-                content = (
-                    <div className="pgg-tooltip pgg-tooltip-card">
-                        <div className="card-head">
-                            <span className="cost">{card.cost}</span>
-                            <div className="header">
-                                <span className="name">{card.name}</span>
-                                <span className={"rarity rarity-" + card.rarity.toLowerCase()}>{card.rarity}</span>
-                                <span className="type">{card.type}</span>
-                            </div>
-                            <i className={"affinity affinity-color pgg pgg-affinity-" + card.affinity.toLowerCase()}></i>
-                        </div>
-                        <div className="content">
-                            <CardEffects card={card} />
-                        </div>
-                    </div>
-                );
-            }
-            if(content !== null) {
-                var tooltip = document.getElementById("toptip");
-                ReactDOM.render(content, tooltip);
-            }
-        }
-    },
-    showTooltip: function(card, selector, event) {
-        if(!Helpers.isClientMobile()) {
-            if(card) {
-                if(event.target.className.toLowerCase().indexOf(selector.toLowerCase()) > -1 || event.target.className.toLowerCase().indexOf('placed-card') > -1) {
-                    window.tooltip.showTooltip();
-                }
-            } else if(card === null && selector === null) {
-                window.tooltip.showTooltip();
-            }
-        }
-    },
-    hideTooltip: function() {
-        window.tooltip.hideTooltip();
-    },
-    renderBuildTabs: function() {
-        var untitledCount = 1;
-        return this.state.deck.builds.map(function(build, i) {
-            if(build.title === "") build.title = "untitled build";
-            if(build.title.toLowerCase().indexOf("untitled") > -1 && !(/\d/g.test(build.title))) {
-                build.title += " " + untitledCount;
-                untitledCount+=1;
-            }
-            return (
-                <li key={"build_tab_" + i} className={ (i === this.state.selectedTab ? "active" : "")} onClick={ this.showBuild.bind(this, build, i) }>
-                    <span>{ build.title }</span>
-                </li>
-            )
-        }.bind(this));
-    },
-    renderBuildSlots: function() {
-        var build = this.state.selectedBuild;
-        if(build && build.slots.length > 0) {
-            return build.slots.map(function(slot, i) {
-                if(slot.card !== null) {
-                    return (
-                        <li id={"c_" + i}
-                            className={slot.type + " active-placed"}
-                            key={"slot_" + i}
-                            onMouseEnter={this.setTooltipContent.bind(this, slot.card)}
-                            onMouseOver={this.showTooltip.bind(this, slot.card, "glow-layer")}
-                            onMouseLeave={this.hideTooltip}
-                        >
-                            <span className="slot-label">{slot.type}</span>
-                            <div style={{ backgroundImage : "url(" + Helpers.getCardImageURL(slot.card) + ")"}}
-                                 className="placed-card"
-                                 key={"card-" + i}
-                            >
-                                <span className="card-title">{ slot.card.name }</span>
-                            </div>
-                            <div className="upgrade-slot-wrapper">
-                                { this.renderUpgradeSlots(slot) }
-                            </div>
-                        </li>
-                    )
-                } else {
-                    return (
-                        <li id={"c_" + i}
-                            className={slot.type}
-                            key={"slot_" + i}
-                            onMouseEnter={this.hideTooltip}
-                            onMouseOver={this.hideTooltip}
-                            onMouseLeave={this.hideTooltip}
-                        >
-                            <span className="slot-label">{slot.type}</span>
-                            <div className="placed-card"
-                                 key={"card-" + i}
-                            >
-                            </div>
-                        </li>
-                    )
-                }
-            }.bind(this));
-
-        }  else {
-            var jsx = [];
-            for(var i = 0; i < 6; i++) {
-                var type = i < 5 ? "Active" : "Passive";
-                jsx.push(
-                    <li id={"c_" + i}
-                        className={type}
-                        key={"slot_" + i}
-                        onMouseEnter={this.hideTooltip}
-                        onMouseOver={this.hideTooltip}
-                        onMouseLeave={this.hideTooltip}
-                    >
-                        <span className="slot-label">{type}</span>
-                        <div className="placed-card"
-                             key={"card-" + i}
-                        >
-                        </div>
-                    </li>
-                )
-            }
-            jsx.push(<span key="no-builds" style={{display: 'block', fontSize: '16px', marginTop: '-30px'}}>Sorry, there are no builds in this deck!</span>);
-            return jsx;
-        }
-    },
-    renderUpgradeSlots: function(slot) {
-        if(typeof slot.upgrades === "undefined" || slot.upgrades.length === 0) {
-            return <div key={"upgrade-slot" + slot.card.code} className="upgrade-slot"><span>NO UPGRADE SLOTS</span></div>
-        } else {
-            return slot.upgrades.map(function(upgradeSlot) {
-                var label = "";
-                var slotStyle = { backgroundImage : "" };
-                if(upgradeSlot.card === null) {
-                    label = <span className="upgrade-label">EMPTY SLOT</span>;
-                } else {
-                    label = <span className="upgrade-label"><span className="subtext">{upgradeSlot.card.cost}CP </span>{upgradeSlot.card.name}</span>;
-                    slotStyle = { backgroundImage: 'url('+upgradeSlot.card.images.large+')' }
-                }
-
-                return (
-                    <div className={ "upgrade-slot " }
-                         key={"upgrade-slot-" + Helpers.uuid() }
-                         style={ slotStyle }
-                         onMouseEnter={this.setTooltipContent.bind(this, upgradeSlot.card, null)}
-                         onMouseOver={this.showTooltip.bind(this, upgradeSlot.card, "upgrade-label")}
-                         onMouseLeave={this.hideTooltip}
-                    >
-                        { label }
-                        <div className="overlay"></div>
-                    </div>
-                )
-            }.bind(this));
-        }
     },
     upvoteDeck: function() {
         if(AUTHED) {
@@ -248,6 +81,9 @@ var DeckDetail = React.createClass({
             this.notificationPanel.addNotification('warning', 'Sorry, you must be logged in to up-vote a deck.');
         }
     },
+    selectedBuildUpdated: function(newSelectedBuild) {
+        this.setState({ selectedBuild: newSelectedBuild });  
+    },
     render: function() {
         return (
             <div>
@@ -264,14 +100,7 @@ var DeckDetail = React.createClass({
                     </div>
                 </div>
 
-                <ul id="build-tabs">
-                    { this.renderBuildTabs() }
-                </ul>
-                <div id="builds-wrapper">
-                    <ul className={"build-list"}>
-                        { this.renderBuildSlots() }
-                    </ul>
-                </div>
+                <BuildPanel builds={this.state.builds} onSelectedBuildChanged={this.selectedBuildUpdated} />
 
                 <BuildStats requireModuleDependencies={false} selectedBuild={this.state.selectedBuild} hero={this.state.deck.hero} cards={this.state.deck.cards} builds={this.state.builds} />
             </div>
