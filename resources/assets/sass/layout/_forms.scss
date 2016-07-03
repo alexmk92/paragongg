@@ -21,6 +21,7 @@ form {
     }
     .custom-radios {
         .ability {
+            cursor: pointer;
             padding: 0;
         }
         input[type="radio"] {
@@ -74,11 +75,11 @@ input, textarea, select {
 }
 input, select {
     max-width: 400px;
-    -webkit-appearance:none;
     border-radius: 0;
 }
 select {
     background: $panel-color url('/assets/images/icons/caret-down.png') no-repeat center right;
+    -webkit-appearance:none;
 }
 textarea {
     max-width: 700px;

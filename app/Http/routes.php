@@ -152,3 +152,6 @@ Route::group(['prefix' => 'api', 'namespace' => 'API', 'middleware' => 'cors'], 
     Route::post('/v1/report', 'ReportController@store');
     Route::post('/v1/vote', 'VoteController@store');
 });
+
+/* SHORTCODE */
+Route::get('/{code}', 'ShortcodeController@redirect');

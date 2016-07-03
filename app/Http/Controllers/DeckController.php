@@ -6,26 +6,29 @@ use App\Deck;
 use App\Hero;
 use App\Card;
 use App\User;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use App\Http\Traits\GeneratesShortcodes;
 
 class DeckController extends Controller
 {
+    use GeneratesShortcodes;
+
     // Create
     public function index()
     {
         $skip = 0;
         $take = 10;
-        
+
         if(isset($_GET['skip'])) $skip = $_GET['skip'];
         if(isset($_GET['take'])) $take = $_GET['take'];
-        
+
         $decks = Deck::orderBy('updated_at', 'desc')
             ->skip($skip)
             ->take($take)
             ->get();
-        
+
         foreach($decks as $deck) {
             $uniqueCards = Card::whereIn('code', $deck->cards)->get();
             $deck->hero = Hero::where('code', $deck->hero)->first();
@@ -117,17 +120,26 @@ class DeckController extends Controller
         $deck->votes = 0;
         $deck->cards = $payload->cards;
         $deck->builds = $payload->builds;
-
         $deck->save();
 
-        session()->flash('notification', 'success|Deck saved.');
+        // Generate shortcode
+        $shortcode = $this->generate('/decks/'.$deck->id.'/'.$deck->slug, 'deck', $deck->id);
 
-        return redirect('/decks/'.$deck->slug);
+        session()->flash('notification', 'success|Deck saved.');
+        session()->flash('shortcode', $shortcode);
+
+        return redirect('/decks/success');
     }
 
     public function success()
     {
-        return view('decks.success');
+        if(session()->has('shortcode')) {
+            $shortcode = session()->get('shortcode');
+        } else {
+            $shortcode = null;
+        }
+
+        return view('decks.success', compact('shortcode'));
     }
 
     // Read

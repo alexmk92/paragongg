@@ -79,6 +79,13 @@ Wrap your guide up with some final words summarising what you think about the he
                             spellChecker: false,
                             hideIcons: ["preview", "side-by-side"]
                         });
+                        function heroOrGameplay(element) {
+                            if(element.value == "gameplay") {
+                                document.getElementById('hero-form').style.display = 'none';
+                            } else {
+                                document.getElementById('hero-form').style.display = 'block';
+                            }
+                        }
                     </script>
                 </div>
                 <hr>
