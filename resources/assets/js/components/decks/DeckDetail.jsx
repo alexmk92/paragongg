@@ -3,7 +3,7 @@ var ReactDOM = require('react-dom');
 var CardEffects = require('../cards/CardEffects');
 var Toptip = require('../libraries/tooltip/Toptip');
 var Helpers = require('../../helpers');
-var DeckWidget = require('./widgets/Deck');
+var DeckSidebarList = require('./widgets/DeckSidebarList');
 var CostCurveWidget = require('./widgets/CostCurve');
 var SuggestedDecksWidget = require('./widgets/SuggestedDecks');
 var BuildStats = require('./BuildStats');
@@ -286,16 +286,4 @@ var container = document.querySelector("#deck-container");
 if(container) {
     ReactDOM.render( <DeckDetail deck={ DECK } />, container);
 }
-// Render any widgets for the page, we add this here as we dont want
-// to override other sidebar instances
-var sidebar = document.querySelector(".sidebar-with-widgets");
-if(sidebar) {
-    var widgets = (
-        <div>
-            <DeckWidget           deck={ DECK } sharedTooltip={ window.tooltip } />
-            <CostCurveWidget      deck={ DECK } animateChart={true} />
-            <SuggestedDecksWidget hero={ DECK.hero } />
-        </div>
-    );
-    ReactDOM.render( widgets, sidebar );
-}
+

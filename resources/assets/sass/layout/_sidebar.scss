@@ -4,6 +4,12 @@
     width: 400px;
     height: 100%;
     padding-left: 30px;
+    .sidebar-sticky {
+        position: fixed;
+        top: 100px;
+        width: 100%;
+        max-width: 370px;
+    }
     &.align-left {
         float: left;
         padding-left: 0;
@@ -58,7 +64,6 @@
             display: inline-block;
         }
         span {
-            padding-top: 8px;
             font-family: "Roboto Condensed";
             color: $font-color-faded;
             display: inline-block;

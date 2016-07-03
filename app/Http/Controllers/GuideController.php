@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Card;
+use App\Deck;
 use App\Guide;
 use App\Hero;
 use App\Http\Requests;
 use App\Http\Requests\Guide\CreateGuideRequest;
+use Illuminate\Http\Request;
+use Parsedown;
+use TOC;
 
 class GuideController extends Controller
 {
@@ -19,7 +24,7 @@ class GuideController extends Controller
         $heroes = Hero::select('name', 'code', 'image')
             ->get();
 
-        return view('guides.index')->with('guides', $guides)->with('heroes', $heroes);
+        return view('guides.index', compact('guides', 'heroes'));
     }
 
     // Create
@@ -70,24 +75,94 @@ class GuideController extends Controller
     }
 
     // Read
-    public function show($id)
+    public function show($id, Request $request)
     {
-        $guide = Guide::findOrFail($id);
-        return view('guides.show')->with('guide', $guide);
+        $guide  = Guide::findOrFail($id);
+        $thread = findOrCreateThread($request->path());
+        //$deck   = null;
+        $deck = Deck::find('5778442b9a89200950720551');
+
+
+        $deck->hero = Hero::where('code', $deck->hero)->firstOrFail();
+        $uniqueCards = Card::whereIn('code', $deck->cards)->get();
+
+        // Sort the cards to quantity, we set the totalCards before as this
+        // will directly modify the state of the cards array, removing some
+        // elements in exchange for adding a "quantity" key for each obj.
+        $sortedCards = [
+            "prime" => [],
+            "equipment" => [],
+            "upgrades" => [],
+            "all" => []
+        ];
+
+        foreach($uniqueCards as $card) {
+            switch($card->type) {
+                case "Prime": $key = "prime" ; break;
+                case "Active": $key = "equipment"; break;
+                case "Passive": $key = "equipment"; break;
+                case "Upgrade": $key = "upgrades"; break;
+                default : break;
+            }
+
+            if(count($sortedCards[$key]) == 0){
+                $card->quantity = 0;
+                array_push($sortedCards[$key], $card);
+            } else {
+                if(!isset($card->quantity)) {
+                    $card->quantity = 0;
+                }
+                array_push($sortedCards[$key], $card);
+            }
+        }
+        // Find a better way to do this so we get the quants
+        foreach($sortedCards['prime'] as $sortedCard) {
+            foreach($deck->cards as $cardCode) {
+                if($cardCode == $sortedCard->code) {
+                    $sortedCard->quantity++;
+                }
+            }
+        }
+        foreach($sortedCards['equipment'] as $sortedCard) {
+            foreach($deck->cards as $cardCode) {
+                if($cardCode == $sortedCard->code) {
+                    $sortedCard->quantity++;
+                }
+            }
+        }
+        foreach($sortedCards['upgrades'] as $sortedCard) {
+            foreach($deck->cards as $cardCode) {
+                if($cardCode == $sortedCard->code) {
+                    $sortedCard->quantity++;
+                }
+            }
+        }
+        $sortedCards["all"] = array_merge($sortedCards["equipment"], $sortedCards["upgrades"], $sortedCards["prime"]);
+
+        // Finally sorted the collection
+        $deck->cards = $sortedCards;
+
+
+
+        $guideBody = (new Parsedown())->text($guide->body);
+        $guideBody = (new TOC\MarkupFixer())->fix($guideBody);
+        $guideTOC  = (new TOC\TocGenerator())->getHtmlMenu($guideBody,2);
+
+        return view('guides.show', compact('guide', 'guideBody', 'guideTOC', 'thread', 'deck'));
     }
 
     // Edit
     public function edit($id)
     {
         $guide = Guide::findOrFail($id);
-        return view('guides.edit')->with('guide', $guide);
+        return view('guides.edit', compact('guide'));
     }
 
     // Update
     public function update($id)
     {
         $guide = Guide::findOrFail($id);
-        return view('guides.edit')->with('guide', $guide);
+        return view('guides.edit', compact('guide'));
     }
 
     // Delete

@@ -156,6 +156,15 @@
         position: relative;
         overflow-x: hidden;
         z-index: 10;
+        margin-bottom: 0;
+        background: $panel-color-dark no-repeat;
+        background-position-y: -80px;
+        background-size: 100%;
+        cursor: pointer;
+        user-select: none;
+        border: 1px solid $panel-color-dark;
+        transition: border 200ms;
+        left: 0;
 
         &.build-item {
             border: none;
@@ -178,16 +187,6 @@
             opacity: 0;
             font-size: 16px;
         }
-
-        margin-bottom: 0;
-        background: $panel-color-dark no-repeat;
-        background-position-y: -80px;
-        background-size: 330px 330px;
-        cursor: pointer;
-        user-select: none;
-        border: 1px solid $panel-color-dark;
-        transition: border 200ms;
-        left: 0;
 
         .title {
             text-transform: uppercase;

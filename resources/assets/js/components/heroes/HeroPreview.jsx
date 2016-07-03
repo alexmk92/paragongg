@@ -20,7 +20,7 @@ var HeroPreview = React.createClass({
             backgroundImage: 'url('+ Helpers.S3URL() + 'images/heroes/' + this.props.hero.code + '/' + this.props.hero.image + '/portrait_medium.png)'
         };
         return (
-            <a href={ "/heroes/" + this.props.hero.name.toLowerCase() }>
+            <a href={ "/heroes/" + this.props.hero.slug }>
                 <li className="hero-preview" style={divStyle}>
                     <div className="hero-preview-title">
                         <div className="hero-affinities">

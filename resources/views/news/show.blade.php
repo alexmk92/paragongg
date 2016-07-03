@@ -7,9 +7,11 @@
         </div>
     </div>
     <div id="sidebar" class="article-sidebar">
-        <div class="sidebox toc">
-            <h4>Table of Contents</h4>
-            {!! $articleTOC !!}
+        <div class="sidebar-sticky">
+            <div class="sidebox panel toc">
+                <h4>Table of Contents</h4>
+                {!! $articleTOC !!}
+            </div>
         </div>
     </div>
     <div id="article-wrapper">

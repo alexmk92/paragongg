@@ -42,9 +42,9 @@ var HeroesFilter = React.createClass({
         this.props.heroes.forEach(function(hero) {
             if(this.shouldBeVisible(hero) === true) {
                 heroes.push(<HeroPreview hero={hero}
-                                        key={hero.code}
-                                        redirectsOnClick={this.props.heroesRedirectOnClick}
-                                        onCardClicked={this.props.onCardClicked}
+                                         key={hero.code}
+                                         redirectsOnClick={this.props.heroesRedirectOnClick}
+                                         onCardClicked={this.props.onCardClicked}
                 />);
             }
         }.bind(this));

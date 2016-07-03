@@ -1,12 +1,37 @@
 .article-header {
     width: 100%;
-    height: 400px;
-    margin-bottom: 60px;
+    min-height: 200px;
+    margin-bottom: 0;
     position: relative;
     img {
         width: 100%;
-        height: 400px;
         vertical-align: middle;
+    }
+    #sidebar {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        float: none;
+        padding: 30px;
+        height: auto;
+        .title-wrapper {
+            position: static;
+            background: none;
+            margin: 0;
+        }
+        .sidebox {
+            border-top: 1px solid $faded-line;
+            padding: 25px 0 0;
+            margin-top: 25px;
+            &:nth-of-type(1) {
+                border-top: 0;
+                padding-top: 0;
+                margin-top: 0;
+            }
+        }
+        h4 {
+            margin-bottom: 20px;
+        }
     }
     .title-wrapper {
         position: absolute;
@@ -37,7 +62,20 @@ article {
     .article-body {
         font-size: 110%;
     }
+    .article-title {
+        padding-top: 30px;
+        padding-bottom: 10px;
+        &:after {
+            display: none;
+        }
+    }
+    .article-details {
+        border-bottom: 1px solid $faded-line;
+        padding-bottom: 30px;
+        margin-bottom: -30px;
+    }
     h1,h2,h3 {
+        padding-top: 80px;
         &:after {
             content: '';
             display: block;
@@ -65,17 +103,22 @@ article {
 
 .toc {
     font-size: 16px;
+    color: $font-color-faded;
     a {
+        cursor: pointer;
         display: block;
-        margin-bottom: 10px;
-        padding-left: 10px;
+        padding: 5px 10px;
+        transition: all 0.2s;
+        &:hover {
+            padding-left: 15px;
+        }
     }
     ul {
-        border-left: 1px solid $faded-line;
+        border-left: 3px solid $faded-line;
     }
     li {
-        list-style-type: decimal-leading-zero;
-        list-style-position: inside;
+        margin: 0;
+        list-style: decimal-leading-zero inside;
     }
     ul ul {
         margin-left: 10px;

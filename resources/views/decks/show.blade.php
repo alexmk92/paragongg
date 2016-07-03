@@ -8,7 +8,9 @@
         @include('layouts.commentFeed')
     </div>
 @endsection
-<script>
-    var csrf = '{{ csrf_token() }}';
-    var DECK = {!! json_encode($deck) !!};
-</script>
+@section('scripts')
+    <script type="text/javascript">
+        var csrf = '{{ csrf_token() }}';
+        var DECK = {!! json_encode($deck) !!};
+    </script>
+@endsection

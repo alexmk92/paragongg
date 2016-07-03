@@ -5,9 +5,9 @@ var Toptip = require('../../libraries/tooltip/Toptip');
 var CardEffects = require('../../cards/CardEffects');
 
 // this will eventually be the side bar
-var Deck = React.createClass({
+var DeckSidebarList = React.createClass({
     componentDidMount: function() {
-        this.tooltip = this.props.sharedTooltip;
+        this.tooltip = this.props.sharedTooltip || new Toptip();
     },
     /* TOOLTIP METHODS */
     setTooltipContent: function(card) {
@@ -74,9 +74,9 @@ var Deck = React.createClass({
     },
     render: function() {
         return (
-            <div className="sidebox panel cf">
+            <div className="cf">
                 <div className="title-wrapper">
-                    <h3>DECK</h3>
+                    {this.props.title ? <h4>{this.props.title}</h4> : <h4>Deck</h4>}
                     <span className="subtext">{ this.props.deck.cards.all.length }/40 CARDS</span>
                 </div>
                 <span className="subtext">PRIME HELIX</span>
@@ -96,4 +96,24 @@ var Deck = React.createClass({
     }
 });
 
-module.exports = Deck;
+module.exports = DeckSidebarList;
+
+// Render the main container for this application
+var element = document.querySelector("#deck-sidebar-list");
+if(element) ReactDOM.render( <DeckSidebarList deck={DECK} sharedTooltip={window.tooltip} title={element.dataset.title}/>, element);
+
+
+
+// Render any widgets for the page, we add this here as we dont want
+// to override other sidebar instances
+// var sidebar = document.querySelector(".sidebar-with-widgets");
+// if(sidebar) {
+//     var widgets = (
+//         <div>
+//             <DeckWidget           deck={ DECK }  />
+//             <CostCurveWidget      deck={ DECK } animateChart={true} />
+//             <SuggestedDecksWidget hero={ DECK.hero } />
+//         </div>
+//     );
+//     ReactDOM.render( widgets, sidebar );
+// }
