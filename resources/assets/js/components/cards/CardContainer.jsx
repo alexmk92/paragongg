@@ -30,17 +30,17 @@ var CardContainer = React.createClass({
         var rarity = (function() {
             var rarityProps = null;
             switch(CARD.rarity.toUpperCase()) {
-                case "EPIC": rarityProps = { color : "#b547d9", label : "Epic Rare" }; break; // EPIC RARE
-                case "RARE": rarityProps = { color : "#477ed9", label : "Rare" }; break; // 477ed9 RARE
-                case "COMMON" : rarityProps = { color : "#d4d4d4", label : "Common" }; break; // 953ab4 COMMON
-                case "UNCOMMON" : rarityProps = { color : "#47d95f", label : "Uncommon" }; break; // d4d4d4 UNCOMMON
-                case "STARTER" : rarityProps = { color : "#aaa", label : "Starter" }; break; // STARTER
+                case "EPIC": rarityProps = { color : "rgba(181,71,217, 0.5)", label : "Epic Rare" }; break; // EPIC RARE
+                case "RARE": rarityProps = { color : "rgba(71,126,217, 0.5)", label : "Rare" }; break; // 477ed9 RARE
+                case "COMMON" : rarityProps = { color : "rgba(212,212,212, 0.5)", label : "Common" }; break; // 953ab4 COMMON
+                case "UNCOMMON" : rarityProps = { color : "rgba(71,217,95, 0.5)", label : "Uncommon" }; break; // d4d4d4 UNCOMMON
+                case "STARTER" : rarityProps = { color : "rgba(170,170,170, 0.5)", label : "Starter" }; break; // STARTER
                 default : rarityProps = {};break;
             }
             return rarityProps;
         })();
         var modelStyles = {
-            boxShadow : rarity.label === "Starter" ? "" : "0px 0px 270px " + rarity.color
+            boxShadow : rarity.label === "Starter" ? "" : "0px 0px 150px 30px " + rarity.color
         };
         return (
             <div onMouseMove={this.flipCard}>

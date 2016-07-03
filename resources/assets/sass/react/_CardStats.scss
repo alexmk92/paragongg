@@ -1,4 +1,3 @@
-$blur-radius : 30px;
 $card-width : 300px;
 $card-height: 400px;
 
@@ -72,7 +71,7 @@ canvas {
                     position: absolute;
                     top: 25px;
                     left: 25px;
-                    z-index: -1;
+                    z-index: -2;
                     opacity: 0;
                     transition: all 1000ms ease-in-out;
 
@@ -188,16 +187,5 @@ canvas {
         label {
             color: $tertiary-highlight;
         }
-    }
-    #blur-layer {
-        position: absolute;
-        top: -10px;
-        width: 100%;
-        height: 100%;
-        z-index: 5;
-        top: -$blur-radius;
-        left: -$blur-radius;
-        background: rgba(8, 9, 13, 0.8);
-        filter: blur($blur-radius);
     }
 }
