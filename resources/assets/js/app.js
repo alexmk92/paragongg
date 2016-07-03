@@ -5,8 +5,6 @@ require("../sass/app.scss");
 require("./lib/InteractiveParallax");
 
 // React react
-require("./components/StatsOverview");
-require("./components/PlayerStatsOverview");
 require("./components/AccountNav");
 require("./components/guides/GuidesFeed");
 require("./components/cards/CardsFeed");
