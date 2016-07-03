@@ -21,6 +21,7 @@
             @include('guides.abilityTable')
         @endif
         @if($deck->builds)
+            <h2 class="no-line">Deck builds</h2>
             <div id="deck-builds"></div>
         @endif
         <div class="article-body">

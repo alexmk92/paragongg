@@ -1,7 +1,7 @@
 $placed-card-height : 187px;
 $placed-card-width : 141px;
 
-#builds-wrapper {
+.builds-wrapper {
     #options-wrapper {
         padding: 10px 10px 20px 0;
     }
@@ -223,7 +223,7 @@ $placed-card-width : 141px;
                 width: 100%;
                 padding: 30px 15px;
 
-                #builds-wrapper {
+                .builds-wrapper {
                     .build-list {
                         text-align: center;
 

@@ -80,7 +80,7 @@ class GuideController extends Controller
         $guide  = Guide::findOrFail($id);
         $thread = findOrCreateThread($request->path());
         //$deck   = null;
-        $deck = Deck::find('5778442b9a89200950720551');
+        $deck = Deck::find('57797a749a89203b04445ea2');
 
 
         $deck->hero = Hero::where('code', $deck->hero)->firstOrFail();

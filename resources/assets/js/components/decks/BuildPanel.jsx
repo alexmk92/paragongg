@@ -208,10 +208,10 @@ var BuildPanel = React.createClass({
     render: function() {
         return (
             <div>
-                <ul id="build-tabs">
+                <ul className="build-tabs">
                     { this.renderBuildTabs() }
                 </ul>
-                <div id="builds-wrapper">
+                <div className="builds-wrapper">
                     <ul className={"build-list"}>
                     { this.renderBuildSlots() }
                     </ul>
@@ -225,7 +225,7 @@ module.exports = BuildPanel;
 
 var element = document.querySelector('#deck-builds');
 if(element) {
-    ReactDOM.render(<BuildPanel builds={[]} />, element);
+    ReactDOM.render(<BuildPanel deck={DECK} />, element);
 }
 
 

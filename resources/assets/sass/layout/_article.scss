@@ -104,6 +104,31 @@ article {
             }
         }
     }
+    .build-tabs {
+        margin-top: 20px;
+    }
+    .builds-wrapper {
+        .build-list {
+            .preload-container {
+                img {
+                    width: 113px;
+                    height: 150px;
+                }
+            }
+            .placed-card {
+                width: 113px !important;
+                height: 150px !important;
+            }
+            li {
+                min-width: 113px;
+                min-height: 150px;
+                width: 113px !important;
+                background-size: 113px 150px;
+                margin-right: 20px;
+                margin-bottom: 0;
+            }
+        }
+    }
 }
 
 .toc {

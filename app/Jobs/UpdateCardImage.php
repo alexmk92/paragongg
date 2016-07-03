@@ -49,7 +49,7 @@ class UpdateCardImage extends Job implements ShouldQueue
 
             // Create 3 sizes for the hero portrait
             $background_large  = Image::make('http:' . $this->object->images->large)->stream()->getContents();
-            $background_medium = Image::make($background_large)->resize(135,180)->stream()->getContents();
+            $background_medium = Image::make($background_large)->resize(150,200)->stream()->getContents();
 
             // Upload these to S3
             $storage->getDriver()->put('images/cards/' . $this->object->id . '/'.$filename.'/background_large.png', $background_large, ["CacheControl" => "max-age=31536000"]);
