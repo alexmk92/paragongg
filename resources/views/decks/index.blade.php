@@ -3,8 +3,10 @@
     <div id="deck-list-wrapper">
     </div>
 @endsection
-<script>
+@section('scripts')
+<script type="text/javascript">
     var csrf = '{{ csrf_token() }}';
     var AUTHED = '{{ Auth::check() }}'
     var DECKS = {!! json_encode($decks) !!};
 </script>
+@endsection

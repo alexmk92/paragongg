@@ -64,6 +64,7 @@ Route::get('/decks/success', 'DeckController@success');
 Route::get('/decks/edit/{id}', 'DeckController@edit');
 Route::post('/decks/edit/{id}', 'DeckController@update');
 Route::get('/decks/delete/{id}', 'DeckController@delete');
+Route::get('/decks/export/{id}', 'DeckController@export')->middleware('auth');
 Route::get('/decks/{id}/{slug?}', 'DeckController@show');
 
 /* GUIDES */

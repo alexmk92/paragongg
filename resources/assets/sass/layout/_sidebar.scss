@@ -59,9 +59,12 @@
     }
     .title-wrapper {
         width: 100%;
-        margin-bottom: 30px;
+        margin-bottom: 0;
         h3 {
             display: inline-block;
+        }
+        h4 {
+            margin-bottom: 20px;
         }
         span {
             font-family: $font-condensed;

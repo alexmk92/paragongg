@@ -77,6 +77,8 @@ var DeckSidebarList = React.createClass({
             <div className="cf">
                 <div className="title-wrapper">
                     {this.props.title ? <h4>{this.props.title}</h4> : <h4>Deck</h4>}
+                    <a href={"/decks/export/" + this.props.deck._id} className="btn btn-primary btn-half btn-margin-bottom" title="Export this deck to your Paragon account"><i className="fa fa-upload" aria-hidden="true"></i> Export deck</a>
+                    <a href="" className="btn btn-primary btn-half btn-margin-bottom" title="Make a copy of this deck to edit on Paragon.gg"><i className="fa fa-clone" aria-hidden="true"></i> Make a copy</a>
                     <span className="subtext">{ this.props.deck.cards.all.length }/40 CARDS</span>
                 </div>
                 <span className="subtext">PRIME HELIX</span>
@@ -98,22 +100,5 @@ var DeckSidebarList = React.createClass({
 
 module.exports = DeckSidebarList;
 
-// Render the main container for this application
 var element = document.querySelector("#deck-sidebar-list");
 if(element) ReactDOM.render( <DeckSidebarList deck={DECK} sharedTooltip={window.tooltip} title={element.dataset.title}/>, element);
-
-
-
-// Render any widgets for the page, we add this here as we dont want
-// to override other sidebar instances
-// var sidebar = document.querySelector(".sidebar-with-widgets");
-// if(sidebar) {
-//     var widgets = (
-//         <div>
-//             <DeckWidget           deck={ DECK }  />
-//             <CostCurveWidget      deck={ DECK } animateChart={true} />
-//             <SuggestedDecksWidget hero={ DECK.hero } />
-//         </div>
-//     );
-//     ReactDOM.render( widgets, sidebar );
-// }

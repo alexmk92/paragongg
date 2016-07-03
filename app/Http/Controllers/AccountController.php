@@ -92,4 +92,36 @@ class AccountController extends Controller
         $user = Auth::user();
         return view('account.decks')->with('user', $user);
     }
+
+    public function getDecks()
+    {
+        $user = Auth::user();
+
+        if(!$user->epic_account_id) {
+            session()->flash('notification', 'warning|You must link your Epic account before you can export decks.');
+            return redirect('/account/link');
+        }
+
+        $client = new Client();
+        try {
+            $res = $client->request('GET', 'https://developer-paragon.epicgames.com/v1/account/'.$user->epic_account_id.'/decks', [
+                'headers' => [
+                    'Accept'        => 'application/json',
+                    'Authorization' => 'Bearer '.getOAuthToken($user),
+                    'X-Epic-ApiKey' => env('EPIC_API_KEY'),
+                ]
+            ])->getBody();
+        } catch (ClientException $e) {
+            $error = $e->getResponse()->getBody()->getContents();
+            Log::error("ClientException while trying to get user's decks: ".$error);
+            return false;
+        } catch (ServerException $e) {
+            $error = $e->getResponse()->getBody()->getContents();
+            Log::error("ServerException while trying to get user's decks: ".$error);
+            return false;
+        }
+
+        $response = json_decode($res, true);
+        return $response;
+    }
 }
