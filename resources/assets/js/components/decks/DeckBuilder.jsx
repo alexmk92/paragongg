@@ -245,7 +245,21 @@ var DeckBuilder = React.createClass({
         });
         return count;
     },
+    validateHelix: function(selectedCard) {
+        var valid = true;
+        if(selectedCard.type === 'Prime') {
+            this.state.deck.forEach(function(card) {
+                if(card.type === 'Prime') valid = false;
+            });
+        }
+        return valid;
+    },
     addCard: function(selectedCard, event) {
+        if(!this.validateHelix(selectedCard)) {
+            this.notificationPanel.addNotification('warning', 'Each deck may only have 1 Prime Helix, please delete your current one before adding a new one.');
+            return;
+        }
+
         if(this.deckCount() < 40) {
             if(!selectedCard.quantity)
                 selectedCard.quantity = 1;
@@ -834,7 +848,6 @@ var DeckBuilder = React.createClass({
         }
     },
     getSelectedCardPopup: function() {
-        console.log("selected card is: ", this.state.selectedCard);
         if(this.state.selectedCard && typeof this.state.selectedCard.code !== "undefined" && Helpers.isClientMobile()) {
             var cardType = "UPGRADE";
             if(this.state.selectedCard.type === "Active" || this.state.selectedCard.type === "Passive") cardType = "EQUIPMENT";
@@ -955,7 +968,6 @@ var DeckBuilder = React.createClass({
         var actionBarHidden = this.state.isMobileSearchShowing ? "hidden" : "";
         var buttonDisabled = this.isDeckValid() ? "" : "disabled";
 
-        console.log("IS SEARCH PANEL SHOWING? " + this.state.isMobileSearchShowing + " AND IS MOBILE ? " + Helpers.isClientMobile());
         return (
             <div>
                 <div id="sidebar" className={sidebarClass}>
@@ -1016,7 +1028,7 @@ var DeckBuilder = React.createClass({
                                 <textarea onChange={setTitle} className="h2" placeholder="Enter deck name..." ref="deckNameInput"></textarea>
                             </div>
                         </div>
-                        <HeroPanel showAffinityFilter={false} heroes={HEROES} isActive={this.state.heroPanelActive} onHeroSelected={this.onHeroPanelSelectedHero} />
+                        <HeroPanel title="Select a hero" showAffinityFilter={false} heroes={HEROES} isActive={this.state.heroPanelActive} onHeroSelected={this.onHeroPanelSelectedHero} />
                         <textarea onChange={setDescription} className={"p " + (!this.state.heroPanelActive ? "-pull-up" : "") } ref="deckDescriptionInput" placeholder="Enter a short description about your deck, what team compositions might you use this deck against? Under what situations would you use the different builds?">
                         </textarea>
                         <div id="cards-feed" className={ this.state.showCardSection ? "" : "hidden" }>

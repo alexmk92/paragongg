@@ -149,6 +149,10 @@
             }
         }
 
+        &.build-slot {
+            background: url('/assets/images/cards/card-placeholder.png') no-repeat;
+        }
+
         .slot-label {
             position: absolute;
             top: -30px;
