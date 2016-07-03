@@ -12,52 +12,19 @@ var DeckDetail = React.createClass({
             deck : this.props.deck,
             builds: [],
             description: DECK.description,
-            selectedBuild : this.props.deck.builds.length > 0 ? this.props.deck.builds[0] : null
+            selectedBuild : null
         }
+    },
+    shouldComponentUpdate: function(nextProps, nextState) {
+        if(nextState.selectedBuild !== this.state.selectedBuild)
+            return true;
+        if(nextState.builds.length !== this.state.builds.length)
+            return true;
     },
     componentWillMount: function() {
         // Replace the current notification panel.
         this.notificationPanel = new Notification();
         this.notificationPanel.initialiseNotifications();
-        var newBuilds = this.state.deck.builds.map(function(build) {
-            build.slots = build.slots.map(function(slot) {
-                if(slot.card) {
-                    slot.card = this.getCard(slot.card);
-                    slot.upgrades = slot.upgrades.map(function(upgradeSlot) {
-                        if(upgradeSlot.card) {
-                            upgradeSlot.card = this.getCard(upgradeSlot.card);
-                        }
-                        return upgradeSlot;
-                    }.bind(this));
-                }
-                return slot;
-            }.bind(this));
-            return build;
-        }.bind(this));
-
-        this.setState({ builds: newBuilds });
-    },
-    setFooterHeight: function() {
-        var footer = document.querySelector("footer");
-        var sidebar = document.querySelector(".sidebox");
-        if(footer && sidebar) {
-            var newBottom = sidebar.getBoundingClientRect().bottom;
-            var footerHeight = footer.getBoundingClientRect().height;
-            footer.style.top = ((newBottom + footerHeight)) + "px";
-        } else {
-            footer.style.top = "100%";
-        }
-    },
-    getCard: function(cardCode) {
-        var cardToReturn = null;
-        DECK.cards.all.some(function(card) {
-            if(card.code === cardCode) {
-                cardToReturn = card;
-                return true;
-            }
-            return false;
-        });
-        return cardToReturn;
     },
     upvoteDeck: function() {
         if(AUTHED) {
@@ -81,8 +48,9 @@ var DeckDetail = React.createClass({
             this.notificationPanel.addNotification('warning', 'Sorry, you must be logged in to up-vote a deck.');
         }
     },
-    selectedBuildUpdated: function(newSelectedBuild) {
-        this.setState({ selectedBuild: newSelectedBuild });  
+    buildsUpdated: function(newSelectedBuild, newBuilds ) {
+        console.log("Updated builds :D ")
+        this.setState({ selectedBuild: newSelectedBuild, builds : newBuilds });
     },
     render: function() {
         return (
@@ -100,7 +68,10 @@ var DeckDetail = React.createClass({
                     </div>
                 </div>
 
-                <BuildPanel builds={this.state.builds} onSelectedBuildChanged={this.selectedBuildUpdated} />
+                <BuildPanel deck={DECK}
+                            onSelectedBuildChanged={this.buildsUpdated}
+                            onBuildsUpdated={this.buildsUpdated}
+                />
 
                 <BuildStats requireModuleDependencies={false} selectedBuild={this.state.selectedBuild} hero={this.state.deck.hero} cards={this.state.deck.cards} builds={this.state.builds} />
             </div>
