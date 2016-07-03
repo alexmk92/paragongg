@@ -146,7 +146,7 @@ var CardStats = React.createClass({
                         <span>{ this.props.card.cost }</span>
                     </div>
                     <div className="attribute rarity">
-                        <span style={ { color : this.props.rarity.color } }>{ this.props.rarity.label.toUpperCase() }</span>
+                        <span style={ { color : "rgb("+this.props.rarity.color+")" } }>{ this.props.rarity.label.toUpperCase() }</span>
                         <span>{ this.getType() }</span>
                     </div>
                     <div className="attribute affinity-icon">
