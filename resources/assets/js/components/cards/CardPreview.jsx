@@ -1,5 +1,6 @@
 var React = require('react');
 var Helpers = require('../../helpers');
+var PreloadImage = require('../PreloadImage');
 
 var CardPreview = React.createClass({
     getInitialState: function() {
@@ -16,8 +17,9 @@ var CardPreview = React.createClass({
         }
     },
     render: function() {
+        var imageURL = Helpers.S3URL() + 'images/cards/' + this.props.card.code + '/' + this.props.card.background + '/background_medium.png';
         var divStyle = {
-            backgroundImage: 'url(' + Helpers.S3URL() + 'images/cards/' + this.props.card.code + '/' + this.props.card.background + '/background_medium.png)'
+            backgroundImage: 'url(' + imageURL + ')'
         };
         var className = "card-preview ";
         if(typeof this.props.card.owned !== 'undefined') {
@@ -28,7 +30,11 @@ var CardPreview = React.createClass({
                     onMouseEnter={this.props.onMouseEnter}
                     onMouseOver={this.props.onMouseOver}
                     onMouseLeave={this.props.onMouseLeave}
-                    className={className} style={divStyle}>
+                    className={className}
+                >
+                    <PreloadImage src={imageURL}
+                                  placeholderSrc="/assets/images/card-placeholder.png"
+                    />
                     <a href={ "/cards/" + this.props.card.name }>
                         <div className="card-name">{this.props.card.name}</div>
                     </a>
