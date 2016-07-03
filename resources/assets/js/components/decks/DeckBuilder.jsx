@@ -6,6 +6,7 @@ var CardEffects = require('../cards/CardEffects');
 var Tooltip = require('../libraries/tooltip/Toptip');
 var HeroPanel = require('../heroes/HeroPanel');
 var Build = require('./Build');
+var DeckSidebarCostCurve = require('./widgets/DeckSidebarCostCurve');
 var ConfirmModal = require('../ConfirmModal');
 var Notification = require('../libraries/notification/Notification');
 
@@ -994,7 +995,9 @@ var DeckBuilder = React.createClass({
                             </div>
                         </div>
                     </div>
-                    <CostCurve animateChart={false} deck={this.state.deck} />
+                    <div className="sidebox panel">
+                        <DeckSidebarCostCurve animateChart={false} deck={this.state.deck} />
+                    </div>
                 </div>
                 <div className={"deck-builder wrapper " + (this.state.isBuildsPanelShowing ? "hidden" : "") + buildClass}>
                     <div className="content-wrapper">
