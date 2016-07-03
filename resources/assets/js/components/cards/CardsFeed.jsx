@@ -34,7 +34,6 @@ var CardsFeed = React.createClass({
         return this.state !== nextState;
     },
     renderCards : function(newCards, costOrder) {
-        console.log("RENDERING CARDS");
         this.setState({cards: newCards, cost_order : costOrder});
     },
     onCardClicked : function(card) {
@@ -50,7 +49,6 @@ var CardsFeed = React.createClass({
         var title = this.props.showTitle ? <h1>Paragon Cards</h1> : "";
         var stickTop = this.props.stickTopOnMobile ? "fixed" : "";
         var doneMobileButton = "";
-        console.log("STICK TOP ON MOBILE IS: ", stickTop);
         if(this.props.stickTopOnMobile) {
             doneMobileButton = (
                 <div id="confirm-search-button" onClick={this.props.onDismissFilter}>

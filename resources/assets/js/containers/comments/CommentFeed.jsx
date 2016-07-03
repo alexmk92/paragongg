@@ -128,6 +128,10 @@ var CommentFeed = React.createClass({
     },
     render: function() {
         var comments = this.renderComments();
+        var endOfPageNotice = "";
+        if(this.props.comments.length > 0) {
+            endOfPageNotice = <div className={"infinite-scroll-end " + (this.props.endOfComments ? "" : "hidden")}><i className="fa fa-check"></i> You've reached the end of the page</div>;
+        }
         return (
             <div>
                 <h3 className="section-heading">Discussion</h3>
@@ -135,7 +139,7 @@ var CommentFeed = React.createClass({
                 <ul id="comment-list" className={ AUTHED ? "" : "no-comment-box"}>
                     { comments }
                 </ul>
-                <div className={"infinite-scroll-end " + (this.props.endOfComments ? "" : "hidden")}><i className="fa fa-check"></i> You've reached the end of the page</div>
+                { endOfPageNotice }
             </div>
         );
     }
