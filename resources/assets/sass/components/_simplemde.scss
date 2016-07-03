@@ -461,9 +461,9 @@ span.CodeMirror-selectedtext {
 }
 
 .CodeMirror-fullscreen {
-    background: #fff;
-    position: fixed!important;
-    top: 50px;
+    background: $panel-color-dark;
+    position: fixed !important;
+    top: 110px;
     left: 0;
     right: 0;
     bottom: 0;
@@ -520,10 +520,10 @@ span.CodeMirror-selectedtext {
     padding-top: 10px;
     padding-bottom: 10px;
     box-sizing: border-box;
-    background: #fff;
+    background: $panel-color-dark;
     border: 0;
     position: fixed;
-    top: 0;
+    top: 60px;
     left: 0;
     opacity: 1;
     z-index: 9
