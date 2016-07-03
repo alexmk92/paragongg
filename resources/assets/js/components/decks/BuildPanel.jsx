@@ -8,16 +8,47 @@ var PreloadImage = require('../PreloadImage');
 var BuildPanel = React.createClass({
     getInitialState: function() {
         return {
+            builds: [],
             selectedTab: 0,
-            selectedBuild : this.props.builds.length > 0 ? this.props.builds[0] : null
+            selectedBuild : null
         }
     },
     componentDidMount: function() {
         this.tooltip = new Toptip();
+        var newBuilds = this.props.deck.builds.map(function(build) {
+            build.slots = build.slots.map(function(slot) {
+                if(slot.card) {
+                    slot.card = this.getCard(slot.card);
+                    slot.upgrades = slot.upgrades.map(function(upgradeSlot) {
+                        if(upgradeSlot.card) {
+                            upgradeSlot.card = this.getCard(upgradeSlot.card);
+                        }
+                        return upgradeSlot;
+                    }.bind(this));
+                }
+                return slot;
+            }.bind(this));
+            return build;
+        }.bind(this));
+
+        this.setState({ builds: newBuilds, selectedBuild : newBuilds[0] });
+    },
+    getCard: function(cardCode) {
+        var cardToReturn = null;
+        this.props.deck.cards.all.some(function(card) {
+            if(card.code === cardCode) {
+                cardToReturn = card;
+                return true;
+            }
+            return false;
+        });
+        return cardToReturn;
     },
     componentDidUpdate: function(prevProps, prevState) {
-        if(prevState.selectedBuild !== this.state.selectedBuild && this.props.onSelectedBuildChanged !== null)
-            this.props.onSelectedBuildChanged(this.state.selectedBuild);
+        if(prevState.selectedBuild !== this.state.selectedBuild && typeof this.props.onSelectedBuildChanged !== "undefined")
+            this.props.onSelectedBuildChanged(this.state.selectedBuild, this.state.builds);
+        if(prevState.builds.length !== this.state.builds.length && typeof this.props.onBuildsUpdated !== "undefined")
+            this.props.onSelectedBuildChanged(this.state.selectedBuild, this.state.builds);
     },
     showBuild: function(build, index) {
         this.setState({
@@ -27,7 +58,7 @@ var BuildPanel = React.createClass({
     },
     renderBuildTabs: function() {
         var untitledCount = 1;
-        return this.props.builds.map(function(build, i) {
+        return this.state.builds.map(function(build, i) {
             if(build.title === "") build.title = "untitled build";
             if(build.title.toLowerCase().indexOf("untitled") > -1 && !(/\d/g.test(build.title))) {
                 build.title += " " + untitledCount;
