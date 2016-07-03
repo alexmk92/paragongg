@@ -69,6 +69,10 @@ var HeroStats = React.createClass({
             this.setState({ multiplier : value });
         }
     },
+    componentDidUpdate: function(prevProps, prevState) {
+        if(prevState.multiplier !== this.state.mutliplier)
+            this.props.onHeroRankChanged(this.state.multiplier);
+    },
     render: function() {
 
         var _this = this;

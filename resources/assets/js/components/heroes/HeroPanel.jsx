@@ -3,6 +3,7 @@ var SearchBar = require('../../components/filter/SearchBar');
 var ToggleFilter = require('../filter/ToggleFilter');
 var FlipMove = require('react-flip-move');
 var Helpers = require('../../helpers');
+var PreloadImage = require('../PreloadImage');
 
 var HeroPanel = React.createClass({
     getInitialState: function() {
@@ -78,9 +79,8 @@ var HeroPanel = React.createClass({
             if(this.shouldBeVisible(hero)) {
                 heroes.push(
                     <li key={"hero_panel_" + hero.name} className="hero-row" onClick={this.selectedHero.bind(this, hero)}>
+                        <PreloadImage src={Helpers.S3URL() + "images/heroes/" + hero.code + "/" + hero.image + "/portrait_small.png"} />
                         <a href="#">
-                            <img
-                                src={ Helpers.S3URL() + "images/heroes/" + hero.code + "/" + hero.image + "/portrait_small.png" }/>
                             <span>{hero.name.toUpperCase()}</span>
                         </a>
                     </li>
@@ -103,8 +103,13 @@ var HeroPanel = React.createClass({
             <div className={this.props.isActive ? "hero-panel visible " : "hero-panel"}>
                 <div className="filter-wrapper">
                     <span className="panel-title">{ this.props.title || "HERO NAME" }</span>
-                    <div className={"glow-separator " + (this.state.heroPanelInputFocused ? "active" : "")}></div>
-                    <SearchBar searchBarRef="heroSearchInput" placeholder="Enter hero name..." onSearchTermChanged={this.onSearchTermChanged} onGotFocus={this.searchBarFocused} onLostFocus={this.searchBarLostFocus} />
+                    <SearchBar isInputActive={this.state.heroPanelInputFocused}
+                               searchBarRef="heroSearchInput"
+                               placeholder="Enter hero name..."
+                               onSearchTermChanged={this.onSearchTermChanged}
+                               onGotFocus={this.searchBarFocused}
+                               onLostFocus={this.searchBarLostFocus}
+                    />
                     { this.getAffinityFilters() }
                 </div>
                 <div className="list-wrapper">

@@ -27,7 +27,7 @@ var HeroStatSummary = React.createClass({
         });
         return(
             <div key={Helpers.uuid()} id={this.props.id} className="hero-stat-summary">
-                <div>
+                <div className="stat-content-wrapper">
                     <span>{ this.props.subtitle.toUpperCase() }</span>
                     <p><a href={this.props.title.href} target="_blank">{ this.props.title.value.toUpperCase() }</a></p>
                     { links }

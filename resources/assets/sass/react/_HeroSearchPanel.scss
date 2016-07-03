@@ -16,21 +16,8 @@
     .panel-title {
         display: inline-block;
         font-weight: 600;
+        text-transform: uppercase;
         font-size: 1.2em;
-    }
-    .glow-separator {
-        display: inline-block;
-        width: 3px;
-        height: 25px;
-        background: $faded-line;
-        position: relative;
-        left: 25px;
-        top: 5px;
-        transition: all 250ms ease-in-out;
-
-        &.active {
-            background: $secondary-highlight;
-        }
     }
     .filter-wrapper {
         width: 95%;
@@ -40,14 +27,22 @@
         margin: 0 auto;
         left: 0;
         right: 0;
+        padding: 10px 0;
 
         input {
             width: 100%;
             border: none;
             font-size: 1.2em;
-            padding: 12.5px 0px 20px 0px;
-            margin-bottom: 0;
-            margin-left: 50px;
+            padding: 0px 5px 0px 15px;
+            margin-bottom: 10px;
+            margin-top: 10px;
+            margin-left: 15px;
+            border-left: 3px solid $font-color-faded;
+            transition: all 250ms ease-in-out;
+
+            &.input-active {
+                border-left: 3px solid $secondary-highlight;
+            }
         }
     }
 
@@ -61,13 +56,11 @@
         box-shadow: 0px 0px 5px rgba(0,0,0,0.5);
         text-align: center;
         display: inline-block;
-        width: 80px;
-        height: 80px;
+        width: 70px;
+        height: 70px;
         overflow: hidden;
-        margin: 15px;
+        margin: 9px;
         position: relative;
-        padding: 4px;
-        border: 1px solid rgba(0,0,0,0);
         transition: all 500ms ease-in-out;
 
         &:hover {
@@ -80,7 +73,6 @@
                 transform: scale(1.1);
             }
         }
-
         img {
             transition: all 600ms;
             position: absolute;
@@ -100,7 +92,7 @@
             transition: all 300ms;
             position: absolute;
             display: block;
-            width: 80px;
+            width: 70px;
             left: 0;
             bottom: -50px;
         }

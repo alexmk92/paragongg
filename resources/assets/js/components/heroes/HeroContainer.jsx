@@ -5,11 +5,13 @@ var InteractiveParallax = require("../../lib/InteractiveParallax");
 var HeroStats = require("./HeroStats");
 var HeroGraph = require("./HeroGraph");
 var AbilityFeed = require("./AbilityFeed");
+var HeroStatSummary = require("./HeroStatSummary");
 
 var HeroContainer = React.createClass({
     getInitialState : function() {
         return {
-            backgroundParallax : null
+            backgroundParallax : null,
+            heroRank : 1
         }
     },
     updateParallax : function(e) {
@@ -31,6 +33,56 @@ var HeroContainer = React.createClass({
             this.state.backgroundParallax.mousePositionChanged(e);
         }
     },
+    shouldComponentUpdate: function(nextProps, nextState) {
+        if(nextState.heroRank !== this.state.heroRank) return true;
+
+        return false;
+    },
+    updateHeroRank: function(rank) {
+        this.setState({ heroRank : rank });
+    },
+    renderGraph: function() {
+        return;
+        return (
+            <div id="graph-wrapper">
+                <h3 className="section-heading">Game Statistics <span className="subheader">{ HERO.name} stats, last 7 days</span></h3>
+                <HeroGraph />
+            </div>
+        );
+    },
+    renderTopStatistics: function() {
+        return (
+            <div id="top-content-wrapper">
+                <HeroStatSummary id="topHero"
+                                 key="topHero"
+                                 subtitle={"TOP " + HERO.name + " PLAYER"}
+                                 title={ {value : "BEECKON", href : "#"} }
+                                 href="#"
+                                 links={[
+                                         { type : "WIN/LOSS", values : { wins : 147, losses : 152 }}
+                                     ]}
+                />
+                <HeroStatSummary id="topDeck"
+                                 key="topDeck"
+                                 subtitle={"TOP " + HERO.name + " DECK"}
+                                 title={ {value : "BEECKON", href : "#"} }
+                                 href="#"
+                                 links={[
+                                         { type : "WIN/LOSS", values : { wins : 147, losses : 152 }}
+                                     ]}
+                />
+                <HeroStatSummary id="topBuild"
+                                 key="topBuild"
+                                 subtitle={"TOP " + HERO.name + " BUILD"}
+                                 title={ {value : "BEECKON", href : "#"} }
+                                 href="#"
+                                 links={[
+                                         { type : "WIN/LOSS", values : { wins : 147, losses : 152 }}
+                                     ]}
+                />
+            </div>
+        );
+    },
     render: function() {
         var modelURL = Helpers.S3URL() + "images/heroes/" + HERO.code + "/cutout.png";
         return(
@@ -38,7 +90,7 @@ var HeroContainer = React.createClass({
                 <div onMouseOver={this.updateParallax} className="hero-container">
                     <div id="left-wrapper">
                         <div id="hero-stats">
-                            <HeroStats hero={ HERO } />
+                            <HeroStats onHeroRankChanged={this.updateHeroRank} hero={ HERO } />
                         </div>
                     </div>
                     <div id="particle-layer"></div>
@@ -48,12 +100,10 @@ var HeroContainer = React.createClass({
                         </div>
                     </div>
                 </div>
-                <div id="graph-wrapper">
-                    <h3 className="section-heading">Game Statistics <span className="subheader">{ HERO.name} stats, last 7 days</span></h3>
-                    <HeroGraph />
-                </div>
+                { this.renderGraph() }
+                { this.renderTopStatistics() }
                 <div id="abilities-wrapper">
-                    <AbilityFeed abilities={ HERO.abilities } />
+                    <AbilityFeed currentRank={this.state.heroRank} abilities={ HERO.abilities } />
                 </div>
             </div>
         );

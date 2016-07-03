@@ -18,12 +18,13 @@ var SearchBar = React.createClass({
         var searchTermChanged = Helpers.debounce(function() {
             this.updateSearchTerm();
         }.bind(this), 150);
+        var isActiveClass = typeof this.props.isInputActive !== 'undefined' && this.props.isInputActive === true ? ' input-active' : '';
         return (
             <div className="search-bar-wrapper">
                 <label>{ this.props.label }</label>
                 <input placeholder={this.props.placeholder || "Enter search term..."}
                        ref="searchBarInput"
-                       className="search-bar"
+                       className={"search-bar " + isActiveClass}
                        type="text"
                        defaultValue={this.state.searchTerm}
                        onChange={searchTermChanged}

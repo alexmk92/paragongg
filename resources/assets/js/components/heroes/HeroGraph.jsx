@@ -2,7 +2,6 @@ var React = require("react");
 var Highcharts = require("highcharts");
 var Chart = require("../Chart");
 var ChartTheme = require("../../lib/ChartThemes");
-var HeroStatSummary = require("./HeroStatSummary");
 
 var HeroGraph = React.createClass({
     getInitialState: function () {
@@ -282,35 +281,6 @@ var HeroGraph = React.createClass({
                        theme={ChartTheme.areaSplineDark()}
                        hideTooltip={true}
                 />
-                <div id="top-content-wrapper">
-                    <HeroStatSummary id="topHero"
-                                     key="topHero"
-                                     subtitle={"TOP " + HERO.name + " PLAYER"}
-                                     title={ {value : "BEECKON", href : "#"} }
-                                     href="#"
-                                     links={[
-                                         { type : "WIN/LOSS", values : { wins : 147, losses : 152 }}
-                                     ]}
-                    />
-                    <HeroStatSummary id="topDeck"
-                                     key="topDeck"
-                                     subtitle={"TOP " + HERO.name + " DECK"}
-                                     title={ {value : "BEECKON", href : "#"} }
-                                     href="#"
-                                     links={[
-                                         { type : "WIN/LOSS", values : { wins : 147, losses : 152 }}
-                                     ]}
-                    />
-                    <HeroStatSummary id="topBuild"
-                                     key="topBuild"
-                                     subtitle={"TOP " + HERO.name + " BUILD"}
-                                     title={ {value : "BEECKON", href : "#"} }
-                                     href="#"
-                                     links={[
-                                         { type : "WIN/LOSS", values : { wins : 147, losses : 152 }}
-                                     ]}
-                    />
-                </div>
             </div>
         );
     }

@@ -1,5 +1,6 @@
 var React = require('react');
-var Helpers     = require('../../helpers')
+var Helpers = require('../../helpers');
+var PreloadImage = require('../PreloadImage');
 
 var HeroPreview = React.createClass({
     getInitialState: function() {
@@ -21,7 +22,8 @@ var HeroPreview = React.createClass({
         };
         return (
             <a href={ "/heroes/" + this.props.hero.slug }>
-                <li className="hero-preview" style={divStyle}>
+                <li className="hero-preview">
+                    <PreloadImage src={Helpers.S3URL() + 'images/heroes/' + this.props.hero.code + '/' + this.props.hero.image + '/portrait_medium.png'} />
                     <div className="hero-preview-title">
                         <div className="hero-affinities">
                             {this.getAffinities()}

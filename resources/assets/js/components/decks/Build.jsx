@@ -176,7 +176,6 @@ var Build = React.createClass({
     },
     getUpgradeSlots: function(slot, activeClass) {
         // Dont show this section on unplaced cards
-        console.log("FIRING FROM: GET UPGRADE SLOTS");
         var deleteWrapper = "";
         if(typeof slot.card === "undefined" || slot.card === null) {
             return "";
@@ -264,15 +263,12 @@ var Build = React.createClass({
                         var slotEffectType = Helpers.getFormattedStatistic(statString);
                         passiveList += slotEffectType.label + ", ";
                         if(selectedEffectType.label === slotEffectType.label) {
-                            console.log("THIS IS VALID");
                             hasSamePassiveEffect = true;
                         }
                     });
                 } else { hasSamePassiveEffect = false }
                 return hasSamePassiveEffect;
             });
-
-            console.log("HAS SAME PASSIVE EFFECT IS: ", hasSamePassiveEffect);
 
             if(!hasSamePassiveEffect) {
                 this.invokeNotification("warning", "You must slot an upgrade card which has the following passives: " + passiveList);
@@ -303,7 +299,6 @@ var Build = React.createClass({
         return valid;
     },
     bindUpgradeToCard: function(upgradeSlot, card, bindUpgradeAtNextAvailableIndex) {
-        console.log("FIRING FROM: BIND UPGRADE TO CARD");
         if(this.props.selectedCard !== null && (this.getBuildCost() + this.props.selectedCard.cost) > 60) {
             this.invokeNotification("warning", "You cannot add that card because you would exceed the card points total for this build!");
             return false;
@@ -446,7 +441,7 @@ var Build = React.createClass({
                     }
 
                     if (this.props.lastModifiedSlot === i) {
-                        cardPulse = "pulse-glow";
+                        //cardPulse = "pulse-glow";
                     }
                 }
             }
@@ -523,7 +518,7 @@ var Build = React.createClass({
                 <li id={"c_" + i}
                     onContextMenu={this.removeCardFromSlot.bind(this, i, true)}
                     onClick={this.bindCardToSlot.bind(this, i)}
-                    className={slot.type + " " + activeClass}
+                    className={slot.type + " build-slot " + activeClass}
                     key={"slot_" + i}
                     onMouseEnter={this.setTooltipContent.bind(this, slot.card, null)}
                     onMouseOver={this.showTooltip.bind(this, slot.card, "glow-layer")}
@@ -638,7 +633,6 @@ var Build = React.createClass({
                     if (this.props.selectedCard) {
                         var card = (JSON.parse(JSON.stringify(this.props.selectedCard)));
                         card.quantity = 1;
-                        console.log("CARD IS: ", card);
                         slot.card = card;
                         slot.occupied = true;
 

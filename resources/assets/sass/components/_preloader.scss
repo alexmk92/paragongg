@@ -1,6 +1,5 @@
 .preload-container {
     position: relative;
-    z-index: -1;
     width: 100%;
     height: 100%;
     display: block;
@@ -20,8 +19,10 @@
 
         .aligner {
             width: 0 !important;
+            border: none;
             position: relative !important;
             top: 0;
+            background: transparent;
             display: inline-block !important;
             height: 100%;
             vertical-align: middle;

@@ -1,6 +1,4 @@
 #abilities-wrapper {
-    background: #13161f;
-
     #ability-header {
         text-align: center;
         display: -ms-flexbox;
@@ -22,29 +20,100 @@
     }
 
     .ability-container {
-        background: #08090d;
+        position: relative;
+        overflow: hidden;
+        display: block;
+        clear: both;
+        padding: 80px 10px;
+        min-height: 400px;
+        height: 650px;
 
-        &:nth-child(even) {
-            background: #13161f;
-            & .video-wrapper {
-                float: right;
+        h3 {
+            .ability-icon {
+                display: inline-block;
+                vertical-align: middle;
+                width: 124px;
             }
-            &.text-wrapper {
+
+            .ability-title {
+                display: inline-block;
+                vertical-align: middle;
+
+                span {
+                    display: block;
+
+                    &.ability-button {
+                        font-family: "Roboto Condensed";
+                        font-weight: 100;
+                        color: $font-color-faded;
+                        font-size: 14px;
+                        line-height: 16px;
+                    }
+                    &.ability-cooldown {
+                        font-size: 16px;
+                        line-height: 20px;
+                        font-weight: 400;
+                        color: $font-color-faded;
+                    }
+                }
+            }
+        }
+
+        p {
+            font-size: 16px;
+            margin: 10px 25px;
+            border-top: 1px solid $faded-line;
+            padding-top: 20px;
+        }
+
+        &:last-child {
+            border-bottom: none;
+        }
+        &:first-child {
+            padding-top: 40px;
+        }
+        &:nth-child(even) {
+            .video-wrapper {
+                float: left;
+            }
+            .text-wrapper {
                 float: right;
             }
         }
         & .video-wrapper {
+            height: 100%;
+            float: right;
+            vertical-align: top;
             position: relative;
-            display: inline-block;
-            width: 49%;
-            min-height: 550px;
+            display: inline-table;
+            width: 60%;
+
+            .video-container {
+                text-align: center;
+                display: table-cell;
+                vertical-align: middle;
+
+                img {
+                    border: 1px solid #222;
+                    opacity: 0.5;
+                    width: 90%;
+                    box-shadow: 0px 0px 150px 30px rgba(255,255,255,0.15);
+                }
+            }
         }
 
         & .text-wrapper {
+            height: 100%;
+            float: left;
+            vertical-align: top;
             position: relative;
-            display: inline-block;
-            width: 49%;
-            min-height: 550px;
+            display: inline-table;
+            width: 40%;
+            
+            .text-container {
+                display: table-cell;
+                vertical-align: middle;
+            }
         }
     }
 }
