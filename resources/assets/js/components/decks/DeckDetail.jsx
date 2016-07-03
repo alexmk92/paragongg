@@ -4,8 +4,6 @@ var CardEffects = require('../cards/CardEffects');
 var Toptip = require('../libraries/tooltip/Toptip');
 var Helpers = require('../../helpers');
 var DeckSidebarList = require('./widgets/DeckSidebarList');
-var CostCurveWidget = require('./widgets/CostCurve');
-var SuggestedDecksWidget = require('./widgets/SuggestedDecks');
 var BuildStats = require('./BuildStats');
 var Notification = require('../libraries/notification/Notification');
 

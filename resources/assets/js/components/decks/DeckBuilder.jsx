@@ -7,7 +7,6 @@ var Tooltip = require('../libraries/tooltip/Toptip');
 var HeroPanel = require('../heroes/HeroPanel');
 var Build = require('./Build');
 var ConfirmModal = require('../ConfirmModal');
-var CostCurve = require('./widgets/CostCurve');
 var Notification = require('../libraries/notification/Notification');
 
 var DeckBuilder = React.createClass({

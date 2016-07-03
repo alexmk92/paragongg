@@ -1,8 +1,8 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 var VerticalBarChart = require('../../charts/VerticalBarChart');
-var Helpers = require('../../../helpers');
 
-var CostCurve = React.createClass({
+var DeckSidebarCostCurve = React.createClass({
     componentWillReceiveProps: function(nextProps, nextState) {
     },
     getCostCurveData: function() {
@@ -68,7 +68,7 @@ var CostCurve = React.createClass({
     render: function() {
         var costCurveData = this.getCostCurveData();
         return(
-            <div className="sidebox panel cf">
+            <div className="cf">
                 <div className="title-wrapper">
                     <h3>COST CURVE</h3>
                 </div>
@@ -80,4 +80,7 @@ var CostCurve = React.createClass({
     }
 });
 
-module.exports = CostCurve;
+module.exports = DeckSidebarCostCurve;
+
+var element = document.querySelector("#deck-sidebar-cost-curve");
+if(element) ReactDOM.render( <DeckSidebarCostCurve deck={DECK} animateChart={true}/>, element);

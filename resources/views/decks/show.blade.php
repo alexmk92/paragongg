@@ -1,6 +1,8 @@
 @extends('layouts/app')
 @section('body')
-    <div id="sidebar" class="sidebar-with-widgets">
+    <div id="sidebar">
+        <div id="deck-sidebar-list" class="sidebox panel" data-title="{{ $deck->title }}"></div>
+        <div id="deck-sidebar-cost-curve" class="sidebox panel"></div>
     </div>
 
     <div id="deck-detail-wrapper">
