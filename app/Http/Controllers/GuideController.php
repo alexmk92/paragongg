@@ -34,7 +34,9 @@ class GuideController extends Controller
             ->orderBy('name')
             ->get();
 
-        return view('guides.create', compact('heroes'));
+        $decks = Deck::where('author_id', auth()->user()->id)->get();
+
+        return view('guides.create', compact('heroes', 'decks'));
     }
 
     // Store
@@ -56,9 +58,24 @@ class GuideController extends Controller
                     $abilityString .= ',';
                 }
             }
-            $guide->deck      = $request->deck;
             $guide->hero_code   = $request->hero;
             $guide->abilities = $abilityString;
+
+            // If they have embedded a deck
+            if($request->has('import_type')) {
+                //dd('has import type');
+                if($request->import_type == 'select') {
+                    $guide->deck = $request->deck_select;
+                }
+                if($request->import_type == 'shortcode') {
+                    $deck = getDeckFromString($request->deck_shortcode);
+                    if(!$deck) {
+                        session()->flash('notification', 'warning|We couldn\'t find that deck. Please check the format entered.');
+                        return redirect()->back();
+                    }
+                    $guide->deck = $deck->_id;
+                }
+            }
         }
 
         if(isset($_POST['draft'])) {
@@ -79,9 +96,11 @@ class GuideController extends Controller
     {
         $guide  = Guide::findOrFail($id);
         $thread = findOrCreateThread($request->path());
-        //$deck   = null;
-        $deck = Deck::find('57797a749a89203b04445ea2');
-
+        $deck   = null;
+        
+        if($guide->deck) {
+            $deck = Deck::find($guide->deck);
+        }
 
         $deck->hero = Hero::where('code', $deck->hero)->firstOrFail();
         $uniqueCards = Card::whereIn('code', $deck->cards)->get();

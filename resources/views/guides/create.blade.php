@@ -37,17 +37,32 @@
                     @endforeach
                 </select>
                 <hr>
+                    <h5>Embed a deck into your guide</h5>
+                    <label><input type="radio" name="import_type" value="select" onclick="importDeckType(this)" @if($decks->count() == 0) disabled @endif> Select one of my decks on Paragon.gg</label>
+                    <label><input type="radio" name="import_type" value="shortcode" onclick="importDeckType(this)"> Enter a deck shortcode / Paragon.gg URL</label>
+                    <div class="deck-import-select">
+                        <label>Choose one of your decks</label>
+                        <select name="deck_select">
+                            @foreach($decks as $deck)
+                                <option value="{{ $deck->_id }}">{{ $deck->title }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="deck-import-shortcode">
+                        <label>Enter a deck shortcode or URL</label>
+                        <input type="text" name="deck_shortcode" placeholder="e.g. 474fjeiug75z">
+                    </div>
 
-                    <label>Deck shortcode</label>
-                    <input type="text" name="deck" placeholder="e.g. 474fjeiug75z">
-
-                    <label>Ability order</label>
+                <hr>
+                    <h5>What abilities do you take?</h5>
+                    <label>Ability matrix</label>
                     @include('layouts.abilitySelect')
                 </div>
 
                 <hr>
                 <div class="guide-body">
-                    <label><span class="required">*</span> Guide content</label>
+                    <h5>The guide body</h5>
+                    <label><span class="required">*</span> Guide content (markdown formatting available)</label>
                     <textarea name="body">
 ## Introduction
 Here's an example guide format that you can follow for a hero guide if you wish. A lot of guides will start off with a quick introduction about the hero or mechanic they're talking about. This is generally a good starting point for hero guides, but if you're writing a gameplay guide you aren't expected to cover all (or any) of these sections.
@@ -84,6 +99,15 @@ Wrap your guide up with some final words summarising what you think about the he
                                 document.getElementById('hero-form').style.display = 'none';
                             } else {
                                 document.getElementById('hero-form').style.display = 'block';
+                            }
+                        }
+                        function importDeckType(element) {
+                            if(element.value == 'select') {
+                                document.querySelector(".deck-import-select").style.display = 'block';
+                                document.querySelector(".deck-import-shortcode").style.display = 'none';
+                            } else {
+                                document.querySelector(".deck-import-select").style.display = 'none';
+                                document.querySelector(".deck-import-shortcode").style.display = 'block';
                             }
                         }
                     </script>

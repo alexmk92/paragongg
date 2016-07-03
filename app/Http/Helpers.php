@@ -2,6 +2,8 @@
 
 use App\CommentThread;
 use App\CommentThreadComment;
+use App\Deck;
+use App\Shortcode;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Cache;
@@ -115,4 +117,37 @@ function checkAbilitySelection($index, $ability, $abilityString)
         return true;
     }
     return false;
+}
+
+function getDeckFromString($string)
+{
+    $deck = null;
+    // If it's a URL (starts http)
+    if(filter_var($string, FILTER_VALIDATE_URL)) {
+
+        // If it's a paragon link
+        $hostname = parse_url($string, PHP_URL_HOST);
+        if($hostname == 'paragon.gg' || $hostname == 'para.gg' || $hostname == 'paragon.dev') {
+            $path = parse_url($string, PHP_URL_PATH);
+            $exploded = explode('/',$path);
+            if($exploded[1] == 'decks') {
+                $deck = Deck::find($exploded[2]);
+            } else {
+                // Assume it's a shortcode
+                $shortcode = Shortcode::where('code', $exploded[1])->first();
+                if($shortcode) {
+                    $deck = Deck::find($shortcode->resource_id);
+                }
+            }
+        }
+    } else {
+        // Assume it's a shortcode
+        $shortcode = Shortcode::where('code', $string)->first();
+
+        if($shortcode) {
+            $deck = Deck::find($shortcode->resource_id);
+        }
+    }
+    
+    return $deck;
 }

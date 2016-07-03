@@ -17,7 +17,7 @@
         <div class="article-details">
             <time>Posted by <a href="/users/jamieshepherd">@jamieshepherd</a> on 24th April 2016, 16:25 GMT<span class="updated_at"> (Updated: 24th April 2016, 16:25 GMT)</span></time>
         </div>
-        @if($guide->abilities)
+        @if($guide->abilities != ',,,,,,,,,,,,,,')
             @include('guides.abilityTable')
         @endif
         @if($deck->builds)

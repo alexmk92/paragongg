@@ -47,6 +47,10 @@ form {
             height: auto;
         }
     }
+    .deck-import-select, .deck-import-shortcode {
+        margin-top: 30px;
+        display: none;
+    }
 }
 input, textarea, select {
     display: block;
