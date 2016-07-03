@@ -16,6 +16,7 @@ require("./components/decks/DeckBuilder");
 require("./components/decks/DeckList");
 require("./components/decks/DeckDetail");
 require("./components/decks/widgets/DeckSidebarList");
+require("./components/decks/BuildPanel");
 require("./components/decks/widgets/DeckSidebarCostCurve");
 require("./containers/comments/CommentFeed");
 require("./containers/comments/CommentProvider");
