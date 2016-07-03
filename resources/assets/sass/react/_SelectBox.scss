@@ -1,11 +1,17 @@
 .select-menu {
+    cursor: pointer;
     display: block;
     float: right;
     vertical-align: middle;
     font-size: 16px;
-    font-family: Roboto Condensed;
+    font-family: $font-condensed;
     font-weight: 100;
     position: relative;
+    &:hover {
+        span.value-label {
+            color: $secondary-highlight;
+        }
+    }
 
     span {
         color: $font-color-faded;
@@ -46,7 +52,7 @@
             &:nth-child(1) {
                 border-top: 1px solid $faded-line;
             }
-            &:nth-last-child() {
+            &:nth-last-child {
                 border-bottom: 1px solid $faded-line;
             }
 
