@@ -914,5 +914,5 @@ module.exports = {
             },
             retina_detect: true
         }
-    },
-}
+    }
+};

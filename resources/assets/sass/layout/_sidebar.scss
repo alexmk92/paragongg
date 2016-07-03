@@ -52,7 +52,7 @@
             }
         }
         .subtext {
-            font-family: "Roboto Condensed";
+            font-family: $font-condensed;
             color: $font-color-faded;
             font-size: 14px;
         }
@@ -64,7 +64,7 @@
             display: inline-block;
         }
         span {
-            font-family: "Roboto Condensed";
+            font-family: $font-condensed;
             color: $font-color-faded;
             display: inline-block;
             float: right;

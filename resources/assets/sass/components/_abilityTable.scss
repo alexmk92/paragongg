@@ -1,0 +1,36 @@
+.ability-table-wrapper {
+    margin-top: 0;
+    h2 {
+        margin-bottom: 30px;
+    }
+}
+.ability-table {
+    margin-bottom: 30px;
+    td,th {
+        padding: 10px 15px;
+        border: 1px dotted $faded-line;
+        text-align: center;
+        background: $panel-color-dark;
+        .fa {
+            color: $primary-highlight;
+        }
+        &.taken {
+            border-bottom: 1px solid $primary-highlight;
+        }
+    }
+    th {
+        font-weight: bold;
+    }
+    th, .label {
+        background: $panel-color;
+        font-family: $font-condensed;
+        font-size: 14px;
+    }
+    .mini-icon {
+        width: 20px;
+        max-width: none;
+        margin: 0 !important;
+        padding: 0;
+        vertical-align: middle;
+    }
+}

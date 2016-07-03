@@ -4,7 +4,7 @@ var Helpers  = require('../../helpers');
 
 var CardEffects = React.createClass({
     getFormattedCardDescription: function(description) {
-        var description = description.split(" ");
+        description = description.split(" ");
 
         var statuses = [
             { type : "{status:pen}", value : "", icon : "" },

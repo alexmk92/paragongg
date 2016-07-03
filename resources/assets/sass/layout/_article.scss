@@ -84,6 +84,11 @@ article {
             height: 1px;
             border-top: 1px solid $faded-line;
         }
+        &.no-line {
+            &:after {
+                content: none;
+            }
+        }
     }
     h1 {
         background: -webkit-linear-gradient(#fff, #bbb);

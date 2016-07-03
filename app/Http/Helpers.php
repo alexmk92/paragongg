@@ -107,3 +107,12 @@ function createSlug($string)
     preg_match_all('/[\w]+/', $string, $matches);
     return implode("-", $matches[0]);
 }
+
+function checkAbilitySelection($index, $ability, $abilityString)
+{
+    $abilities = explode(',', $abilityString);
+    if($abilities[$index-1] == $ability) {
+        return true;
+    }
+    return false;
+}
