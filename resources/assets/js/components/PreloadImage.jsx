@@ -8,6 +8,9 @@ var PreloadImage = React.createClass({
     },
     imageLoaded: function() {
         this.setState({ imageLoaded : true });
+        if(this.props.onImageLoaded !== null) {
+            this.props.onImageLoaded();
+        }
     },
     shouldComponentUpdate: function(nextProps, nextState) {
         return (this.state.imageLoaded === false && (nextState.imageLoaded === true));

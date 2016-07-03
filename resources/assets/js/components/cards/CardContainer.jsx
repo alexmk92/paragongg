@@ -2,12 +2,14 @@ var React = require("react");
 var ReactDOM = require("react-dom");
 var Helpers  = require('../../helpers');
 var CardStats = require("./CardStats");
+var PreloadImage = require('../PreloadImage');
 var InteractiveParallax = require("../../lib/InteractiveParallax");
 
 var CardContainer = React.createClass({
     getInitialState: function() {
         return {
-            parallax : null
+            parallax : null,
+            renderGlow: false
         }
     },
     flipCard: function(event) {
@@ -20,6 +22,9 @@ var CardContainer = React.createClass({
         } else {
             this.state.parallax.mousePositionChanged(event);
         }
+    },
+    cardModelLoaded: function() {
+        this.setState({ renderGlow: true })
     },
     render: function() {
         var rarity = (function() {
@@ -35,13 +40,12 @@ var CardContainer = React.createClass({
             return rarityProps;
         })();
         var modelStyles = {
-            boxShadow : rarity.label === "Starter" ? "" : "0px 0px 270px " + rarity.color,
-            opacity : 1.00
+            boxShadow : rarity.label === "Starter" ? "" : "0px 0px 270px " + rarity.color
         };
         return (
             <div onMouseMove={this.flipCard}>
                 <div className="card-container">
-                    <div id="particle-layer"></div>
+                    <div id="particle-layer" className={this.state.renderGlow ? 'visible' : ''}></div>
                     <div className="card-stats-wrapper">
                         <div className="card-stats">
                             <CardStats rarity={ rarity } card={ CARD } />
@@ -51,9 +55,12 @@ var CardContainer = React.createClass({
                     <div className="anim-fadeIn" id="card-model-wrapper">
                         <div id="card-model" className="anim-flicker">
                             <div id="card-model-container">
-                                <img src={ Helpers.S3URL() + 'images/cards/' + CARD.code + '/' + CARD.background + '/background_large.png' } />
+                                <PreloadImage src={Helpers.S3URL() + 'images/cards/' + CARD.code + '/' + CARD.background + '/background_large.png'}
+                                              placeholderSrc="/assets/images/card-placeholder.png"
+                                              onImageLoaded={this.cardModelLoaded}
+                                />
                                 <span>{ CARD.name }</span>
-                                <div id="card-glow-layer" style={modelStyles}></div>
+                                <div id="card-glow-layer" style={modelStyles} className={this.state.renderGlow ? 'visible' : ''}></div>
                             </div>
                         </div>
                     </div>
