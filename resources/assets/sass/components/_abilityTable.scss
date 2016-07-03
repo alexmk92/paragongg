@@ -6,6 +6,11 @@
 }
 .ability-table {
     margin-bottom: 30px;
+    tr:hover {
+        td {
+            background: lighten($panel-color-dark, 2%);
+        }
+    }
     td,th {
         padding: 10px 15px;
         border: 1px dotted $faded-line;
@@ -22,7 +27,7 @@
         font-weight: bold;
     }
     th, .label {
-        background: $panel-color;
+        background: $panel-color !important;
         font-family: $font-condensed;
         font-size: 14px;
     }

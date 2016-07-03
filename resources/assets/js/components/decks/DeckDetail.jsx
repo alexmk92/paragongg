@@ -263,7 +263,7 @@ var DeckDetail = React.createClass({
                         <i className={"fa fa-star " + (this.state.deck.voted ? "active" : "")} onClick={this.upvoteDeck}></i> <span>{this.state.deck.votes || 0}</span>
                     </div>
                 </div>
-
+                
                 <ul id="build-tabs">
                     { this.renderBuildTabs() }
                 </ul>
@@ -279,9 +279,6 @@ var DeckDetail = React.createClass({
     }
 });
 
-// Render the main container for this application
-var container = document.querySelector("#deck-container");
-if(container) {
-    ReactDOM.render( <DeckDetail deck={ DECK } />, container);
-}
+var element = document.querySelector("#deck-container");
+if(element) ReactDOM.render( <DeckDetail deck={ DECK } />, container);
 

@@ -11,7 +11,7 @@ var DeckPreview = React.createClass({
         }
     },
     componentDidMount: function() {
-        this.tooltip = this.props.sharedTooltip;
+        this.tooltip = this.props.sharedTooltip || new Tooltip();
     },
     setTooltipContent: function(card) {
         if(card) {

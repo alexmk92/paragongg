@@ -19,13 +19,39 @@ form {
         max-width: 400px;
         margin: 20px auto 50px;
     }
+    .custom-radios {
+        .ability {
+            padding: 0;
+        }
+        input[type="radio"] {
+            display: none;
+        }
+        input[type=radio]:checked + label:before {
+            color: $primary-highlight;
+        }
+        label {
+            margin: 0;
+            &:hover {
+                &:before {
+                    color: $secondary-highlight;
+                }
+            }
+        }
+        label:before {
+            cursor: pointer;
+            content: '\f139';
+            font-family: 'FontAwesome', serif;
+            padding: 15px;
+            width: auto;
+            height: auto;
+        }
+    }
 }
 input, textarea, select {
     display: block;
     width: 100%;
     padding: 10px;
     margin-bottom: 30px;
-    border: none;
     color: white;
     background: $panel-color;
     border: 1px solid $faded-line;
@@ -48,6 +74,11 @@ input, textarea, select {
 }
 input, select {
     max-width: 400px;
+    -webkit-appearance:none;
+    border-radius: 0;
+}
+select {
+    background: $panel-color url('/assets/images/icons/caret-down.png') no-repeat center right;
 }
 textarea {
     max-width: 700px;
