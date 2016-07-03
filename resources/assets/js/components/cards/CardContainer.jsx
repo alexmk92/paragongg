@@ -58,6 +58,7 @@ var CardContainer = React.createClass({
                                 <PreloadImage src={Helpers.S3URL() + 'images/cards/' + CARD.code + '/' + CARD.background + '/background_large.png'}
                                               placeholderSrc="/assets/images/card-placeholder.png"
                                               onImageLoaded={this.cardModelLoaded}
+                                              size="large"
                                 />
                                 <span>{ CARD.name }</span>
                                 <div id="card-glow-layer" style={modelStyles} className={this.state.renderGlow ? 'visible' : ''}></div>
