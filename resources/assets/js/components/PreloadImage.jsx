@@ -13,12 +13,12 @@ var PreloadImage = React.createClass({
         return (this.state.imageLoaded === false && (nextState.imageLoaded === true));
     },
     render: function() {
-        var placeholderImage = this.props.placeholderSrc ? <img className={'placeholder ' + (this.state.imageLoaded === false ? 'visible' : '')} src={this.props.placeholderSrc } /> : '';
+        var placeholderImage = this.props.placeholderSrc ? <img className={'placeholder ' + (this.state.imageLoaded === false ? 'visible' : 'hidden')} src={this.props.placeholderSrc } /> : '';
         return (
             <div className="preload-container">
                 <div className={"spinner-container" + (this.state.imageLoaded ? ' hidden' : '')}>
                     <span className="aligner"></span>
-                    <div className={'uil-ring-css' + (this.props.size || '')}>
+                    <div className={'uil-ring-css' + (this.props.size || '') + (this.state.imageLoaded ? ' hidden' : '')}>
                         <div></div>
                     </div>
                 </div>
