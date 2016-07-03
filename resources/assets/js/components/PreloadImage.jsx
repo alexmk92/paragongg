@@ -8,6 +8,9 @@ var PreloadImage = React.createClass({
     },
     imageLoaded: function() {
         this.setState({ imageLoaded : true });
+        if(this.props.onImageLoaded !== null) {
+            this.props.onImageLoaded();
+        }
     },
     shouldComponentUpdate: function(nextProps, nextState) {
         return (this.state.imageLoaded === false && (nextState.imageLoaded === true));
@@ -18,7 +21,7 @@ var PreloadImage = React.createClass({
             <div className="preload-container">
                 <div className={"spinner-container" + (this.state.imageLoaded ? ' hidden' : '')}>
                     <span className="aligner"></span>
-                    <div className={'uil-ring-css' + (this.props.size || '') + (this.state.imageLoaded ? ' hidden' : '')}>
+                    <div className={'uil-ring-css ' + (this.props.size || 'small') + (this.state.imageLoaded ? ' hidden' : '')}>
                         <div></div>
                     </div>
                 </div>

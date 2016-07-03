@@ -1,6 +1,6 @@
 $blur-radius : 30px;
 $card-width : 300px;
-$card-height: 380px;
+$card-height: 400px;
 
 canvas {
     display: block;
@@ -14,6 +14,12 @@ canvas {
     height: 100%;
     background: transparent no-repeat 50% 50%;
     background-size: cover;
+    opacity: 0;
+    transition: all 1500ms ease-in-out;
+
+    &.visible {
+        opacity: 1.0;
+    }
 }
 
 .card-container {
@@ -39,7 +45,7 @@ canvas {
             #card-model-container {
                 position: relative;
                 width: $card-width;
-                height: auto;
+                height: $card-height;
                 display: inline-block;
                 z-index: 2;
 
@@ -67,6 +73,12 @@ canvas {
                     top: 25px;
                     left: 25px;
                     z-index: -1;
+                    opacity: 0;
+                    transition: all 1000ms ease-in-out;
+
+                    &.visible {
+                        opacity: 1.0;
+                    }
                 }
             }
         }
