@@ -49,7 +49,6 @@ var DeckDetail = React.createClass({
         }
     },
     buildsUpdated: function(newSelectedBuild, newBuilds ) {
-        console.log("Updated builds :D ")
         this.setState({ selectedBuild: newSelectedBuild, builds : newBuilds });
     },
     render: function() {
