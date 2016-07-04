@@ -5,6 +5,7 @@
 
     RewriteEngine On
 
+    #SetEnvIfNoCase X-FORWARDED-PROTO "^https$" HTTPS
     SetEnvIfNoCase X-FORWARDED-PROTO "^https$" HTTPS
 
     # Redirect Trailing Slashes If Not A Folder...
