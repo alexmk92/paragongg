@@ -36,6 +36,9 @@
     &.btn-margin-bottom {
         margin-bottom: 30px;
     }
+    &.btn-tall {
+        padding: 15px;
+    }
     &.btn-small {
         font-family: $font-condensed;
         font-size: 13px;
@@ -57,7 +60,6 @@
     &.btn-full {
         width: 100%;
         text-align: center;
-        margin-bottom: 10px;
     }
     .fa {
         margin-right: 5px;

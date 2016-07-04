@@ -8,18 +8,22 @@ use App\Guide;
 use App\Hero;
 use App\Http\Requests;
 use App\Http\Requests\Guide\CreateGuideRequest;
+use App\Http\Traits\GeneratesShortcodes;
+use App\Shortcode;
 use Illuminate\Http\Request;
 use Parsedown;
 use TOC;
 
 class GuideController extends Controller
 {
+    use GeneratesShortcodes;
+
     // Create
     public function index()
     {
         $guides = Guide::where('status', 'published')
             ->join('users', 'users.id', '=', 'guides.user_id')
-            ->select('guides.id', 'type', 'title', 'user_id', 'guides.updated_at', 'votes', 'hero_code', 'slug', 'users.username')
+            ->select('guides.id', 'guides.type', 'guides.title', 'user_id', 'guides.updated_at', 'guides.views', 'guides.votes', 'hero_code', 'guides.slug', 'users.username')
             ->get();
         $heroes = Hero::select('name', 'code', 'image')
             ->get();
@@ -86,6 +90,9 @@ class GuideController extends Controller
 
         $guide->save();
 
+        // Generate shortcode
+        $this->generate('/guides/'.$guide->id.'/'.$guide->slug, 'guide', $guide->id);
+
         session()->flash('notification', 'success|Guide saved.');
 
         return redirect('/guides/'.$guide->id.'/'.$guide->slug);
@@ -101,6 +108,9 @@ class GuideController extends Controller
         if($guide->deck) {
             $deck = Deck::find($guide->deck);
         }
+        $guide->timestamps = false;
+        $guide->increment('views');
+        $guide->timestamps = true;
 
         $deck->hero = Hero::where('code', $deck->hero)->firstOrFail();
         $uniqueCards = Card::whereIn('code', $deck->cards)->get();
@@ -161,13 +171,12 @@ class GuideController extends Controller
         // Finally sorted the collection
         $deck->cards = $sortedCards;
 
-
-
+        $shortcode = Shortcode::where('resource_type', 'guide')->where('resource_id', $id)->first();
         $guideBody = (new Parsedown())->text($guide->body);
         $guideBody = (new TOC\MarkupFixer())->fix($guideBody);
         $guideTOC  = (new TOC\TocGenerator())->getHtmlMenu($guideBody,2);
 
-        return view('guides.show', compact('guide', 'guideBody', 'guideTOC', 'thread', 'deck'));
+        return view('guides.show', compact('guide', 'guideBody', 'guideTOC', 'thread', 'deck', 'shortcode'));
     }
 
     // Edit

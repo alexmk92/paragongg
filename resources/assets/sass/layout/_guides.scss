@@ -33,6 +33,9 @@
                     background: $panel-color-dark;
                     padding: 8px 10px;
                     margin-right: 10px;
+                    .fa {
+                        margin-right: 5px;
+                    }
                     &.featured {
                         background: $secondary-highlight;
                     }

@@ -7,6 +7,18 @@
                 <h4>Table of Contents</h4>
                 {!! $guideTOC !!}
             </div>
+            <div class="sidebox panel rating">
+                <label>Was this guide helpful?</label>
+                <a href="" class="btn btn-primary btn-half">
+                    <i class="fa fa-star"/></i> {{ $guide->votes }} votes
+                </a><a href="" class="btn btn-primary btn-half">
+                    <i class="fa fa-retweet" aria-hidden="true"></i> Share it
+                </a>
+                @if($shortcode)
+                    <label style="margin-top: 30px;">Or use this shareable link</label>
+                    <input type="text" onfocus="this.select();" onmouseup="return false;" readonly="readonly" class="copypasta" value="http://para.gg/{{ $shortcode->code }}"/>
+                @endif
+            </div>
             @if($deck)
             <div id="deck-sidebar-list" class="sidebox panel" data-title="{{ $deck->title }}"></div>
             @endif

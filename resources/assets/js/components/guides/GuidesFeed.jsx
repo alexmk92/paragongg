@@ -109,6 +109,8 @@ var GuideResults = React.createClass({
                                       user_id={guide.user_id}
                                       username={guide.username}
                                       hero={hero}
+                                      views={guide.views}
+                                      votes={guide.votes}
             />);
         }, this);
         return (
@@ -165,8 +167,8 @@ var GuidePreview = React.createClass({
                     <div className="details"><span className="emphasis">{this.gameplayOrHero()}</span> guide by <span className="emphasis">{ this.props.username }</span> updated <span className="emphasis">{ Helpers.prettyDate(this.props.updated) }</span></div>
                     <div className="stats">
                         <span className="stat featured">Featured</span>
-                        <span className="stat"><i className="fa fa-star" aria-hidden="true"></i> 5</span>
-                        <span className="stat"><i className="fa fa-eye" aria-hidden="true"></i> 1,574</span>
+                        <span className="stat"><i className="fa fa-star" aria-hidden="true"></i> { this.props.votes }</span>
+                        <span className="stat"><i className="fa fa-eye" aria-hidden="true"></i> { this.props.views }</span>
                     </div>
                 </div>
             </a>

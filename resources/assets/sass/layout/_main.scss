@@ -75,6 +75,7 @@ body {
     cursor: text;
     font-family: monospace;
     text-align: center;
+    margin: 0;
 }
 .hidden {
     display: none;
@@ -87,6 +88,9 @@ body {
     box-shadow: 0px 0px 150px 30px rgba(255,255,255,0.15);
     padding: 30px;
     text-align: center;
+    .copypasta {
+        margin: 20px 0;
+    }
     h3 {
         color: $tertiary-highlight;
     }
