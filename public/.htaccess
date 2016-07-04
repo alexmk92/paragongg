@@ -5,14 +5,17 @@
 
     RewriteEngine On
 
-    # Redirect HTTP and WWW to https://domain.com
-    RewriteCond %{HTTPS} off [OR]
-    RewriteCond %{HTTP_HOST} ^www\.([^.]+\.[^.]+)$ [NC]
-    RewriteRule ^ https://{REQUEST_URI} [L,R=301,NE]
-
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^(.*)/$ /$1 [L,R=301]
+
+    # match any URL with www and rewrite it to https without the www
+    RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+    RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+
+    # Force SSL
+    RewriteCond %{HTTPS} !=on
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
     # Handle Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
