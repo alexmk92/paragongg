@@ -5,6 +5,11 @@
 
     RewriteEngine On
 
+    # Redirect HTTP and WWW to https://domain.com
+    RewriteCond %{HTTPS} off [OR]
+    RewriteCond %{HTTP_HOST} ^www\.([^.]+\.[^.]+)$ [NC]
+    RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301,NE]
+
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^(.*)/$ /$1 [L,R=301]
@@ -18,8 +23,4 @@
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
-    # Redirect HTTP and WWW to https://domain.com
-    RewriteCond %{HTTPS} off [OR]
-    RewriteCond %{HTTP_HOST} ^www\.([^.]+\.[^.]+)$ [NC]
-    RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301,NE]
 </IfModule>
