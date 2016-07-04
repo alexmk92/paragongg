@@ -62,7 +62,7 @@ var GuideHeroFilter = React.createClass({
             }
         });
         return (
-            <div id="guide-filter">
+            <div id="heroes-filter">
                 <div className="header">
                     <span className="heading">Hero guides</span>
                     <input onChange={this.inputChanged} className="hero-search" type="text" placeholder="Start typing a hero name to search..." autoFocus="true"/>
@@ -104,7 +104,8 @@ var GuideResults = React.createClass({
                                       id={guide.id}
                                       slug={guide.slug}
                                       title={guide.title}
-                                      created={guide.created}
+                                      created={guide.created_at}
+                                      updated={guide.updated_at}
                                       user_id={guide.user_id}
                                       username={guide.username}
                                       hero={hero}
@@ -160,8 +161,13 @@ var GuidePreview = React.createClass({
                     {this.getPortrait()}
                 </div>
                 <div className="guide-details">
-                    <div class="title"><h3>{ this.props.title }</h3></div>
-                    <div class="author"><strong>{this.gameplayOrHero()}</strong> guide by <strong>{ this.props.username }</strong></div>
+                    <div className="title"><h3>{ this.props.title }</h3></div>
+                    <div className="details"><span className="emphasis">{this.gameplayOrHero()}</span> guide by <span className="emphasis">{ this.props.username }</span> updated <span className="emphasis">{ Helpers.prettyDate(this.props.updated) }</span></div>
+                    <div className="stats">
+                        <span className="stat featured">Featured</span>
+                        <span className="stat"><i className="fa fa-star" aria-hidden="true"></i> 5</span>
+                        <span className="stat"><i className="fa fa-eye" aria-hidden="true"></i> 1,574</span>
+                    </div>
                 </div>
             </a>
         )

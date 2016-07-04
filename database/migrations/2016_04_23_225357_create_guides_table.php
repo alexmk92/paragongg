@@ -23,6 +23,8 @@ class CreateGuidesTable extends Migration
             $table->string('hero_code')->nullable();
             $table->string('abilities')->nullable();
             $table->string('deck')->nullable();
+            $table->string('patch');
+            $table->integer('views')->default(0);
             $table->integer('votes')->default(0);
             $table->text('body');
             $table->boolean('featured')->default(false);

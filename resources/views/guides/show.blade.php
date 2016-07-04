@@ -13,9 +13,9 @@
         </div>
     </div>
     <article>
-        <h1 class="article-title">Iggy and Scorch something announced</h1>
+        <h1 class="article-title">{{ $guide->title }}</h1>
         <div class="article-details">
-            <time>Posted by <a href="/users/jamieshepherd">@jamieshepherd</a> on 24th April 2016, 16:25 GMT<span class="updated_at"> (Updated: 24th April 2016, 16:25 GMT)</span></time>
+            <time>Posted by <strong>{{ $guide->author->username }}</strong> on 24th April 2016, 16:25 GMT<span class="updated_at"> (Updated: 24th April 2016, 16:25 GMT)</span></time>
         </div>
         @if($guide->abilities != ',,,,,,,,,,,,,,')
             @include('guides.abilityTable')

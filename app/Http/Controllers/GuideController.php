@@ -19,7 +19,7 @@ class GuideController extends Controller
     {
         $guides = Guide::where('status', 'published')
             ->join('users', 'users.id', '=', 'guides.user_id')
-            ->select('guides.id', 'type', 'title', 'user_id', 'guides.created_at', 'votes', 'hero_code', 'slug', 'users.username')
+            ->select('guides.id', 'type', 'title', 'user_id', 'guides.updated_at', 'votes', 'hero_code', 'slug', 'users.username')
             ->get();
         $heroes = Hero::select('name', 'code', 'image')
             ->get();

@@ -35,6 +35,12 @@ function findOrCreateThread($uri)
     return $thread;
 }
 
+function getCommentCount($thread)
+{
+    $thread = CommentThread::find($thread);
+    return CommentThreadComment::where('thread_id', $thread->id)->count();
+}
+
 function isTwitchLive($channel)
 {
     if (!Cache::has('twitchLive.'.$channel)) {

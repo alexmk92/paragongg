@@ -9,6 +9,7 @@ use App\Http\Traits\UpdatesSettings;
 use App\News;
 use App\Card;
 use App\Report;
+use App\Setting;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -108,5 +109,26 @@ class ModerationController extends Controller
     {
         $reports = Report::where('status', 'open')->get();
         return view('moderation.reports', compact('reports'));
+    }
+
+    public function getPatch()
+    {
+        $patch = Setting::where('key', 'currentPatch')->first();
+        if(!$patch) {
+            $patch = new Setting();
+            $patch->key = 'currentPatch';
+            $patch->value = 'Early Access';
+            $patch->save();
+        }
+
+        return view('moderation.patch', compact('patch'));
+    }
+
+    public function setPatch(Request $request)
+    {
+        $this->updateSettings('currentPatch', $request->patch);
+        
+        session()->flash('notification', 'success|Patch updated.');
+        return redirect()->back();
     }
 }

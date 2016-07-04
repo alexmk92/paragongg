@@ -61,19 +61,19 @@ Route::get('/decks', 'DeckController@index');
 Route::get('/decks/create', 'DeckController@create');
 Route::post('/decks/create', 'DeckController@store');
 Route::get('/decks/success', 'DeckController@success');
-Route::get('/decks/edit/{id}', 'DeckController@edit');
-Route::post('/decks/edit/{id}', 'DeckController@update');
-Route::get('/decks/delete/{id}', 'DeckController@delete');
+Route::get('/decks/edit/{id}', 'DeckController@edit')->middleware('auth');
+Route::post('/decks/edit/{id}', 'DeckController@update')->middleware('auth');
+Route::get('/decks/delete/{id}', 'DeckController@delete')->middleware('auth');
 Route::get('/decks/export/{id}', 'DeckController@export')->middleware('auth');
 Route::get('/decks/{id}/{slug?}', 'DeckController@show');
 
 /* GUIDES */
 Route::get('/guides', 'GuideController@index');
-Route::get('/guides/create', 'GuideController@create');
-Route::post('/guides/create', 'GuideController@store');
-Route::get('/guides/edit/{id}', 'GuideController@edit');
-Route::post('/guides/edit/{id}', 'GuideController@update');
-Route::get('/guides/delete/{id}', 'GuideController@delete');
+Route::get('/guides/create', 'GuideController@create')->middleware('auth');
+Route::post('/guides/create', 'GuideController@store')->middleware('auth');
+Route::get('/guides/edit/{id}', 'GuideController@edit')->middleware('auth');
+Route::post('/guides/edit/{id}', 'GuideController@update')->middleware('auth');
+Route::get('/guides/delete/{id}', 'GuideController@delete')->middleware('auth');
 Route::get('/guides/{id}/{slug?}', 'GuideController@show');
 
 /* COMMUNITY */
@@ -122,6 +122,8 @@ Route::group(['prefix' => 'moderation', 'namespace' => 'Moderation', 'middleware
     Route::get('/heroes', 'ModerationController@heroes');
     Route::get('/heroes/feature/{id}', 'ModerationController@heroesFeature');
     Route::get('/reports', 'ModerationController@reports');
+    Route::get('/patch', 'ModerationController@getPatch');
+    Route::post('/patch', 'ModerationController@setPatch');
 });
 
 /* Administration */

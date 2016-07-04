@@ -799,7 +799,7 @@ var Build = React.createClass({
         var buildListClass = this.numberOfCardsPlaced() > 0 ? " upgrades-showing" : "";
 
         return (
-            <div id="builds-wrapper">
+            <div className="builds-wrapper">
                 <input onChange={newTitle} defaultValue={ "" } className="h2" placeholder="ENTER BUILD TITLE" ref="buildTitleInput" />
                 <span className="build-cost">{ this.getBuildCost() }/60 <span>CP</span></span>
                 <ul className={"build-list " + buildListClass }>

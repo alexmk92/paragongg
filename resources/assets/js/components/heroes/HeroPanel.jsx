@@ -79,7 +79,7 @@ var HeroPanel = React.createClass({
             if(this.shouldBeVisible(hero)) {
                 heroes.push(
                     <li key={"hero_panel_" + hero.name} className="hero-row" onClick={this.selectedHero.bind(this, hero)}>
-                        <PreloadImage src={Helpers.S3URL() + "images/heroes/" + hero.code + "/" + hero.image + "/portrait_small.png"} />
+                        <PreloadImage src={ Helpers.S3URL() + "images/heroes/" + hero.code + "/" + hero.image + "/portrait_small.png" } />
                         <a href="#">
                             <span>{hero.name.toUpperCase()}</span>
                         </a>
