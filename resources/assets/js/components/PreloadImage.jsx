@@ -35,7 +35,7 @@ var PreloadImage = React.createClass({
     },
     componentWillReceiveProps: function(nextProps) {
         if(nextProps.src !== this.props.src) {
-            this.setState({ imageLoaded : false });
+            this.setState({ imageLoaded : false, src : nextProps.src });
         }
     },
     shouldComponentUpdate: function(nextProps, nextState) {

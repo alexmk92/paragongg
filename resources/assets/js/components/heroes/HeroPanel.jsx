@@ -27,6 +27,13 @@ var HeroPanel = React.createClass({
             ]
         }
     },
+    componentDidUpdate: function() {
+        console.log(this.props);
+        if(typeof this.props.onHeroesListUpdated !== "undefined") {
+            console.log("UPDATING LIST");
+            this.props.onHeroesListUpdated(this.state.heroes);
+        }
+    },
     shouldBeVisible: function(hero) {
         var hasAffinity = false;
         this.state.filter_affinities.forEach(function(affinity) {
@@ -105,7 +112,7 @@ var HeroPanel = React.createClass({
                     <span className="panel-title">{ this.props.title || "HERO NAME" }</span>
                     <SearchBar isInputActive={this.state.heroPanelInputFocused}
                                searchBarRef="heroSearchInput"
-                               placeholder="Enter hero name..."
+                               placeholder={this.props.placeholder || "Enter hero name..."}
                                onSearchTermChanged={this.onSearchTermChanged}
                                onGotFocus={this.searchBarFocused}
                                onLostFocus={this.searchBarLostFocus}
