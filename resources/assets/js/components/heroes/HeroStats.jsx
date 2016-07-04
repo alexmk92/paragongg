@@ -73,6 +73,23 @@ var HeroStats = React.createClass({
         if(prevState.multiplier !== this.state.mutliplier)
             this.props.onHeroRankChanged(this.state.multiplier);
     },
+    renderSuggestedRoles: function() {
+        return;
+        var roles = <li>No suggested roles</li>;
+        if(this.props.hero.roles > 0) {
+            roles = this.props.hero.roles.map(function(role) {
+                return(
+                    <li className={"pgg pgg-role-" + role.toLowerCase()} title={"Role: " + role }></li>
+                );
+            });
+        }
+        return (
+            <div>
+                <label>Suggested Roles</label>
+                { roles }
+            </div>
+        );
+    },
     render: function() {
 
         var _this = this;
@@ -81,15 +98,6 @@ var HeroStats = React.createClass({
                   <i className={"affinity-color pgg pgg-affinity-" + affinity.toLowerCase()} title={"Affinity: " + affinity }></i>
             );
         });
-
-        var roles = <li>No suggested roles</li>;
-        if(this.props.hero.roles > 0) {
-            roles = this.props.hero.roles.map(function(role) {
-                return(
-                    <i className={"pgg pgg-role-" + role.toLowerCase()} title={"Role: " + role }></i>
-                );
-            });
-        }
 
         var statistics = this.state.stats.map(function(stat) {
             var scale = _this.state.multiplier === 1 ? 0 : stat.scaling;
@@ -114,8 +122,7 @@ var HeroStats = React.createClass({
                         { affinities }
                     </div>
                     <div className="attribute roles">
-                        <label>Suggested Roles</label>
-                        { roles }
+                        { this.renderSuggestedRoles() }
                     </div>
                 </div>
 

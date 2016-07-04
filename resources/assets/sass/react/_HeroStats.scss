@@ -126,6 +126,28 @@ canvas {
             left: -50%;
             text-align: center;
 
+            &.fallback-portrait {
+                width: 250px;
+                height: 250px;
+                top: 19%;
+                overflow: hidden;
+                left: 15%;
+                border-radius: 50%;
+                border: 1px solid #222;
+                box-shadow: 0px 0px 200px 30px rgba(255, 255, 255, 0.15);
+            }
+
+            .preload-container {
+                img {
+                    &.visible {
+                        left: auto;
+                        right: auto;
+                        position: relative;
+                        margin-top: -100%;
+                    }
+                }
+            }
+
             #blur {
                 position: absolute;
                 bottom: -11px;

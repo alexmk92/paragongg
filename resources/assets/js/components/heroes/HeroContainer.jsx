@@ -6,12 +6,14 @@ var HeroStats = require("./HeroStats");
 var HeroGraph = require("./HeroGraph");
 var AbilityFeed = require("./AbilityFeed");
 var HeroStatSummary = require("./HeroStatSummary");
+var PreloadImage = require('../PreloadImage');
 
 var HeroContainer = React.createClass({
     getInitialState : function() {
         return {
             backgroundParallax : null,
-            heroRank : 1
+            heroRank : 1,
+            hasFallbackImage: false
         }
     },
     updateParallax : function(e) {
@@ -35,6 +37,9 @@ var HeroContainer = React.createClass({
     },
     shouldComponentUpdate: function(nextProps, nextState) {
         if(nextState.heroRank !== this.state.heroRank) return true;
+        console.log(this.state);
+        console.log(nextState);
+        if(nextState.hasFallbackImage !== this.state.hasFallbackImage) return true;
 
         return false;
     },
@@ -51,6 +56,7 @@ var HeroContainer = React.createClass({
         );
     },
     renderTopStatistics: function() {
+        return;
         return (
             <div id="top-content-wrapper">
                 <HeroStatSummary id="topHero"
@@ -83,6 +89,10 @@ var HeroContainer = React.createClass({
             </div>
         );
     },
+    fallbackImageRendered: function() {
+        console.log("SETTING FALLBACK TO TRUE")
+        this.setState({ hasFallbackImage : true });
+    },
     render: function() {
         var modelURL = Helpers.S3URL() + "images/heroes/" + HERO.code + "/cutout.png";
         return(
@@ -95,8 +105,12 @@ var HeroContainer = React.createClass({
                     </div>
                     <div id="particle-layer"></div>
                     <div className="anim-fadeIn" id="hero-model-wrapper">
-                        <div id="hero-model" className="anim-flicker">
-                            <img src={modelURL} />
+                        <div id="hero-model" className={"anim-flicker" + (this.state.hasFallbackImage ? ' fallback-portrait' : '')}>
+                            <PreloadImage src={modelURL}
+                                          fallbackSrc={Helpers.S3URL() + 'images/heroes/' + HERO.code + '/' + HERO.image + '/portrait_medium.png'}
+                                          size="large"
+                                          onFallbackImageRendered={this.fallbackImageRendered}
+                            />
                         </div>
                     </div>
                 </div>
