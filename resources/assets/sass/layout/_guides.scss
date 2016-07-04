@@ -39,6 +39,12 @@
                     &.featured {
                         background: $secondary-highlight;
                     }
+                    &.new {
+                        background: $primary-highlight;
+                    }
+                    &.updated {
+                        background: $faded-line;
+                    }
                 }
             }
         }

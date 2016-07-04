@@ -22,7 +22,7 @@ class DeckController extends Controller
     public function index()
     {
         $skip = 0;
-        $take = 10;
+        $take = 3;
 
         if(isset($_GET['skip'])) $skip = $_GET['skip'];
         if(isset($_GET['take'])) $take = $_GET['take'];

@@ -14,11 +14,28 @@ var DeckList = React.createClass({
     componentWillMount: function() {
         this.tooltip = new Tooltip();
         this.setState({ decks : DECKS })
+
+        // Bind scroll event
+        window.addEventListener('scroll', this.handleScroll);
     },
     componentDidMount: function() {
         // Replace the current notification panel.
         this.notificationPanel = new Notification();
         this.notificationPanel.initialiseNotifications();
+    },
+    getResults: function() {
+        Helpers.ajax({
+            url: '/api/v1/decks'
+        }).then(function(data) {
+            console.log(data);
+        }, function(err) {
+            console.log(err);
+        });
+    },
+    handleScroll: function() {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+            this.getResults();
+        }
     },
     upvoteDeck: function(deck) {
         if(AUTHED) {
