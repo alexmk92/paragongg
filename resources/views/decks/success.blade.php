@@ -1,8 +1,7 @@
 @extends('layouts/app')
 @section('body')
-    <div id="particle-wrapper" data-theme="embers">
-    </div>
-    <div class="create-success">
+    <div id="particle-wrapper" data-theme="embers"></div>
+    <div class="impact-box">
         <h3 class="section-heading">Your deck has been saved!</h3>
         <p><strong>Awesome!</strong> You can share your deck with your friends by sending them the link below.</p>
         <p>If you're logged in, you can also find your decks in your account, and optimise them further!</p>

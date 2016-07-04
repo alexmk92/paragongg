@@ -42,6 +42,26 @@ nav .links {
 }
 h1, h2, h3, h4 {
     color: $font-color-emphasis;
+    &.section-heading {
+        color: $font-color-base;
+        font-weight: 500;
+        text-align: center;
+        margin-bottom: 50px;
+        .subheader {
+            font-family: $font-condensed;
+            font-size: 14px;
+            color: $font-color-faded;
+            display: block;
+        }
+        &:after {
+            content: '';
+            display: block;
+            width: 70px;
+            margin: 20px auto;
+            height: 1px;
+            border-top: 1px solid $faded-line;
+        }
+    }
 }
 h1 {
     text-transform: uppercase;
@@ -69,26 +89,6 @@ h3, input.h3 {
     font-weight: 700;
     font-size: 24px;
     line-height: 30px;
-    &.section-heading {
-        color: $font-color-base;
-        font-weight: 500;
-        text-align: center;
-        margin-bottom: 50px;
-        .subheader {
-            font-family: $font-condensed;
-            font-size: 14px;
-            color: $font-color-faded;
-            display: block;
-        }
-        &:after {
-            content: '';
-            display: block;
-            width: 70px;
-            margin: 20px auto;
-            height: 1px;
-            border-top: 1px solid $faded-line;
-        }
-    }
 }
 h4 {
     text-transform: uppercase;

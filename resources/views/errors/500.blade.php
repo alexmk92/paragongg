@@ -1,6 +1,9 @@
 @extends('layouts/app')
 @section('body')
-    <h2>500: Internal server error</h2>
-    <p>We're very sorry, but something went wrong on our end. The exception has been logged, and we'll get to work right away on whatever caused it.</p>
-    <p>You can try performing the same action again, or come back later to see if it's been fixed.</p>
+    <div id="particle-wrapper" data-theme="embers"></div>
+    <div class="impact-box">
+        <h1 class="section-heading">500: Internal server error</h1>
+        <h5><strong>Well, this is a little embarassing...</strong></h5>
+        <p>Something on our servers has gone a little bit crazy, and we've broken something on our end. This is entirely our fault, and we've been notified about it. We'll try to get this page back to you ASAP. Come back soon to see if it's fixed!</p>
+    </div>
 @endsection

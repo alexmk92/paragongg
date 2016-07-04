@@ -79,6 +79,18 @@ body {
 .hidden {
     display: none;
 }
+.impact-box {
+    max-width: 800px;
+    margin: 100px auto 0 auto;
+    background: $panel-color-dark;
+    border: 1px solid #222;
+    box-shadow: 0px 0px 150px 30px rgba(255,255,255,0.15);
+    padding: 30px;
+    text-align: center;
+    h3 {
+        color: $tertiary-highlight;
+    }
+}
 
 // SCROLL BAR
 ::-webkit-scrollbar {
