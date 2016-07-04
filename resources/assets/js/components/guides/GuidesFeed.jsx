@@ -133,7 +133,6 @@ var GuidePreview = React.createClass({
         }
     },
     getStatLabel: function() {
-        console.log(this.props);
         // TODO Check to see if the created_at date is today
         var created_at = new Date(this.props.created);
         var updated_at = new Date(this.props.updated);
@@ -156,6 +155,12 @@ var GuidePreview = React.createClass({
 
         return <span className="stat"></span>
     },
+    getTimeLabel: function() {
+        var created_at = new Date(this.props.created);
+        var updated_at = new Date(this.props.updated);
+
+        return updated_at.getTime() > created_at.getTime() ? "last updated" : "created";
+    },
     render: function() {
         return(
             <a className="guide-preview cf" href={"/guides/" + this.props.id + "/" + this.props.slug}>
@@ -164,7 +169,9 @@ var GuidePreview = React.createClass({
                 </div>
                 <div className="guide-details">
                     <div className="title"><h3>{ this.props.title }</h3></div>
-                    <div className="details"><span className="emphasis">{this.gameplayOrHero()}</span> guide by <span className="emphasis">{ this.props.username }</span> updated <span className="emphasis">{ Helpers.prettyDate(this.props.updated) }</span></div>
+                    <div className="details">
+                        <span className="emphasis">{this.gameplayOrHero()}</span> guide by <span className="emphasis">{ this.props.username }</span> { this.getTimeLabel() } <span className="emphasis">{ Helpers.prettyDate(this.props.updated) }</span>
+                    </div>
                     <div className="stats">
                         { this.getStatLabel() }
                         <span className="stat"><i className="fa fa-star" aria-hidden="true"></i> { this.props.votes }</span>
