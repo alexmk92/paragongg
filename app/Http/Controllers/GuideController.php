@@ -23,9 +23,9 @@ class GuideController extends Controller
     {
         $guides = Guide::where('status', 'published')
             ->join('users', 'users.id', '=', 'guides.user_id')
-            ->select('guides.id', 'guides.type', 'guides.title', 'user_id', 'guides.updated_at', 'guides.views', 'guides.votes', 'hero_code', 'guides.slug', 'users.username')
+            ->select('guides.id', 'guides.type', 'guides.title', 'user_id', 'guides.created_at', 'guides.updated_at', 'guides.views', 'guides.votes', 'hero_code', 'guides.slug', 'guides.featured', 'users.username')
             ->get();
-        $heroes = Hero::select('name', 'code', 'image')
+        $heroes = Hero::select('name', 'code', 'image', 'affinities')
             ->get();
 
         return view('guides.index', compact('guides', 'heroes'));

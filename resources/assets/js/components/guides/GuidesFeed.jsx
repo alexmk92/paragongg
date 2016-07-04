@@ -3,6 +3,8 @@ var ReactDOM  = require('react-dom');
 var Helpers   = require('../../helpers');
 var FlipMove  = require('react-flip-move');
 var Tabbable  = require('../libraries/tabs/Tabbable');
+var HeroPanel = require('../heroes/HeroPanel');
+var PreloadImage = require('../PreloadImage');
 
 var Tabs      = Tabbable.Tabs;
 var TabPanel  = Tabbable.TabPanel;
@@ -14,10 +16,23 @@ var GuidesFeed = React.createClass({
             heroes : this.props.heroes
         }
     },
+    shouldComponentUpdate: function(nextProps, nextState) {
+        return nextState.heroes !== this.state.heroes;
+    },
+    onHeroSelected : function(newHero) {
+        var newHeroes = [];
+        this.state.heroes.forEach(function(hero) {
+            if(hero.code !== newHero.code) newHeroes.push(hero);
+        });
+        this.setState({ heroes : newHeroes });
+    },
+    heroesListUpdated: function(newHeroes) {
+        this.setState({ heroes : newHeroes });
+    },
     render: function() {
         return(
             <div>
-                <GuideHeroFilter heroes={this.state.heroes} />
+                <HeroPanel title="Hero guides" placeholder="Search by hero name..." showAffinityFilter={false} heroes={this.props.heroes} isActive={true} onHeroSelected={this.onHeroSelected} onHeroesListUpdated={this.heroesListUpdated} />
                 <GuideResults guides={this.state.guides} heroes={this.state.heroes} />
             </div>
         )
@@ -34,46 +49,6 @@ var HeroListItem = React.createClass({
                 </a>
             </li>
         );
-    }
-});
-
-var GuideHeroFilter = React.createClass({
-    getInitialState: function() {
-        return {
-            search_term : ""
-        }
-    },
-    inputChanged: function(event) {
-        event.preventDefault();
-        this.setState({ search_term : event.target.value })
-    },
-    render: function() {
-        var heroes = [];
-        var _this = this;
-        this.props.heroes.forEach(function(hero) {
-            console.log(hero);
-            if(hero.name.toLowerCase().indexOf(_this.state.search_term.toLowerCase()) > -1) {
-                heroes.push(
-                    <HeroListItem
-                        key={hero.name}
-                        hero={hero}
-                    />
-                );
-            }
-        });
-        return (
-            <div id="heroes-filter">
-                <div className="header">
-                    <span className="heading">Hero guides</span>
-                    <input onChange={this.inputChanged} className="hero-search" type="text" placeholder="Start typing a hero name to search..." autoFocus="true"/>
-                </div>
-                <ul className="heroes">
-                    <FlipMove>
-                        { heroes }
-                    </FlipMove>
-                </ul>
-            </div>
-        )
     }
 });
 
@@ -108,6 +83,7 @@ var GuideResults = React.createClass({
                                       updated={guide.updated_at}
                                       user_id={guide.user_id}
                                       username={guide.username}
+                                      featured={guide.featured}
                                       hero={hero}
                                       views={guide.views}
                                       votes={guide.votes}
@@ -143,11 +119,11 @@ var GuideResults = React.createClass({
 
 var GuidePreview = React.createClass({
     getPortrait: function() {
-        if(this.props.hero) {
-            return <img src={"https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/" + this.props.hero.code + "/" + this.props.hero.image + "/portrait_small.png"}/>
-        } else {
-            return <img src="/assets/images/heroes/null.png"/>
-        }
+        return (
+            <PreloadImage src={"https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/" + this.props.hero.code + "/" + this.props.hero.image + "/portrait_small.png"}
+                          fallbackSrc="assets/images/heroes/null.png"
+            />
+        );
     },
     gameplayOrHero: function() {
         if(this.props.hero) {
@@ -155,6 +131,30 @@ var GuidePreview = React.createClass({
         } else {
             return "Gameplay";
         }
+    },
+    getStatLabel: function() {
+        console.log(this.props);
+        // TODO Check to see if the created_at date is today
+        var created_at = new Date(this.props.created);
+        var updated_at = new Date(this.props.updated);
+
+        if(this.props.featured === 1)
+            return <span className="stat featured">Featured</span>
+
+        var timeDiff = Math.abs(created_at.getTime() - updated_at.getTime());
+        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+        if(updated_at.getTime() > created_at.getTime() && (diffDays > 0 && diffDays < 10)) {
+            return <span className="stat updated">Recently Updated</span>
+        }
+
+        if(diffDays === 0 && diffDays < 7) {
+            return (
+                <span className={"stat new"}>New</span>
+            );
+        }
+
+        return <span className="stat"></span>
     },
     render: function() {
         return(
@@ -166,7 +166,7 @@ var GuidePreview = React.createClass({
                     <div className="title"><h3>{ this.props.title }</h3></div>
                     <div className="details"><span className="emphasis">{this.gameplayOrHero()}</span> guide by <span className="emphasis">{ this.props.username }</span> updated <span className="emphasis">{ Helpers.prettyDate(this.props.updated) }</span></div>
                     <div className="stats">
-                        <span className="stat featured">Featured</span>
+                        { this.getStatLabel() }
                         <span className="stat"><i className="fa fa-star" aria-hidden="true"></i> { this.props.votes }</span>
                         <span className="stat"><i className="fa fa-eye" aria-hidden="true"></i> { this.props.views }</span>
                     </div>

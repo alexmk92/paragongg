@@ -46,11 +46,16 @@
     .guide-hero {
         float: left;
         margin-right: 20px;
-        img {
-            width: 96px;
-            height: 96px;
-            border-radius: 5px;
+        .preload-container {
+            .spinner-container {
+                position: absolute;
+            }
+            img {
+                position: relative;
+                width: 96px !important;
+                height: 96px !important;
+                border-radius: 5px !important;
+            }
         }
-
     }
 }
