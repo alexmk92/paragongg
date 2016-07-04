@@ -3,13 +3,34 @@ var React = require('react');
 var PreloadImage = React.createClass({
     getInitialState: function() {
         return {
-            imageLoaded: false
+            imageLoaded: false,
+            fallbackFailed: false,
+            initialRenderFailed: false,
+            src: ""
         }
+    },
+    componentWillMount: function() {
+        this.setState({ src : this.props.src });
     },
     imageLoaded: function() {
         this.setState({ imageLoaded : true });
         if(typeof this.props.onImageLoaded !== "undefined" && this.props.onImageLoaded !== null) {
             this.props.onImageLoaded();
+        }
+    },
+    renderFallback: function() {
+        var fallbackFailure = this.state.initialRenderFailed === true ? true : false;
+        if(!this.state.fallbackFailed && !this.state.initialRenderFailed && typeof typeof this.props.fallbackSrc !== "undefined") {
+            this.setState({
+                src : this.props.fallbackSrc,
+                initialRenderFailed: true,
+                fallbackFailed: fallbackFailure
+            })
+        }
+    },
+    componentDidUpdate: function() {
+        if(!this.state.fallbackFailed && this.state.initialRenderFailed && typeof this.props.onFallbackImageRendered) {
+            this.props.onFallbackImageRendered();
         }
     },
     componentWillReceiveProps: function(nextProps) {
@@ -35,8 +56,9 @@ var PreloadImage = React.createClass({
                 </div>
                 { placeholderImage }
                 <img className={this.state.imageLoaded === false ? '' : 'visible'}
-                     src={this.props.src}
+                     src={this.state.src}
                      onLoad={this.imageLoaded}
+                     onError={this.renderFallback}
                 />
             </div>
         );

@@ -87,7 +87,7 @@ var AbilityItem = React.createClass({
                 <div className="ability-container">
                     <div className="video-wrapper">
                         <div className="video-container">
-                            <img src="/assets/images/ability-placeholder.jpg" alt="video gif placeholder" />
+                            <div className="gfyitem" data-title="false" data-autoplay="false" data-controls="true" data-expand="false" data-id="UnlinedEqualAuklet" ></div>
                         </div>
                     </div>
                     <div className="text-wrapper">
@@ -111,9 +111,9 @@ var AbilityItem = React.createClass({
 
 var AbilityFeed = React.createClass({
     render: function() {
-        var abilities = this.props.abilities.map(function(ability) {
+        var abilities = this.props.abilities.map(function(ability, i) {
             return (
-                <AbilityItem key={ ability.name } ability={ ability } />
+                <AbilityItem key={ ability.name } ability={ ability } index={i} />
             );
         }.bind(this));
         return (
