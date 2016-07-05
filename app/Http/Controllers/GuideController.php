@@ -62,8 +62,6 @@ class GuideController extends Controller
             ->skip(0)
             ->get();
 
-        dd($guides);
-
         $heroes = Hero::select('name', 'slug', 'code', 'image', 'affinities')
             ->get();
 
@@ -74,10 +72,50 @@ class GuideController extends Controller
 
     public function indexGameplay()
     {
-        $guides = Guide::where('status', 'published')
-            ->join('users', 'users.id', '=', 'guides.user_id')
+        $guides = [];
+        $guides['featured'] = Guide::where('status', 'published')
             ->where('type', 'gameplay')
+            ->where('featured', true)
+            ->join('users', 'users.id', '=', 'guides.user_id')
             ->select('guides.id', 'guides.type', 'guides.title', 'user_id', 'guides.created_at', 'guides.updated_at', 'guides.views', 'guides.votes', 'hero_code', 'guides.slug', 'guides.featured', 'users.username')
+            ->take(10)
+            ->skip(0)
+            ->get();
+
+        $guides['updated'] = Guide::where('status', 'published')
+            ->where('type', 'gameplay')
+            ->join('users', 'users.id', '=', 'guides.user_id')
+            ->select('guides.id', 'guides.type', 'guides.title', 'user_id', 'guides.created_at', 'guides.updated_at', 'guides.views', 'guides.votes', 'hero_code', 'guides.slug', 'guides.featured', 'users.username')
+            ->orderBy('updated_at', 'DESC')
+            ->take(10)
+            ->skip(0)
+            ->get();
+
+        $guides['rated'] = Guide::where('status', 'published')
+            ->where('type', 'gameplay')
+            ->join('users', 'users.id', '=', 'guides.user_id')
+            ->select('guides.id', 'guides.type', 'guides.title', 'user_id', 'guides.created_at', 'guides.updated_at', 'guides.views', 'guides.votes', 'hero_code', 'guides.slug', 'guides.featured', 'users.username')
+            ->orderBy('votes', 'DESC')
+            ->take(10)
+            ->skip(0)
+            ->get();
+
+        $guides['views'] = Guide::where('status', 'published')
+            ->where('type', 'gameplay')
+            ->join('users', 'users.id', '=', 'guides.user_id')
+            ->select('guides.id', 'guides.type', 'guides.title', 'user_id', 'guides.created_at', 'guides.updated_at', 'guides.views', 'guides.votes', 'hero_code', 'guides.slug', 'guides.featured', 'users.username')
+            ->orderBy('views', 'DESC')
+            ->take(10)
+            ->skip(0)
+            ->get();
+
+        $guides['newest'] = Guide::where('status', 'published')
+            ->where('type', 'gameplay')
+            ->join('users', 'users.id', '=', 'guides.user_id')
+            ->select('guides.id', 'guides.type', 'guides.title', 'user_id', 'guides.created_at', 'guides.updated_at', 'guides.views', 'guides.votes', 'hero_code', 'guides.slug', 'guides.featured', 'users.username')
+            ->orderBy('created_at', 'DESC')
+            ->take(10)
+            ->skip(0)
             ->get();
 
         return view('guides.indexGameplay', compact('guides'));
