@@ -9,7 +9,7 @@ var AccountNav = React.createClass({
             userid: this.props.userid,
             avatar: this.props.avatar || null,
             //amber: this.props.amber,
-            achievements: 1365,
+            //achievements: 1365,
             active: false,
             mod: this.props.mod,
             admin: this.props.admin
@@ -54,9 +54,9 @@ var AccountNav = React.createClass({
                 </div>
                 <div className={this.isActive()}>
                     <ul className="account-properties">
-                        <li><a href={"/users/" + this.state.username.toLowerCase()}><i className="fa fa-user" aria-hidden="true"></i>View profile</a></li>
+                        {/*<li><a href={"/users/" + this.state.username.toLowerCase()}><i className="fa fa-user" aria-hidden="true"></i>View profile</a></li>*/}
                         <li><a href="/account/decks"><i className="fa fa-book" aria-hidden="true"></i>Your decks</a></li>
-                        <li><a href="/account/achievements"><i className="fa fa-trophy" aria-hidden="true"></i>Achievements</a></li>
+                        {/*<li><a href="/account/achievements"><i className="fa fa-trophy" aria-hidden="true"></i>Achievements</a></li>*/}
                         {/*<li><a href="/account/store"><i className="pgg pgg-amber" aria-hidden="true"></i>Store</a></li>*/}
                         <li><a href="/account"><i className="fa fa-cog" aria-hidden="true"></i>Settings</a></li>
                         {isMod}

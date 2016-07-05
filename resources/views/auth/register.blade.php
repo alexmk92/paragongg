@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('body')
-    <form class="solo" role="form" method="POST" action="{{ Request::url() }}" autocomplete="off">
+    <form class="solo" role="form" method="POST" action="/register" autocomplete="off">
         {!! csrf_field() !!}
 
         <h2>New account</h2>
