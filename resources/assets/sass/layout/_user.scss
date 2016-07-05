@@ -4,6 +4,18 @@
     height: 48px;
     float: left;
     margin-right: 15px;
+    &.inline {
+        float: none;
+        display: inline-block;
+    }
+    &.small {
+        width: 26px;
+        height: 26px;
+        vertical-align: middle;
+        margin-top: -4px;
+        margin-right: 5px;
+        margin-left: 5px;
+    }
 }
 .user-profile {
     max-width: 920px;
