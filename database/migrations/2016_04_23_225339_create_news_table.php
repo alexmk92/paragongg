@@ -25,6 +25,7 @@ class CreateNewsTable extends Migration
             $table->string('impact')->nullable();
             $table->string('header');
             $table->string('thumbnail');
+            $table->boolean('featured')->default(false);
             $table->timestamps();
         });
     }

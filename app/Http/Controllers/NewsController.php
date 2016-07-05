@@ -15,7 +15,7 @@ class NewsController extends Controller
     public function index()
     {
         //$featured = News::where('type', 'feature')->take(3)->get();
-        $featured = News::take(3)->get();
+        $featured = News::take(3)->where('featured, true')->get();
         return view('news.index')->with('featured', $featured);
     }
 

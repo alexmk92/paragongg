@@ -67,7 +67,7 @@ var NewsFeed = React.createClass({
                    href={"/news/" + element.id + "/" + element.slug}
                    key={element.slug}>
                     <div className="preview-image">
-                        <img src={"https://s3-eu-west-1.amazonaws.com/paragon.gg/images/news/thumbnails/" + element.thumbnail}/>
+                        <img src={Helpers.S3URL() + "images/news/thumbnails/" + element.thumbnail}/>
                     </div>
                     <div className="preview-title">
                         <span>{Helpers.prettyDate(element.created_at)}</span>
