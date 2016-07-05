@@ -224,6 +224,9 @@ canvas {
                         &:first-of-type {
                             margin-right: 15px;
                         }
+                        &:nth-of-type(3) {
+                            display: none;
+                        }
                     }
                 }
             }

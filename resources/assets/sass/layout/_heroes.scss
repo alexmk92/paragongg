@@ -31,6 +31,9 @@
                     .pgg {
                         font-size: 28px;
                         margin: 0 3px;
+                        &:nth-of-type(3) {
+                            display: none;
+                        }
                     }
                 }
                 span {
