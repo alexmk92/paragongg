@@ -13,6 +13,15 @@ var Tabs = React.createClass({
     componentWillMount: function() {
         this.setState({tabCount: React.Children.count(this.state.tabs)});
     },
+    componentWillReceiveProps: function(nextProps) {
+        this.setState({ tabs : nextProps.children });
+    },
+    componentDidUpdate: function(prevProps, prevState) {
+        if(this.state.selected !== prevState.selected && typeof this.props.onSelectedTabUpdated !== "undefined") {
+            this.props.onSelectedTabUpdated(this.state.selected);
+        }
+
+    },
     getTabs: function() {
         var tabs = [];
         if(this.state.tabCount > 0) {

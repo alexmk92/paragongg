@@ -29,13 +29,13 @@ var PreloadImage = React.createClass({
         }
     },
     componentDidUpdate: function() {
-        if(!this.state.fallbackFailed && this.state.initialRenderFailed && typeof this.props.onFallbackImageRendered) {
+        if(!this.state.fallbackFailed && this.state.initialRenderFailed && typeof this.props.onFallbackImageRendered && this.props.onFallbackImageRendered) {
             this.props.onFallbackImageRendered();
         }
     },
     componentWillReceiveProps: function(nextProps) {
         if(nextProps.src !== this.props.src) {
-            this.setState({ imageLoaded : false, src : nextProps.src });
+            this.setState({ imageLoaded : false, src : nextProps.src});
         }
     },
     shouldComponentUpdate: function(nextProps, nextState) {

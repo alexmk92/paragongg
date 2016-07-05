@@ -3,6 +3,7 @@ var Helpers = require('../../helpers');
 var Tooltip = require('../libraries/tooltip/Toptip');
 var ReactDOM = require('react-dom');
 var CardEffects = require('../cards/CardEffects');
+var PreloadImage = require('../PreloadImage');
 
 var DeckPreview = React.createClass({
     getInitialState: function() {
@@ -123,8 +124,10 @@ var DeckPreview = React.createClass({
                                     >
                                         <div className="black-overlay"></div>
                                         <div className={ "card-quantity " + card.borderColor }>{ card.quantity }</div>
-                                        <div className="card-preview-container"
-                                             style={{backgroundImage : 'url(' + Helpers.getCardImageURL(card, 'small', 'icon') + ')'}}>
+                                        <div className="card-preview-container">
+                                            <PreloadImage src={ Helpers.getCardImageURL(card, 'small', 'icon') }
+                                                          placeholderSrc="/assets/images/card-placeholder.png"
+                                            />
                                         </div>
                                     </li>
                                 );
@@ -137,26 +140,28 @@ var DeckPreview = React.createClass({
         )
 
     },
-    renderNewBadge: function() {
-
-        var badge = "new";
-        var type = "new";
-
+    getStatLabel: function() {
         // TODO Check to see if the created_at date is today
         var created_at = new Date(this.props.deck.created_at);
         var updated_at = new Date(this.props.deck.updated_at);
 
+        if(this.props.featured === 1)
+            return <span className="badge featured">Featured</span>
+
         var timeDiff = Math.abs(created_at.getTime() - updated_at.getTime());
         var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-        if(updated_at.getTime() > created_at.getTime()) {
-            badge = "recently updated";
-            type = "updated";
+        if(updated_at.getTime() > created_at.getTime() && (diffDays > 0 && diffDays < 10)) {
+            return <span className="badge updated">Recently Updated</span>
         }
 
-        return (
-            <span className={"badge " + type}>{ badge }</span>
-        );
+        if(diffDays === 0 && diffDays < 7) {
+            return (
+                <span className={"badge new"}>New</span>
+            );
+        }
+
+        return '';
     },
     getCardTotal: function() {
         var total = 0;
@@ -170,12 +175,12 @@ var DeckPreview = React.createClass({
         return (
             <li className="deck-preview-container">
                 <div className="hero-portrait">
-                    <img src={ Helpers.getHeroImageURL(this.props.deck.hero) } />
+                    <PreloadImage src={ Helpers.getHeroImageURL(this.props.deck.hero) } />
                 </div>
 
                 <div className="title-wrapper">
                     <h3><a href={this.state.deckURL}>{ this.props.deck.title }</a></h3>
-                    <span className="author">{ this.renderNewBadge() }<span className="subtext">Published by</span> <a href="#">{ this.props.deck.author ? this.props.deck.author.username : "anonymous" }</a></span>
+                    <span className="author">{ this.getStatLabel() }<span className="subtext">Published by</span> <a href="#">{ this.props.deck.author ? this.props.deck.author.username : "anonymous" }</a></span>
                 </div>
 
                 <div className="build-overview">
