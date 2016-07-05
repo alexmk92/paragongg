@@ -9,7 +9,7 @@
     </div>
     <div class="wrapper">
         <h2>Paragon guides</h2>
-        <div id="deck-list-wrapper"></div>
+        <div id="decks-feed"></div>
     </div>
 @endsection
 @section('scripts')

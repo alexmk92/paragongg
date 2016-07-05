@@ -153,5 +153,5 @@ var DeckList = React.createClass({
     }
 });
 
-var element = document.querySelector("#deck-list-wrapper");
+var element = document.querySelector("#decks-feed");
 if(element) ReactDOM.render( <DeckList />, element);
