@@ -76,15 +76,15 @@ class NewsController extends Controller
     // Read
     public function show(Request $request, $id)
     {
-        $news = News::findOrFail($id);
+        $article = News::findOrFail($id);
         $thread = findOrCreateThread($request->path());
 
-        $articleBody = (new Parsedown())->text($news->body);
+        $articleBody = (new Parsedown())->text($article->body);
         $articleBody = (new TOC\MarkupFixer())->fix($articleBody);
         $articleTOC  = (new TOC\TocGenerator())->getHtmlMenu($articleBody,2);
 
         $recent  = News::where('id', '!=', $id)->take('10')->get();
-        return view('news.show', compact('news', 'articleBody', 'articleTOC', 'recent', 'thread'));
+        return view('news.show', compact('article', 'articleBody', 'articleTOC', 'recent', 'thread'));
     }
 
     // Edit
