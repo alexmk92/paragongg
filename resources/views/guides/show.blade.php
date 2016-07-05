@@ -27,7 +27,7 @@
     <article>
         <h1 class="article-title">{{ $guide->title }}</h1>
         <div class="article-details">
-            <time>Posted by <strong>{{ $guide->author->username }}</strong> on 24th April 2016, 16:25 GMT<span class="updated_at"> (Updated: 24th April 2016, 16:25 GMT)</span></time>
+            <time>Posted by <strong>{{ $guide->author->username }}</strong> on {{ $guide->created_at->format('jS F Y, h:i A') }}<span class="updated_at"> (Updated: {{ $guide->created_at->format('jS F Y, h:i A') }})</span></time>
         </div>
         @if($guide->abilities != ',,,,,,,,,,,,,,')
             @include('guides.abilityTable')
