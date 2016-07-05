@@ -10,6 +10,18 @@
         <label>Upload new hero cutout</label>
         <input name="cutout" type="file">
         <hr>
+        <h3>Hero ability videos</h3>
+        <label>LMB</label>
+        <input type="text" name="ability_video_lmb" @if(isset($hero->abilities[0]->video))value="{{ $hero->abilities[0]->video }}"@endif>
+        <label>RMB</label>
+        <input type="text" name="ability_video_rmb">
+        <label>Q</label>
+        <input type="text" name="ability_video_q">
+        <label>E</label>
+        <input type="text" name="ability_video_e">
+        <label>Ultimate</label>
+        <input type="text" name="ability_video_ultimate">
+        <hr>
         <h3>Hero Stats</h3><br>
         <label><i class="pgg pgg-max-health"></i> Max Health</label>
         <input type="text" name="stat_max_health" class="medium" value="{{ $hero->baseStats['max_health']['value'] or 0 }}">
