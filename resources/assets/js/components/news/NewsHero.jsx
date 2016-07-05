@@ -23,7 +23,7 @@ var NewsHero = React.createClass({
         var featured = [];
         this.props.featured.forEach(function(news) {
             featured.push(
-                <a key={news.slug} href={"/news/" + news.slug}>
+                <a key={news.slug} href={"/news/" + news.id + "/" + news.slug}>
                     <img src={Helpers.S3URL() + "images/news/headers/" + news.header} />
                     <div className="title">
                         <span className="highlight">Featured News</span><span>{Helpers.prettyDate(news.created_at)}</span>
