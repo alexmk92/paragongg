@@ -8,7 +8,7 @@
         </div>
     </div>
     <div class="wrapper">
-        <h2>Paragon guides</h2>
+        <h2>Paragon decks</h2>
         <div id="decks-feed"></div>
     </div>
 @endsection
