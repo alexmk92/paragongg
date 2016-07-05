@@ -110,52 +110,43 @@ var DeckList = React.createClass({
         console.log("UPDATING, DECKS HAS A LENGTH OF " + this.state.decks.length + " AND IS NOW: ", this.state.decks);
         return(
             <div>
-                <h2>Decks index</h2>
+                <HeroPanel title="Hero guides" placeholder="Search by hero name..." showAffinityFilter={false} heroes={HEROES} isActive={true} onHeroSelected={this.onHeroSelected} onHeroesListUpdated={this.heroesListUpdated} />
 
-                <div id="sidebar">
-                    SIDE BAR HERE WITH CREATE DECK BUTTON
-                    <a className="btn btn-primary" href="/decks/create">Create a deck</a>
-                </div>
+                <Tabs defaultSelected={0} expandable={false} className="padless">
+                    {/* Featured */}
+                    <TabPanel title="Featured">
+                        <ul className="main-list">
+                            { this.renderDeckList() }
+                        </ul>
+                    </TabPanel>
+                    {/* Recently updated */}
+                    <TabPanel title="Recently updated">
+                        <ul className="main-list">
+                            { this.renderDeckList() }
+                        </ul>
+                    </TabPanel>
+                    {/* Top rated */}
+                    <TabPanel title="Top rated">
+                        <ul className="main-list">
+                            { this.renderDeckList() }
+                        </ul>
+                    </TabPanel>
+                    {/* Most views */}
+                    <TabPanel title="Most views">
+                        <ul className="main-list">
+                            { this.renderDeckList() }
+                        </ul>
+                    </TabPanel>
+                    {/* Newest */}
+                    <TabPanel title="Newest">
+                        <ul className="main-list">
+                            { this.renderDeckList() }
+                        </ul>
+                    </TabPanel>
+                </Tabs>
 
-                <div id="wrapper">
-                    <HeroPanel title="Hero guides" placeholder="Search by hero name..." showAffinityFilter={false} heroes={HEROES} isActive={true} onHeroSelected={this.onHeroSelected} onHeroesListUpdated={this.heroesListUpdated} />
-
-                    <Tabs defaultSelected={0} expandable={false} className="padless">
-                        {/* Featured */}
-                        <TabPanel title="Featured">
-                            <ul className="main-list">
-                                { this.renderDeckList() }
-                            </ul>
-                        </TabPanel>
-                        {/* Recently updated */}
-                        <TabPanel title="Recently updated">
-                            <ul className="main-list">
-                                { this.renderDeckList() }
-                            </ul>
-                        </TabPanel>
-                        {/* Top rated */}
-                        <TabPanel title="Top rated">
-                            <ul className="main-list">
-                                { this.renderDeckList() }
-                            </ul>
-                        </TabPanel>
-                        {/* Most views */}
-                        <TabPanel title="Most views">
-                            <ul className="main-list">
-                                { this.renderDeckList() }
-                            </ul>
-                        </TabPanel>
-                        {/* Newest */}
-                        <TabPanel title="Newest">
-                            <ul className="main-list">
-                                { this.renderDeckList() }
-                            </ul>
-                        </TabPanel>
-                    </Tabs>
-                    
-                    <div id="infinite-scroll-status" className="infinite-scroll-end">
-                        {this.renderInfiniteScrollStatus()}
-                    </div>
+                <div id="infinite-scroll-status" className="infinite-scroll-end">
+                    {this.renderInfiniteScrollStatus()}
                 </div>
             </div>
         );
