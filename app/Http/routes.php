@@ -69,13 +69,13 @@ Route::get('/decks/{id}/{slug?}', 'DeckController@show');
 
 /* GUIDES */
 Route::get('/guides', 'GuideController@index');
+Route::get('/guides/gameplay', 'GuideController@indexGameplay');
 Route::get('/guides/create', 'GuideController@create')->middleware('auth');
 Route::post('/guides/create', 'GuideController@store')->middleware('auth');
 Route::get('/guides/edit/{id}', 'GuideController@edit')->middleware('auth');
 Route::post('/guides/edit/{id}', 'GuideController@update')->middleware('auth');
 Route::get('/guides/delete/{id}', 'GuideController@delete')->middleware('auth');
 Route::get('/guides/{id}/{slug?}', 'GuideController@show');
-Route::get('/guides/gameplay', 'GuideController@indexGameplay');
 Route::get('/guides/{hero}', 'GuideController@index');
 
 /* COMMUNITY */

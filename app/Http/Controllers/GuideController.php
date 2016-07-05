@@ -33,6 +33,17 @@ class GuideController extends Controller
         return view('guides.index', compact('guides', 'heroes', 'hero'));
     }
 
+    public function indexGameplay()
+    {
+        $guides = Guide::where('status', 'published')
+            ->join('users', 'users.id', '=', 'guides.user_id')
+            ->where('type', 'gameplay')
+            ->select('guides.id', 'guides.type', 'guides.title', 'user_id', 'guides.created_at', 'guides.updated_at', 'guides.views', 'guides.votes', 'hero_code', 'guides.slug', 'guides.featured', 'users.username')
+            ->get();
+
+        return view('guides.indexGameplay', compact('guides'));
+    }
+
     // Create
     public function create()
     {
@@ -106,6 +117,10 @@ class GuideController extends Controller
         $guide  = Guide::findOrFail($id);
         $thread = findOrCreateThread($request->path());
         $deck   = null;
+        $hero   = null;
+        if($guide->type == 'hero') {
+            $hero = Hero::where('code', $guide->hero);
+        }
 
         $guide->timestamps = false;
         $guide->increment('views');
@@ -178,7 +193,7 @@ class GuideController extends Controller
         $guideBody = (new TOC\MarkupFixer())->fix($guideBody);
         $guideTOC  = (new TOC\TocGenerator())->getHtmlMenu($guideBody,2);
 
-        return view('guides.show', compact('guide', 'guideBody', 'guideTOC', 'thread', 'deck', 'shortcode'));
+        return view('guides.show', compact('guide', 'guideBody', 'guideTOC', 'thread', 'deck', 'hero', 'shortcode'));
     }
 
     // Edit

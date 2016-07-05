@@ -2,7 +2,7 @@
 @section('body')
     <div class="article-header">
         @if($guide->type == 'hero')
-            <img src="/assets/images/heroes/{{ $deck->hero->slug }}/banner.jpg"/>
+            <img src="/assets/images/heroes/{{ $hero }}/banner.jpg"/>
         @else
             <img src="/assets/images/gameplay-banner.jpg"/>
         @endif
