@@ -82,7 +82,7 @@
         text-transform: uppercase;
         color: white;
     }
-    .hero-search {
+    .search-bar {
         display: inline-block;
         margin-bottom: 0;
         font-size: 16px;
@@ -96,6 +96,11 @@
     }
     .heroes {
         margin-top: 30px;
+        img {
+            width: 76px;
+            position: static;
+
+        }
     }
     .heroes li {
         display: inline-block;
@@ -105,6 +110,8 @@
         transition: all 0.1s;
         border: 1px solid #111111;
         position: relative;
+        height: 76px;
+        vertical-align: top;
         span {
             display: block;
             opacity: 0;
@@ -129,8 +136,12 @@
             }
         }
     }
+    .preload-container .spinner-container.hidden {
+        display: none;
+    }
     img {
         width: 76px;
+        height: 76px;
         vertical-align: top;
     }
 }

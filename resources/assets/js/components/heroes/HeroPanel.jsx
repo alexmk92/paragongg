@@ -85,9 +85,9 @@ var HeroPanel = React.createClass({
         this.props.heroes.forEach(function(hero) {
             if(this.shouldBeVisible(hero)) {
                 heroes.push(
-                    <li key={"hero_panel_" + hero.name} className="hero-row" onClick={this.selectedHero.bind(this, hero)}>
-                        <PreloadImage src={ Helpers.S3URL() + "images/heroes/" + hero.code + "/" + hero.image + "/portrait_small.png" } />
-                        <a href="#">
+                    <li key={"hero_panel_" + hero.name} onClick={this.selectedHero.bind(this, hero)}>
+                        <a href={"/guides/" + hero.slug }>
+                            <PreloadImage src={ Helpers.S3URL() + "images/heroes/" + hero.code + "/" + hero.image + "/portrait_small.png" } />
                             <span>{hero.name.toUpperCase()}</span>
                         </a>
                     </li>
@@ -107,9 +107,9 @@ var HeroPanel = React.createClass({
     },
     render: function() {
         return (
-            <div className={this.props.isActive ? "hero-panel visible " : "hero-panel"}>
-                <div className="filter-wrapper">
-                    <span className="panel-title">{ this.props.title || "HERO NAME" }</span>
+            <div id="heroes-filter" className={this.props.isActive ? " visible " : ""}>
+                <div className="header">
+                    <span className="heading">{ this.props.title || "Hero name" }</span>
                     <SearchBar isInputActive={this.state.heroPanelInputFocused}
                                searchBarRef="heroSearchInput"
                                placeholder={this.props.placeholder || "Enter hero name..."}
@@ -119,7 +119,7 @@ var HeroPanel = React.createClass({
                     />
                     { this.getAffinityFilters() }
                 </div>
-                <div className="list-wrapper">
+                <div className="heroes">
                     <ul>
                         <FlipMove>
                             { this.getHeroes() }

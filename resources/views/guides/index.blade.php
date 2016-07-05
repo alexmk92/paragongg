@@ -3,6 +3,7 @@
     <script type="text/javascript">
         var GUIDES = {!! json_encode($guides) !!};
         var HEROES = {!! json_encode($heroes) !!};
+        var HERO   = {!! json_encode($hero) !!};
     </script>
 @endsection
 @section('body')

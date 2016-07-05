@@ -14,6 +14,12 @@ var SearchBar = React.createClass({
             this.props.onSearchTermChanged(value);
         }
     },
+    getLabel: function() {
+        if(this.props.label) {
+            return <label>{ this.props.label }</label>
+        }
+        return false;
+    },
     render : function() {
         var searchTermChanged = Helpers.debounce(function() {
             this.updateSearchTerm();
@@ -21,7 +27,7 @@ var SearchBar = React.createClass({
         var isActiveClass = typeof this.props.isInputActive !== 'undefined' && this.props.isInputActive === true ? ' input-active' : '';
         return (
             <div className="search-bar-wrapper">
-                <label>{ this.props.label }</label>
+                { this.getLabel() }
                 <input placeholder={this.props.placeholder || "Enter search term..."}
                        ref="searchBarInput"
                        className={"search-bar " + isActiveClass}

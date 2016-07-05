@@ -19,16 +19,18 @@ class GuideController extends Controller
     use GeneratesShortcodes;
 
     // Create
-    public function index()
+    public function index($hero = null)
     {
         $guides = Guide::where('status', 'published')
             ->join('users', 'users.id', '=', 'guides.user_id')
             ->select('guides.id', 'guides.type', 'guides.title', 'user_id', 'guides.created_at', 'guides.updated_at', 'guides.views', 'guides.votes', 'hero_code', 'guides.slug', 'guides.featured', 'users.username')
             ->get();
-        $heroes = Hero::select('name', 'code', 'image', 'affinities')
+        $heroes = Hero::select('name', 'slug', 'code', 'image', 'affinities')
             ->get();
 
-        return view('guides.index', compact('guides', 'heroes'));
+        if($hero) $hero = Hero::where('slug', $hero)->firstOrFail();
+
+        return view('guides.index', compact('guides', 'heroes', 'hero'));
     }
 
     // Create
