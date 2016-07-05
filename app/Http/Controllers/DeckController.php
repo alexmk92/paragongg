@@ -22,10 +22,13 @@ class DeckController extends Controller
     public function index()
     {
         $skip = 0;
-        $take = 3;
+        $take = 10;
 
         if(isset($_GET['skip'])) $skip = $_GET['skip'];
         if(isset($_GET['take'])) $take = $_GET['take'];
+
+        $heroes = Hero::select('name', 'code', 'image', 'affinities')
+            ->get();
 
         $decks = Deck::orderBy('updated_at', 'desc')
             ->skip($skip)
@@ -94,7 +97,9 @@ class DeckController extends Controller
             // Finally sorted the collection
             $deck->cards = $sortedCards;
         }
-        return view('decks.index')->with('decks', $decks);
+        return view('decks.index')
+            ->with('decks', $decks)
+            ->with('heroes', $heroes);
     }
 
     // Create

@@ -12,12 +12,61 @@ var TabPanel  = Tabbable.TabPanel;
 var GuidesFeed = React.createClass({
     getInitialState: function() {
         return {
-            guides : this.props.guides,
-            heroes : this.props.heroes
+            heroes : this.props.heroes,
+            selectedType: 'featured',
+            take: 1,
+            guides: {
+                featured: {
+                    guides : this.props.guides,
+                    skip : 5,
+                    fetching: false,
+                    endOfPage: false
+                },
+                updated: {
+                    guides : this.props.guides,
+                    skip : 5,
+                    fetching: false,
+                    endOfPage: false
+                },
+                rated: {
+                    guides : this.props.guides,
+                    skip : 5,
+                    fetching: false,
+                    endOfPage: false
+                },
+                views: {
+                    guides : this.props.guides,
+                    skip : 5,
+                    fetching: false,
+                    endOfPage: false
+                },
+                newest: {
+                    guides : this.props.guides,
+                    skip : 5,
+                    fetching: false,
+                    endOfPage: false
+                }
+            }
         }
     },
     shouldComponentUpdate: function(nextProps, nextState) {
+        if(nextState.guides[this.state.selectedType].guides.length !== this.state.guides[this.state.selectedType].guides.length) return true;
         return nextState.heroes !== this.state.heroes;
+    },
+    componentWillMount: function() {
+        // Bind scroll event
+        var hasScrollbar = window.innerWidth > document.documentElement.clientWidth;
+        if(hasScrollbar) window.addEventListener('scroll', this.handleScroll);
+        else window.addEventListener('wheel', this.handleScroll);
+    },
+    handleScroll: function() {
+        var hasScrollbar = window.innerWidth > document.documentElement.clientWidth;
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight || !hasScrollbar) {
+            this.getResults();
+        }
+    },
+    updateSelectedType: function(type) {
+        this.setState({ selectedType: type });
     },
     onHeroSelected : function(newHero) {
         var newHeroes = [];
@@ -29,39 +78,62 @@ var GuidesFeed = React.createClass({
     heroesListUpdated: function(newHeroes) {
         this.setState({ heroes : newHeroes });
     },
+    getResults: function() {
+        var endOfPage = this.state.guides[this.state.selectedType].endOfPage;
+        var fetching = this.state.guides[this.state.selectedType].fetching;
+        if(!endOfPage && !fetching) {
+            var skip = this.state.guides[this.state.selectedType].skip;
+            Helpers.ajax({
+                type: 'GET',
+                url: '/api/v1/guides?filter=' + this.state.selectedType + '&skip=' + skip + '&take=' + this.state.take,
+                cache : false
+            }).then(function(guidesList) {
+                if(guidesList.data.length === 0) {
+                    var guides = JSON.parse(JSON.stringify(this.state.guides));
+                    guides.endOfPage = true;
+                    this.setState({ guides : guides });
+                    return;
+                }
+
+                var newGuides = guidesList.data.map(function(guide) {
+                    return guide;
+                });
+
+                var guides = JSON.parse(JSON.stringify(this.state.guides));
+                guides[this.state.selectedType].fetching = false;
+                guides[this.state.selectedType].skip += 1;
+                guides[this.state.selectedType].guides = guides[this.state.selectedType].guides.concat(newGuides);
+
+                this.setState({ guides: guides });
+            }.bind(this));
+            var guides = JSON.parse(JSON.stringify(this.state.guides));
+            guides[this.state.selectedType].fetching = true;
+            this.setState({ guides: guides });
+        }
+    },
     render: function() {
         return(
             <div>
                 <HeroPanel title="Hero guides" placeholder="Search by hero name..." showAffinityFilter={false} heroes={this.props.heroes} isActive={true} onHeroSelected={this.onHeroSelected} onHeroesListUpdated={this.heroesListUpdated} />
-                <GuideResults guides={this.state.guides} heroes={this.state.heroes} />
+                <GuideResults guides={this.state.guides}
+                              heroes={this.state.heroes}
+                              onSelectedTypeChanged={this.updateSelectedType}
+                              selectedType={this.state.selectedType}
+                />
             </div>
         )
-    }
-});
-
-var HeroListItem = React.createClass({
-    render: function() {
-        return (
-            <li>
-                <a href={"/guides?hero=" +this.props.hero.slug }>
-                    <img src={ Helpers.S3URL() + "images/heroes/" + this.props.hero.code + "/" + this.props.hero.image + "/portrait_small.png" } />
-                    <span>{this.props.hero.name}</span>
-                </a>
-            </li>
-        );
     }
 });
 
 var GuideResults = React.createClass({
     getInitialState: function() {
         return {
-            heroes : this.props.heroes,
-            guides : this.props.guides
+            heroes : this.props.heroes
         }
     },
     getHero: function(code) {
         var foundHero = {};
-        this.props.heroes.some(function(hero) {
+        this.state.heroes.some(function(hero) {
             if(hero.code == code) {
                 foundHero = hero;
                 return true;
@@ -70,12 +142,24 @@ var GuideResults = React.createClass({
         });
         return foundHero;
     },
+    setSelectedType: function(index) {
+        var type = '';
+        switch(index) {
+            case 0: type = 'featured'; break;
+            case 1: type = 'updated'; break;
+            case 2: type = 'rated'; break;
+            case 3: type = 'views'; break;
+            case 4: type = 'newest'; break;
+            default: break;
+        }
+        this.props.onSelectedTypeChanged(type);
+    },
     render: function() {
         var guides = [];
-        this.state.guides.forEach(function(guide) {
+        this.props.guides[this.props.selectedType].guides.forEach(function(guide) {
             var hero = this.getHero(guide.hero_code);
-            console.log(hero);
-            guides.push(<GuidePreview key={guide.id}
+            console.log("HERO IS: ", hero);
+            guides.push(<GuidePreview key={guide.id + '_' + Helpers.uuid()}
                                       id={guide.id}
                                       slug={guide.slug}
                                       title={guide.title}
@@ -88,10 +172,9 @@ var GuideResults = React.createClass({
                                       views={guide.views}
                                       votes={guide.votes}
             />);
-        }, this);
+        }.bind(this));
         return (
-            <Tabs defaultSelected={0} expandable={false} className="padless">
-
+            <Tabs defaultSelected={0} expandable={false} className="padless" onSelectedTabUpdated={this.setSelectedType}>
                 {/* Featured */}
                 <TabPanel title="Featured">
                     {guides}
@@ -118,13 +201,6 @@ var GuideResults = React.createClass({
 });
 
 var GuidePreview = React.createClass({
-    getPortrait: function() {
-        return (
-            <PreloadImage src={"https://s3-eu-west-1.amazonaws.com/paragon.gg/images/heroes/" + this.props.hero.code + "/" + this.props.hero.image + "/portrait_small.png"}
-                          fallbackSrc="assets/images/heroes/null.png"
-            />
-        );
-    },
     gameplayOrHero: function() {
         if(this.props.hero) {
             return this.props.hero.name;
@@ -162,10 +238,13 @@ var GuidePreview = React.createClass({
         return updated_at.getTime() > created_at.getTime() ? "last updated" : "created";
     },
     render: function() {
+        console.log("PROPS IN CHILD: ", this.props);
         return(
             <a className="guide-preview cf" href={"/guides/" + this.props.id + "/" + this.props.slug}>
                 <div className="guide-hero">
-                    {this.getPortrait()}
+                    <PreloadImage src={ Helpers.S3URL() + "images/heroes/" + this.props.hero.code + "/" + this.props.hero.image + "/portrait_small.png" }
+                                  fallbackSrc="assets/images/heroes/null.png"
+                    />
                 </div>
                 <div className="guide-details">
                     <div className="title"><h3>{ this.props.title }</h3></div>

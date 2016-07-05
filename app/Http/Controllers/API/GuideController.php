@@ -12,7 +12,7 @@ class GuideController extends Controller
     public function index()
     {
         $skip = 0;
-        $take = 15;
+        $take = 1;
 
         if(isset($_GET['skip'])) $skip = $_GET['skip'];
         if(isset($_GET['take'])) $take = $_GET['take'];

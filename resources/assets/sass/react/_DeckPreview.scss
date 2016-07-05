@@ -2,19 +2,36 @@
     #wrapper {
         width: 70%;
 
-        #main-list {
+        .main-list {
             width: 100%;
-            margin-top: 30px;
 
             .deck-preview-container {
-                margin-bottom: 50px;
-                border: 1px solid $faded-line;
+                margin-bottom: 0px;
                 padding: 20px;
                 position: relative;
                 background-size: 200%;
-                background: $panel-color-dark no-repeat;
                 background-position-x: 50%;
                 background-position-y: 20%;
+                transition: all 200ms;
+
+                &:hover {
+                    background: rgba($panel-color-dark, 0.4);
+                    padding-left: 30px;
+                    //padding: 35px;
+                    color: white;
+
+                    /*
+                    .build-overview {
+                        right: 35px;
+                        top: 45px;
+                    }
+                    */
+
+                    .affinity-bar {
+                        opacity: 1.0;
+                        height: 5px;
+                    }
+                }
 
                 .stat-bar {
                     font-family: $font-condensed;
@@ -74,24 +91,23 @@
                 .badge {
                     width: auto;
                     font-size: 12px;
-                    padding: 5px 10px;
-                    border-radius: 5px;
                     color: white !important;
                     text-align: center;
                     display: inline-block;
+                    padding: 5px 10px;
                     font-weight: 400;
                     font-family: Roboto;
                     margin-right: 9px;
                     position: relative;
 
                     &.updated {
-                        background: $color-intellect;
+                        background: $faded-line;
                     }
                     &.featured {
-                        background: $color-corruption;
+                        background: $secondary-highlight;
                     }
                     &.new {
-                        background: $green;
+                        background: $primary-highlight;
                     }
                 }
 
@@ -100,6 +116,7 @@
                     right: 20px;
                     top: 30px;
                     z-index: 5;
+                    transition: all 200ms ease-in-out;
 
                     .large-text {
                         font-size: 1.8em;
@@ -157,6 +174,7 @@
                     bottom: -1px;
                     left: 0;
                     z-index: 5;
+                    opacity: 0.4;
                     transition: all 200ms ease-in-out;
 
                     .bar {
@@ -226,11 +244,11 @@
                         margin: 25px 0px 10px 0px;
                         overflow: hidden;
                         max-height: 90px;
-                        background: rgba(0, 0, 0, 0.4);
+                        background: rgba(0, 0, 0, 0.05);
+                        border: 1px solid rgba(0, 0, 0, 0.09);
 
                         li {
                             vertical-align: top;
-                            border: 1px solid $panel-color;
                             width: 40px;
                             height: 90px;
                             display: inline-block;
@@ -251,10 +269,23 @@
 
                             .card-preview-container {
                                 height: 90px;
+                                overflow: hidden;
                                 background-size: 128px;
                                 background-repeat: no-repeat;
                                 background-position-x: 50%;
                                 background-position-y: 20%;
+
+                                .preload-container {
+                                    img {
+                                        max-width: 250%;
+                                        max-height: 250%;
+                                        left: -75%;
+                                        &.place-holder {
+
+                                        }
+                                    }
+                                }
+
                             }
 
                             .card-quantity {

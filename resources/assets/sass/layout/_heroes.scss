@@ -146,8 +146,21 @@
             }
         }
     }
-    .preload-container .spinner-container.hidden {
-        display: none;
+    .preload-container {
+        .spinner-container.hidden {
+            display: none;
+        }
+        img {
+            &.placeholder {
+                position: relative;
+                display: block;
+                top: -76px;
+
+                &.hidden {
+                    display: none;
+                }
+            }
+        }
     }
     img {
         width: 76px;
