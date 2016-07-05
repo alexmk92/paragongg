@@ -26,11 +26,12 @@ var HeroPreview = React.createClass({
                             {this.getAffinities()}
                         </div>
                         <span className="title">{this.props.hero.name}</span>
-                        <span className="winrate">65% Win Rate</span>
+                        {/*<span className="winrate">65% Win Rate</span>*/}
+                        <span className="type">{this.props.hero.type}</span>
                     </div>
-                    <div className="winrate-wrapper">
+                    {/*<div className="winrate-wrapper">
                         <div className="winrate-bar"></div>
-                    </div>
+                    </div>*/}
                 </li>
             </a>
         )

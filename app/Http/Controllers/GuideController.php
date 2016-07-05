@@ -106,72 +106,72 @@ class GuideController extends Controller
         $guide  = Guide::findOrFail($id);
         $thread = findOrCreateThread($request->path());
         $deck   = null;
-        
-        if($guide->deck) {
-            $deck = Deck::find($guide->deck);
-        }
+
         $guide->timestamps = false;
         $guide->increment('views');
         $guide->timestamps = true;
 
-        $deck->hero = Hero::where('code', $deck->hero)->firstOrFail();
-        $uniqueCards = Card::whereIn('code', $deck->cards)->get();
+        if($guide->deck) {
+            $deck = Deck::find($guide->deck);
+            $deck->hero = Hero::where('code', $deck->hero)->firstOrFail();
+            $uniqueCards = Card::whereIn('code', $deck->cards)->get();
 
-        // Sort the cards to quantity, we set the totalCards before as this
-        // will directly modify the state of the cards array, removing some
-        // elements in exchange for adding a "quantity" key for each obj.
-        $sortedCards = [
-            "prime" => [],
-            "equipment" => [],
-            "upgrades" => [],
-            "all" => []
-        ];
+            // Sort the cards to quantity, we set the totalCards before as this
+            // will directly modify the state of the cards array, removing some
+            // elements in exchange for adding a "quantity" key for each obj.
+            $sortedCards = [
+                "prime" => [],
+                "equipment" => [],
+                "upgrades" => [],
+                "all" => []
+            ];
 
-        foreach($uniqueCards as $card) {
-            switch($card->type) {
-                case "Prime": $key = "prime" ; break;
-                case "Active": $key = "equipment"; break;
-                case "Passive": $key = "equipment"; break;
-                case "Upgrade": $key = "upgrades"; break;
-                default : break;
-            }
+            foreach($uniqueCards as $card) {
+                switch($card->type) {
+                    case "Prime": $key = "prime" ; break;
+                    case "Active": $key = "equipment"; break;
+                    case "Passive": $key = "equipment"; break;
+                    case "Upgrade": $key = "upgrades"; break;
+                    default : break;
+                }
 
-            if(count($sortedCards[$key]) == 0){
-                $card->quantity = 0;
-                array_push($sortedCards[$key], $card);
-            } else {
-                if(!isset($card->quantity)) {
+                if(count($sortedCards[$key]) == 0){
                     $card->quantity = 0;
-                }
-                array_push($sortedCards[$key], $card);
-            }
-        }
-        // Find a better way to do this so we get the quants
-        foreach($sortedCards['prime'] as $sortedCard) {
-            foreach($deck->cards as $cardCode) {
-                if($cardCode == $sortedCard->code) {
-                    $sortedCard->quantity++;
+                    array_push($sortedCards[$key], $card);
+                } else {
+                    if(!isset($card->quantity)) {
+                        $card->quantity = 0;
+                    }
+                    array_push($sortedCards[$key], $card);
                 }
             }
-        }
-        foreach($sortedCards['equipment'] as $sortedCard) {
-            foreach($deck->cards as $cardCode) {
-                if($cardCode == $sortedCard->code) {
-                    $sortedCard->quantity++;
+            // Find a better way to do this so we get the quants
+            foreach($sortedCards['prime'] as $sortedCard) {
+                foreach($deck->cards as $cardCode) {
+                    if($cardCode == $sortedCard->code) {
+                        $sortedCard->quantity++;
+                    }
                 }
             }
-        }
-        foreach($sortedCards['upgrades'] as $sortedCard) {
-            foreach($deck->cards as $cardCode) {
-                if($cardCode == $sortedCard->code) {
-                    $sortedCard->quantity++;
+            foreach($sortedCards['equipment'] as $sortedCard) {
+                foreach($deck->cards as $cardCode) {
+                    if($cardCode == $sortedCard->code) {
+                        $sortedCard->quantity++;
+                    }
                 }
             }
-        }
-        $sortedCards["all"] = array_merge($sortedCards["equipment"], $sortedCards["upgrades"], $sortedCards["prime"]);
+            foreach($sortedCards['upgrades'] as $sortedCard) {
+                foreach($deck->cards as $cardCode) {
+                    if($cardCode == $sortedCard->code) {
+                        $sortedCard->quantity++;
+                    }
+                }
+            }
+            $sortedCards["all"] = array_merge($sortedCards["equipment"], $sortedCards["upgrades"], $sortedCards["prime"]);
 
-        // Finally sorted the collection
-        $deck->cards = $sortedCards;
+            // Finally sorted the collection
+            $deck->cards = $sortedCards;
+        }
 
         $shortcode = Shortcode::where('resource_type', 'guide')->where('resource_id', $id)->first();
         $guideBody = (new Parsedown())->text($guide->body);

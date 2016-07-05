@@ -47,6 +47,13 @@
                     margin-top: 3px;
                     color: $green;
                 }
+                .type {
+                    font-size: 13px;
+                    font-weight: 500;
+                    display: block;
+                    margin-top: 3px;
+                    color: $font-color-faded;
+                }
             }
             &:hover {
                 border: 1px solid $faded-line;

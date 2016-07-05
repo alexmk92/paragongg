@@ -1,7 +1,11 @@
 @extends('layouts/app')
 @section('body')
     <div class="article-header">
-        <img src="/assets/images/heroes/dekker/banner.jpg"/>
+        @if($guide->type == 'hero')
+            <img src="/assets/images/heroes/{{ $deck->hero->slug }}/banner.jpg"/>
+        @else
+            <img src="/assets/images/gameplay-banner.jpg"/>
+        @endif
         <div id="sidebar" class="article-sidebar panel">
             <div class="sidebox panel toc">
                 <h4>Table of Contents</h4>
@@ -29,10 +33,10 @@
         <div class="article-details">
             <time>Posted by <strong>{{ $guide->author->username }}</strong> on {{ $guide->created_at->format('jS F Y, h:i A') }}<span class="updated_at"> (Updated: {{ $guide->created_at->format('jS F Y, h:i A') }})</span></time>
         </div>
-        @if($guide->abilities != ',,,,,,,,,,,,,,')
+        @if($guide->abilities && $guide->abilities != ',,,,,,,,,,,,,,')
             @include('guides.abilityTable')
         @endif
-        @if($deck->builds)
+        @if($deck && $deck->builds)
             <h2 class="no-line">Deck builds</h2>
             <div id="deck-builds"></div>
         @endif
