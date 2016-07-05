@@ -115,6 +115,8 @@ Route::group(['prefix' => 'moderation', 'namespace' => 'Moderation', 'middleware
     Route::get('/', 'ModerationController@index');
     Route::get('/news', 'ModerationController@news');
     Route::get('/news/feature/{id}', 'ModerationController@newsFeature');
+    Route::get('/news/promote/{id}', 'ModerationController@newsPromote');
+    Route::get('/news/demote/{id}', 'ModerationController@newsDemote');
     Route::get('/guides', 'ModerationController@guides');
     Route::get('/guides/feature/{id}', 'ModerationController@guidesFeature');
     Route::get('/decks', 'ModerationController@decks');

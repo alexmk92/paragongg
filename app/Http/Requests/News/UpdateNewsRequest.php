@@ -25,7 +25,7 @@ class UpdateNewsRequest extends Request
     {
         return [
             'title'     => 'required|min:3',
-            'slug'      => 'required|unique:news,slug,'.$this->id.'|min:3|alpha_dash',
+            'slug'      => 'unique:news,slug,'.$this->id.'|min:3|alpha_dash',
             'type'      => 'required',
             'body'      => 'required|min:3',
         ];

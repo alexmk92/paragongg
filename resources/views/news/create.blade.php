@@ -24,7 +24,7 @@
                 <label><span class="required">*</span>Title</label>
                 <input name="title" type="text" placeholder="Enter the article title here" onkeyup="generateSlug(this)">
 
-                <label><span class="required">*</span>URL Slug (auto-generated)</label>
+                <label>URL Slug (if needed specifically for SEO)</label>
                 <input name="slug" id="url-slug" type="text" placeholder="e.g. my-news-title">
 
                 <label><span class="required">*</span>Article type</label>
@@ -33,7 +33,7 @@
                     <option value="feature">Feature</option>
                 </select>
 
-                <label>Article header</label>
+                <label>Article header (Please 300px height only)</label>
                 <input type="file" name="header">
 
                 <label>Article thumbnail</label>

@@ -23,7 +23,7 @@
                 <label><span class="required">*</span>Title</label>
                 <input name="title" type="text" placeholder="Enter the article title here" onkeyup="generateSlug(this)" value="{{ $news->title }}">
 
-                <label><span class="required">*</span>URL Slug (auto-generated)</label>
+                <label>URL Slug (if needed specifically for SEO)</label>
                 <input name="slug" id="url-slug" type="text" placeholder="e.g. my-news-title" value="{{ $news->slug }}">
 
                 <label><span class="required">*</span>Article type</label>

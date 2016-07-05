@@ -15,8 +15,8 @@ class NewsController extends Controller
     public function index()
     {
         //$featured = News::where('type', 'feature')->take(3)->get();
-        $featured = News::take(3)->where('featured, true')->get();
-        return view('news.index')->with('featured', $featured);
+        $featured = News::take(3)->where('featured', true)->get();
+        return view('news.index', compact('featured'));
     }
 
     // Create
@@ -33,7 +33,11 @@ class NewsController extends Controller
         $news = new News();
         $news->user_id = auth()->user()->id;
         $news->title  = $request->title;
-        $news->slug   = $request->slug;
+        if($request->has('slug')) {
+            $news->slug   = $request->slug;
+        } else {
+            $news->slug   = createSlug($news->title);
+        }
         $news->type   = $request->type;
         $news->body   = $request->body;
         if(isset($_POST['draft'])) {

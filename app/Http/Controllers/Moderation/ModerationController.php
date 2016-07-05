@@ -40,6 +40,32 @@ class ModerationController extends Controller
         return redirect()->back();
     }
 
+    public function newsPromote($id)
+    {
+        $news = News::findOrFail($id);
+
+        $news->timestamps = false;
+        $news->featured = true;
+        $news->save();
+        $news->timestamps = true;
+
+        session()->flash('notification', 'success|News promoted.');
+        return redirect()->back();
+    }
+
+    public function newsDemote($id)
+    {
+        $news = News::findOrFail($id);
+
+        $news->timestamps = false;
+        $news->featured = false;
+        $news->save();
+        $news->timestamps = true;
+
+        session()->flash('notification', 'success|News demoted.');
+        return redirect()->back();
+    }
+
     public function guides()
     {
         $guides = Guide::where('status', 'published')
