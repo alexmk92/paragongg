@@ -102,7 +102,7 @@ var HeroContainer = React.createClass({
                 <div onMouseOver={this.updateParallax} className="hero-container">
                     <div id="left-wrapper">
                         <div id="hero-stats">
-                            <HeroStats onHeroRankChanged={this.updateHeroRank} hero={ HERO } />
+                            <HeroStats onHeroRankChanged={this.updateHeroRank} heroRank={this.state.heroRank} hero={ HERO } />
                         </div>
                     </div>
                     <div id="particle-layer"></div>
