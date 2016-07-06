@@ -94,7 +94,9 @@ var HeroContainer = React.createClass({
         this.setState({ hasFallbackImage : true });
     },
     render: function() {
+        console.log(HERO);
         var modelURL = Helpers.S3URL() + "images/heroes/" + HERO.code + "/cutout.png";
+        console.log("MODEL URL IS:", modelURL);
         return(
             <div>
                 <div onMouseOver={this.updateParallax} className="hero-container">

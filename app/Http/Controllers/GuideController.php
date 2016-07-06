@@ -30,7 +30,7 @@ class GuideController extends Controller
             ->skip(0)
             ->get();
 
-        $guides['updated'] = Guide::where('status', 'published')
+        $guides['recent'] = Guide::where('status', 'published')
             ->join('users', 'users.id', '=', 'guides.user_id')
             ->select('guides.id', 'guides.type', 'guides.title', 'user_id', 'guides.created_at', 'guides.updated_at', 'guides.views', 'guides.votes', 'hero_code', 'guides.slug', 'guides.featured', 'users.username')
             ->orderBy('updated_at', 'DESC')
@@ -50,14 +50,6 @@ class GuideController extends Controller
             ->join('users', 'users.id', '=', 'guides.user_id')
             ->select('guides.id', 'guides.type', 'guides.title', 'user_id', 'guides.created_at', 'guides.updated_at', 'guides.views', 'guides.votes', 'hero_code', 'guides.slug', 'guides.featured', 'users.username')
             ->orderBy('views', 'DESC')
-            ->take(10)
-            ->skip(0)
-            ->get();
-
-        $guides['newest'] = Guide::where('status', 'published')
-            ->join('users', 'users.id', '=', 'guides.user_id')
-            ->select('guides.id', 'guides.type', 'guides.title', 'user_id', 'guides.created_at', 'guides.updated_at', 'guides.views', 'guides.votes', 'hero_code', 'guides.slug', 'guides.featured', 'users.username')
-            ->orderBy('created_at', 'DESC')
             ->take(10)
             ->skip(0)
             ->get();
