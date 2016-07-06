@@ -14,35 +14,29 @@ var GuidesFeed = React.createClass({
         return {
             heroes : this.props.heroes,
             selectedType: 'featured',
-            take: 1,
+            take: 10,
             guides: {
                 featured: {
-                    guides : this.props.guides,
-                    skip : 5,
+                    guides : this.props.guides.featured,
+                    skip : this.props.guides.featured.length,
                     fetching: false,
                     endOfPage: false
                 },
-                updated: {
-                    guides : this.props.guides,
-                    skip : 5,
+                recent: {
+                    guides : this.props.guides.recent,
+                    skip : this.props.guides.recent.length,
                     fetching: false,
                     endOfPage: false
                 },
                 rated: {
-                    guides : this.props.guides,
-                    skip : 5,
+                    guides : this.props.guides.rated,
+                    skip : this.props.guides.rated.length,
                     fetching: false,
                     endOfPage: false
                 },
                 views: {
-                    guides : this.props.guides,
-                    skip : 5,
-                    fetching: false,
-                    endOfPage: false
-                },
-                newest: {
-                    guides : this.props.guides,
-                    skip : 5,
+                    guides : this.props.guides.views,
+                    skip : this.props.guides.views.length,
                     fetching: false,
                     endOfPage: false
                 }
@@ -51,6 +45,9 @@ var GuidesFeed = React.createClass({
     },
     shouldComponentUpdate: function(nextProps, nextState) {
         if(nextState.guides[this.state.selectedType].guides.length !== this.state.guides[this.state.selectedType].guides.length) return true;
+        if(nextState.selectedType !== this.state.selectedType) return true;
+        if(nextState.guides[this.state.selectedType].fetching !== this.state.guides[this.state.selectedType].fetching) return true;
+        if(nextState.guides[this.state.selectedType].endOfPage !== this.state.guides[this.state.selectedType].endOfPage) return true;
         return nextState.heroes !== this.state.heroes;
     },
     componentWillMount: function() {
@@ -90,7 +87,7 @@ var GuidesFeed = React.createClass({
             }).then(function(guidesList) {
                 if(guidesList.data.length === 0) {
                     var guides = JSON.parse(JSON.stringify(this.state.guides));
-                    guides.endOfPage = true;
+                    guides[this.state.selectedType].endOfPage = true;
                     this.setState({ guides : guides });
                     return;
                 }
@@ -101,7 +98,7 @@ var GuidesFeed = React.createClass({
 
                 var guides = JSON.parse(JSON.stringify(this.state.guides));
                 guides[this.state.selectedType].fetching = false;
-                guides[this.state.selectedType].skip += 1;
+                guides[this.state.selectedType].skip += 10;
                 guides[this.state.selectedType].guides = guides[this.state.selectedType].guides.concat(newGuides);
 
                 this.setState({ guides: guides });
@@ -110,6 +107,12 @@ var GuidesFeed = React.createClass({
             guides[this.state.selectedType].fetching = true;
             this.setState({ guides: guides });
         }
+    },
+    renderInfiniteScrollStatus: function() {
+        var jsx = '';
+        if(this.state.guides[this.state.selectedType].fetching) jsx = <span><i className="fa fa-spinner fa-spin"></i> Fetching new results</span>;
+        if(this.state.guides[this.state.selectedType].endOfPage) jsx = <span><i className="fa fa-check"></i> You've reached the end of the page</span>;
+        return jsx;
     },
     render: function() {
         return(
@@ -120,6 +123,9 @@ var GuidesFeed = React.createClass({
                               onSelectedTypeChanged={this.updateSelectedType}
                               selectedType={this.state.selectedType}
                 />
+                <div id="infinite-scroll-status" className="infinite-scroll-end">
+                    {this.renderInfiniteScrollStatus()}
+                </div>
             </div>
         )
     }
@@ -146,10 +152,9 @@ var GuideResults = React.createClass({
         var type = '';
         switch(index) {
             case 0: type = 'featured'; break;
-            case 1: type = 'updated'; break;
+            case 1: type = 'recent'; break;
             case 2: type = 'rated'; break;
             case 3: type = 'views'; break;
-            case 4: type = 'newest'; break;
             default: break;
         }
         this.props.onSelectedTypeChanged(type);
@@ -158,7 +163,6 @@ var GuideResults = React.createClass({
         var guides = [];
         this.props.guides[this.props.selectedType].guides.forEach(function(guide) {
             var hero = this.getHero(guide.hero_code);
-            console.log("HERO IS: ", hero);
             guides.push(<GuidePreview key={guide.id + '_' + Helpers.uuid()}
                                       id={guide.id}
                                       slug={guide.slug}
@@ -180,7 +184,7 @@ var GuideResults = React.createClass({
                     {guides}
                 </TabPanel>
                 {/* Recently updated */}
-                <TabPanel title="Recently updated">
+                <TabPanel title="Most recent">
                     {guides}
                 </TabPanel>
                 {/* Top rated */}
@@ -189,10 +193,6 @@ var GuideResults = React.createClass({
                 </TabPanel>
                 {/* Most views */}
                 <TabPanel title="Most views">
-                    {guides}
-                </TabPanel>
-                {/* Newest */}
-                <TabPanel title="Newest">
                     {guides}
                 </TabPanel>
             </Tabs>
@@ -238,7 +238,6 @@ var GuidePreview = React.createClass({
         return updated_at.getTime() > created_at.getTime() ? "last updated" : "created";
     },
     render: function() {
-        console.log("PROPS IN CHILD: ", this.props);
         return(
             <a className="guide-preview cf" href={"/guides/" + this.props.id + "/" + this.props.slug}>
                 <div className="guide-hero">
