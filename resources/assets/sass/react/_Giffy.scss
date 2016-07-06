@@ -1,0 +1,23 @@
+.giffy-wrapper {
+    border: 1px solid #222;
+    opacity: 0.5;
+    width: 90%;
+    box-shadow: 0px 0px 150px 30px rgba(255,255,255,0.15);
+    min-height: 400px;
+    max-height: 400px;
+    margin: 0 auto;
+    overflow: hidden;
+    transition: all 350ms ease-in-out;
+
+    &:hover {
+        opacity: 0.6;
+        border: 1px solid $faded-line;
+        cursor: pointer;
+    }
+
+    &.playing {
+        opacity: 1.0;
+        border: 1px solid $faded-line;
+        box-shadow: 0px 0px 150px 30px rgba(219, 189, 104, 0.15);
+    }
+}
