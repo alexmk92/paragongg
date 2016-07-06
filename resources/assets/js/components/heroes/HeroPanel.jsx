@@ -28,9 +28,7 @@ var HeroPanel = React.createClass({
         }
     },
     componentDidUpdate: function() {
-        console.log(this.props);
         if(typeof this.props.onHeroesListUpdated !== "undefined") {
-            console.log("UPDATING LIST");
             this.props.onHeroesListUpdated(this.state.heroes);
         }
     },

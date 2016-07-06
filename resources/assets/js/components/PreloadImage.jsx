@@ -19,6 +19,7 @@ var PreloadImage = React.createClass({
         }
     },
     renderFallback: function() {
+        console.log("Rendering fallback");
         var fallbackFailure = this.state.initialRenderFailed === true ? true : false;
         if(!this.state.fallbackFailed && !this.state.initialRenderFailed && typeof typeof this.props.fallbackSrc !== "undefined") {
             this.setState({

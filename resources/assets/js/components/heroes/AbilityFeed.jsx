@@ -1,12 +1,8 @@
 var React = require('react');
 var Helpers = require('../../helpers');
+var Giffy = require('../Giffy');
 
 var AbilityItem = React.createClass({
-    getInitialState: function() {
-        return {
-            playing: false
-        }
-    },
     getFormattedDescription: function(description) {
         description = description.split(" ");
 
@@ -79,23 +75,53 @@ var AbilityItem = React.createClass({
         }
         return '';
     },
+    renderAbilityButton: function(ability, index) {
+        var button = "";
+
+        if(ability.type.toUpperCase() === 'ULTIMATE') {
+            button = <span>R / <img src="/assets/images/icons/ps4-triangle.png" alt="ultimate ps4"/></span>
+        } else if(ability.type.toUpperCase() === "PRIMARY") {
+            button = <span>LMB / <img src="/assets/images/icons/ps4-r2.png" alt="ultimate "/></span>
+        } else if(ability.type.toUpperCase() === "NORMAL") {
+            switch(index) {
+                case 0:
+                    button = <span>RMB / <img src="/assets/images/icons/ps4-r1.png" alt="ultimate "/></span>;
+                    break;
+                case 1:
+                    button = <span>Q / <img src="/assets/images/icons/ps4-square.png" alt="ultimate "/></span>;
+                    break;
+                case 2:
+                    button = <span>E / <img src="/assets/images/icons/ps4-circle.png" alt="ultimate "/></span>;
+                    break;
+                default: break;
+            }
+        }
+
+        return <span className="ability-button">{ button }</span>
+    },
+    abilitySelected: function() {
+        this.props.onSelectedAbilityChanged(this.props.ability);
+    },
     render: function() {
         if(this.props.ability) {
             var ability = this.props.ability;
-            console.log(ability);
             return (
                 <div className="ability-container">
                     <div className="video-wrapper">
-                        <div className="video-container">
-                            <div className="gfyitem" data-title="false" data-autoplay="false" data-controls="true" data-expand="false" data-id="UnlinedEqualAuklet" ></div>
-                        </div>
+                        <Giffy videoSrc={ability.video}
+                               isPlaying={this.props.selectedAbility === ability}
+                               onItemSelected={this.abilitySelected}
+                               singlePlayback={true}
+                               hasControls={false}
+                               videoIndex={this.props.index}
+                        />
                     </div>
                     <div className="text-wrapper">
                         <div className="text-container">
                             <h3>
                                 <img className="ability-icon" src={ability.images.icon} />
                                 <div className="ability-title">
-                                    <span className="ability-button">Ability button here</span>
+                                    { this.renderAbilityButton(ability, this.props.index-1) }
                                     <span className="ability-name">{ ability.name }</span>
                                     { this.renderCooldown(ability) }
                                 </div>
@@ -110,10 +136,19 @@ var AbilityItem = React.createClass({
 });
 
 var AbilityFeed = React.createClass({
+    getInitialState: function() {
+        return {
+            selectedAbility: null
+        }
+    },
+    setSelectedAbility: function(ability) {
+        var newAbility = ability === this.state.selectedAbility ? null : ability;
+        this.setState({ selectedAbility : newAbility });
+    },
     render: function() {
         var abilities = this.props.abilities.map(function(ability, i) {
             return (
-                <AbilityItem key={ ability.name } ability={ ability } index={i} />
+                <AbilityItem key={ ability.name } ability={ ability } index={i} onSelectedAbilityChanged={this.setSelectedAbility} selectedAbility={this.state.selectedAbility} />
             );
         }.bind(this));
         return (

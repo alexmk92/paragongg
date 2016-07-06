@@ -49,8 +49,19 @@
                         font-family: "Roboto Condensed";
                         font-weight: 100;
                         color: $font-color-faded;
-                        font-size: 14px;
-                        line-height: 16px;
+                        font-size: 16px;
+                        line-height: 24px;
+
+                        span {
+                            color: $quarternary-highlight;
+                            display: inline-block;
+                        }
+                        img {
+                            width: 24px;
+                            vertical-align: middle;
+                            display: inline-block;
+                            margin-top: -3px;
+                        }
                     }
                     &.ability-cooldown {
                         font-size: 16px;
@@ -96,12 +107,22 @@
                 display: table-cell;
                 vertical-align: middle;
 
-                div {
+                .giffy-wrapper {
                     border: 1px solid #222;
                     opacity: 0.5;
                     width: 90%;
                     box-shadow: 0px 0px 150px 30px rgba(255,255,255,0.15);
+                    min-height: 400px;
                     max-height: 400px;
+                    margin: 0 auto;
+                    overflow: hidden;
+                    transition: all 350ms ease-in-out;
+
+                    &.playing {
+                        opacity: 1.0;
+                        border: 1px solid $faded-line;
+                        box-shadow: 0px 0px 150px 30px rgba(219, 189, 104, 0.15);
+                    }
                 }
             }
         }

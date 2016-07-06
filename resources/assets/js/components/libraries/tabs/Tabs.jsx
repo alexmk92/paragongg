@@ -27,7 +27,6 @@ var Tabs = React.createClass({
         if(this.state.tabCount > 0) {
 
             if(Object.prototype.toString.call(this.state.tabs) === '[object Array]') {
-                console.log("Is an array");
                 this.state.tabs.forEach(function(tab, i) {
                     tabs.push(<Tab key={"tab_" + i}
                                    reactKey={i}
