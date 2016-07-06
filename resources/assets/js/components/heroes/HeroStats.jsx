@@ -10,56 +10,16 @@ var HeroStats = React.createClass({
     getInitialState: function() {
         return {
             multiplier : 1,
-            stats : [
-                {
-                    icon : "max-health",
-                    label : "MAX HEALTH",
-                    value : 1900,
-                    scaling : 100
-                },
-                {
-                    icon : "health-regeneration",
-                    label : "HEALTH REGENERATION",
-                    value : "3.8/s",
-                    scaling : null
-                },
-                {
-                    icon : "max-mana",
-                    label : "MAX MANA",
-                    value : 561.2,
-                    scaling : 100
-                },
-                {
-                    icon : "mana-regeneration",
-                    label : "MANA REGENERATION",
-                    value : "2.25/s",
-                    scaling : null
-                },
-                {
-                    icon : "energy-armor",
-                    label : "ENERGY ARMOR",
-                    value : 14.4,
-                    scaling : 2.2
-                },
-                {
-                    icon : "physical-armor",
-                    label : "PHYSICAL ARMOR",
-                    value : 13.8,
-                    scaling : 2.2
-                },
-                {
-                    icon : "movement-speed",
-                    label : "MAX MOVEMENT SPEED",
-                    value : 420,
-                    scaling : null
-                }
-            ]
+            statistics : []
         }
     },
     componentDidMount: function() {
         this.sliderChanged(1);
-
         particlesJS('particle-layer', ParticleTheme.sparks());
+    },
+    componentWillMount: function() {
+        var baseStats = this.getBaseStats(Helpers.getAllStatistics());
+        this.setState({ statistics: baseStats });
     },
     sliderChanged: function(value) {
         var domNode = "<p>Rank<br/><span>" + value + "</span></p>";
@@ -90,15 +50,49 @@ var HeroStats = React.createClass({
             </div>
         );
     },
+    getBaseStats: function(allStats) {
+        // Loop over base stats here too...
+        if(this.props.hero.baseStats) {
+            allStats.forEach(function(baseStat) {
+                if(this.props.hero.baseStats[baseStat.statRef]) {
+                    var heroStat = this.props.hero.baseStats[baseStat.statRef];
+                    baseStat.scaling = heroStat.scaling;
+                    baseStat.value = (heroStat.value + (this.props.heroRank * heroStat.scaling));
+                }
+            }.bind(this));
+        }
+        return allStats;
+    },
+    renderStatistics: function() {
+        var statistics = [];
+        this.state.statistics.forEach(function(stat) {
+            console.log("STAT:", stat);
+            if(stat.ref === "MAXHEALTH" || stat.ref === "MAXENERGY" || stat.ref === "HEALTHREGENRATE"
+                || stat.ref === "ENERGYREGENRATE" || stat.ref === "ENERGYRESISTANCERATING" || stat.ref === "PHYSICALRESISTANCERATING"
+                || stat.ref === "MAXMOVEMENTSPEED" || stat.ref === "ATTACKRATING") {
+                var value = isNaN(stat.value) ? stat.value : Helpers.delimitNumbers((stat.value + ( this.props.heroRank * stat.scaling)).toFixed(1));
+                value += (stat.multiplier === 100 ? '%' : '');
+                var scaling = (stat.scaling !== null && stat.scaling > 0) ?
+                    <span className="scaling">({ stat.scaling } per level)</span> : "";
+                statistics.push(
+                    <li key={stat.label}>
+                        <label>{ stat.label }</label>
+                        <span><i className={"pgg pgg-" + stat.icon }></i> { value } { scaling }</span>
+                    </li>
+                );
+            }
+        }.bind(this));
+        return statistics;
+    },
     render: function() {
 
-        var _this = this;
         var affinities = this.props.hero.affinities.map(function(affinity) {
             return(
                   <i className={"affinity-color pgg pgg-affinity-" + affinity.toLowerCase()} title={"Affinity: " + affinity }></i>
             );
         });
 
+        /*
         var statistics = this.state.stats.map(function(stat) {
             var scale = _this.state.multiplier === 1 ? 0 : stat.scaling;
             var value = isNaN(stat.value) ? stat.value : Helpers.delimitNumbers((stat.value + ( scale * _this.state.multiplier)).toFixed(1));
@@ -110,6 +104,8 @@ var HeroStats = React.createClass({
                 </li>
             );
         });
+        */
+
         return (
             <div>
                 <span className="breadcrumb">
@@ -131,7 +127,7 @@ var HeroStats = React.createClass({
                 </div>
 
                 <ul id="stat-container">
-                    { statistics }
+                    { this.renderStatistics() }
                 </ul>
             </div>
         );

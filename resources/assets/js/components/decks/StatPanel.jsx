@@ -5,7 +5,7 @@ var Helpers = require('../../helpers');
 var StatPanel = React.createClass({
     getInitialState: function() {
         return {
-            statistics : this.props.statistics || Helpers.getAllStatistics()
+            statistics : Helpers.getAllStatistics()
         };
     },
     componentDidMount: function() {
