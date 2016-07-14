@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Deck;
 use App\Http\Requests;
 use App\Http\Requests\Account\UpdatePasswordRequest;
 use App\Http\Requests\Account\UpdateProfileRequest;
@@ -90,7 +91,8 @@ class AccountController extends Controller
     public function decks()
     {
         $user = Auth::user();
-        return view('account.decks')->with('user', $user);
+        $decks = Deck::where('user_id', $user->id)->get();
+        return view('account.decks', compact('user', 'decks'));
     }
 
     public function getDecks()
