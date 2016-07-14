@@ -117,7 +117,7 @@ var GuidesFeed = React.createClass({
     render: function() {
         return(
             <div>
-                <HeroPanel title="Hero guides" placeholder="Search by hero name..." showAffinityFilter={false} heroes={this.props.heroes} isActive={true} onHeroSelected={this.onHeroSelected} onHeroesListUpdated={this.heroesListUpdated} />
+                <HeroPanel title="Hero guides" placeholder="Search by hero name..." showAffinityFilter={false} heroes={this.props.heroes} isActive={true} onHeroSelected={this.onHeroSelected} onHeroesListUpdated={this.heroesListUpdated} linkType="guides"/>
                 <GuideResults guides={this.state.guides}
                               heroes={this.state.heroes}
                               onSelectedTypeChanged={this.updateSelectedType}

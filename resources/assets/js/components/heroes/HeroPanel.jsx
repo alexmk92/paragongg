@@ -78,13 +78,20 @@ var HeroPanel = React.createClass({
     selectedHero: function(hero) {
         this.props.onHeroSelected(hero);
     },
+    getLink: function (hero) {
+        if(this.props.linkType != null) {
+            if(this.props.linkType == "guides") {
+                return "/guides/" + hero.slug
+            }
+        }
+    },
     getHeroes: function() {
         var heroes = [];
         this.props.heroes.forEach(function(hero) {
             if(this.shouldBeVisible(hero)) {
                 heroes.push(
                     <li key={"hero_panel_" + hero.name} onClick={this.selectedHero.bind(this, hero)}>
-                        <a href={"/guides/" + hero.slug }>
+                        <a href={ this.getLink(hero) }>
                             <PreloadImage src={ Helpers.S3URL() + "images/heroes/" + hero.code + "/" + hero.image + "/portrait_small.png" }
                                           placeholderSrc="/assets/images/heroes/null.png"
                             />
