@@ -114,7 +114,7 @@ var HeroPanel = React.createClass({
     },
     render: function() {
         return (
-            <div id="heroes-filter" className={this.props.isActive ? " visible " : ""}>
+            <div id="heroes-filter" className={this.props.isActive ? "" : " hidden "}>
                 <div className="header">
                     <span className="heading">{ this.props.title || "Hero name" }</span>
                     <SearchBar isInputActive={this.state.heroPanelInputFocused}

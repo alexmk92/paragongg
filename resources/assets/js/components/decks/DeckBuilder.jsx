@@ -1025,11 +1025,11 @@ var DeckBuilder = React.createClass({
                             </div>
                             <div className="title-container">
                                 <span className="breadcrumb">Building a <strong>{ this.state.selectedHero.name }</strong> deck</span>
-                                <textarea onChange={setTitle} className="h2" placeholder="Enter deck name..." ref="deckNameInput"></textarea>
+                                <input type="text" onChange={setTitle} className="h2" placeholder="Enter deck name..." ref="deckNameInput"/>
                             </div>
                         </div>
                         <HeroPanel title="Select a hero" showAffinityFilter={false} heroes={HEROES} isActive={this.state.heroPanelActive} onHeroSelected={this.onHeroPanelSelectedHero} />
-                        <textarea onChange={setDescription} className={"p " + (!this.state.heroPanelActive ? "-pull-up" : "") } ref="deckDescriptionInput" placeholder="Enter a short description about your deck, what team compositions might you use this deck against? Under what situations would you use the different builds?">
+                        <textarea onChange={setDescription} className="p" ref="deckDescriptionInput" placeholder="Enter a short description about your deck, what team compositions might you use this deck against? Under what situations would you use the different builds?">
                         </textarea>
                         <div id="cards-feed" className={ this.state.showCardSection ? "" : "hidden" }>
                             <CardsFeed forceRedraw={true}
