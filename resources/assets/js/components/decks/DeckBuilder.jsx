@@ -38,7 +38,33 @@ var DeckBuilder = React.createClass({
             activeTab: Helpers.isClientMobile() ? -1 : 0
         }
     },
+    componentWillMount: function() {
+        if(Helpers.isClientMobile()) {
+            this.setState({ activeTab: -1 })
+        }
+    },
     componentDidMount: function() {
+        if(typeof CURRENT_DECK !== "undefined" && CURRENT_DECK) {
+            var newBuilds = this.getCardsForBuild(CURRENT_DECK.builds);
+            console.log("NEW BUILDS IS: ", newBuilds);
+            var titleField = this.refs.deckNameInput;
+            titleField.value = CURRENT_DECK.title;
+            var descriptionField = this.refs.deckDescriptionInput;
+            descriptionField.value = CURRENT_DECK.description;
+            var newSelectedBuild = newBuilds.length > 0 ? newBuilds[0] : null;
+            this.setState({
+                title : CURRENT_DECK.title,
+                selectedHero : CURRENT_DECK.hero,
+                heroPanelActive: false,
+                showCardSection: true,
+                affinities: this.getAffinities(CURRENT_DECK.hero),
+                deck: CURRENT_DECK.cards.all,
+                builds: newBuilds,
+                selectedBuild: newSelectedBuild,
+                playFlashAnimation: false,
+                playFlashTabAnimation: false
+            })
+        }
         if(!Helpers.isClientMobile()) this.refs.deckNameInput.focus();
 
         this.lastDeletedCard = null;
@@ -46,8 +72,21 @@ var DeckBuilder = React.createClass({
 
         window.addEventListener("resize", this.updateViewForDimensions);
 
+        // HANDLE STICKY BAR
+        /*
+         var sidebar = document.querySelector("#sidebar");
+         if(sidebar) {
+         sidebar.addEventListener("mouseleave", function() {
+         document.body.className = "";
+         });
+         sidebar.addEventListener("scroll", function() {
+         document.body.className = "no-scroll";
+         });
+         }
+         */
+
         var textareaA = document.querySelector('textarea.h2');
-        var textareaB = document.querySelector('textarea.deck-description');
+        var textareaB = document.querySelector('textarea.p');
         textareaA.addEventListener('keydown', autosize);
         function autosize(){
             var el = this;
@@ -70,10 +109,34 @@ var DeckBuilder = React.createClass({
         this.notificationPanel.initialiseNotifications();
         this.updateViewForDimensions();
     },
-    componentWillMount: function() {
-        if(Helpers.isClientMobile()) {
-            this.setState({ activeTab: -1 })
-        }
+    getCardsForBuild: function(builds) {
+        return builds.map(function(build) {
+            build.slots = build.slots.map(function(slot) {
+                if(slot.card) {
+                    slot.card = this.getCardByCode(slot.card);
+                    slot.upgrades = slot.upgrades.map(function(upgradeSlot) {
+                        if(upgradeSlot.card) {
+                            upgradeSlot.card = this.getCardByCode(upgradeSlot.card);
+                        }
+                        return upgradeSlot;
+                    }.bind(this));
+                }
+                return slot;
+            }.bind(this));
+            build.code = Helpers.uuid(); // tmp code to identify the selected build, this does not get saved
+            return build;
+        }.bind(this));
+    },
+    getCardByCode: function(cardCode) {
+        var cardToReturn = null;
+        CARDS.allCards.some(function(card) {
+            if(card.code === cardCode) {
+                cardToReturn = card;
+                return true;
+            }
+            return false;
+        });
+        return cardToReturn;
     },
     componentDidUpdate: function() {
         this.hideTooltip();
@@ -141,7 +204,12 @@ var DeckBuilder = React.createClass({
             };
 
             var json = JSON.stringify(deckAndBuilds);
-            Helpers.post("/decks/create", { data : json });
+
+            if(typeof CURRENT_DECK !== "undefined" && CURRENT_DECK) {
+                Helpers.post("/decks/edit/" + CURRENT_DECK._id, { data : json });
+            } else {
+                Helpers.post("/decks/create", { data : json });
+            }
         }
     },
     updateViewForDimensions: function() {
@@ -472,7 +540,8 @@ var DeckBuilder = React.createClass({
                 var shouldHideCard = false;
                 var className = "";
                 var childClassName = "";
-                if(this.state.lastSelectedCard.code === card.code && this.state.playFlashAnimation) {
+
+                if(this.state.lastSelectedCard && (this.state.lastSelectedCard.code === card.code && this.state.playFlashAnimation)) {
                     className += "pulse-card-outer";
                     childClassName += "pulse-card-inner";
                 }
@@ -769,6 +838,7 @@ var DeckBuilder = React.createClass({
         this.setState({
             activeTab : index,
             addedCard: false,
+            selectedBuild: showBuildsPanel ? this.state.selectedBuild : null,
             selectedCard : selectedCard,
             playFlashAnimation: false,
             playFlashTabAnimation: flashTab,
@@ -909,6 +979,15 @@ var DeckBuilder = React.createClass({
             this.setState({ description : value });
         }
     },
+    renderCostCurve: function() {
+        if(this.state.deck.length > 0) {
+            return (
+                <div className="sidebox panel">
+                    <DeckSidebarCostCurve animateChart={false} deck={this.state.deck} />
+                </div>
+            );
+        }
+    },
     isDeckValid: function() {
         return this.state.title !== "" && this.state.selectedHero !== null && this.state.deck.length > 0;
     },
@@ -994,9 +1073,7 @@ var DeckBuilder = React.createClass({
                             </div>
                         </div>
                     </div>
-                    <div className="sidebox panel">
-                        <DeckSidebarCostCurve animateChart={false} deck={this.state.deck} />
-                    </div>
+                    {this.renderCostCurve()}
                 </div>
                 <div className={"deck-builder wrapper " + (this.state.isBuildsPanelShowing ? "hidden" : "") + buildClass}>
                     <div className="content-wrapper">
@@ -1012,14 +1089,11 @@ var DeckBuilder = React.createClass({
                             </div>
                             <div className="title-container">
                                 <span className="breadcrumb">Building a <strong>{ this.state.selectedHero.name }</strong> deck</span>
-                                <input type="text" onChange={setTitle} className="h2" placeholder="Enter deck name..." ref="deckNameInput"/>
+                                <textarea onChange={setTitle} className="h2" placeholder="Enter deck name..." defaultValue={this.state.title} ref="deckNameInput"></textarea>
                             </div>
                         </div>
                         <HeroPanel title="Select a hero" showAffinityFilter={false} heroes={HEROES} isActive={this.state.heroPanelActive} onHeroSelected={this.onHeroPanelSelectedHero} />
-                        <textarea onChange={setDescription}
-                                  className={this.state.heroPanelActive ? "p deck-description hidden" : "p deck-description"}
-                                  ref="deckDescriptionInput"
-                                  placeholder="Enter a short description about your deck, what team compositions might you use this deck against? Under what situations would you use the different builds?">
+                        <textarea onChange={setDescription} className={"p " + (!this.state.heroPanelActive ? "-pull-up" : "") } ref="deckDescriptionInput" placeholder="Enter a short description about your deck, what team compositions might you use this deck against? Under what situations would you use the different builds?">
                         </textarea>
                         <div id="cards-feed" className={ this.state.showCardSection ? "" : "hidden" }>
                             <CardsFeed forceRedraw={true}

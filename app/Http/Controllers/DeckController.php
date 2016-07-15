@@ -260,15 +260,100 @@ class DeckController extends Controller
     // Edit
     public function edit($id)
     {
-        $deck = Deck::findOrFail($id);
-        return view('decks.edit')->with('deck', $deck);
+        $heroes = Hero::select('affinities', 'code', 'name', 'slug', 'image', 'images', 'baseStats')->orderBy('name', 'asc')->get();
+        $cards = app('App\Http\Controllers\CardController')->getCards();
+        $currentDeck = Deck::findOrFail($id);
+        $userId = Auth::user() ? Auth::user()->id : "null";
+
+        // pass back a dummy object for now
+        $currentDeck->hero = Hero::where('code', $currentDeck->hero)->firstOrFail();
+        $uniqueCards = Card::whereIn('code', $currentDeck->cards)->get();
+
+        // Sort the cards to quantity, we set the totalCards before as this
+        // will directly modify the state of the cards array, removing some
+        // elements in exchange for adding a "quantity" key for each obj.
+        $sortedCards = [
+            "prime" => [],
+            "equipment" => [],
+            "upgrades" => [],
+            "all" => []
+        ];
+
+        foreach($uniqueCards as $card) {
+            switch($card->type) {
+                case "Prime": $key = "prime" ; break;
+                case "Active": $key = "equipment"; break;
+                case "Passive": $key = "equipment"; break;
+                case "Upgrade": $key = "upgrades"; break;
+                default : break;
+            }
+
+            if(count($sortedCards[$key]) == 0){
+                $card->quantity = 0;
+                array_push($sortedCards[$key], $card);
+            } else {
+                if(!isset($card->quantity)) {
+                    $card->quantity = 0;
+                }
+                array_push($sortedCards[$key], $card);
+            }
+        }
+        // Find a better way to do this so we get the quants
+        foreach($sortedCards['prime'] as $sortedCard) {
+            foreach($currentDeck->cards as $cardCode) {
+                if($cardCode == $sortedCard->code) {
+                    $sortedCard->quantity++;
+                }
+            }
+        }
+        foreach($sortedCards['equipment'] as $sortedCard) {
+            foreach($currentDeck->cards as $cardCode) {
+                if($cardCode == $sortedCard->code) {
+                    $sortedCard->quantity++;
+                }
+            }
+        }
+        foreach($sortedCards['upgrades'] as $sortedCard) {
+            foreach($currentDeck->cards as $cardCode) {
+                if($cardCode == $sortedCard->code) {
+                    $sortedCard->quantity++;
+                }
+            }
+        }
+        $sortedCards["all"] = array_merge($sortedCards["equipment"], $sortedCards["upgrades"], $sortedCards["prime"]);
+
+        // Finally sorted the collection
+        $currentDeck->cards = $sortedCards;
+        
+        return view('decks.edit')->with('cards', $cards)->with('currentDeck', $currentDeck)->with('heroes', $heroes)->with('userId', $userId);
     }
 
     // Update
-    public function update($id)
+    public function update(Request $request, $id)
     {
+        $payload = json_decode($request->data);
+
+        //dd($payload);
+        $user = auth()->user();
+        // Store item
         $deck = Deck::findOrFail($id);
-        return view('decks.edit')->with('deck', $deck);
+        if($user->id === $deck->author_id) {
+            $deck->slug = createSlug($payload->title);
+            $deck->title = $payload->title;
+            $deck->description = $payload->description;
+            $deck->hero = $payload->hero;
+            $deck->cards = $payload->cards;
+            $deck->builds = $payload->builds;
+            $deck->save();
+
+            // Generate shortcode
+            $shortcode = $this->generate('/decks/'.$deck->id.'/'.$deck->slug, 'deck', $deck->id);
+
+            session()->flash('notification', 'success|Deck successfully updated.');
+            session()->flash('shortcode', $shortcode);
+        }
+
+        return redirect('/decks/edit/'.$deck->id);
     }
 
     // Delete
