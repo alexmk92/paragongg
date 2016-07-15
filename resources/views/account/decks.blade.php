@@ -17,7 +17,7 @@
                     <tr>
                         <td>{{ $deck->title }}</td>
                         <td>{{ $deck->hero->name }}</td>
-                        <td><a class="btn btn-faded" href="/moderation/heroes/feature/{{ $hero->id }}">Feature</a></td>
+                        <td></td>
                     </tr>
                 @endforeach
                 </tbody>

@@ -84,7 +84,8 @@ class AccountController extends Controller
     public function guides()
     {
         $user = Auth::user();
-        return view('account.guides')->with('user', $user);
+        $guides = Guide::where('user_id', $user->id)->get();
+        return view('account.guides', compact('user', 'guides'));
     }
 
     // List a users decks
