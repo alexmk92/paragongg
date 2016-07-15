@@ -10,6 +10,7 @@ var Build = React.createClass({
     componentWillMount: function() {
         this.tooltip = this.props.tooltip || new Tooltip();
         this.lastSelectedCard = this.props.lastSelectedCard;
+        this.lastSelectedUpgradeSlot = null;
         this.lastSelectedSlot = -1;
         this.queuedCards    = [];
         this.queuedUpgrades = [];
