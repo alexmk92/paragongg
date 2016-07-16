@@ -33,11 +33,42 @@ class DeckController extends Controller
         $heroes = Hero::select('name', 'code', 'image', 'affinities')
             ->get();
 
-        $decks = Deck::orderBy('updated_at', 'desc')
+        $decks = [];
+        $decks['featured'] = Deck::where('status', 'published')
+            ->where('featured', true)
             ->skip($skip)
             ->take($take)
             ->get();
+        $decks['featured'] = $this->sortDecks($decks['featured']);
 
+        $decks['recent'] = Deck::where('status', 'published')
+            ->orderBy('updated_at', 'DESC')
+            ->skip($skip)
+            ->take($take)
+            ->get();
+        $decks['recent'] = $this->sortDecks($decks['recent']);
+
+        $decks['rated'] = Deck::where('status', 'published')
+            ->orderBy('votes', 'DESC')
+            ->skip($skip)
+            ->take($take)
+            ->get();
+        $decks['rated'] = $this->sortDecks($decks['rated']);
+
+        $decks['views'] = Deck::where('status', 'published')
+            ->orderBy('views', 'DESC')
+            ->skip($skip)
+            ->take($take)
+            ->get();
+        $decks['views'] = $this->sortDecks($decks['views']);
+
+        return view('decks.index')
+            ->with('decks', $decks)
+            ->with('heroes', $heroes);
+    }
+
+    protected function sortDecks($decks)
+    {
         foreach($decks as $deck) {
             $uniqueCards = Card::whereIn('code', $deck->cards)->get();
             $deck->hero = Hero::where('code', $deck->hero)->first();
@@ -100,9 +131,8 @@ class DeckController extends Controller
             // Finally sorted the collection
             $deck->cards = $sortedCards;
         }
-        return view('decks.index')
-            ->with('decks', $decks)
-            ->with('heroes', $heroes);
+
+        return $decks;
     }
 
     // Create

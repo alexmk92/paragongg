@@ -1,4 +1,12 @@
 @extends('layouts/app')
+@section('scripts')
+    <script type="text/javascript">
+        var csrf = '{{ csrf_token() }}';
+        var AUTHED = '{{ Auth::check() }}';
+        var DECKS = {!! json_encode($decks) !!};
+        var HEROES = {!! json_encode($heroes) !!};
+    </script>
+@endsection
 @section('body')
     <div id="sidebar">
         <div class="sidebox panel">
@@ -15,12 +23,4 @@
         <h2>Paragon decks</h2>
         <div id="decks-feed"></div>
     </div>
-@endsection
-@section('scripts')
-<script type="text/javascript">
-    var csrf = '{{ csrf_token() }}';
-    var AUTHED = '{{ Auth::check() }}';
-    var DECKS = {!! json_encode($decks) !!};
-    var HEROES = {!! json_encode($heroes) !!};
-</script>
 @endsection
