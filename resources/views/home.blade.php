@@ -41,59 +41,62 @@
     </div>
     <div class="summary-info-wrapper cf">
         <div class="summary-info summary-info-discussions">
-            <h5>Recent discussion</h5>
-            <ul>
-                <li><a href="" class="cf">
-                    <img src="https://randomuser.me/api/portraits/women/10.jpg" class="user-avatar"/>
-                    <span class="details highlight">Question</span><span class="details">0 Responses</span>
-                    <span class="content">What is the respawn time for jungle monsters?</span>
-                </a></li>
-                <li><a href="" class="cf">
-                    <img src="https://randomuser.me/api/portraits/men/27.jpg" class="user-avatar"/>
-                    <span class="details highlight">Meta</span><span class="details">0 Responses</span>
-                    <span class="content">Is it still worth doing mid, double buff start?</span>
-                </a></li>
-                <li><a href="" class="cf">
-                    <img src="https://randomuser.me/api/portraits/women/31.jpg" class="user-avatar"/>
-                    <span class="details highlight">Question</span><span class="details">0 Responses</span>
-                    <span class="content">What is the respawn time for jungle monsters?</span>
-                </a></li>
-                <li><a href="" class="cf">
-                    <img src="https://randomuser.me/api/portraits/women/11.jpg" class="user-avatar"/>
-                    <span class="details highlight">Question</span><span class="details">0 Responses</span>
-                    <span class="content">What is the respawn time for jungle monsters?</span>
-                </a></li>
-                <li><a href="" class="cf">
-                    <img src="https://randomuser.me/api/portraits/women/10.jpg" class="user-avatar"/>
-                    <span class="details highlight">Question</span><span class="details">0 Responses</span>
-                    <span class="content">What is the respawn time for jungle monsters?</span>
-                </a></li>
-                <li><a href="" class="cf">
-                    <img src="https://randomuser.me/api/portraits/men/27.jpg" class="user-avatar"/>
-                    <span class="details highlight">Meta</span><span class="details">0 Responses</span>
-                    <span class="content">Is it still worth doing mid, double buff start?</span>
-                </a></li>
-                <li><a href="" class="cf">
-                    <img src="https://randomuser.me/api/portraits/men/76.jpg" class="user-avatar"/>
-                    <span class="details highlight">Question</span><span class="details">0 Responses</span>
-                    <span class="content">What is the respawn time for jungle monsters?</span>
-                </a></li>
-                <li><a href="" class="cf">
-                    <img src="https://randomuser.me/api/portraits/women/78.jpg" class="user-avatar"/>
-                    <span class="details highlight">Question</span><span class="details">0 Responses</span>
-                    <span class="content">What is the respawn time for jungle monsters?</span>
-                </a></li>
-                <li><a href="" class="cf">
-                    <img src="https://randomuser.me/api/portraits/men/76.jpg" class="user-avatar"/>
-                    <span class="details highlight">Question</span><span class="details">0 Responses</span>
-                    <span class="content">What is the respawn time for jungle monsters?</span>
-                </a></li>
-                <li><a href="" class="cf">
-                    <img src="https://randomuser.me/api/portraits/women/78.jpg" class="user-avatar"/>
-                    <span class="details highlight">Question</span><span class="details">0 Responses</span>
-                    <span class="content">What is the respawn time for jungle monsters?</span>
-                </a></li>
-            </ul>
+            <h5>Welcome to Paragon.gg 2.0</h5>
+            <p>Hello there! You might notice things are a little different, and in true Paragon fashion we're launching everything a little early.</p>
+            <p>You may notice some of the guides and decks aren't over to the new site just yet, don't worry! We're in the process of moving these all over, and will let everyone know when we're done!</p>
+            <p><strong>- The Paragon.gg Team</strong></p>
+            {{--<ul>--}}
+                {{--<li><a href="" class="cf">--}}
+                    {{--<img src="https://randomuser.me/api/portraits/women/10.jpg" class="user-avatar"/>--}}
+                    {{--<span class="details highlight">Question</span><span class="details">0 Responses</span>--}}
+                    {{--<span class="content">What is the respawn time for jungle monsters?</span>--}}
+                {{--</a></li>--}}
+                {{--<li><a href="" class="cf">--}}
+                    {{--<img src="https://randomuser.me/api/portraits/men/27.jpg" class="user-avatar"/>--}}
+                    {{--<span class="details highlight">Meta</span><span class="details">0 Responses</span>--}}
+                    {{--<span class="content">Is it still worth doing mid, double buff start?</span>--}}
+                {{--</a></li>--}}
+                {{--<li><a href="" class="cf">--}}
+                    {{--<img src="https://randomuser.me/api/portraits/women/31.jpg" class="user-avatar"/>--}}
+                    {{--<span class="details highlight">Question</span><span class="details">0 Responses</span>--}}
+                    {{--<span class="content">What is the respawn time for jungle monsters?</span>--}}
+                {{--</a></li>--}}
+                {{--<li><a href="" class="cf">--}}
+                    {{--<img src="https://randomuser.me/api/portraits/women/11.jpg" class="user-avatar"/>--}}
+                    {{--<span class="details highlight">Question</span><span class="details">0 Responses</span>--}}
+                    {{--<span class="content">What is the respawn time for jungle monsters?</span>--}}
+                {{--</a></li>--}}
+                {{--<li><a href="" class="cf">--}}
+                    {{--<img src="https://randomuser.me/api/portraits/women/10.jpg" class="user-avatar"/>--}}
+                    {{--<span class="details highlight">Question</span><span class="details">0 Responses</span>--}}
+                    {{--<span class="content">What is the respawn time for jungle monsters?</span>--}}
+                {{--</a></li>--}}
+                {{--<li><a href="" class="cf">--}}
+                    {{--<img src="https://randomuser.me/api/portraits/men/27.jpg" class="user-avatar"/>--}}
+                    {{--<span class="details highlight">Meta</span><span class="details">0 Responses</span>--}}
+                    {{--<span class="content">Is it still worth doing mid, double buff start?</span>--}}
+                {{--</a></li>--}}
+                {{--<li><a href="" class="cf">--}}
+                    {{--<img src="https://randomuser.me/api/portraits/men/76.jpg" class="user-avatar"/>--}}
+                    {{--<span class="details highlight">Question</span><span class="details">0 Responses</span>--}}
+                    {{--<span class="content">What is the respawn time for jungle monsters?</span>--}}
+                {{--</a></li>--}}
+                {{--<li><a href="" class="cf">--}}
+                    {{--<img src="https://randomuser.me/api/portraits/women/78.jpg" class="user-avatar"/>--}}
+                    {{--<span class="details highlight">Question</span><span class="details">0 Responses</span>--}}
+                    {{--<span class="content">What is the respawn time for jungle monsters?</span>--}}
+                {{--</a></li>--}}
+                {{--<li><a href="" class="cf">--}}
+                    {{--<img src="https://randomuser.me/api/portraits/men/76.jpg" class="user-avatar"/>--}}
+                    {{--<span class="details highlight">Question</span><span class="details">0 Responses</span>--}}
+                    {{--<span class="content">What is the respawn time for jungle monsters?</span>--}}
+                {{--</a></li>--}}
+                {{--<li><a href="" class="cf">--}}
+                    {{--<img src="https://randomuser.me/api/portraits/women/78.jpg" class="user-avatar"/>--}}
+                    {{--<span class="details highlight">Question</span><span class="details">0 Responses</span>--}}
+                    {{--<span class="content">What is the respawn time for jungle monsters?</span>--}}
+                {{--</a></li>--}}
+            {{--</ul>--}}
         </div>
         <div class="summary-info summary-info-guides">
             <h5>Featured guides</h5>
