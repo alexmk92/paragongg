@@ -529,7 +529,7 @@ var BuildStats = React.createClass({
         var maxCards = this.props.cards.all.length;
 
         // On a null build, show deck affinity weighting
-        if(this.props.selectedBuild === null || this.props.selectedBuild.slots.length === 0) {
+        if(this.props.selectedBuild !== "undefined" && (this.props.selectedBuild === null || this.props.selectedBuild.slots.length === 0)) {
             this.props.cards.all.forEach(function(card) {
                 // Push for maximum possible:
                 if(typeof affinityCounts[card.affinity] === "undefined") {
