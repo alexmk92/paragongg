@@ -71,6 +71,7 @@ var DeckBuilder = React.createClass({
         this.placementSlotIndex = -1;
 
         window.addEventListener("resize", this.updateViewForDimensions);
+        window.addEventListener("scroll", this.onWindowScroll);
 
         // HANDLE STICKY BAR
         /*
@@ -108,6 +109,21 @@ var DeckBuilder = React.createClass({
         this.notificationPanel = new Notification();
         this.notificationPanel.initialiseNotifications();
         this.updateViewForDimensions();
+    },
+    onWindowScroll: function() {
+        var sidebar = document.querySelector("#sidebar");
+        var scrollTopButton = document.querySelector("#scroll-top");
+        var costCurve = document.querySelector("#cost-curve-widget");
+        if(sidebar && scrollTopButton) {
+            var doc = document.documentElement;
+            var offsetTop = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
+            var costCurveOffset = costCurve ? (costCurve.getBoundingClientRect().height + 200) : 0;
+            if((sidebar.getBoundingClientRect().height - costCurveOffset) < offsetTop) {
+                scrollTopButton.className = "visible";
+            } else {
+                scrollTopButton.className = "";
+            }
+        }
     },
     getCardsForBuild: function(builds) {
         return builds.map(function(build) {
@@ -948,6 +964,14 @@ var DeckBuilder = React.createClass({
             }
         }
     },
+    renderScrollTopButton: function() {
+        return (
+            <div id="scroll-top">
+                <h2>{this.deckCount()} / 40</h2>
+                <p>CARDS IN DECK</p>
+            </div>
+        )
+    },
     getAffinities: function(hero) {
         var affinities = [];
         if(hero) {
@@ -1132,6 +1156,7 @@ var DeckBuilder = React.createClass({
                     }
                 </div>
                 { this.getSelectedCardPopup() }
+                { this.renderScrollTopButton() }
             </div>
         )
     }

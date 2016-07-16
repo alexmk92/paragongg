@@ -68,8 +68,8 @@ var DeckSidebarCostCurve = React.createClass({
     render: function() {
         var costCurveData = this.getCostCurveData();
         return(
-            <div className="cf">
-                <div className="title-wrapper">
+            <div id="cost-curve-widget" className="cf">
+                <div className="title-wrapper gutter-bottom">
                     <h3>COST CURVE</h3>
                 </div>
                 <div id="cost-curve-wrapper">
