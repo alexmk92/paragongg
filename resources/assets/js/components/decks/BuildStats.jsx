@@ -248,6 +248,7 @@ var BuildStats = React.createClass({
     },
     getComparisonData: function() {
         var baseStats = this.props.hero.baseStats || null;
+        if(baseStats === null) return null;
 
         var stat = this.state.comparisons[this.state.compareIndex];
         var comparisonData = {
@@ -694,38 +695,59 @@ var BuildStats = React.createClass({
 
        var affinityWeightingData = this.getAffinityWeighting();
        var statComparisonData = this.getComparisonData();
-       var spiderChartData = this.getOverviewData();
+       if(statComparisonData !== null) {
+           var spiderChartData = this.getOverviewData();
 
-       return (
-           <div>
-               <div id="deck-stat-container" style={hiddenStyle}>
-                   <div id="statistic-title-wrapper">
-                       <h3>{ this.props.selectedBuild !== null ? "Build" : "Deck" } statistics</h3>
-                       <div id="rank-slider">
-                           <Rcslider defaultValue={1} min={1} max={15} onChange={this.sliderChanged} tipFormatter={null}  />
+           return (
+               <div>
+                   <div id="deck-stat-container" style={hiddenStyle}>
+                       <div id="statistic-title-wrapper">
+                           <h3>{ this.props.selectedBuild !== null ? "Build" : "Deck" } statistics</h3>
+                           <div id="rank-slider">
+                               <Rcslider defaultValue={1} min={1} max={15} onChange={this.sliderChanged}
+                                         tipFormatter={null}/>
+                           </div>
                        </div>
+                       { this.renderStatPanel() }
                    </div>
-                   { this.renderStatPanel() }
-               </div>
 
-               <div id="chart-wrapper">
-                   <div className={"chart left " + hiddenClass} style={hiddenStyle}>
-                       <h3 style={{marginBottom: '25px'}}>{ this.props.selectedBuild !== null ? "Build" : "Deck" }  Overview</h3>
-                       <SpiderWebChart requireModuleDependencies={this.props.requireModuleDependencies} updateTarget={this.state.updateTarget} type="BUILD-OVERVIEW" series={spiderChartData} container="overview-container" />
-                   </div>
-                   <div className={"chart right " + hiddenClass}>
-                       <div className="chart stacked" style={hiddenStyle}>
-                           <h3>{ this.props.selectedBuild !== null ? "Build" : "Deck" }  Comparison <SelectBox optionSelectedAtIndex={this.updateComparisonType} label="compare:" value={this.state.comparisons[this.state.compareIndex] ? this.state.comparisons[this.state.compareIndex].label : ""} items={this.state.comparisons} /></h3>
-                           <HorizontalBarChart updateTarget={this.state.updateTarget} type="BUILD-COMPARISON" container="build-comparison-container" max={statComparisonData.max} useValue={true} height={ statComparisonData.chartHeight } colors={ statComparisonData.chartColors } series={statComparisonData} />
+                   <div id="chart-wrapper">
+                       <div className={"chart left " + hiddenClass} style={hiddenStyle}>
+                           <h3 style={{marginBottom: '25px'}}>{ this.props.selectedBuild !== null ? "Build" : "Deck" }
+                               Overview</h3>
+                           <SpiderWebChart requireModuleDependencies={this.props.requireModuleDependencies}
+                                           updateTarget={this.state.updateTarget} type="BUILD-OVERVIEW"
+                                           series={spiderChartData} container="overview-container"/>
                        </div>
-                       <div className="chart stacked">
-                           <h3>{ this.props.selectedBuild !== null ? "Build" : "Deck" }  Affinity Weighting</h3>
-                           <HorizontalBarChart updateTarget={this.state.updateTarget} type="AFFINITY-WEIGHTING" container="affinity-weighting-container" max={affinityWeightingData.max} useValue={false} height={ affinityWeightingData.chartHeight } colors={ affinityWeightingData.chartColors } series={affinityWeightingData} />
+                       <div className={"chart right " + hiddenClass}>
+                           <div className="chart stacked" style={hiddenStyle}>
+                               <h3>{ this.props.selectedBuild !== null ? "Build" : "Deck" } Comparison <SelectBox
+                                   optionSelectedAtIndex={this.updateComparisonType} label="compare:"
+                                   value={this.state.comparisons[this.state.compareIndex] ? this.state.comparisons[this.state.compareIndex].label : ""}
+                                   items={this.state.comparisons}/></h3>
+                               <HorizontalBarChart updateTarget={this.state.updateTarget} type="BUILD-COMPARISON"
+                                                   container="build-comparison-container" max={statComparisonData.max}
+                                                   useValue={true} height={ statComparisonData.chartHeight }
+                                                   colors={ statComparisonData.chartColors }
+                                                   series={statComparisonData}/>
+                           </div>
+                           <div className="chart stacked">
+                               <h3>{ this.props.selectedBuild !== null ? "Build" : "Deck" } Affinity Weighting</h3>
+                               <HorizontalBarChart updateTarget={this.state.updateTarget} type="AFFINITY-WEIGHTING"
+                                                   container="affinity-weighting-container"
+                                                   max={affinityWeightingData.max} useValue={false}
+                                                   height={ affinityWeightingData.chartHeight }
+                                                   colors={ affinityWeightingData.chartColors }
+                                                   series={affinityWeightingData}/>
+                           </div>
                        </div>
                    </div>
                </div>
-           </div>
-       )
+           )
+       } else {
+           return <p>This hero has no base stats, therefore no stat panel can be shown</p>
+       }
+
    }
 });
 

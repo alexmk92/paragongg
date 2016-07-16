@@ -1,7 +1,7 @@
 #scroll-top {
     position: fixed;
     bottom: -100px;
-    right: 20px;
+    right: 30px;
     z-index: 100;
     opacity: 0;
     transition: all 500ms ease-in-out;
@@ -16,7 +16,7 @@
 
     &.visible {
         opacity: 1;
-        bottom: 20px;
+        bottom: 30px;
     }
 }
 
@@ -346,13 +346,14 @@
         visibility: visible;
         position: absolute;
         z-index: 0;
-        transition: all 400ms ease-in-out;
+        transition: all 250ms ease-in-out;
 
         &.hidden {
             left: 100%;
             opacity: 0;
             min-height: 0;
             visibility: hidden;
+            display: block !important;
             //height: 0;
         }
 
@@ -399,11 +400,11 @@
         top: 0;
         opacity: 1;
         position: relative;
-        transition: all 400ms ease-in-out;
+        transition: all 250ms ease-in-out;
 
         &.hidden {
-            visibility: hidden;
             left: -100%;
+            display: block !important;
             opacity: 0;
             min-height: 0;
             height: 0;

@@ -896,15 +896,17 @@ var DeckBuilder = React.createClass({
             if(confirmNode) {
                 var confirm = ReactDOM.render(<ConfirmModal titleIcon="fa-info-circle" title="ATTENTION!" description="Changing your hero will permanently delete any existing builds and this deck, are you sure you want to continue?" cancelText="CANCEL" confirmText="YES CHANGE MY HERO" />, confirmNode);
                 confirm.deferred.promise.then(function(resolvedMessage) {
+                    ReactDOM.unmountComponentAtNode(confirmNode);
                     this.setState({
                         heroPanelActive : !this.state.heroPanelActive,
                         selectedHero    : hero,
                         showCardSection : true,
+                        selectedBuild: null,
+                        lastSelectedBuild: null,
                         affinities : newAffinities,
                         deck : [],
                         builds : []
                     });
-                    ReactDOM.unmountComponentAtNode(confirmNode);
                 }.bind(this), function(rejectedMessage) {
                     ReactDOM.unmountComponentAtNode(confirmNode);
                 });
@@ -965,7 +967,7 @@ var DeckBuilder = React.createClass({
         }
     },
     renderScrollTopButton: function() {
-        if(!Helpers.isClientMobile()) {
+        if(!Helpers.isClientMobile() && !this.state.isBuildsPanelShowing) {
             return (
                 <div id="scroll-top">
                     <h2>{this.deckCount()} / 40</h2>
