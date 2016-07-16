@@ -107,7 +107,6 @@ var DeckList = React.createClass({
         return jsx;
     },
     render: function() {
-        console.log("UPDATING, DECKS HAS A LENGTH OF " + this.state.decks.length + " AND IS NOW: ", this.state.decks);
         return(
             <div>
                 <HeroPanel title="Hero decks" placeholder="Search by hero name..." showAffinityFilter={false} heroes={HEROES} isActive={true} onHeroSelected={this.onHeroSelected} onHeroesListUpdated={this.heroesListUpdated} />
