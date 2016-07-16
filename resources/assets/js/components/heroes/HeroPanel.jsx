@@ -81,7 +81,7 @@ var HeroPanel = React.createClass({
     getLink: function (hero) {
         if(this.props.linkType != null) {
             if(this.props.linkType == "guides") {
-                return "/guides/" + hero.slug
+                return "/guides/hero/" + hero.slug
             }
         }
     },

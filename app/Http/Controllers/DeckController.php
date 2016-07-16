@@ -256,6 +256,11 @@ class DeckController extends Controller
         $thread = findOrCreateThread($request->path());
 
         $deck = Deck::findOrFail($id);
+
+        $deck->timestamps = false;
+        $deck->increment('views');
+        $deck->timestamps = true;
+
         // pass back a dummy object for now
         $deck->hero = Hero::where('code', $deck->hero)->firstOrFail();
         $uniqueCards = Card::whereIn('code', $deck->cards)->get();

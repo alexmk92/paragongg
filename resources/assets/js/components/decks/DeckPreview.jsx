@@ -203,8 +203,7 @@ var DeckPreview = React.createClass({
                         <a href="#">SHARE</a>
                     </div>
                     <div className="buttons-right">
-                        <span><i className="fa fa-comment"></i> { Helpers.delimitNumbers(this.props.deck.commentCount || 0) }</span>
-                        <span><i className="fa fa-eye"></i> { Helpers.delimitNumbers(this.props.deck.viewCount || 0) }</span>
+                        <span><i className="fa fa-eye"></i> { Helpers.delimitNumbers(this.props.deck.views || 0) }</span>
                     </div>
                 </div>
                 <div className="black-overlay"></div>

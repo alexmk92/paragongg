@@ -76,8 +76,8 @@ Route::post('/guides/create', 'GuideController@store')->middleware('auth');
 Route::get('/guides/edit/{id}', 'GuideController@edit')->middleware('auth');
 Route::post('/guides/edit/{id}', 'GuideController@update')->middleware('auth');
 Route::get('/guides/delete/{id}', 'GuideController@delete')->middleware('auth');
+Route::get('/guides/hero/{hero}', 'GuideController@index');
 Route::get('/guides/{id}/{slug?}', 'GuideController@show');
-Route::get('/guides/{hero}', 'GuideController@index');
 
 /* COMMUNITY */
 Route::get('/community', 'CommunityController@index');

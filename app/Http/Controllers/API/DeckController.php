@@ -21,8 +21,32 @@ class DeckController extends Controller
         if(isset($_GET['skip'])) $skip = (int)$_GET['skip'];
         if(isset($_GET['take'])) $take = (int)$_GET['take'];
 
-        $decks = Deck::orderBy('updated_at', 'desc')
-            ->skip($skip)
+        $decks = Deck::select('*');
+
+        if(isset($_GET['hero'])) {
+            $decks->where('hero', $_GET['hero']);
+        }
+        if(isset($_GET['filter'])) {
+            switch($_GET['filter']) {
+                case 'featured':
+                    $decks = $decks->where('featured', true);
+                    break;
+                case 'updated':
+                    $decks = $decks->orderBy('updated_at', 'DESC');
+                    break;
+                case 'rated':
+                    $decks = $decks->orderBy('votes', 'DESC');
+                    break;
+                case 'views':
+                    $decks = $decks->orderBy('views', 'DESC');
+                    break;
+                case 'newest':
+                    $decks = $decks->orderBy('created_at', 'DESC');
+                    break;
+            }
+        }
+
+        $decks = $decks->skip($skip)
             ->take($take)
             ->get();
 
