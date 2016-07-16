@@ -1121,7 +1121,7 @@ var DeckBuilder = React.createClass({
                             </div>
                         </div>
                         <HeroPanel title="Select a hero" showAffinityFilter={false} heroes={HEROES} isActive={this.state.heroPanelActive} onHeroSelected={this.onHeroPanelSelectedHero} />
-                        <textarea onChange={setDescription} className="p" ref="deckDescriptionInput" placeholder="Enter a short description about your deck, what team compositions might you use this deck against? Under what situations would you use the different builds?">
+                        <textarea onChange={setDescription} className="p" ref="deckDescriptionInput" placeholder="Enter a short description about your deck, what team compositions might you use this deck against? Under what situations would you use the different builds?"></textarea>
                         <div id="cards-feed" className={ this.state.showCardSection ? "" : "hidden" }>
                             <CardsFeed forceRedraw={true}
                                        stickTopOnMobile={(Helpers.isClientMobile() && this.state.isMobileSearchShowing)}
