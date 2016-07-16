@@ -57,6 +57,7 @@ var CardContainer = React.createClass({
                             <div id="card-model-container">
                                 <PreloadImage src={Helpers.S3URL() + 'images/cards/' + CARD.code + '/' + CARD.background + '/background_large.png'}
                                               placeholderSrc="/assets/images/card-placeholder.png"
+                                              fallbackSrc="/assets/images/card-placeholder.png"
                                               onImageLoaded={this.cardModelLoaded}
                                               size="large"
                                 />
