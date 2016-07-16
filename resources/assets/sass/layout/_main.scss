@@ -94,6 +94,12 @@ body {
     h3 {
         color: $tertiary-highlight;
     }
+    h4 {
+        margin: 40px 0 20px;
+    }
+    input, select {
+        display: inline-block;
+    }
 }
 
 // SCROLL BAR

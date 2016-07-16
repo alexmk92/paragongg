@@ -5,18 +5,21 @@ namespace App\Http\Controllers;
 use App\Deck;
 use App\Hero;
 use App\Card;
+use App\Http\Traits\RetrievesCardCollection;
 use App\User;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Http\Traits\GeneratesShortcodes;
+use Illuminate\Support\Facades\Log;
 
 class DeckController extends Controller
 {
-    use GeneratesShortcodes;
+    use GeneratesShortcodes, RetrievesCardCollection;
 
     // Create
     public function index()
@@ -153,16 +156,16 @@ class DeckController extends Controller
     public function export($id)
     {
         $user = auth()->user();
+        $newDeck = Deck::findOrFail($id);
 
         if(!$user->epic_account_id) {
             session()->flash('notification', 'warning|You must link your Epic account before you can export decks.');
             return redirect('/account/link');
         }
-        dd($user->epic_account_id);
 
         $client = new Client();
         try {
-            $res = $client->request('PUT', 'https://developer-paragon.epicgames.com/v1/account/'.$user->epic_account_id.'/deck/501e494b-bb3d-4203-b285-9d62513c8d84', [
+            $res = $client->request('GET', 'https://developer-paragon.epicgames.com/v1/account/'.$user->epic_account_id.'/decks', [
                 'headers' => [
                     'Accept'        => 'application/json',
                     'Authorization' => 'Bearer '.getOAuthToken($user),
@@ -171,21 +174,80 @@ class DeckController extends Controller
             ])->getBody();
         } catch (ClientException $e) {
             $error = $e->getResponse()->getBody()->getContents();
-            Log::error("ClientException while trying to get save user's deck: ".$error);
+            Log::error("ClientException while trying to get user's decks: ".$error);
             return false;
         } catch (ServerException $e) {
             $error = $e->getResponse()->getBody()->getContents();
-            Log::error("ServerException while trying to get save's user's deck: ".$error);
+            Log::error("ServerException while trying to get user's decks: ".$error);
             return false;
         }
 
         $response = json_decode($res, true);
-        dd($response);
+        $occupied = new Collection();
+        $vacant   = new Collection();
+        foreach($response as $item) {
+            if(isset($item['hero'])) {
+                $hero = Hero::select('image')->where('code', $item['hero']['id'])->first();
+                $item['image'] = $hero->image;
+                $occupied->push($item);
+            } else {
+                $hero = Hero::select('image')->where('code', $newDeck->hero)->first();
+                $item['image'] = $hero->image;
+                $vacant->push($item);
+            }
+        }
 
+        return view('decks.export', compact('user', 'newDeck', 'occupied', 'vacant'));
+    }
 
+    public function exportSave($id, $slot)
+    {
+        $user = auth()->user();
+        $collection = collect($this->getCardCollection($user));
         $deck = Deck::findOrFail($id);
+        $cards = [];
 
-        return $deck;
+        foreach($deck->cards as $card) {
+            if($collection->contains('id', $card)) {
+                $item['id'] = $card;
+                //$item['linkedIds'] = array();
+                array_push($cards, $item);
+            }
+        }
+
+        $client = new Client();
+        try {
+            $res = $client->request('PUT', 'https://developer-paragon.epicgames.com/v1/account/'.$user->epic_account_id.'/deck/'.$slot, [
+                'json' => [
+                    'name'   => $deck->title,
+                    'heroId' => $deck->hero,
+                    'cards'  => $cards
+                ],
+                // Because default Guzzle headers won't work for some reason
+                'curl' => [
+                    CURLOPT_HTTPHEADER => array(
+                        "accept: application/json",
+                        "authorization: Bearer ".getOAuthToken($user),
+                        "cache-control: no-cache",
+                        "content-type: application/json",
+                        "x-epic-apikey: ".env('EPIC_API_KEY')
+                    ),
+                ]
+            ])->getBody();
+        } catch (ClientException $e) {
+            dd($e->getResponse()->getBody()->getContents());
+            $error = $e->getResponse()->getBody()->getContents();
+            Log::error("ClientException while trying to save user's deck: ".$error);
+            return false;
+        } catch (ServerException $e) {
+            dd($e->getResponse()->getBody()->getContents());
+            $error = $e->getResponse()->getBody()->getContents();
+            Log::error("ServerException while trying to save's user's deck: ".$error);
+            return false;
+        }
+
+        session()->flash('notification', 'success|This deck has been saved to your Epic account.');
+        return redirect('/decks/'.$id);
     }
 
     // Read

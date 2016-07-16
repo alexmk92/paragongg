@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Card;
 use App\Http\Requests;
+use App\Http\Traits\RetrievesCardCollection;
 use App\Jobs\UpdateCardImage;
 use App\Jobs\UpdateCardObject;
 use Carbon\Carbon;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\Log;
 
 class CardController extends Controller
 {
+    use RetrievesCardCollection;
     // Index
     public function index()
     {
@@ -61,38 +63,9 @@ class CardController extends Controller
     }
     
     // Get a user's cards collection
-    private function cardCollection()
+    public function cardCollection()
     {
-        $user = Auth::user();
-
-        Cache::forget('user.'.$user->id.'.cards');
-        if(!Cache::has('user.'.$user->id.'.cards')) {
-            $client = new Client();
-            try {
-                $res = $client->request('GET', 'https://developer-paragon.epicgames.com/v1/account/'.$user->epic_account_id.'/cards', [
-                    'headers' => [
-                        'Accept'        => 'application/json',
-                        'Authorization' => 'Bearer '.getOAuthToken($user),
-                        'X-Epic-ApiKey' => env('EPIC_API_KEY'),
-                    ]
-                ])->getBody();
-            } catch (ClientException $e) {
-                $error = $e->getResponse()->getBody()->getContents();
-                Log::error("ClientException while trying to get user's cards: ".$error);
-                return false;
-            } catch (ServerException $e) {
-                $error = $e->getResponse()->getBody()->getContents();
-                Log::error("ServerException while trying to get user's cards: ".$error);
-                return false;
-            }
-
-            $response = json_decode($res, true);
-
-            $expires = Carbon::now()->addMinutes(5);
-            Cache::put('user.'.$user->id.'.cards', $response, $expires);
-        }
-
-        return Cache::get('user.'.$user->id.'.cards');
+        return $this->getCardCollection(Auth::user());
     }
 
     // Create
