@@ -965,12 +965,14 @@ var DeckBuilder = React.createClass({
         }
     },
     renderScrollTopButton: function() {
-        return (
-            <div id="scroll-top">
-                <h2>{this.deckCount()} / 40</h2>
-                <p>CARDS IN DECK</p>
-            </div>
-        )
+        if(!Helpers.isClientMobile()) {
+            return (
+                <div id="scroll-top">
+                    <h2>{this.deckCount()} / 40</h2>
+                    <p>CARDS IN DECK</p>
+                </div>
+            )
+        }
     },
     getAffinities: function(hero) {
         var affinities = [];
