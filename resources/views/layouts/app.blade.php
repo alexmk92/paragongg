@@ -39,7 +39,7 @@
 
 {{-- Yield the main page content --}}
 <div id="page" class="cf">
-    {{--<div class="global-notification cf"><i class="fa fa-info-circle" aria-hidden="true"></i>This website uses cookies to provide users with the best possible experience. By continuing to browse the site, you are agreeing to our use of cookies.</div>--}}
+    {!! globalNotification() !!}
     @yield('body')
 </div>
 

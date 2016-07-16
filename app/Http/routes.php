@@ -142,6 +142,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::get('/maintenance/update-heroes', '\App\Http\Controllers\HeroController@pullHeroes');
     Route::get('/maintenance/update-hero-images', '\App\Http\Controllers\HeroController@pullHeroImages');
     Route::get('/api/jobs', 'AdminController@getJobs');
+    Route::get('/settings', 'AdminController@getSettings');
+    Route::post('/settings', 'AdminController@setSettings');
 });
 
 /* API */

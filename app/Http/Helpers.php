@@ -3,6 +3,7 @@
 use App\CommentThread;
 use App\CommentThreadComment;
 use App\Deck;
+use App\Setting;
 use App\Shortcode;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
@@ -63,6 +64,17 @@ function displayNotification()
         return '<div id="notification" class="notification notification-'.$notification[0].'" onclick="this.style.display=\'none\';">'.$notification[1].'<i class="fa fa-times" aria-hidden="true"></i></div>';
     }
     return '';
+}
+
+function globalNotification()
+{
+    $globalNotification = Setting::where('key', 'globalNotification')->first();
+
+    if($globalNotification->value) {
+        return '<div class="global-notification cf"><i class="fa fa-info-circle" aria-hidden="true"></i>'.$globalNotification->value.'</div>';
+    }
+
+    return false;
 }
 
 function APIToken()
