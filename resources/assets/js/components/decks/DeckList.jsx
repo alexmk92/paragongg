@@ -110,7 +110,7 @@ var DeckList = React.createClass({
         console.log("UPDATING, DECKS HAS A LENGTH OF " + this.state.decks.length + " AND IS NOW: ", this.state.decks);
         return(
             <div>
-                <HeroPanel title="Hero guides" placeholder="Search by hero name..." showAffinityFilter={false} heroes={HEROES} isActive={true} onHeroSelected={this.onHeroSelected} onHeroesListUpdated={this.heroesListUpdated} />
+                <HeroPanel title="Hero decks" placeholder="Search by hero name..." showAffinityFilter={false} heroes={HEROES} isActive={true} onHeroSelected={this.onHeroSelected} onHeroesListUpdated={this.heroesListUpdated} />
 
                 <Tabs defaultSelected={0} expandable={false} className="padless">
                     {/* Featured */}

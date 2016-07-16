@@ -324,7 +324,21 @@ class DeckController extends Controller
 
         // Finally sorted the collection
         $currentDeck->cards = $sortedCards;
-        
+
+        // Set the cards in the builds:
+        foreach($currentDeck->builds as $build) {
+            foreach($build["slots"] as $slot) {
+                if($slot["card"]) {
+                    foreach($sortedCards["all"] as $card) {
+                        if($slot["card"] === $card->code) {
+                            $slot["card"] = $card;
+                        }
+                    }
+                    foreach($slot["upgrades"] as $upgradeSlot) {}
+                }
+            }
+        }
+
         return view('decks.edit')->with('cards', $cards)->with('currentDeck', $currentDeck)->with('heroes', $heroes)->with('userId', $userId);
     }
 

@@ -127,6 +127,7 @@ var DeckPreview = React.createClass({
                                         <div className="card-preview-container">
                                             <PreloadImage src={ Helpers.getCardImageURL(card, 'small', 'icon') }
                                                           placeholderSrc="/assets/images/card-placeholder.png"
+                                                          fallbackSrc="/assets/images/card-placeholder.png"
                                             />
                                         </div>
                                     </li>

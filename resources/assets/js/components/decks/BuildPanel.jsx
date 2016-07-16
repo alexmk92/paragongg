@@ -90,6 +90,7 @@ var BuildPanel = React.createClass({
                             >
                                 <PreloadImage src={Helpers.getCardImageURL(slot.card)}
                                               placeholderSrc="/assets/images/cards/card-placeholder.png"
+                                              fallbackSrc="/assets/images/cards/card-placeholder.png"
                                 />
                                 <span className="card-title">{ slot.card.name }</span>
                             </div>

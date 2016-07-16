@@ -6,6 +6,10 @@
             <p>Creating a deck for Paragon.gg is quick and easy, and will allow you to show the community the cards you use in Paragon.</p>
             <a class="btn btn-primary btn-margin" href="/decks/create">Build a deck</a>
         </div>
+        <div class="sidebox panel">
+            <h4>Suggested decks</h4>
+            <div id="suggested-decks"></div>
+        </div>
     </div>
     <div class="wrapper">
         <h2>Paragon decks</h2>
