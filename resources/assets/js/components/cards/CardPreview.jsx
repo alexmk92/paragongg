@@ -17,6 +17,8 @@ var CardPreview = React.createClass({
         }
     },
     render: function() {
+        console.log(this.props.card);
+        var cachedBg = this.props.card.background || "z";
         var imageURL = Helpers.S3URL() + 'images/cards/' + this.props.card.code + '/' + this.props.card.background + '/background_medium.png';
         var divStyle = {
             backgroundImage: 'url(' + imageURL + ')'
@@ -34,6 +36,7 @@ var CardPreview = React.createClass({
                 >
                     <PreloadImage src={imageURL}
                                   placeholderSrc="/assets/images/card-placeholder.png"
+                                  fallbackSrc="/assets/images/card-placeholder.png"
                     />
                     <a href={ "/cards/" + this.props.card.name }>
                         <div className="card-name">{this.props.card.name}</div>
