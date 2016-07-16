@@ -70,7 +70,7 @@ function globalNotification()
 {
     $globalNotification = Setting::where('key', 'globalNotification')->first();
 
-    if($globalNotification->value) {
+    if($globalNotification && $globalNotification->value) {
         return '<div class="global-notification cf"><i class="fa fa-info-circle" aria-hidden="true"></i>'.$globalNotification->value.'</div>';
     }
 
