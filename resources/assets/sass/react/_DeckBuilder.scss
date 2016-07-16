@@ -409,6 +409,12 @@
             min-height: 0;
             height: 0;
         }
+        
+        .deck-description {
+            &.hidden {
+                display: none !important;
+            }
+        }
 
         .content-wrapper {
             max-width: 100%;
@@ -426,9 +432,8 @@
 
                 &.p {
                     min-height: 50px;
-                    font-weight: 200;
-                    font-size: 1em;
-                    margin-bottom: 20px;
+                    font-size: 17px;
+                    line-height: 25px;
                 }
 
                 &.pull-up {
