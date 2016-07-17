@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Traits\GeneratesShortcodes;
 use App\News;
 use App\Http\Requests;
+use App\Shortcode;
 use Illuminate\Support\Facades\Storage;
 use Parsedown;
 use TOC;
@@ -11,6 +13,8 @@ use Illuminate\Http\Request;
 
 class NewsController extends Controller
 {
+    use GeneratesShortcodes;
+
     // Index
     public function index()
     {
@@ -37,6 +41,9 @@ class NewsController extends Controller
             $news->slug   = $request->slug;
         } else {
             $news->slug   = createSlug($news->title);
+        }
+        if($request->has('source')) {
+            $news->source = $request->source;
         }
         $news->type   = $request->type;
         $news->body   = $request->body;
@@ -69,7 +76,10 @@ class NewsController extends Controller
 
         $news->save();
 
+        $this->generate('/news/'.$news->id.'/'.$news->slug, 'news', $news->id);
+
         session()->flash('notification', 'success|News saved.');
+        return redirect('/news/'.$news->id.'/'.$news->slug);
         return view('news.create');
     }
 
@@ -84,7 +94,10 @@ class NewsController extends Controller
         $articleTOC  = (new TOC\TocGenerator())->getHtmlMenu($articleBody,2);
 
         $recent  = News::where('id', '!=', $id)->take('10')->get();
-        return view('news.show', compact('article', 'articleBody', 'articleTOC', 'recent', 'thread'));
+
+        $shortcode = Shortcode::where('resource_type', 'news')->where('resource_id', $id)->first();
+
+        return view('news.show', compact('article', 'articleBody', 'articleTOC', 'recent', 'thread', 'shortcode'));
     }
 
     // Edit

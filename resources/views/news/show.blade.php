@@ -7,6 +7,23 @@
                 <h4>Table of Contents</h4>
                 {!! $articleTOC !!}
             </div>
+            <div class="sidebox panel rating">
+
+                <label>Share this post</label>
+                <div class="social-buttons-solo">
+                    <a href="https://www.reddit.com/r/paragon/submit?url={{ urlencode( 'http://para.gg/'.$shortcode->code) }}&title={{ urlencode($article->title) }}"
+                       onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=768,width=1024');return false;"><i class="fa fa-reddit-alien" aria-hidden="true"></i></a>
+                    <a href="https://twitter.com/intent/tweet?text={{ urlencode($article->title) }}%20-%20&url={{ urlencode( 'http://para.gg/'.$shortcode->code) }}"
+                       onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode( 'http://para.gg/'.$shortcode->code) }}&t={{ urlencode($article->title) }}"
+                       onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;"><i class="fa fa-facebook-official" aria-hidden="true"></i></a>
+                </div>
+                @if($shortcode)
+                    <label style="margin-top: 30px;">Or use this shareable link</label>
+                    <input type="text" onfocus="this.select();" onmouseup="return false;" readonly="readonly" class="copypasta" value="http://para.gg/{{ $shortcode->code }}"/>
+                @endif
+
+            </div>
         </div>
     </div>
     <article>

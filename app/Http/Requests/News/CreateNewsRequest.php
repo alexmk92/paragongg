@@ -28,6 +28,9 @@ class CreateNewsRequest extends Request
             'slug'      => 'unique:news|min:3|alpha_dash',
             'type'      => 'required',
             'body'      => 'required|min:3',
+            'header'    => 'required|mimes:jpeg,png',
+            'thumbnail' => 'required|mimes:jpeg,png',
+            'impact'    => 'mimes:jpeg,png',
         ];
     }
 }

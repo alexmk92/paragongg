@@ -33,10 +33,10 @@
                     <option value="feature">Feature</option>
                 </select>
 
-                <label>Article header (Please 300px height only)</label>
+                <label><span class="required">*</span>Article header (Please 300px height only)</label>
                 <input type="file" name="header">
 
-                <label>Article thumbnail</label>
+                <label><span class="required">*</span>Article thumbnail</label>
                 <input type="file" name="thumbnail">
 
                 <label>Article impact image (Large HD image for front page)</label>
