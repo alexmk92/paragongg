@@ -59,7 +59,11 @@
                 @if(isset($featuredGuides) && $featuredGuides->count() > 0)
                 @foreach($featuredGuides as $guide)
                     <li><a href="/guides/{{$guide->id}}/{{$guide->slug}}" class="cf">
-                        <img src="{{ S3URL() }}/images/heroes/{{ $guide->hero->code }}/{{ $guide->hero->image }}/portrait_small.png" class="hero-avatar"/>
+                        @if($guide->hero)
+                            <img src="{{ S3URL() }}/images/heroes/{{ $guide->hero->code }}/{{ $guide->hero->image }}/portrait_small.png" class="hero-avatar"/>
+                        @else
+                            <img src="/assets/images/heroes/null.png" class="hero-avatar"/>
+                        @endif
                         <span class="details"><i class="fa fa-user" aria-hidden="true"></i> {{ $guide->author->username }}</span><span class="details"><i class="fa fa-star" aria-hidden="true"></i> {{ $guide->votes }}</span><span class="details"><i class="fa fa-eye" aria-hidden="true"></i> {{ $guide->views }}</span>
                         <span class="content">{{ $guide->title }}</span>
                     </a></li>
