@@ -2,7 +2,7 @@
 @section('body')
     <div class="article-header">
         @if($guide->type == 'hero')
-            <img src="/assets/images/heroes/{{ $hero }}/banner.jpg"/>
+            <img src="/assets/images/heroes/{{ $hero->slug }}/banner.jpg"/>
         @else
             <img src="/assets/images/gameplay-banner.jpg"/>
         @endif
@@ -31,7 +31,7 @@
     <article>
         <h1 class="article-title">{{ $guide->title }}</h1>
         <div class="article-details">
-            <time>Posted by <strong><img class="user-avatar inline small" src="{{getAvatar($article->author)}}">{{ $guide->author->username }}</strong> on {{ $guide->created_at->format('jS F Y, h:i A') }}<span class="updated_at"> (Updated: {{ $guide->created_at->format('jS F Y, h:i A') }})</span></time>
+            <time>Posted by <strong><img class="user-avatar inline small" src="{{getAvatar($guide->author)}}">{{ $guide->author->username }}</strong> on {{ $guide->created_at->format('jS F Y, h:i A') }}<span class="updated_at"> (Updated: {{ $guide->created_at->format('jS F Y, h:i A') }})</span></time>
         </div>
         @if($guide->abilities && $guide->abilities != ',,,,,,,,,,,,,,')
             @include('guides.abilityTable')

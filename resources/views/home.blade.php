@@ -51,51 +51,6 @@
                     {{--<span class="details highlight">Question</span><span class="details">0 Responses</span>--}}
                     {{--<span class="content">What is the respawn time for jungle monsters?</span>--}}
                 {{--</a></li>--}}
-                {{--<li><a href="" class="cf">--}}
-                    {{--<img src="https://randomuser.me/api/portraits/men/27.jpg" class="user-avatar"/>--}}
-                    {{--<span class="details highlight">Meta</span><span class="details">0 Responses</span>--}}
-                    {{--<span class="content">Is it still worth doing mid, double buff start?</span>--}}
-                {{--</a></li>--}}
-                {{--<li><a href="" class="cf">--}}
-                    {{--<img src="https://randomuser.me/api/portraits/women/31.jpg" class="user-avatar"/>--}}
-                    {{--<span class="details highlight">Question</span><span class="details">0 Responses</span>--}}
-                    {{--<span class="content">What is the respawn time for jungle monsters?</span>--}}
-                {{--</a></li>--}}
-                {{--<li><a href="" class="cf">--}}
-                    {{--<img src="https://randomuser.me/api/portraits/women/11.jpg" class="user-avatar"/>--}}
-                    {{--<span class="details highlight">Question</span><span class="details">0 Responses</span>--}}
-                    {{--<span class="content">What is the respawn time for jungle monsters?</span>--}}
-                {{--</a></li>--}}
-                {{--<li><a href="" class="cf">--}}
-                    {{--<img src="https://randomuser.me/api/portraits/women/10.jpg" class="user-avatar"/>--}}
-                    {{--<span class="details highlight">Question</span><span class="details">0 Responses</span>--}}
-                    {{--<span class="content">What is the respawn time for jungle monsters?</span>--}}
-                {{--</a></li>--}}
-                {{--<li><a href="" class="cf">--}}
-                    {{--<img src="https://randomuser.me/api/portraits/men/27.jpg" class="user-avatar"/>--}}
-                    {{--<span class="details highlight">Meta</span><span class="details">0 Responses</span>--}}
-                    {{--<span class="content">Is it still worth doing mid, double buff start?</span>--}}
-                {{--</a></li>--}}
-                {{--<li><a href="" class="cf">--}}
-                    {{--<img src="https://randomuser.me/api/portraits/men/76.jpg" class="user-avatar"/>--}}
-                    {{--<span class="details highlight">Question</span><span class="details">0 Responses</span>--}}
-                    {{--<span class="content">What is the respawn time for jungle monsters?</span>--}}
-                {{--</a></li>--}}
-                {{--<li><a href="" class="cf">--}}
-                    {{--<img src="https://randomuser.me/api/portraits/women/78.jpg" class="user-avatar"/>--}}
-                    {{--<span class="details highlight">Question</span><span class="details">0 Responses</span>--}}
-                    {{--<span class="content">What is the respawn time for jungle monsters?</span>--}}
-                {{--</a></li>--}}
-                {{--<li><a href="" class="cf">--}}
-                    {{--<img src="https://randomuser.me/api/portraits/men/76.jpg" class="user-avatar"/>--}}
-                    {{--<span class="details highlight">Question</span><span class="details">0 Responses</span>--}}
-                    {{--<span class="content">What is the respawn time for jungle monsters?</span>--}}
-                {{--</a></li>--}}
-                {{--<li><a href="" class="cf">--}}
-                    {{--<img src="https://randomuser.me/api/portraits/women/78.jpg" class="user-avatar"/>--}}
-                    {{--<span class="details highlight">Question</span><span class="details">0 Responses</span>--}}
-                    {{--<span class="content">What is the respawn time for jungle monsters?</span>--}}
-                {{--</a></li>--}}
             {{--</ul>--}}
         </div>
         <div class="summary-info summary-info-guides">
@@ -105,7 +60,7 @@
                 @foreach($featuredGuides as $guide)
                     <li><a href="/guides/{{$guide->id}}/{{$guide->slug}}" class="cf">
                         <img src="{{ S3URL() }}/images/heroes/{{ $guide->hero->code }}/{{ $guide->hero->image }}/portrait_small.png" class="hero-avatar"/>
-                        <span class="details"><i class="fa fa-user" aria-hidden="true"></i> {{ $guide->author->username }}</span><span class="details"><i class="fa fa-star" aria-hidden="true"></i> {{ $guide->votes }}</span>
+                        <span class="details"><i class="fa fa-user" aria-hidden="true"></i> {{ $guide->author->username }}</span><span class="details"><i class="fa fa-star" aria-hidden="true"></i> {{ $guide->votes }}</span><span class="details"><i class="fa fa-eye" aria-hidden="true"></i> {{ $guide->views }}</span>
                         <span class="content">{{ $guide->title }}</span>
                     </a></li>
                 @endforeach

@@ -188,7 +188,7 @@ class GuideController extends Controller
         $deck   = null;
         $hero   = null;
         if($guide->type == 'hero') {
-            $hero = Hero::where('code', $guide->hero);
+            $hero = Hero::where('code', $guide->hero_code)->first();
         }
 
         $guide->timestamps = false;
