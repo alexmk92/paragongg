@@ -18,9 +18,19 @@
             <p>Creating a deck for Paragon.gg is quick and easy, and will allow you to show the community the cards you use in Paragon.</p>
             <a class="btn btn-primary btn-margin" href="/decks/create">Build a deck</a>
         </div>
-        <div class="sidebox panel">
+        <div class="listbox panel">
             <h4>Suggested decks</h4>
-            <div id="suggested-decks"></div>
+            <ul>
+            @foreach($decks['rated'] as $deck)
+                <li><a href="" class="cf">
+                        <img src="{{ S3URL()}}/images/heroes/{{ $deck->hero['code'] }}/{{ $deck->hero['image'] }}/portrait_small.png" class="user-avatar"/>
+                        <span class="details highlight">{{ $deck->hero['name'] }} deck</span>
+                        <span class="details">{{ count($deck->builds) }} Builds</span>
+                        <span class="details">{{ count($deck->cards) }} Cards</span>
+                        <span class="content">{{ $deck->title }}</span>
+                    </a></li>
+            @endforeach
+            </ul>
         </div>
     </div>
     <div class="wrapper">

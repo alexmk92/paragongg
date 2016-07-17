@@ -10,12 +10,16 @@
         <div class="listbox cf">
             <h5>Published guides</h5>
             <ul>
-                @if($user->guides == 0)
+                @if($guides->count() == 0)
                     <p>This user has not yet published any guides.</p>
                 @else
                     @foreach($guides as $guide)
                     <li><a href="" class="cf">
-                            <img src="{{getAvatar($user)}}" class="user-avatar"/>
+                            @if($guide->type == 'hero')
+                                <img src="{{ S3URL()}}/images/heroes/{{ $guide->hero_code }}/{{ $guide->hero->image }}/portrait_small.png" class="user-avatar"/>
+                            @else
+                                <img src="/assets/images/heroes/null.png" class="user-avatar"/>
+                            @endif
                             <span class="details highlight">{{ $guide->type }} guide</span><span class="details">{{ $guide->views }} Views</span>
                             <span class="content">{{ $guide->title }}</span>
                         </a></li>
@@ -26,12 +30,12 @@
         <div class="listbox cf">
             <h5>Published decks</h5>
             <ul>
-                @if($user->guides == 0)
+                @if($decks->count() == 0)
                     <p>This user has not yet built any decks.</p>
                 @else
                     @foreach($decks as $deck)
                         <li><a href="" class="cf">
-                                <img src="{{getAvatar($user)}}" class="user-avatar"/>
+                                <img src="{{ S3URL()}}/images/heroes/{{ $deck->hero['code'] }}/{{ $guide->hero['image'] }}/portrait_small.png" class="user-avatar"/>
                                 <span class="details highlight">{{ $deck->hero['name'] }} deck</span><span class="details">{{ $deck->views }} Views</span>
                                 <span class="content">{{ $deck->title }}</span>
                             </a></li>
