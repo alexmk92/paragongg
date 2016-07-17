@@ -105,6 +105,15 @@ body {
     }
 }
 
+.beta-notification {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    font-family: $font-condensed;
+    font-size: 12px;
+    z-index: 2000;
+}
+
 // SCROLL BAR
 ::-webkit-scrollbar {
     width: 10px;

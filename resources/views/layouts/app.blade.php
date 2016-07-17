@@ -70,5 +70,7 @@
     --}}
 @endif
 
+<div class="beta-notification">V2.0 BETA</div>
+
 </body>
 </html>
