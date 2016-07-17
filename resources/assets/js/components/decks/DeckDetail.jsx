@@ -20,6 +20,7 @@ var DeckDetail = React.createClass({
             return true;
         if(nextState.builds.length !== this.state.builds.length)
             return true;
+        return this.state !== nextState;
     },
     componentWillMount: function() {
         // Replace the current notification panel.
