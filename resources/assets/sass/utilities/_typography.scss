@@ -19,6 +19,12 @@ a {
             color: inherit;
         }
     }
+    &.faded {
+        color: $font-color-faded;
+        &:hover {
+            color: $font-color-highlight;
+        }
+    }
 }
 span {
     &.emphasis {

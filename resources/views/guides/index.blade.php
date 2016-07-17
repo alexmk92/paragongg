@@ -43,6 +43,9 @@
         </div>
     </div>
     <div class="wrapper">
+        <div class="switcher">
+            <span><a href="/guides">Hero Guides</a> / <a href="/guides/gameplay" class="faded">Gameplay Guides</a></span>
+        </div>
         <h2>Paragon guides</h2>
         <div id="guides-feed"></div>
     </div>
