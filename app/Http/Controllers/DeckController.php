@@ -22,8 +22,9 @@ class DeckController extends Controller
     use GeneratesShortcodes, RetrievesCardCollection;
 
     // Create
-    public function index()
+    public function index($hero = null)
     {
+        if($hero) $hero = Hero::select('name','slug','code')->where('slug', $hero)->firstOrFail();
         $skip = 0;
         $take = 10;
 
@@ -60,7 +61,8 @@ class DeckController extends Controller
 
         return view('decks.index')
             ->with('decks', $decks)
-            ->with('heroes', $heroes);
+            ->with('heroes', $heroes)
+            ->with('hero', $hero);
     }
 
     protected function sortDecks($decks)
