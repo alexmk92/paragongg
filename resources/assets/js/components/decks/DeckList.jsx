@@ -47,34 +47,48 @@ var DeckList = React.createClass({
     },
     componentWillMount: function() {
         this.tooltip = new Tooltip();
-        this.setState({ decks : DECKS });
 
         // Bind scroll event
         window.addEventListener('scroll', this.handleScroll);
     },
+    /*
     shouldComponentUpdate: function(nextProps, nextState) {
-        if(nextState.decks[this.state.selectedType].decks.length !== this.state.decks[this.state.selectedType].decks.length) return true;
+        if(nextState.decks[nextState.selectedType].decks.length !== this.state.decks[this.state.selectedType].decks.length) return true;
         if(nextState.selectedType !== this.state.selectedType) return true;
         if(nextState.decks[this.state.selectedType].fetching !== this.state.decks[this.state.selectedType].fetching) return true;
         if(nextState.decks[this.state.selectedType].endOfPage !== this.state.decks[this.state.selectedType].endOfPage) return true;
         return nextState.heroes !== this.state.heroes;
     },
+    */
     componentDidMount: function() {
         // Replace the current notification panel.
         this.notificationPanel = new Notification();
         this.notificationPanel.initialiseNotifications();
     },
-    updateSelectedType: function(type) {
-        this.setState({ selectedType: type });
+    setSelectedType: function(index) {
+        var type = '';
+        switch(index) {
+            case 0: type = 'featured'; break;
+            case 1: type = 'recent'; break;
+            case 2: type = 'rated'; break;
+            case 3: type = 'views'; break;
+            default: break;
+        }
+        this.setState({ selectedType : type });
     },
     getResults: function() {
         var endOfPage = this.state.decks[this.state.selectedType].endOfPage;
         var fetching = this.state.decks[this.state.selectedType].fetching;
         if(!endOfPage && !fetching) {
             var skip = this.state.decks[this.state.selectedType].skip;
+            var deckURL = '/api/v1/decks?skip=' + skip + '&take=' + this.state.take;
+            if(HERO !== null) {
+                deckURL += '&hero=' + HERO.code;
+            }
+            console.log(deckURL);
             Helpers.ajax({
                 type: 'GET',
-                url: '/api/v1/decks?skip=' + this.skip + '&take=' + this.take,
+                url: deckURL,
                 cache : false
             }).then(function(decksList) {
                 if(decksList.data.length === 0) {
@@ -142,12 +156,20 @@ var DeckList = React.createClass({
             }).then(function(payload) {
                 deck.voted = payload.data.voted;
                 deck.votes = payload.data.value;
-                var newDecks = this.state.decks.map(function(oldDeck) {
-                    if(oldDeck._id === deck._id) {
-                        oldDeck = deck;
+                // make a shallow copy of the state
+                var newDecks = JSON.parse(JSON.stringify(this.state.decks));
+                // Mutate state for the correc tdeck
+                for(var k in this.state.decks) {
+                    if(k === this.state.selectedType) {
+                        console.log(newDecks);
+                        newDecks[k].decks = this.state.decks[k].decks.map(function(oldDeck) {
+                            if(oldDeck._id === deck._id) {
+                                oldDeck = deck;
+                            }
+                            return oldDeck;
+                        });
                     }
-                    return oldDeck;
-                });
+                }
                 this.setState({ decks : newDecks });
             }.bind(this), function(err) {
                 console.log("ERROR WHEN UPVOTING: ", err);
@@ -157,7 +179,7 @@ var DeckList = React.createClass({
         }
     },
     renderDeckList: function() {
-        var decks = this.state.decks[this.state.selectedType].map(function(deck) {
+        var decks = this.state.decks[this.state.selectedType].decks.map(function(deck) {
             if(!deck.voted) deck.voted = false;
             return (
                 <DeckPreview key={Helpers.uuid()}
@@ -181,7 +203,7 @@ var DeckList = React.createClass({
             <div>
                 <HeroPanel title="Hero decks" placeholder="Search by hero name..." showAffinityFilter={false} heroes={HEROES} isActive={true} onHeroSelected={this.onHeroSelected} onHeroesListUpdated={this.heroesListUpdated}  linkType="decks"/>
 
-                <Tabs defaultSelected={0} expandable={false} className="padless">
+                <Tabs defaultSelected={0} expandable={false} className="padless" onSelectedTabUpdated={this.setSelectedType}>
                     {/* Featured */}
                     <TabPanel title="Featured">
                         <ul className="main-list">
@@ -202,12 +224,6 @@ var DeckList = React.createClass({
                     </TabPanel>
                     {/* Most views */}
                     <TabPanel title="Most views">
-                        <ul className="main-list">
-                            { this.renderDeckList() }
-                        </ul>
-                    </TabPanel>
-                    {/* Newest */}
-                    <TabPanel title="Newest">
                         <ul className="main-list">
                             { this.renderDeckList() }
                         </ul>

@@ -76,7 +76,9 @@ var HeroPanel = React.createClass({
         }.bind(this));
     },
     selectedHero: function(hero) {
-        this.props.onHeroSelected(hero);
+        if(typeof this.props.onHeroSelected !== 'undefined') {
+            this.props.onHeroSelected(hero);
+        }
     },
     getLink: function (hero) {
         if(this.props.linkType != null) {
