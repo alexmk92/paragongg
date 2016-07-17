@@ -1,27 +1,5 @@
 var Notification = function() {
     /**
-     * Reset the DOM to include a multiple notifications panel
-     */
-    this.initialiseNotifications = function() {
-        /*
-        var existingNode = document.querySelector(".notification-panel");
-        if(existingNode) {
-            if(document.body.removeChild(existingNode)) {
-                // Used to go here
-            }
-        }
-        */
-        // Add the new notification structure
-        var multipleNotificationPanel = document.createElement("div");
-        var notificationPanelWrapper = document.createElement("div");
-
-        multipleNotificationPanel.className = "multiple-notification-panel";
-        notificationPanelWrapper.className = "notification-panel-wrapper";
-
-        multipleNotificationPanel.appendChild(notificationPanelWrapper);
-        document.body.appendChild(multipleNotificationPanel);
-    };
-    /**
      * Dismisses the notification if it is clicked prematurely
      */
     this.dismissNotification = function(event) {
@@ -44,11 +22,25 @@ var Notification = function() {
      * Add a new notification to the DOM, it will be added to the bottom of the stack
      */
     this.addNotification = function(type, message) {
+        console.log("TYPE IS: " + type + " AND MESSAGE IS: ", message);
         if(typeof type === "undefined" || type === null || type === "")
             type = "warning";
 
-        var notificationNode = document.querySelector(".notification-panel-wrapper");
+        //var notificationNode = document.querySelector(".notification-panel-wrapper");
+        var notificationNode = document.querySelector(".notification-panel");
         if(notificationNode) {
+
+            //return '<div id="notification" class="notification notification-'.$notification[0].'" onclick="this.style.display=\'none\';">'.$notification[1].'<i class="fa fa-times" aria-hidden="true"></i></div>';
+            var notification = document.createElement('div');
+            notification.id = "notification";
+            notification.className = "notification notification-" + type;
+
+            notification.innerHTML = message + "<i class='fa fa-times' aria-hidden='true'></i>";
+            notification.addEventListener("click", this.dismissNotification);
+
+            notificationNode.appendChild(notification);
+
+            /*
             var notificationPanel = document.createElement("div");
             notificationPanel.className = "notification-panel";
 
@@ -81,6 +73,7 @@ var Notification = function() {
                     }
                 }, 5000);
             }
+            */
         }
     };
 };

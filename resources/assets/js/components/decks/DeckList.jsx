@@ -140,8 +140,9 @@ var DeckList = React.createClass({
     handleScroll: function() {
         var hasScrollbar = window.innerWidth > document.documentElement.clientWidth;
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight || !hasScrollbar) {
-            this.getResults();
+
         }
+        this.getResults();
     },
     upvoteDeck: function(deck) {
         if(AUTHED) {
