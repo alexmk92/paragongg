@@ -55,9 +55,6 @@ class HomeController extends Controller
     public function topDecks()
     {
         $decks = Deck::orderBy('votes', 'DESC')->take(5)->get();
-        foreach($decks as $deck) {
-            $deck->hero = Hero::where('code', $deck->hero)->first();
-        }
         return $decks;
     }
 }

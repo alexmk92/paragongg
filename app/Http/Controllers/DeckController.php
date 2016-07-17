@@ -35,26 +35,30 @@ class DeckController extends Controller
             ->get();
 
         $decks = [];
-        $decks['featured'] = Deck::where('featured', true)
-            ->skip($skip)
+        $decks['featured'] = Deck::where('featured', true);
+        if($hero) $decks['featured'] = $decks['featured']->where('hero_code', $hero->code);
+        $decks['featured'] = $decks['featured']->skip($skip)
             ->take($take)
             ->get();
         $decks['featured'] = $this->sortDecks($decks['featured']);
 
-        $decks['recent'] = Deck::orderBy('updated_at', 'DESC')
-            ->skip($skip)
+        $decks['recent'] = Deck::orderBy('updated_at', 'DESC');
+        if($hero) $decks['recent'] = $decks['recent']->where('hero_code', $hero->code);
+        $decks['recent'] = $decks['recent']->skip($skip)
             ->take($take)
             ->get();
         $decks['recent'] = $this->sortDecks($decks['recent']);
 
-        $decks['rated'] = Deck::orderBy('votes', 'DESC')
-            ->skip($skip)
+        $decks['rated'] = Deck::orderBy('votes', 'DESC');
+        if($hero) $decks['rated'] = $decks['rated']->where('hero_code', $hero->code);
+        $decks['rated'] = $decks['rated']->skip($skip)
             ->take($take)
             ->get();
         $decks['rated'] = $this->sortDecks($decks['rated']);
 
-        $decks['views'] = Deck::orderBy('views', 'DESC')
-            ->skip($skip)
+        $decks['views'] = Deck::orderBy('views', 'DESC');
+        if($hero) $decks['views'] = $decks['views']->where('hero_code', $hero->code);
+        $decks['views'] = $decks['views']->skip($skip)
             ->take($take)
             ->get();
         $decks['views'] = $this->sortDecks($decks['views']);

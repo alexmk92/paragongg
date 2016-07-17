@@ -78,7 +78,7 @@
                 @if(isset($topDecks) && $topDecks->count() > 0)
                     @foreach($topDecks as $deck)
                         <li><a href="/decks/{{  $deck->_id }}/{{ createSlug($deck->title) }}" class="cf">
-                                <img src="{{ S3URL() }}/images/heroes/{{ $deck->hero->code }}/{{ $deck->hero->image }}/portrait_small.png" class="hero-avatar"/>
+                                <img src="{{ S3URL() }}/images/heroes/{{ $deck->hero['code'] }}/{{ $deck->hero['image'] }}/portrait_small.png" class="hero-avatar"/>
                                 <span class="details"><i class="fa fa-user" aria-hidden="true"></i> {{ $deck->author->username }}</span><span class="details"><i class="fa fa-star" aria-hidden="true"></i> {{ $deck->votes }}</span>
                                 <span class="content">{{ $deck->title }}</span>
                             </a></li>
