@@ -34,29 +34,25 @@ class DeckController extends Controller
             ->get();
 
         $decks = [];
-        $decks['featured'] = Deck::where('status', 'published')
-            ->where('featured', true)
+        $decks['featured'] = Deck::where('featured', true)
             ->skip($skip)
             ->take($take)
             ->get();
         $decks['featured'] = $this->sortDecks($decks['featured']);
 
-        $decks['recent'] = Deck::where('status', 'published')
-            ->orderBy('updated_at', 'DESC')
+        $decks['recent'] = Deck::orderBy('updated_at', 'DESC')
             ->skip($skip)
             ->take($take)
             ->get();
         $decks['recent'] = $this->sortDecks($decks['recent']);
 
-        $decks['rated'] = Deck::where('status', 'published')
-            ->orderBy('votes', 'DESC')
+        $decks['rated'] = Deck::orderBy('votes', 'DESC')
             ->skip($skip)
             ->take($take)
             ->get();
         $decks['rated'] = $this->sortDecks($decks['rated']);
 
-        $decks['views'] = Deck::where('status', 'published')
-            ->orderBy('views', 'DESC')
+        $decks['views'] = Deck::orderBy('views', 'DESC')
             ->skip($skip)
             ->take($take)
             ->get();
