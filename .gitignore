@@ -3,6 +3,7 @@
 /node_modules
 /public/storage
 /public/build
+/database/seeds/json
 /vendor
 Homestead.yaml
 Homestead.json
