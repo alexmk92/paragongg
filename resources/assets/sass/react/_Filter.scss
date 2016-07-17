@@ -88,12 +88,17 @@
     display: inline-block;
     margin-left: 30px;
     vertical-align: top;
+    text-align: center;
 
     .button {
-        font-size: 48px;
+        font-size: 40px;
         display: inline-block;
-        margin-top: -10px;
+        margin-top: -7px;
         cursor: pointer;
+        &.sort {
+            font-size: 30px;
+            margin-top: 4px;
+        }
         &:hover {
             color: $secondary-highlight;
         }
@@ -107,11 +112,12 @@
         max-height: 500px;
         min-width: 300px;
         position: absolute;
-        background: #0d1016;
-        border: 1px solid #5a606f;
+        background: rgba($panel-color-dark,0.95);
+        border: 1px solid $faded-line;
         z-index: 100;
         padding: 20px;
         opacity: 0;
+        text-align: left;
 
         &.active {
             display: block;
@@ -131,27 +137,28 @@
         & .title {
             text-align: center;
             padding: 10px 40px;
-
-            .divider {
-                width: 180px;
-                height: 1px;
-                background: #5a606f;
+            &:after {
+                content: '';
+                display: block;
+                width: 70px;
                 margin: 20px auto;
+                height: 1px;
+                border-top: 1px solid $faded-line;
             }
         }
 
         ul {
             width: 100%;
-            font-size: 12px;
+            font-size: 11px;
+            line-height: 16px;
             margin-bottom: 20px;
             padding-left: 15px;
             padding-right: 15px;
             li {
                 cursor: pointer;
-                line-height: 1.3em;
                 position: relative;
                 display: inline-block;
-                padding: 0px 10px;
+                padding: 0 10px;
 
                 .option {
                     padding-left: 10px;
@@ -169,7 +176,7 @@
                     width: 49%;
                 }
                 i {
-                    font-size: 24px !important;
+                    font-size: 20px !important;
                     padding-right: 4px;
                 }
                 input {

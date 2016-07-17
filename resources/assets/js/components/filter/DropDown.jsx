@@ -20,12 +20,12 @@ var DropDown = React.createClass({
         var isDropDownMenu = false;
         while(elem.parentNode && iterations > 0) {
             // Check root node first
-            if(elem.className === "menu" || elem.className === "menu active" || elem.className === "button") {
+            if(elem.className === "menu" || elem.className === "menu active" || elem.className.contains("button")) {
                 isDropDownMenu = true;
             } else {
                 // Traverse to child node and check for match
                 elem = elem.parentNode;
-                if(elem.className === "menu" || elem.className === "menu active" || elem.className === "button") {
+                if(elem.className === "menu" || elem.className === "menu active" || elem.className.contains("button")) {
                     isDropDownMenu = true;
                 }
             }
@@ -92,8 +92,8 @@ var DropDown = React.createClass({
         return (
             <div className="drop-down-menu">
                 <label>{ this.props.label }</label>
-                <div className="button"
-                     onClick={ this.dropDownClicked }>
+                <div onClick={ this.dropDownClicked }
+                     className={ "button " + this.props.label.toLowerCase() }>
                     <i className={ this.props.buttonIcon } aria-hidden="true"></i>
                 </div>
                 <div className={ "menu " + active }>

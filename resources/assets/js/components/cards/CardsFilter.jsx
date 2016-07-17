@@ -356,10 +356,10 @@ var CardsFilter = React.createClass({
                           options={ this.state.statistics }
                           onOptionChanged={this.dropDownChanged}
                 />
-                <DropDown label="More"
+                <DropDown label="Sort"
                           columns={ 2 }
-                          title="MORE OPTIONS"
-                          buttonIcon="fa fa-ellipsis-h"
+                          title="SORT RESULTS"
+                          buttonIcon="fa fa-sort"
                           options={ this.state.moreOptions }
                           onOptionChanged={this.moreOptionsChanged}
                 />
