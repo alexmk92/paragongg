@@ -12,10 +12,37 @@ var TabPanel  = Tabbable.TabPanel;
 
 var DeckList = React.createClass({
     getInitialState: function() {
+        console.log(this.props);
         return {
-            decks: [],
-            fetching: false,
-            endOfPage: false
+            selectedType: 'featured',
+            heroes : this.props.heroes || null,
+            take: 10,
+            decks: {
+                featured: {
+                    decks : this.props.decks.featured,
+                    skip : this.props.decks.featured.length,
+                    fetching: false,
+                    endOfPage: false
+                },
+                recent: {
+                    decks : this.props.decks.recent,
+                    skip : this.props.decks.recent.length,
+                    fetching: false,
+                    endOfPage: false
+                },
+                rated: {
+                    decks : this.props.decks.rated,
+                    skip : this.props.decks.rated.length,
+                    fetching: false,
+                    endOfPage: false
+                },
+                views: {
+                    decks : this.props.decks.views,
+                    skip : this.props.decks.views.length,
+                    fetching: false,
+                    endOfPage: false
+                }
+            }
         }
     },
     componentWillMount: function() {
@@ -25,14 +52,55 @@ var DeckList = React.createClass({
         // Bind scroll event
         window.addEventListener('scroll', this.handleScroll);
     },
+    shouldComponentUpdate: function(nextProps, nextState) {
+        if(nextState.decks[this.state.selectedType].decks.length !== this.state.decks[this.state.selectedType].decks.length) return true;
+        if(nextState.selectedType !== this.state.selectedType) return true;
+        if(nextState.decks[this.state.selectedType].fetching !== this.state.decks[this.state.selectedType].fetching) return true;
+        if(nextState.decks[this.state.selectedType].endOfPage !== this.state.decks[this.state.selectedType].endOfPage) return true;
+        return nextState.heroes !== this.state.heroes;
+    },
     componentDidMount: function() {
-        // start skip at 10 as PHP renders first 10
-        this.skip = 10;
-        this.take = 10;
         // Replace the current notification panel.
         this.notificationPanel = new Notification();
         this.notificationPanel.initialiseNotifications();
     },
+    updateSelectedType: function(type) {
+        this.setState({ selectedType: type });
+    },
+    getResults: function() {
+        var endOfPage = this.state.decks[this.state.selectedType].endOfPage;
+        var fetching = this.state.decks[this.state.selectedType].fetching;
+        if(!endOfPage && !fetching) {
+            var skip = this.state.decks[this.state.selectedType].skip;
+            Helpers.ajax({
+                type: 'GET',
+                url: '/api/v1/decks?skip=' + this.skip + '&take=' + this.take,
+                cache : false
+            }).then(function(decksList) {
+                if(decksList.data.length === 0) {
+                    var decks = JSON.parse(JSON.stringify(this.state.decks));
+                    decks[this.state.selectedType].endOfPage = true;
+                    this.setState({ decks : decks });
+                    return;
+                }
+
+                var newGuides = decksList.data.map(function(deck) {
+                    return deck;
+                });
+
+                var decks = JSON.parse(JSON.stringify(this.state.decks));
+                decks[this.state.selectedType].fetching = false;
+                decks[this.state.selectedType].skip += 10;
+                decks[this.state.selectedType].guides = decks[this.state.selectedType].guides.concat(newDecks);
+
+                this.setState({ decks: decks });
+            }.bind(this));
+            var decks = JSON.parse(JSON.stringify(this.state.decks));
+            decks[this.state.selectedType].fetching = true;
+            this.setState({ decks: decks });
+        }
+    },
+    /*
     getResults: function() {
         if(!this.state.endOfPage && !this.state.fetching) {
             Helpers.ajax({
@@ -54,8 +122,10 @@ var DeckList = React.createClass({
             this.setState({ fetching: true });
         }
     },
+    */
     handleScroll: function() {
-        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+        var hasScrollbar = window.innerWidth > document.documentElement.clientWidth;
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight || !hasScrollbar) {
             this.getResults();
         }
     },
@@ -87,7 +157,7 @@ var DeckList = React.createClass({
         }
     },
     renderDeckList: function() {
-        var decks = this.state.decks.map(function(deck) {
+        var decks = this.state.decks[this.state.selectedType].map(function(deck) {
             if(!deck.voted) deck.voted = false;
             return (
                 <DeckPreview key={Helpers.uuid()}
@@ -102,8 +172,8 @@ var DeckList = React.createClass({
     },
     renderInfiniteScrollStatus: function() {
         var jsx = '';
-        if(this.state.fetching) jsx = <span><i className="fa fa-spinner fa-spin"></i> Fetching new results</span>;
-        if(this.state.endOfPage) jsx = <span><i className="fa fa-check"></i> You've reached the end of the page</span>;
+        if(this.state.decks[this.state.selectedType].fetching) jsx = <span><i className="fa fa-spinner fa-spin"></i> Fetching new decks</span>;
+        if(this.state.decks[this.state.selectedType].endOfPage) jsx = <span><i className="fa fa-check"></i> You've reached the end of the page</span>;
         return jsx;
     },
     render: function() {
@@ -153,4 +223,4 @@ var DeckList = React.createClass({
 });
 
 var element = document.querySelector("#decks-feed");
-if(element) ReactDOM.render( <DeckList />, element);
+if(element) ReactDOM.render( <DeckList decks={DECKS} heroes={HEROES} />, element);
