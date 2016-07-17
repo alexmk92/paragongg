@@ -1,4 +1,7 @@
 @extends('layouts/app')
+@section('title')
+{{ $guide->title }} -
+@endsection
 @section('body')
     <div class="article-header">
         @if($guide->type == 'hero')

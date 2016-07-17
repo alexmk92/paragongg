@@ -1,4 +1,7 @@
 @extends('layouts/app')
+@section('title')
+    {{ $card->name }} -
+@endsection
 @section('body')
     <div id="card-detail-container"></div>
 

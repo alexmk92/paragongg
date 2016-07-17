@@ -1,4 +1,7 @@
 @extends('layouts/app')
+@section('title')
+    {{ $article->title }} -
+@endsection
 @section('body')
     <div class="article-header">
         <img src="{{ S3URL() }}/images/news/headers/{{ $article->header }}"/>

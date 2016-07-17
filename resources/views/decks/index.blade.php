@@ -1,4 +1,7 @@
 @extends('layouts/app')
+@section('title')
+    Paragon Decks -
+@endsection
 @section('scripts')
     <script type="text/javascript">
         var csrf   = '{{ csrf_token() }}';

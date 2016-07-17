@@ -1,4 +1,7 @@
 @extends('layouts/app')
+@section('title')
+    Paragon Cards -
+@endsection
 @section('body')
     <div id="cards-feed"></div>
 @endsection

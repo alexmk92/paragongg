@@ -1,4 +1,7 @@
 @extends('layouts/app')
+@section('title')
+    Deck Builder -
+@endsection
 @section('body')
     <div id="deck-builder"></div>
 @endsection

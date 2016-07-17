@@ -1,4 +1,7 @@
 @extends('layouts/app')
+@section('title')
+    {{ $hero->name }} -
+@endsection
 @section('body')
     <div id="hero-wrapper"></div>
 @endsection

@@ -1,4 +1,7 @@
 @extends('layouts/app')
+@section('title')
+    Paragon Heroes -
+@endsection
 @section('body')
     <div id="heroes-feed"></div>
 @endsection

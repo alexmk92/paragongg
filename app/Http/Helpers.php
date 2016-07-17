@@ -115,7 +115,7 @@ function getAvatar($user)
     if(!$user->avatar) {
         return "/assets/images/avatar.png";
     }
-    return S3URL() . "/images/users/" . $user->id . "/avatars/ " . $user->avatar;
+    return S3URL() . "/images/users/" . $user->id . "/avatars/" . $user->avatar;
 }
 
 function createSlug($string)

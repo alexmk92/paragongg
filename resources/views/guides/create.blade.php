@@ -1,4 +1,7 @@
 @extends('layouts/app')
+@section('title')
+    Create a Guide -
+@endsection
 @section('libraries')
     <script src="/js/lib/simplemde.min.js"></script>
 @endsection
@@ -56,7 +59,7 @@
                 <hr>
                     <h5>What abilities do you take?</h5>
                     <label>Ability matrix</label>
-                    @include('layouts.abilitySelect')
+                    @include('guides.abilitySelect')
                 </div>
 
                 <hr>

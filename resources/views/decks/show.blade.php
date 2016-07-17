@@ -1,4 +1,7 @@
 @extends('layouts/app')
+@section('title')
+    {{ $deck->title }} -
+@endsection
 @section('body')
     <div id="sidebar">
         @if (auth()->check() && $deck->author_id == auth()->user()->id)

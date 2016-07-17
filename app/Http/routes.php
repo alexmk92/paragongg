@@ -33,10 +33,10 @@ Route::get('/news/{id}/{slug?}', 'NewsController@show');
 Route::get('/users/{username}', 'UserController@show');
 
 /* PLAYERS */
-Route::get('/players', 'PlayerController@index');
-Route::post('/players/search', 'PlayerController@search');
-Route::get('/players/top', 'PlayerController@top');
-Route::get('/players/{username}', 'PlayerController@show');
+//Route::get('/players', 'PlayerController@index');
+//Route::post('/players/search', 'PlayerController@search');
+//Route::get('/players/top', 'PlayerController@top');
+//Route::get('/players/{username}', 'PlayerController@show');
 
 /* GAMES */
 Route::get('/games', 'GameController@index');
@@ -78,6 +78,8 @@ Route::get('/guides/edit/{id}', 'GuideController@edit')->middleware('auth');
 Route::post('/guides/edit/{id}', 'GuideController@update')->middleware('auth');
 Route::get('/guides/delete/{id}', 'GuideController@delete')->middleware('auth');
 Route::get('/guides/hero/{hero}', 'GuideController@index');
+Route::get('/guides/publish/{id}', 'GuideController@publish');
+Route::get('/guides/unpublish/{id}', 'GuideController@unpublish');
 Route::get('/guides/{id}/{slug?}', 'GuideController@show');
 
 /* COMMUNITY */

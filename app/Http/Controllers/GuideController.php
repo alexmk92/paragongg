@@ -8,6 +8,7 @@ use App\Guide;
 use App\Hero;
 use App\Http\Requests;
 use App\Http\Requests\Guide\CreateGuideRequest;
+use App\Http\Requests\Guide\UpdateGuideRequest;
 use App\Http\Traits\GeneratesShortcodes;
 use App\Shortcode;
 use Illuminate\Http\Request;
@@ -129,6 +130,19 @@ class GuideController extends Controller
         return view('guides.create', compact('heroes', 'decks'));
     }
 
+    // Edit
+    public function edit($id)
+    {
+        $heroes = Hero::select('name', 'code', 'image')
+            ->orderBy('name')
+            ->get();
+
+        $decks = Deck::where('author_id', auth()->user()->id)->get();
+
+        $guide = Guide::findOrFail($id);
+        return view('guides.edit', compact('guide', 'heroes', 'decks'));
+    }
+
     // Store
     public function store(CreateGuideRequest $request)
     {
@@ -180,7 +194,55 @@ class GuideController extends Controller
         $this->generate('/guides/'.$guide->id.'/'.$guide->slug, 'guide', $guide->id);
 
         session()->flash('notification', 'success|Guide saved.');
+        return redirect('/guides/'.$guide->id.'/'.$guide->slug);
+    }
 
+    public function update(UpdateGuideRequest $request ,$id)
+    {
+        $guide = Guide::findOrFail($id);
+
+        $guide->type      = $request->type;
+        $guide->title     = $request->title;
+        $guide->body      = $request->body;
+
+        if($guide->type == 'hero') {
+            $abilityString = '';
+            for($i = 1; $i < 16; $i++) {
+                $current = 'ability-'.$i;
+                $abilityString .= $request->$current;
+                if($i < 15) {
+                    $abilityString .= ',';
+                }
+            }
+            $guide->hero_code   = $request->hero;
+            $guide->abilities = $abilityString;
+
+            // If they have embedded a deck
+            if($request->has('import_type')) {
+                //dd('has import type');
+                if($request->import_type == 'select') {
+                    $guide->deck = $request->deck_select;
+                }
+                if($request->import_type == 'shortcode') {
+                    $deck = getDeckFromString($request->deck_shortcode);
+                    if(!$deck) {
+                        session()->flash('notification', 'warning|We couldn\'t find that deck. Please check the format entered.');
+                        return redirect()->back();
+                    }
+                    $guide->deck = $deck->_id;
+                }
+            }
+        }
+
+        if(isset($_POST['draft'])) {
+            $guide->status = 'draft';
+        } else {
+            $guide->status = 'published';
+        }
+
+        $guide->save();
+
+        session()->flash('notification', 'success|Guide updated.');
         return redirect('/guides/'.$guide->id.'/'.$guide->slug);
     }
 
@@ -269,18 +331,26 @@ class GuideController extends Controller
         return view('guides.show', compact('guide', 'guideBody', 'guideTOC', 'thread', 'deck', 'hero', 'shortcode'));
     }
 
-    // Edit
-    public function edit($id)
+    // Publish
+    public function publish($id)
     {
-        $guide = Guide::findOrFail($id);
-        return view('guides.edit', compact('guide'));
+        $guide = Guide::where('id', $id)->where('user_id', auth()->user()->id)->firstOrFail();
+        $guide->status = 'published';
+        $guide->save();
+
+        session()->flash('notification', 'success|Guide has been published.');
+        return redirect()->back();
     }
 
-    // Update
-    public function update($id)
+    // Unpublish
+    public function unpublish($id)
     {
-        $guide = Guide::findOrFail($id);
-        return view('guides.edit', compact('guide'));
+        $guide = Guide::where('id', $id)->where('user_id', auth()->user()->id)->firstOrFail();
+        $guide->status = 'draft';
+        $guide->save();
+
+        session()->flash('notification', 'success|Guide has been unpublished.');
+        return redirect()->back();
     }
 
     // Delete

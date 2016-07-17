@@ -1,4 +1,7 @@
 @extends('layouts/app')
+@section('title')
+    Paragon Gameplay Guides -
+@endsection
 @section('scripts')
     <script type="text/javascript">
         var GUIDES = {!! json_encode($guides) !!};

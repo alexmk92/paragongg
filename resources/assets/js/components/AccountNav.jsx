@@ -54,7 +54,8 @@ var AccountNav = React.createClass({
                 </div>
                 <div className={this.isActive()}>
                     <ul className="account-properties">
-                        {/*<li><a href={"/users/" + this.state.username.toLowerCase()}><i className="fa fa-user" aria-hidden="true"></i>View profile</a></li>*/}
+                        <li><a href={"/users/" + this.state.username.toLowerCase()}><i className="fa fa-user" aria-hidden="true"></i>View profile</a></li>
+                        <li><a href="/account/guides"><i className="fa fa-blind" aria-hidden="true"></i>Your guides</a></li>
                         <li><a href="/account/decks"><i className="fa fa-book" aria-hidden="true"></i>Your decks</a></li>
                         {/*<li><a href="/account/achievements"><i className="fa fa-trophy" aria-hidden="true"></i>Achievements</a></li>*/}
                         {/*<li><a href="/account/store"><i className="pgg pgg-amber" aria-hidden="true"></i>Store</a></li>*/}

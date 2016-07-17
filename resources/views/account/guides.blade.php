@@ -9,14 +9,16 @@
                 <tr>
                     <th>Title</th>
                     <th>Type</th>
+                    <th>Status</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($guides as $guide)
                     <tr>
-                        <td>{{ $guide->title }}</td>
-                        <td>{{ $guide->type }}</td>
+                        <td><a href="/guides/{{ $guide->id }}/{{ $guide->slug }}">{{ $guide->title }}</a></td>
+                        <td>{{ $guide->type }} guide</td>
+                        <td>{{ $guide->status }}</td>
                         <td>
                             @if($guide->status != 'published')
                                 <a href="/guides/publish/{{ $guide->id }}" class="btn btn-faded">Publish</a>

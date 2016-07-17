@@ -19,6 +19,7 @@
                         <td>{{ $deck->hero['name'] }}</td>
                         <td>
                             <a href="/decks/edit/{{ $deck->id }}" class="btn btn-faded">Edit</a>
+                            <a href="/decks/export/{{ $deck->id }}" class="btn btn-faded">Export</a>
                         </td>
                     </tr>
                 @endforeach
