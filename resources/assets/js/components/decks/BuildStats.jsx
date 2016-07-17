@@ -16,7 +16,7 @@ var BuildStats = React.createClass({
             compareIndex: 0,
             comparisons: [],
             currentRank: 1
-        }  
+        }
     },
     componentDidMount: function() {
         this.sliderChanged(1);
@@ -529,40 +529,45 @@ var BuildStats = React.createClass({
         var maxCards = this.props.cards.all.length;
 
         // On a null build, show deck affinity weighting
-        if(this.props.selectedBuild !== "undefined" && (this.props.selectedBuild === null || this.props.selectedBuild.slots.length === 0)) {
-            this.props.cards.all.forEach(function(card) {
-                // Push for maximum possible:
-                if(typeof affinityCounts[card.affinity] === "undefined") {
-                    affinityCounts[card.affinity] = { label : card.affinity, value : 1 };
-                } else {
-                    affinityCounts[card.affinity].value += 1;
-                }
-            });
-        } else {
-            // Show build affinity weighting
-            maxCards = 0;
-            this.props.selectedBuild.slots.forEach(function(slot) {
-                if(slot.card) {
-                    if(typeof affinityCounts[slot.card.affinity] === "undefined") {
-                        affinityCounts[slot.card.affinity] = { label : slot.card.affinity, value : 1 };
-                        maxCards++;
+        if(typeof this.props.selectedBuild !== "undefined") {
+            if (this.props.selectedBuild === null || this.props.selectedBuild.slots.length === 0) {
+                this.props.cards.all.forEach(function (card) {
+                    // Push for maximum possible:
+                    if (typeof affinityCounts[card.affinity] === "undefined") {
+                        affinityCounts[card.affinity] = {label: card.affinity, value: 1};
                     } else {
-                        affinityCounts[slot.card.affinity].value += 1;
-                        maxCards++;
+                        affinityCounts[card.affinity].value += 1;
                     }
-                    slot.upgrades.forEach(function(upgradeSlot) {
-                        if(upgradeSlot.card) {
-                            if(typeof affinityCounts[upgradeSlot.card.affinity] === "undefined") {
-                                affinityCounts[upgradeSlot.card.affinity] = { label : upgradeSlot.card.affinity, value : 1 };
-                                maxCards++;
-                            } else {
-                                affinityCounts[upgradeSlot.card.affinity].value += 1;
-                                maxCards++;
-                            }
+                });
+            } else {
+                // Show build affinity weighting
+                maxCards = 0;
+                this.props.selectedBuild.slots.forEach(function (slot) {
+                    if (slot.card) {
+                        if (typeof affinityCounts[slot.card.affinity] === "undefined") {
+                            affinityCounts[slot.card.affinity] = {label: slot.card.affinity, value: 1};
+                            maxCards++;
+                        } else {
+                            affinityCounts[slot.card.affinity].value += 1;
+                            maxCards++;
                         }
-                    });
-                }
-            }.bind(this));
+                        slot.upgrades.forEach(function (upgradeSlot) {
+                            if (upgradeSlot.card) {
+                                if (typeof affinityCounts[upgradeSlot.card.affinity] === "undefined") {
+                                    affinityCounts[upgradeSlot.card.affinity] = {
+                                        label: upgradeSlot.card.affinity,
+                                        value: 1
+                                    };
+                                    maxCards++;
+                                } else {
+                                    affinityCounts[upgradeSlot.card.affinity].value += 1;
+                                    maxCards++;
+                                }
+                            }
+                        });
+                    }
+                }.bind(this));
+            }
         }
         for(var key in affinityCounts) {
             if(affinityCounts.hasOwnProperty(key)) {

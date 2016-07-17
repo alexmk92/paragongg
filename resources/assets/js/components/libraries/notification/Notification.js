@@ -1,4 +1,8 @@
 var Notification = function() {
+    this.initialiseNotifications = function() {
+        // does nothing for now, need to remove code which uses this method, just keeping it here so
+        // code doesnt break;
+    };
     /**
      * Dismisses the notification if it is clicked prematurely
      */
