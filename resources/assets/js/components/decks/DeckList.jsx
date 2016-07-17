@@ -97,7 +97,7 @@ var DeckList = React.createClass({
                     return;
                 }
 
-                var newGuides = decksList.data.map(function(deck) {
+                var newDecks = decksList.data.map(function(deck) {
                     return deck;
                 });
 
