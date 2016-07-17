@@ -250,6 +250,7 @@ class GuideController extends Controller
     public function show($id, Request $request)
     {
         $guide  = Guide::findOrFail($id);
+        if($guide->status == 'draft' && !auth()->check() || $guide->user_id != auth()->user()->id) abort(404);
         $thread = findOrCreateThread($request->path());
         $deck   = null;
         $hero   = null;

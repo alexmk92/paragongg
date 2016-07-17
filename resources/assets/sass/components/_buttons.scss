@@ -49,6 +49,10 @@
             margin-right: 0;
         }
     }
+    &.btn-green-hover:hover {
+        color: $green !important;
+        border-color: $green !important;
+    }
     &.btn-half {
         width: 48%;
         margin-right: 4%;

@@ -58,6 +58,13 @@
         </div>
     </article>
     @include('layouts.commentFeed')
+    @if($guide->status == 'draft')
+        <div class="draft-mode">
+            <span style="margin-right: 30px;"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> This guide is currently in draft mode and is <strong>NOT</strong> public</span>
+            <a class="btn btn-primary" href="/guides/edit/{{ $guide->id }}"><i class="fa fa-pencil" aria-hidden="true"></i> Edit guide</a>
+            <a class="btn btn-primary btn-green-hover" href="/guides/publish/{{ $guide->id }}"><i class="fa fa-check" aria-hidden="true"></i> Publish guide</a>
+        </div>
+    @endif
 @endsection
 @section('scripts')
     <script type="text/javascript">

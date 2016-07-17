@@ -66,6 +66,18 @@
     }
 }
 
+.draft-mode {
+    background: $panel-color;
+    position: fixed;
+    bottom: 0;
+    padding: 20px;
+    width: 100%;
+    max-width: 1350px;
+    z-index: 1999;
+    text-align: center;
+    color: $tertiary-highlight;
+}
+
 .switcher {
     float: right;
     margin-top: 15px;
