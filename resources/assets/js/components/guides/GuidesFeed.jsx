@@ -48,6 +48,7 @@ var GuidesFeed = React.createClass({
         if(nextState.selectedType !== this.state.selectedType) return true;
         if(nextState.guides[this.state.selectedType].fetching !== this.state.guides[this.state.selectedType].fetching) return true;
         if(nextState.guides[this.state.selectedType].endOfPage !== this.state.guides[this.state.selectedType].endOfPage) return true;
+        if(nextState.guides[this.state.selectedType].guides.length === this.state.guides[this.state.selectedType].guides.length) return false;
         return nextState.heroes !== this.state.heroes;
     },
     componentWillMount: function() {
@@ -233,7 +234,7 @@ var GuidePreview = React.createClass({
             );
         }
 
-        return <span className="stat"></span>
+        return "";
     },
     getTimeLabel: function() {
         var created_at = new Date(this.props.created);

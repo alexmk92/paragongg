@@ -51,15 +51,14 @@ var DeckList = React.createClass({
         // Bind scroll event
         window.addEventListener('scroll', this.handleScroll);
     },
-    /*
     shouldComponentUpdate: function(nextProps, nextState) {
         if(nextState.decks[nextState.selectedType].decks.length !== this.state.decks[this.state.selectedType].decks.length) return true;
         if(nextState.selectedType !== this.state.selectedType) return true;
         if(nextState.decks[this.state.selectedType].fetching !== this.state.decks[this.state.selectedType].fetching) return true;
         if(nextState.decks[this.state.selectedType].endOfPage !== this.state.decks[this.state.selectedType].endOfPage) return true;
+        if(nextState.decks[nextState.selectedType].decks.length === this.state.decks[this.state.selectedType].decks.length) return false;
         return nextState.heroes !== this.state.heroes;
     },
-    */
     componentDidMount: function() {
         // Replace the current notification panel.
         this.notificationPanel = new Notification();
