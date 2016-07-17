@@ -3,20 +3,23 @@ var Notification = function() {
      * Reset the DOM to include a multiple notifications panel
      */
     this.initialiseNotifications = function() {
+        /*
         var existingNode = document.querySelector(".notification-panel");
         if(existingNode) {
             if(document.body.removeChild(existingNode)) {
-                // Add the new notification structure
-                var multipleNotificationPanel = document.createElement("div");
-                var notificationPanelWrapper = document.createElement("div");
-
-                multipleNotificationPanel.className = "multiple-notification-panel";
-                notificationPanelWrapper.className = "notification-panel-wrapper";
-
-                multipleNotificationPanel.appendChild(notificationPanelWrapper);
-                document.body.appendChild(multipleNotificationPanel);
+                // Used to go here
             }
         }
+        */
+        // Add the new notification structure
+        var multipleNotificationPanel = document.createElement("div");
+        var notificationPanelWrapper = document.createElement("div");
+
+        multipleNotificationPanel.className = "multiple-notification-panel";
+        notificationPanelWrapper.className = "notification-panel-wrapper";
+
+        multipleNotificationPanel.appendChild(notificationPanelWrapper);
+        document.body.appendChild(multipleNotificationPanel);
     };
     /**
      * Dismisses the notification if it is clicked prematurely

@@ -12,19 +12,22 @@ var SuggestedDeckList = React.createClass({
         return total;
     },
     renderDeckList: function() {
-        if(DECKS.length > 0) {
-            return DECKS.map(function(deck) {
-                console.log(deck);
-                return (
-                    <li className="suggested-deck">
+        var deckItems = [];
+        if(DECKS['rated'].length > 0) {
+            // Only ever get 5 top decks at maximum
+            for(var i = 0; i < Math.min(DECKS['rated'].length, 5); i++) {
+                var deck = DECKS['recent'][i];
+                deckItems.push(
+                    <li key={"suggested-deck-" + i} className="suggested-deck">
                         <PreloadImage src={Helpers.getHeroImageURL(deck.hero)} fallbackSrc="/assets/images/heroes/null.png" />
                         <h3><a href={"/decks/" + deck._id + "/" + deck.slug}>{deck.title}</a></h3>
                         <span>{this.getCardTotal(deck)} Cards</span>
                         <span>{deck.builds.length} Builds</span>
                     </li>
                 );
-            }.bind(this));
+            }
         }
+        return deckItems;
     },
     render: function() {
         console.log(DECKS);

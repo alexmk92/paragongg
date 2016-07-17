@@ -80,9 +80,13 @@ var GuidesFeed = React.createClass({
         var fetching = this.state.guides[this.state.selectedType].fetching;
         if(!endOfPage && !fetching) {
             var skip = this.state.guides[this.state.selectedType].skip;
+            var guideURL = '/api/v1/guides?filter=' + this.state.selectedType + '&skip=' + skip + '&take=' + this.state.take;
+            if(HERO !== null) {
+                guideURL += '&hero=' + HERO.code;
+            }
             Helpers.ajax({
                 type: 'GET',
-                url: '/api/v1/guides?filter=' + this.state.selectedType + '&skip=' + skip + '&take=' + this.state.take,
+                url: guideURL,
                 cache : false
             }).then(function(guidesList) {
                 if(guidesList.data.length === 0) {
