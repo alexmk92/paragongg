@@ -39,6 +39,8 @@ var DeckBuilder = React.createClass({
         }
     },
     componentWillMount: function() {
+        // Replace the current notification panel.
+        this.notificationPanel = new Notification();
         if(Helpers.isClientMobile()) {
             this.setState({ activeTab: -1 })
         }
@@ -86,17 +88,8 @@ var DeckBuilder = React.createClass({
          }
          */
 
-        var textareaA = document.querySelector('textarea.h2');
-        var textareaB = document.querySelector('textarea.deck-description');
-        textareaA.addEventListener('keydown', autosize);
-        function autosize(){
-            var el = this;
-            setTimeout(function(){
-                el.style.cssText = 'height:auto; padding:0';
-                el.style.cssText = 'height:' + el.scrollHeight + 'px';
-            },0);
-        }
-        textareaB.addEventListener('keydown', autosize);
+        var textarea = document.querySelector('textarea.deck-description');
+        textarea.addEventListener('keydown', autosize);
         function autosize(){
             var el = this;
             setTimeout(function(){
@@ -105,9 +98,6 @@ var DeckBuilder = React.createClass({
             },0);
         }
 
-        // Replace the current notification panel.
-        this.notificationPanel = new Notification();
-        this.notificationPanel.initialiseNotifications();
         this.updateViewForDimensions();
     },
     onWindowScroll: function() {
