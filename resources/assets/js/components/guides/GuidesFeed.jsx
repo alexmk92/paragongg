@@ -240,7 +240,7 @@ var GuidePreview = React.createClass({
         var created_at = new Date(this.props.created);
         var updated_at = new Date(this.props.updated);
 
-        var suffix = updated_at.getTime() > created_at.getTime() ? "last updated" : "created";
+        return updated_at.getTime() > created_at.getTime() ? "last updated" : "created";
     },
     render: function() {
         return(
