@@ -35,7 +35,7 @@
                 @else
                     @foreach($decks as $deck)
                         <li><a href="" class="cf">
-                                <img src="{{ S3URL()}}/images/heroes/{{ $deck->hero['code'] }}/{{ $guide->hero['image'] }}/portrait_small.png" class="user-avatar"/>
+                                <img src="{{ S3URL()}}/images/heroes/{{ $deck->hero['code'] }}/{{ $deck->hero['image'] }}/portrait_small.png" class="user-avatar"/>
                                 <span class="details highlight">{{ $deck->hero['name'] }} deck</span><span class="details">{{ $deck->views }} Views</span>
                                 <span class="content">{{ $deck->title }}</span>
                             </a></li>
