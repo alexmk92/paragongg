@@ -19,10 +19,12 @@ var SuggestedDeckList = React.createClass({
                 var deck = DECKS['recent'][i];
                 deckItems.push(
                     <li key={"suggested-deck-" + i} className="suggested-deck">
-                        <PreloadImage src={Helpers.getHeroImageURL(deck.hero)} fallbackSrc="/assets/images/heroes/null.png" />
-                        <h3><a href={"/decks/" + deck._id + "/" + deck.slug}>{deck.title}</a></h3>
-                        <span>{this.getCardTotal(deck)} Cards</span>
-                        <span>{deck.builds.length} Builds</span>
+                        <a className="cf" href={"/decks/" + deck._id + "/" + deck.slug}>
+                            <PreloadImage src={Helpers.getHeroImageURL(deck.hero)} fallbackSrc="/assets/images/heroes/null.png" />
+                            <h3><a href={"/decks/" + deck._id + "/" + deck.slug}>{deck.title}</a></h3>
+                            <span>{this.getCardTotal(deck)} Cards</span>
+                            <span>{deck.builds.length} Builds</span>
+                        </a>
                     </li>
                 );
             }
@@ -30,7 +32,6 @@ var SuggestedDeckList = React.createClass({
         return deckItems;
     },
     render: function() {
-        console.log(DECKS);
         return(
             <ul className="suggested-list">
                 {this.renderDeckList()}

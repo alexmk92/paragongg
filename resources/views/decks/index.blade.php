@@ -22,7 +22,7 @@
             <h4>Suggested decks</h4>
             <ul>
             @foreach($decks['rated'] as $deck)
-                <li><a href="" class="cf">
+                <li><a href="{{"decks/".$deck->_id}}" class="cf">
                         <img src="{{ S3URL()}}/images/heroes/{{ $deck->hero['code'] }}/{{ $deck->hero['image'] }}/portrait_small.png" class="user-avatar"/>
                         <span class="details highlight">{{ $deck->hero['name'] }} deck</span>
                         <span class="details">{{ count($deck->builds) }} Builds</span>
