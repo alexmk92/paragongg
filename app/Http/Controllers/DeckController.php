@@ -235,11 +235,20 @@ class DeckController extends Controller
         $deck = Deck::findOrFail($id);
         $cards = [];
 
-        foreach($deck->cards as $card) {
-            if($collection->contains('id', $card)) {
-                $item['id'] = $card;
-                //$item['linkedIds'] = array();
-                array_push($cards, $item);
+        // NUMBERED
+        $deck_counted = array_count_values($deck->cards);
+
+        foreach($deck_counted as $card => $deckCount) {
+            $userCount = $collection->where('id', $card)->first()['count'];
+
+            // Add as many of this card as the user owns
+            if($userCount >= $deckCount) {
+                for($deckCount; $userCount >= $deckCount && $deckCount > 0; $deckCount--) {
+                    $item['id'] = $card;
+                    //$item['linkedIds'] = array();
+                    array_push($cards, $item);
+                    $userCount--;
+                }
             }
         }
 
@@ -248,7 +257,7 @@ class DeckController extends Controller
             $res = $client->request('PUT', 'https://developer-paragon.epicgames.com/v1/account/'.$user->epic_account_id.'/deck/'.$slot, [
                 'json' => [
                     'name'   => $deck->title,
-                    'heroId' => $deck->hero,
+                    'heroId' => $deck->hero['code'],
                     'cards'  => $cards
                 ],
                 // Because default Guzzle headers won't work for some reason
