@@ -104,7 +104,7 @@ var DeckList = React.createClass({
                 var decks = JSON.parse(JSON.stringify(this.state.decks));
                 decks[this.state.selectedType].fetching = false;
                 decks[this.state.selectedType].skip += 10;
-                decks[this.state.selectedType].guides = decks[this.state.selectedType].guides.concat(newDecks);
+                decks[this.state.selectedType].decks = decks[this.state.selectedType].decks.concat(newDecks);
 
                 this.setState({ decks: decks });
             }.bind(this));
@@ -139,9 +139,8 @@ var DeckList = React.createClass({
     handleScroll: function() {
         var hasScrollbar = window.innerWidth > document.documentElement.clientWidth;
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight || !hasScrollbar) {
-
+            this.getResults();
         }
-        this.getResults();
     },
     upvoteDeck: function(deck) {
         if(AUTHED) {
