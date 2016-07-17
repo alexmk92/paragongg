@@ -97,6 +97,7 @@ Route::post('/discussion/{id}/{slug?}/reply', 'DiscussionController@reply')->mid
 
 /* MISC */
 Route::get('/report/{id}', 'ReportController@store');
+Route::get('/vote', 'VoteController@store');
 
 /* Account */
 Route::group(['prefix' => 'account', 'middleware' => 'auth'], function () {
