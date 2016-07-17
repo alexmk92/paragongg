@@ -179,7 +179,7 @@ var DeckList = React.createClass({
     render: function() {
         return(
             <div>
-                <HeroPanel title="Hero decks" placeholder="Search by hero name..." showAffinityFilter={false} heroes={HEROES} isActive={true} onHeroSelected={this.onHeroSelected} onHeroesListUpdated={this.heroesListUpdated} />
+                <HeroPanel title="Hero decks" placeholder="Search by hero name..." showAffinityFilter={false} heroes={HEROES} isActive={true} onHeroSelected={this.onHeroSelected} onHeroesListUpdated={this.heroesListUpdated}  linkType="decks"/>
 
                 <Tabs defaultSelected={0} expandable={false} className="padless">
                     {/* Featured */}

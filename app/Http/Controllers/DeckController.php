@@ -30,7 +30,7 @@ class DeckController extends Controller
         if(isset($_GET['skip'])) $skip = $_GET['skip'];
         if(isset($_GET['take'])) $take = $_GET['take'];
 
-        $heroes = Hero::select('name', 'code', 'image', 'affinities')
+        $heroes = Hero::select('name', 'slug', 'code', 'image', 'affinities')
             ->get();
 
         $decks = [];

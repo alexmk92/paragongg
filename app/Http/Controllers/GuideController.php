@@ -21,33 +21,39 @@ class GuideController extends Controller
     // Create
     public function index($hero = null)
     {
+        if($hero) $hero = Hero::where('slug', $hero)->firstOrFail();
         $guides = [];
-        $guides['featured'] = Guide::where('status', 'published')
-            ->where('featured', true)
+
+        $guides['featured'] = Guide::where('status', 'published');
+        if($hero) $guides['featured'] = $guides['featured']->where('hero_code', $hero->code);
+        $guides['featured'] = $guides['featured']->where('featured', true)
             ->join('users', 'users.id', '=', 'guides.user_id')
             ->select('guides.id', 'guides.type', 'guides.title', 'user_id', 'guides.created_at', 'guides.updated_at', 'guides.views', 'guides.votes', 'hero_code', 'guides.slug', 'guides.featured', 'users.username')
             ->take(10)
             ->skip(0)
             ->get();
 
-        $guides['recent'] = Guide::where('status', 'published')
-            ->join('users', 'users.id', '=', 'guides.user_id')
+        $guides['recent'] = Guide::where('status', 'published');
+        if($hero) $guides['recent'] = $guides['recent']->where('hero_code', $hero->code);
+        $guides['recent'] = $guides['recent']->join('users', 'users.id', '=', 'guides.user_id')
             ->select('guides.id', 'guides.type', 'guides.title', 'user_id', 'guides.created_at', 'guides.updated_at', 'guides.views', 'guides.votes', 'hero_code', 'guides.slug', 'guides.featured', 'users.username')
             ->orderBy('updated_at', 'DESC')
             ->take(10)
             ->skip(0)
             ->get();
 
-        $guides['rated'] = Guide::where('status', 'published')
-            ->join('users', 'users.id', '=', 'guides.user_id')
+        $guides['rated'] = Guide::where('status', 'published');
+        if($hero) $guides['rated'] = $guides['rated']->where('hero_code', $hero->code);
+        $guides['rated'] = $guides['rated']->join('users', 'users.id', '=', 'guides.user_id')
             ->select('guides.id', 'guides.type', 'guides.title', 'user_id', 'guides.created_at', 'guides.updated_at', 'guides.views', 'guides.votes', 'hero_code', 'guides.slug', 'guides.featured', 'users.username')
             ->orderBy('votes', 'DESC')
             ->take(10)
             ->skip(0)
             ->get();
 
-        $guides['views'] = Guide::where('status', 'published')
-            ->join('users', 'users.id', '=', 'guides.user_id')
+        $guides['views'] = Guide::where('status', 'published');
+        if($hero) $guides['featured'] = $guides['featured']->where('hero_code', $hero->code);
+        $guides['views'] = $guides['views']->join('users', 'users.id', '=', 'guides.user_id')
             ->select('guides.id', 'guides.type', 'guides.title', 'user_id', 'guides.created_at', 'guides.updated_at', 'guides.views', 'guides.votes', 'hero_code', 'guides.slug', 'guides.featured', 'users.username')
             ->orderBy('views', 'DESC')
             ->take(10)
@@ -56,8 +62,6 @@ class GuideController extends Controller
 
         $heroes = Hero::select('name', 'slug', 'code', 'image', 'affinities')
             ->get();
-
-        if($hero) $hero = Hero::where('slug', $hero)->firstOrFail();
 
         return view('guides.index', compact('guides', 'heroes', 'hero'));
     }

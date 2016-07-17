@@ -58,6 +58,7 @@ Route::get('/heroes/{slug}', 'HeroController@show');
 
 /* DECKS */
 Route::get('/decks', 'DeckController@index');
+Route::get('/decks/hero/{hero}', 'DeckController@index');
 Route::get('/decks/create', 'DeckController@create');
 Route::post('/decks/create', 'DeckController@store');
 Route::get('/decks/success', 'DeckController@success');

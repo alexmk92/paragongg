@@ -83,6 +83,10 @@ var HeroPanel = React.createClass({
             if(this.props.linkType == "guides") {
                 return "/guides/hero/" + hero.slug
             }
+            console.log(hero);
+            if(this.props.linkType == "decks") {
+                return "/decks/hero/" + hero.slug
+            }
         }
     },
     getHeroes: function() {
