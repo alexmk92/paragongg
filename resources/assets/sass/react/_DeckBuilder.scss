@@ -483,7 +483,6 @@
                         &.h2 {
                             font-weight: 600;
                             font-size: 2em;
-                            text-transform: uppercase;
                         }
 
                         &.p {
@@ -501,7 +500,7 @@
                     height: 60px;
                     overflow: hidden;
                     position: relative;
-
+                    user-select: none;
                     &:hover {
                         cursor: pointer;
                     }

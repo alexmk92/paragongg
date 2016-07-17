@@ -711,7 +711,7 @@ var BuildStats = React.createClass({
                        { this.renderStatPanel() }
                    </div>
 
-                   <div id="chart-wrapper">
+                   <div id="chart-wrapper" className="cf">
                        <div className={"chart left " + hiddenClass} style={hiddenStyle}>
                            <h3 style={{marginBottom: '25px'}}>{ this.props.selectedBuild !== null ? "Build" : "Deck" }
                                Overview</h3>

@@ -16,8 +16,10 @@
                 @foreach($decks as $deck)
                     <tr>
                         <td>{{ $deck->title }}</td>
-                        <td>{{ $deck->hero->name }}</td>
-                        <td></td>
+                        <td>{{ $deck->hero['name'] }}</td>
+                        <td>
+                            <a href="/decks/edit/{{ $deck->id }}" class="btn btn-faded">Edit</a>
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>

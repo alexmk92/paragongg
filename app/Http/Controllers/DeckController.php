@@ -152,15 +152,15 @@ class DeckController extends Controller
 
         $user = auth()->user();
         // Store item
-        $deck = new Deck;
-        $deck->slug = createSlug($payload->title);
-        $deck->author_id = $user ? $user->id : null;
-        $deck->title = $payload->title;
+        $deck              = new Deck();
+        $deck->slug        = createSlug($payload->title);
+        $deck->author_id   = $user ? $user->id : null;
+        $deck->title       = $payload->title;
         $deck->description = $payload->description;
-        $deck->hero = $payload->hero;
-        $deck->votes = 0;
-        $deck->cards = $payload->cards;
-        $deck->builds = $payload->builds;
+        $deck->hero        = Hero::where('code', $payload->hero)->firstOrFail()->toArray();
+        $deck->votes       = 0;
+        $deck->cards       = $payload->cards;
+        $deck->builds      = $payload->builds;
         $deck->save();
 
         // Generate shortcode
@@ -292,7 +292,7 @@ class DeckController extends Controller
         $deck->timestamps = true;
 
         // pass back a dummy object for now
-        $deck->hero = Hero::where('code', $deck->hero)->firstOrFail();
+        //$deck->hero = Hero::where('code', $deck->hero)->firstOrFail();
         $uniqueCards = Card::whereIn('code', $deck->cards)->get();
 
         // Sort the cards to quantity, we set the totalCards before as this
@@ -363,7 +363,7 @@ class DeckController extends Controller
         $userId = Auth::user() ? Auth::user()->id : "null";
 
         // pass back a dummy object for now
-        $currentDeck->hero = Hero::where('code', $currentDeck->hero)->firstOrFail();
+        //$currentDeck->hero = Hero::where('code', $currentDeck->hero)->firstOrFail();
         $uniqueCards = Card::whereIn('code', $currentDeck->cards)->get();
 
         // Sort the cards to quantity, we set the totalCards before as this
@@ -449,12 +449,12 @@ class DeckController extends Controller
         // Store item
         $deck = Deck::findOrFail($id);
         if($user->id === $deck->author_id) {
-            $deck->slug = createSlug($payload->title);
-            $deck->title = $payload->title;
+            $deck->slug        = createSlug($payload->title);
+            $deck->title       = $payload->title;
             $deck->description = $payload->description;
-            $deck->hero = $payload->hero;
-            $deck->cards = $payload->cards;
-            $deck->builds = $payload->builds;
+            $deck->hero        = Hero::where('code', $payload->hero)->firstOrFail()->toArray();
+            $deck->cards       = $payload->cards;
+            $deck->builds      = $payload->builds;
             $deck->save();
 
             // Generate shortcode
@@ -464,7 +464,7 @@ class DeckController extends Controller
             session()->flash('shortcode', $shortcode);
         }
 
-        return redirect('/decks/edit/'.$deck->id);
+        return redirect('/decks/'.$deck->id.'/'.$deck->slug);
     }
 
     // Delete

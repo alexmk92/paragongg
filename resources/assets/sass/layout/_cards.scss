@@ -24,6 +24,7 @@ $card-height : 180px;
         position: relative;
         cursor: pointer;
         transition: all 0.2s;
+        user-select: none;
         &.missing {
             opacity: 0.3;
         }

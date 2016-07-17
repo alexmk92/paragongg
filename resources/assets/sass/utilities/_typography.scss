@@ -84,8 +84,10 @@ h1 {
         -webkit-text-fill-color: transparent;
     }
 }
-h2, input.h2 {
+h2 {
     text-transform: uppercase;
+}
+h2, input.h2 {
     font-weight: 700;
     font-size: 30px;
     line-height: 40px;

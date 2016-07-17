@@ -4,8 +4,8 @@
         @if (auth()->check() && $deck->author_id == auth()->user()->id)
             <div id="deck-sidebar-edit" class="sidebox panel" data-title="Edit your deck">
                 <h3>Edit Deck</h3>
-                <p style="padding:10px 0 20px 0;">We realise that you own this deck, if you'd like to make any changes click the edit button below!</p>
-                <a href={{ "/decks/edit/".$deck->id }} class="btn btn-primary btn-full" title="Edit this deck"><i class="fa fa-pencil" aria-hidden="true"></i>Edit deck</a>
+                <p style="padding:10px 0 20px 0;">This is one of your decks. If you'd like to make any changes click the <strong>Edit Deck</strong> button below!</p>
+                <a href="{{ "/decks/edit/".$deck->id }}" class="btn btn-primary btn-full" title="Edit this deck"><i class="fa fa-pencil" aria-hidden="true"></i>Edit deck</a>
             </div>
         @endif
         <div id="deck-sidebar-list" class="sidebox panel" data-title="{{ $deck->title }}"></div>
