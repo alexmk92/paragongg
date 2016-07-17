@@ -9,7 +9,7 @@
                 <p>You have no empty deck slots. Select one of your decks from below to overwrite it.</p>
             @endif
             @foreach($vacant as $deck)
-                <a href="/decks/export/{{ $newDeck->id }}/save/{{ $deck['id'] }}" class="deck-preview vacant" style="background-image: url({{ S3URL() }}/images/heroes/{{ $newDeck->hero }}/{{ $deck['image'] }}/portrait_medium.png);">
+                <a href="/decks/export/{{ $newDeck->id }}/save/{{ $deck['id'] }}" class="deck-preview vacant" style="background-image: url({{ S3URL() }}/images/heroes/{{ $newDeck->hero['code'] }}/{{ $deck['image'] }}/portrait_medium.png);">
                     <span class="deck-title">EMPTY SLOT</span>
                 </a>
             @endforeach

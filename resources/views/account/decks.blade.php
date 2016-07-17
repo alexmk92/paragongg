@@ -15,7 +15,7 @@
                 <tbody>
                 @foreach($decks as $deck)
                     <tr>
-                        <td>{{ $deck->title }}</td>
+                        <td><a href="/decks/{{ $deck->id }}/{{ $deck->slug }}">{{ $deck->title }}</a></td>
                         <td>{{ $deck->hero['name'] }}</td>
                         <td>
                             <a href="/decks/edit/{{ $deck->id }}" class="btn btn-faded">Edit</a>

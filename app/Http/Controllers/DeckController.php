@@ -218,7 +218,8 @@ class DeckController extends Controller
                 $item['image'] = $hero->image;
                 $occupied->push($item);
             } else {
-                $hero = Hero::select('image')->where('code', $newDeck->hero)->first();
+                $code = $newDeck->hero['code'];
+                $hero = Hero::select('image')->where('code', $code)->first();
                 $item['image'] = $hero->image;
                 $vacant->push($item);
             }
