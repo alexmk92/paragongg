@@ -3,6 +3,10 @@
     width: 100%;
     margin-bottom: 30px;
     padding: 20px;
+    background: $panel-color;
+    .first-icon {
+        margin-right: 10px;
+    }
     &.alert-success {
         color: #3c763d;
         background: #dff0d8;

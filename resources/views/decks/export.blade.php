@@ -3,6 +3,9 @@
     {{--<div id="particle-wrapper" data-theme="embers"></div>--}}
     <div class="impact-box">
         <h3 class="section-heading">Export - Choose a deck slot</h3>
+        <div class="alert">
+            <p><i class="fa fa-info-circle first-icon" aria-hidden="true"></i> On our website, you don't have to worry about not having the exact amount of cards needed to create a full deck, we'll just make a deck with the ones you own. <strong>Easy.</strong></p>
+        </div>
         <div class="epic-deck-list">
             <h5>Empty deck slots</h5>
             @if(sizeof($vacant) < 1)
