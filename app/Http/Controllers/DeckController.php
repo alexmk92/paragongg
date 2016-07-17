@@ -69,7 +69,6 @@ class DeckController extends Controller
     {
         foreach($decks as $deck) {
             $uniqueCards = Card::whereIn('code', $deck->cards)->get();
-            $deck->hero = Hero::where('code', $deck->hero)->first();
             $author = User::where('id', $deck->author_id)->first();
             if(count($author) == 0) {
                 $author = null;

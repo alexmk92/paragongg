@@ -24,7 +24,7 @@ class DeckController extends Controller
         $decks = Deck::select('*');
 
         if(isset($_GET['hero'])) {
-            $decks->where('hero', $_GET['hero']);
+            $decks->where('hero.slug', $_GET['hero']);
         }
         if(isset($_GET['filter'])) {
             switch($_GET['filter']) {
@@ -52,7 +52,6 @@ class DeckController extends Controller
 
         foreach($decks as $deck) {
             $uniqueCards = Card::whereIn('code', $deck->cards)->get();
-            $deck->hero = Hero::where('code', $deck->hero)->first();
             $author = User::where('id', $deck->author_id)->first();
             if(count($author) == 0) {
                 $author = null;
