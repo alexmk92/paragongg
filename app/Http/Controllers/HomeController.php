@@ -40,21 +40,16 @@ class HomeController extends Controller
 
     public function featuredGuides()
     {
-        Cache::forget('featuredGuides');
-        if (!Cache::has('featuredGuides')) {
-            $guides = Guide::where('featured', true)->get();
-            foreach($guides as $guide) {
-                $guide->hero = Hero::where('code', $guide->hero_code)->first();
-            }
-            $expires = Carbon::now()->addMinutes(5);
-            Cache::put('featuredGuides', $guides, $expires);
+        $guides = Guide::where('featured', true)->get();
+        foreach($guides as $guide) {
+            $guide->hero = Hero::where('code', $guide->hero_code)->first();
         }
-        return Cache::get('featuredGuides');
+        return $guides;
     }
 
     public function topDecks()
     {
-        $decks = Deck::orderBy('votes', 'DESC')->take(5)->get();
+        $decks = Deck::orderBy('votes', 'DESC')->take(4)->get();
         return $decks;
     }
 }

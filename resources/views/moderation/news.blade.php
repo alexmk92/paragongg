@@ -12,7 +12,6 @@
                     <th>ID</th>
                     <th>Author</th>
                     <th>Title</th>
-                    <th>Status</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -22,14 +21,13 @@
                         <td>{{ $post->id }}</td>
                         <td><a href="/users/{{ $post->author->username }}">{{ $post->author->username }}</a></td>
                         <td><a href="/news/{{ $post->slug }}">{{ $post->title }}</a></td>
-                        <td>{{ $post->status }}</td>
                         <td>
                             @if(!$post->featured)
-                                <a class="btn btn-faded" href="/moderation/news/promote/{{ $post->id }}">Promote</a>
+                                <a class="btn btn-faded" href="/moderation/news/feature/{{ $post->id }}">Feature</a>
                             @else
-                                <a class="btn btn-faded" href="/moderation/news/demote/{{ $post->id }}">Promote</a>
+                                <a class="btn btn-faded" href="/moderation/news/unfeature/{{ $post->id }}">Unfeature</a>
                             @endif
-                            <a class="btn btn-faded" href="/moderation/news/feature/{{ $post->id }}">Feature</a>
+                            <a class="btn btn-faded" href="/moderation/news/frontpage/{{ $post->id }}">Frontpage</a>
                             <a class="btn btn-faded" href="/news/edit/{{ $post->id }}"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
                             <a class="btn btn-faded btn-warning-hover" href="/news/delete/{{ $post->id }}" onclick="return confirm('Are you sure you would like to delete this?');"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
                         </td>

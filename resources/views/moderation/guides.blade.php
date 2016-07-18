@@ -19,10 +19,14 @@
                 @foreach($guides as $guide)
                     <tr>
                         <td>{{ $guide->id }}</td>
-                        <td>{{ $guide->title }}</td>
+                        <td><a href="/guides/{{ $guide->id }}/{{ $guide->slug }}">{{ $guide->title }}</a></td>
                         <td>{{ $guide->author->username }}</td>
                         <td>{{ $guide->status }}</td>
-                        <td><a class="btn btn-faded" href="/moderation/guides/feature/{{ $guide->id }}">Feature</a></td>
+                        @if(!$guide->featured)
+                            <td><a class="btn btn-faded" href="/moderation/guides/feature/{{ $guide->id }}">Feature</a></td>
+                        @else
+                            <td><a class="btn btn-faded" href="/moderation/guides/unfeature/{{ $guide->id }}">Unfeature</a></td>
+                        @endif
                     </tr>
                 @endforeach
             </tbody>

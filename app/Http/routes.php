@@ -119,13 +119,15 @@ Route::group(['prefix' => 'account', 'middleware' => 'auth'], function () {
 Route::group(['prefix' => 'moderation', 'namespace' => 'Moderation', 'middleware' => ['auth', 'mod']], function () {
     Route::get('/', 'ModerationController@index');
     Route::get('/news', 'ModerationController@news');
-    Route::get('/news/feature/{id}', 'ModerationController@newsFeature');
-    Route::get('/news/promote/{id}', 'ModerationController@newsPromote');
-    Route::get('/news/demote/{id}', 'ModerationController@newsDemote');
+    Route::get('/news/frontpage/{id}', 'ModerationController@newsFrontpage');
+    Route::get('/news/feature/{id}', 'ModerationController@newsPromote');
+    Route::get('/news/unfeature/{id}', 'ModerationController@newsDemote');
     Route::get('/guides', 'ModerationController@guides');
     Route::get('/guides/feature/{id}', 'ModerationController@guidesFeature');
+    Route::get('/guides/unfeature/{id}', 'ModerationController@guidesUnfeature');
     Route::get('/decks', 'ModerationController@decks');
     Route::get('/decks/feature/{id}', 'ModerationController@decksFeature');
+    Route::get('/decks/unfeature/{id}', 'ModerationController@decksUnfeature');
     Route::get('/cards', 'ModerationController@cards');
     Route::get('/cards/feature/{id}', 'ModerationController@cardsFeature');
     Route::get('/heroes', 'ModerationController@heroes');

@@ -22,7 +22,7 @@ class MigrateDatabaseController extends Controller
     // Entry point for migration
     public function run()
     {
-        $this->updateSettings('migrationCompleted', false);
+        //$this->updateSettings('migrationCompleted', false);
         $completed = Setting::where('key', 'migrationCompleted')->first();
 
         // If this has already been migrated, abort

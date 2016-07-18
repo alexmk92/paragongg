@@ -32,7 +32,7 @@ class ModerationController extends Controller
         return view('moderation.news', compact('news'));
     }
 
-    public function newsFeature($id)
+    public function newsFrontpage($id)
     {
         $this->updateSettings('featuredNews', $id);
 
@@ -78,8 +78,22 @@ class ModerationController extends Controller
     public function guidesFeature($id)
     {
         $guide = Guide::findOrFail($id);
+        $guide->timestamps = false;
         $guide->featured = true;
         $guide->save();
+        $guide->timestamps = true;
+
+        session()->flash('notification', 'success|Guides feature saved. This may take up to 1 hour to go live.');
+        return redirect()->back();
+    }
+
+    public function guidesUnfeature($id)
+    {
+        $guide = Guide::findOrFail($id);
+        $guide->timestamps = false;
+        $guide->featured = true;
+        $guide->save();
+        $guide->timestamps = true;
 
         session()->flash('notification', 'success|Guides feature saved. This may take up to 1 hour to go live.');
         return redirect()->back();
@@ -87,8 +101,7 @@ class ModerationController extends Controller
 
     public function decks()
     {
-        $decks = Deck::where('status', 'published')
-            ->orderBy('created_at', 'DESC')
+        $decks = Deck::orderBy('created_at', 'DESC')
             ->get();
         return view('moderation.decks', compact('decks'));
     }
@@ -96,8 +109,22 @@ class ModerationController extends Controller
     public function decksFeature($id)
     {
         $deck = Deck::findOrFail($id);
+        $deck->timestamps = false;
         $deck->featured = true;
         $deck->save();
+        $deck->timestamps = false;
+
+        session()->flash('notification', 'success|Decks feature saved. This may take up to 1 hour to go live.');
+        return redirect()->back();
+    }
+
+    public function decksUnfeature($id)
+    {
+        $deck = Deck::findOrFail($id);
+        $deck->timestamps = false;
+        $deck->featured = true;
+        $deck->save();
+        $deck->timestamps = true;
 
         session()->flash('notification', 'success|Decks feature saved. This may take up to 1 hour to go live.');
         return redirect()->back();
