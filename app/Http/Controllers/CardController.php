@@ -30,7 +30,11 @@ class CardController extends Controller
     // Show
     public function show(Request $request, $slug)
     {
-        $card = Card::where('slug', $slug)->firstOrFail();
+        $card = Card::where('slug', $slug)->first();
+        if(!$card) {
+            $card = Card::where('name', 'LIKE', '%'. $slug.'%')->firstOrFail();
+            return redirect('/cards/'.$card->slug);
+        }
         $thread = findOrCreateThread($request->path());
 
         return view('cards.show', compact('card', 'thread'));

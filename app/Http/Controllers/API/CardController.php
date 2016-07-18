@@ -23,4 +23,12 @@ class CardController extends Controller
 
         return response()->json($card);
     }
+
+    public function search($string)
+    {
+        $string = urldecode($string);
+        $card = Card::where('name', 'LIKE', '%'. $string.'%')->first();
+
+        return response()->json($card);
+    }
 }

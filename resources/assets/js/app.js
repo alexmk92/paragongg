@@ -6,6 +6,7 @@ require("./lib/InteractiveParallax");
 
 // React react
 require("./components/AccountNav");
+require("./components/Tooltip");
 require("./components/guides/GuidesFeed");
 require("./components/cards/CardsFeed");
 require("./components/cards/CardContainer");

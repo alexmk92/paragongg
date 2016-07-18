@@ -14,7 +14,7 @@ class UserController extends Controller
     public function show($username)
     {
         $user = User::where('username', $username)->firstOrFail();
-        $guides = Guide::where('user_id', $user->id)->get();
+        $guides = Guide::where('user_id', $user->id)->where('status', 'published')->get();
         $decks  = Deck::where('author_id', $user->id)->get();
         foreach($guides as $guide) {
             $guide->hero = Hero::where('code', $guide->hero_code)->first();

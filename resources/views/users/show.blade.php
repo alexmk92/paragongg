@@ -14,7 +14,7 @@
                     <p>This user has not yet published any guides.</p>
                 @else
                     @foreach($guides as $guide)
-                    <li><a href="" class="cf">
+                    <li><a href="/guides/{{$guide->id}}/{{$guide->slug}}" class="cf">
                             @if($guide->type == 'hero')
                                 <img src="{{ S3URL()}}/images/heroes/{{ $guide->hero_code }}/{{ $guide->hero->image }}/portrait_small.png" class="user-avatar"/>
                             @else
@@ -34,7 +34,7 @@
                     <p>This user has not yet built any decks.</p>
                 @else
                     @foreach($decks as $deck)
-                        <li><a href="" class="cf">
+                        <li><a href="/decks/{{$deck->id}}/{{$deck->slug}}" class="cf">
                                 <img src="{{ S3URL()}}/images/heroes/{{ $deck->hero['code'] }}/{{ $deck->hero['image'] }}/portrait_small.png" class="user-avatar"/>
                                 <span class="details highlight">{{ $deck->hero['name'] }} deck</span><span class="details">{{ $deck->views }} Views</span>
                                 <span class="content">{{ $deck->title }}</span>

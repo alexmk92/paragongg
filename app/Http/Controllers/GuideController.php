@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Card;
 use App\Deck;
+use App\Extensions\ParsedownParagon;
 use App\Guide;
 use App\Hero;
 use App\Http\Requests;
@@ -12,6 +13,7 @@ use App\Http\Requests\Guide\UpdateGuideRequest;
 use App\Http\Traits\GeneratesShortcodes;
 use App\Shortcode;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Parsedown;
 use TOC;
 
@@ -252,7 +254,11 @@ class GuideController extends Controller
     public function show($id, Request $request)
     {
         $guide  = Guide::findOrFail($id);
-        if($guide->status == 'draft' && !auth()->check() && $guide->user_id != auth()->user()->id) abort(404);
+        if($guide->status == 'draft') {
+            if(!Auth::check() || $guide->user_id != Auth::user()->id) {
+                abort(404);
+            }
+        }
         $thread = findOrCreateThread($request->path());
         $deck   = null;
         $hero   = null;
@@ -266,7 +272,6 @@ class GuideController extends Controller
 
         if($guide->deck) {
             $deck = Deck::find($guide->deck);
-            $deck->hero = Hero::where('code', $deck->hero)->firstOrFail();
             $uniqueCards = Card::whereIn('code', $deck->cards)->get();
 
             // Sort the cards to quantity, we set the totalCards before as this
@@ -327,7 +332,7 @@ class GuideController extends Controller
         }
 
         $shortcode = Shortcode::where('resource_type', 'guide')->where('resource_id', $id)->first();
-        $guideBody = (new Parsedown())->text($guide->body);
+        $guideBody = (new ParsedownParagon())->text($guide->body);
         $guideBody = (new TOC\MarkupFixer())->fix($guideBody);
         $guideTOC  = (new TOC\TocGenerator())->getHtmlMenu($guideBody,2);
 

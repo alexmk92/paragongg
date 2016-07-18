@@ -1,8 +1,31 @@
 table {
     width: 100%;
+    margin: 20px 0;
+    font-size: 12px;
+    text-transform: uppercase;
+    thead tr {
+        background: #0f1219;
+        th {
+            text-align: left;
+        }
+    }
+    tbody tr {
+        border-bottom: 1px solid #343a4a;
+        &:last-of-type {
+            border-bottom: none;
+        }
+        &:hover {
+            background: rgba(#0f1219, 0.5);
+        }
+    }
+    td, th {
+        padding: 12px 15px;
+    }
+
     &.minimal {
         font-size: 12px;
         text-transform: uppercase;
+        margin: 0;
         thead tr {
             background: #0f1219;
             th {
