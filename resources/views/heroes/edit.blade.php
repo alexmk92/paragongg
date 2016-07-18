@@ -28,7 +28,7 @@
         <input type="text" name="stat_max_health_scaling" class="short" placeholder="+p/level" value="{{ $hero->baseStats['max_health']['scaling'] or 0 }}">
         <label><i class="pgg pgg-max-mana"></i> Max Mana</label>
         <input type="text" name="stat_max_mana" class="medium" value="{{ $hero->baseStats['max_mana']['value'] or 0 }}">
-        <input type="text" name="stat_max_mana_scaling" class="short" placeholder="+p/level" value="{{ $hero->baseStats['max_health']['scaling'] or 0 }}">
+        <input type="text" name="stat_max_mana_scaling" class="short" placeholder="+p/level" value="{{ $hero->baseStats['max_mana']['scaling'] or 0 }}">
         <label><i class="pgg pgg-health-regeneration"></i> Health Regen</label>
         <input type="text" name="stat_health_regen" class="medium" value="{{ $hero->baseStats['health_regen']['value'] or 0 }}">
         <input type="text" name="stat_health_regen_scaling" class="short" placeholder="+p/level" value="{{ $hero->baseStats['health_regen']['scaling'] or 0 }}">
