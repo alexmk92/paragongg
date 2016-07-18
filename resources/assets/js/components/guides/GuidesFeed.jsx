@@ -11,6 +11,7 @@ var TabPanel  = Tabbable.TabPanel;
 
 var GuidesFeed = React.createClass({
     getInitialState: function() {
+        console.log(this.props.guides);
         return {
             heroes : this.props.heroes,
             selectedType: 'recent',
@@ -76,7 +77,7 @@ var GuidesFeed = React.createClass({
         if(!endOfPage && !fetching) {
             var skip = this.state.guides[this.state.selectedType].skip;
             var guideURL = '/api/v1/guides?filter=' + this.state.selectedType + '&skip=' + skip + '&take=' + this.state.take;
-            if(HERO !== null) {
+            if(typeof HERO !== 'undefined' && HERO !== null) {
                 guideURL += '&hero=' + HERO.code;
             }
             Helpers.ajax({
@@ -113,10 +114,18 @@ var GuidesFeed = React.createClass({
         if(this.state.guides[this.state.selectedType].endOfPage) jsx = <span><i className="fa fa-check"></i> You've reached the end of the page</span>;
         return jsx;
     },
+    renderHeroPanel: function() {
+        if(this.props.heroes !== null) {
+            return (
+                <HeroPanel title="Hero guides" placeholder="Search by hero name..." showAffinityFilter={false} heroes={this.props.heroes} isActive={true} onHeroSelected={this.onHeroSelected} onHeroesListUpdated={this.heroesListUpdated} linkType="guides"/>
+            );
+        }
+        return "";
+    },
     render: function() {
         return(
             <div>
-                <HeroPanel title="Hero guides" placeholder="Search by hero name..." showAffinityFilter={false} heroes={this.props.heroes} isActive={true} onHeroSelected={this.onHeroSelected} onHeroesListUpdated={this.heroesListUpdated} linkType="guides"/>
+                {this.renderHeroPanel()}
                 <GuideResults guides={this.state.guides}
                               heroes={this.state.heroes}
                               onSelectedTypeChanged={this.updateSelectedType}
@@ -137,15 +146,17 @@ var GuideResults = React.createClass({
         }
     },
     getHero: function(code) {
-        var foundHero = {};
-        this.state.heroes.some(function(hero) {
-            if(hero.code == code) {
-                foundHero = hero;
-                return true;
-            }
-            return false;
-        });
-        return foundHero;
+        if(this.props.heroes !== null) {
+            var foundHero = {};
+            this.state.heroes.some(function(hero) {
+                if(hero.code == code) {
+                    foundHero = hero;
+                    return true;
+                }
+                return false;
+            });
+            return foundHero;
+        }
     },
     setSelectedType: function(index) {
         var type = '';
@@ -231,13 +242,23 @@ var GuidePreview = React.createClass({
 
         return updated_at.getTime() > created_at.getTime() ? "last updated" : "created";
     },
+    renderGuideImage: function() {
+        var guideURL = "/assets/images/heroes/null.png";
+        if(typeof this.props.hero !== "undefined" && this.props.hero !== null) {
+            console.log(this.props.hero);
+            guideURL = Helpers.S3URL() + "images/heroes/" + this.props.hero.code + "/" + this.props.hero.image + "/portrait_small.png";
+        }
+        return (
+            <PreloadImage src={guideURL}
+                          fallbackSrc="/assets/images/heroes/null.png"
+            />
+        );
+    },
     render: function() {
         return(
             <a className="guide-preview cf" href={"/guides/" + this.props.id + "/" + this.props.slug}>
                 <div className="guide-hero">
-                    <PreloadImage src={ Helpers.S3URL() + "images/heroes/" + this.props.hero.code + "/" + this.props.hero.image + "/portrait_small.png" }
-                                  fallbackSrc="assets/images/heroes/null.png"
-                    />
+                    { this.renderGuideImage() }
                 </div>
                 <div className="guide-details">
                     <div className="title"><h3>{ this.props.title }</h3></div>
@@ -256,4 +277,4 @@ var GuidePreview = React.createClass({
 });
 
 var element = document.getElementById('guides-feed');
-if(element) ReactDOM.render(<GuidesFeed guides={GUIDES} heroes={HEROES} />, element);
+if(element) ReactDOM.render(<GuidesFeed guides={GUIDES} heroes={typeof HEROES === 'undefined' ? null : HEROES} />, element);
