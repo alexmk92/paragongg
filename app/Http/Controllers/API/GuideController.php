@@ -24,7 +24,7 @@ class GuideController extends Controller
             ->select('guides.id', 'guides.type', 'guides.title', 'user_id', 'guides.created_at', 'guides.updated_at', 'guides.views', 'guides.votes', 'hero_code', 'guides.slug', 'guides.featured', 'users.username');
 
         if(isset($_GET['hero'])) {
-            $guides->where('hero', $_GET['hero']);
+            $guides->where('hero_code', $_GET['hero']);
         }
         if(isset($_GET['filter'])) {
             switch($_GET['filter']) {
