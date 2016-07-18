@@ -525,7 +525,9 @@ var DeckBuilder = React.createClass({
                         if(upgradeEffect.stat) statString = upgradeEffect.stat.toUpperCase();
                         if(upgradeEffect.description) statString = upgradeEffect.description.toUpperCase();
                         var slotEffectType = Helpers.getFormattedStatistic(statString);
-                        if(selectedEffectType.label === slotEffectType.label) {
+                        console.log(slotEffectType);
+                        console.log(selectedEffectType);
+                        if(!Helpers.isNullOrUndefined(selectedEffectType) && !Helpers.isNullOrUndefined(slotEffectType) && selectedEffectType.label === slotEffectType.label) {
                             hasSamePassiveEffect = true;
                         }
                     });
