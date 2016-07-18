@@ -76,7 +76,7 @@ module.exports = {
             case "PHYSICALRESISTANCERATING" : return { label : "Physical Armor", icon : "pgg pgg-physical-armor", modifier : "", multiplier: 1 }; break;
             case "WELLRIGPLACEMENTTIMER" : return { label : "Placement Time", icon: "pgg pgg-harvester-placement-time", modifier : "s", multiplier: 1 }; break;
             //case "DAMAGEBONUSSOURCE
-            default : return { label : ("undefined label: " + statLabel), icon: "", modifier : "", multiplier: 1 }; break;
+            default : return null; break;
         }
     },
     getStatisticCategory: function(stat) {

@@ -60,14 +60,16 @@ var CardEffects = React.createClass({
     getStats: function(effects) {
         var items = [];
         effects.forEach(function(stat, i) {
-            if(stat.stat && stat.stat.toUpperCase() !== "DAMAGEBONUSSOURCE") {
+            if(stat.stat) {
                 var statistic = Helpers.getFormattedStatistic(stat.stat);
-                items.push(
-                    <li key={"stat_" + i}>
-                        <span className="value">{ Helpers.dropZeroesAndDelimitNumbers((stat.value * statistic.multiplier)) + "" + statistic.modifier }</span>
-                        <i className={statistic.icon} aria-hidden="true" /><span>{ statistic.label}</span>
-                    </li>
-                );
+                if(statistic !== null) {
+                    items.push(
+                        <li key={"stat_" + i}>
+                            <span className="value">{ Helpers.dropZeroesAndDelimitNumbers((stat.value * statistic.multiplier)) + "" + statistic.modifier }</span>
+                            <i className={statistic.icon} aria-hidden="true" /><span>{ statistic.label}</span>
+                        </li>
+                    );
+                }
             }
             if(stat.description) {
                 var passiveOrActive = stat.passive ? "Passive" : "Active";
@@ -91,6 +93,10 @@ var CardEffects = React.createClass({
                 <ul className="effects">
                     {this.getStats(this.props.card.effects)}
                 </ul>
+            );
+        } else {
+            effects = (
+                <p>This card does not have any effects</p>
             );
         }
         if(this.props.card.maxedEffects && this.props.card.maxedEffects.length > 0) {
