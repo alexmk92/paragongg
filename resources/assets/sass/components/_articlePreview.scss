@@ -17,6 +17,13 @@
     position: relative;
     border: 1px solid #222222;
     transition: margin 0.1s, filter 0.2s, border-color 0.3s;
+    @media (max-width: $media-tablet) {
+        max-width: 47%;
+    }
+    @media (max-width: $media-mobile) {
+        max-width: 100%;
+        width: 100%;
+    }
     &:hover {
         filter: brightness(120%);
         border: 1px solid $faded-line;

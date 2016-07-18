@@ -6,6 +6,9 @@ body, input, select, button, textarea {
     color: $font-color-base;
     font-family: $font-body;
     font-size: 15px;
+    @media (max-width: $media-mobile) {
+        font-size: 17px;
+    }
 }
 a {
     color: $font-color-emphasis;

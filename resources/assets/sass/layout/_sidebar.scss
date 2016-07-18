@@ -17,6 +17,14 @@
     }
     &.small {
         width: 300px;
+        @media (max-width: $media-tablet) {
+            width: 250px;
+        }
+        @media (max-width: $media-mobile) {
+            padding: 0;
+            width: 100%;
+            margin-bottom: 20px;
+        }
     }
     .rating {
         label {
