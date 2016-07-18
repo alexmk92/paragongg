@@ -13,11 +13,13 @@ class GuideController extends Controller
     {
         $skip = 0;
         $take = 0;
+        $type = 'hero';
 
         if(isset($_GET['skip'])) $skip = $_GET['skip'];
         if(isset($_GET['take'])) $take = $_GET['take'];
+        if(isset($_GET['type'])) $type = $_GET['type'];
 
-        $guides = Guide::where('status', 'published')->where('type', 'hero')
+        $guides = Guide::where('status', 'published')->where('type', $type)
             ->join('users', 'users.id', '=', 'guides.user_id')
             ->select('guides.id', 'guides.type', 'guides.title', 'user_id', 'guides.created_at', 'guides.updated_at', 'guides.views', 'guides.votes', 'hero_code', 'guides.slug', 'guides.featured', 'users.username');
 
@@ -50,4 +52,6 @@ class GuideController extends Controller
 
         return response()->json($guides);
     }
+
+
 }
