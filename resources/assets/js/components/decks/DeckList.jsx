@@ -131,7 +131,7 @@ var DeckList = React.createClass({
     */
     handleScroll: function() {
         var hasScrollbar = window.innerWidth > document.documentElement.clientWidth;
-        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight || !hasScrollbar) {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight + 50 || !hasScrollbar) {
             this.getResults();
         }
     },
