@@ -399,6 +399,34 @@ var Build = React.createClass({
             this.queuedUpgrades = [];
         }
     },
+    hasSamePassiveEffects: function(selectedCard, upgradeCard) {
+        if(selectedCard === null || upgradeCard === null)
+            return true;
+
+        var hasSamePassiveEffect = false;
+        if(upgradeCard && selectedCard && typeof selectedCard.effects !== "undefined") {
+            selectedCard.effects.some(function(effect) {
+                var statString = "";
+                if(effect.stat) statString = effect.stat.toUpperCase();
+                if(effect.description) statString = effect.description.toUpperCase();
+                var selectedEffectType = Helpers.getFormattedStatistic(statString);
+                if(upgradeCard.effects) {
+                    upgradeCard.effects.forEach(function(upgradeEffect) {
+                        if(upgradeEffect.stat) statString = upgradeEffect.stat.toUpperCase();
+                        if(upgradeEffect.description) statString = upgradeEffect.description.toUpperCase();
+                        var slotEffectType = Helpers.getFormattedStatistic(statString);
+                        console.log(slotEffectType);
+                        console.log(selectedEffectType);
+                        if(!Helpers.isNullOrUndefined(selectedEffectType) && !Helpers.isNullOrUndefined(slotEffectType) && selectedEffectType.label === slotEffectType.label) {
+                            hasSamePassiveEffect = true;
+                        }
+                    });
+                } else { hasSamePassiveEffect = false }
+                return hasSamePassiveEffect;
+            });
+        }
+        return hasSamePassiveEffect;
+    },
     getBuildSlots: function() {
         return this.props.build.slots.map(function(slot, i) {
             var activeClass = "";
@@ -436,13 +464,18 @@ var Build = React.createClass({
 
             if((this.props.selectedCard && typeof this.props.selectedCard !== "undefined")) {
                 if((type === this.props.selectedCard.type || this.props.selectedCard.type === "Passive")) {
-
                     if(!this.props.shouldQuickBindCards) {
                         activeClass = (slot.card === null) ? "active-slot " : "";
                     }
 
                     if (this.props.lastModifiedSlot === i) {
                         //cardPulse = "pulse-glow";
+                    }
+                }
+                if(this.props.selectedCard.type.toUpperCase() === "UPGRADE") {
+                    activeClass += " faded";
+                    if(!this.hasSamePassiveEffects(this.props.selectedCard, slot.card)) {
+                        activeClass += " faded";
                     }
                 }
             }
@@ -613,6 +646,11 @@ var Build = React.createClass({
             } else if(slot.card && this.lastSelectedSlot === index) {
                 if(Helpers.hasClass(elem, "fa-refresh")) this.requestActiveTab(0, index, slot.card);
                 if(Helpers.hasClass(elem, "upgrade-label") || Helpers.hasClass(elem, "overlay")) this.requestActiveTab(0, index, "UPGRADES", slot.card);
+            }
+        } else {
+            var slot = this.props.build.slots[index];
+            if(slot && slot.card !== null) {
+                this.props.onShowUpgradeCardsForSlot(slot.card);
             }
         }
     },

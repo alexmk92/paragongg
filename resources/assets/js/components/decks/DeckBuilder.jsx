@@ -40,6 +40,8 @@ var DeckBuilder = React.createClass({
     },
     componentWillMount: function() {
         // Replace the current notification panel.
+        this.deckList = null;
+        this.updateDeckList = false;
         this.notificationPanel = new Notification();
         if(Helpers.isClientMobile()) {
             this.setState({ activeTab: -1 })
@@ -145,6 +147,7 @@ var DeckBuilder = React.createClass({
         return cardToReturn;
     },
     componentDidUpdate: function() {
+        this.deckList = null;
         this.hideTooltip();
         if(this.lastHoveredCard && !Helpers.isClientMobile()) {
             this.setTooltipContent(this.lastHoveredCard);
@@ -171,6 +174,10 @@ var DeckBuilder = React.createClass({
     shouldComponentUpdate: function(nextProps, nextState) {
         if(this.state.selectedHero !== nextState.selectedHero) {
             this.forceUpdate();
+        }
+        if(this.updateDeckList === true) {
+            this.updateDeckList = false;
+            return true;
         }
         return this.state !== nextState;
     },
@@ -421,7 +428,6 @@ var DeckBuilder = React.createClass({
         });
     },
     renderDeckList: function() {
-
         var editDeckButton = "";
         if(Helpers.isClientMobile() && (this.state.isBuildsPanelShowing)) {
             editDeckButton = (
@@ -434,7 +440,6 @@ var DeckBuilder = React.createClass({
                 </button>
             );
         }
-
         if(this.state.deck.length === 0) {
             return (
                 <div className={ "sidebox panel cf" + this.isActiveTab(0) }>
@@ -449,7 +454,26 @@ var DeckBuilder = React.createClass({
                 </div>
             )
         }
-        if(Helpers.isClientMobile() && this.deckOptionFilter && this.deckOptionFilter === "UPGRADES") {
+        if(!Helpers.isNullOrUndefined(this.deckList) && this.deckList.length > 0) {
+            this.updateDeckList = true;
+            return(
+                <div className={ "sidebox panel cf" + this.isActiveTab(0) }>
+                    { editDeckButton }
+                    <span className="subtext">PRIME HELIX</span>
+                    <ul className="deck-list">
+                        {this.getCardsInDeck(["Prime"])}
+                    </ul>
+                    <span className="subtext">EQUIPMENT</span>
+                    <ul className="deck-list">
+                        {this.getCardsInDeck(["Passive", "Active"])}
+                    </ul>
+                    <span className="subtext">UPGRADE</span>
+                    <ul className="deck-list">
+                        {this.deckList}
+                    </ul>
+                </div>
+            );
+        } else if(Helpers.isClientMobile() && this.deckOptionFilter && this.deckOptionFilter === "UPGRADES") {
             return(
                 <div className={ "sidebox panel cf" + this.isActiveTab(0) }>
                     { editDeckButton }
@@ -536,6 +560,51 @@ var DeckBuilder = React.createClass({
             });
         }
         return hasSamePassiveEffect;
+    },
+    showUpgradeCardsForSlot: function(selectedCard) {
+        var cardList = [];
+        this.state.deck.forEach(function(card) {
+            var className = "";
+            var quantityLabel = card.quantity + "x";
+            var disableCardRow = false;
+            // Set label when adding cards to build
+            if(this.state.isBuildsPanelShowing && this.state.selectedBuild !== null) {
+                var finalQuantity = this.getCardQuantityInCurrentDeck(card);
+                disableCardRow = finalQuantity === card.quantity;
+                quantityLabel = finalQuantity + "/" + card.quantity;
+
+                if(disableCardRow) {
+                    className += " disabled";
+                }
+            }
+            if(card.type.toUpperCase() === "UPGRADE") {
+                if(!this.validateCardType(selectedCard, card)) {
+                    className = "invalid";
+                }
+                cardList.push(
+                    <li className={className}
+                        key={card.code + "_" + Helpers.uuid() }
+                        style={{backgroundImage: 'url('+Helpers.getCardImageURL(card, "medium", "icon")+')'}}
+                        onContextMenu={this.deleteCardFromDeck.bind(this, card)}
+                        onClick={this.selectCard.bind(this, card)}
+                        onMouseEnter={this.setTooltipContent.bind(this, card)}
+                        onMouseOver={this.showTooltip.bind(this, card)}
+                        onMouseLeave={this.hideTooltip}
+                    >
+                        <div className={ "wrapper " }>
+                            <span className="count">{ quantityLabel }</span>
+                            <span className="name">{card.name}</span>
+                            <span className="cost">{card.cost} CP</span>
+                        </div>
+                        <div className="delete-icon" onClick={this.deleteCardFromDeck.bind(this, card)}>
+                            <i className="fa fa-trash" aria-hidden="true" />
+                        </div>
+                    </li>
+                );
+            }
+        }.bind(this));
+        this.deckList = cardList;
+        this.forceUpdate();
     },
     getCardsInDeck : function(types) {
         var cardList = [];
@@ -1152,6 +1221,7 @@ var DeckBuilder = React.createClass({
                                 lastModifiedSlot={this.state.lastModifiedSlot}
                                 onBuildChanged={this.buildUpdated}
                                 onNotificationInvoked={this.childAddedNotification}
+                                onShowUpgradeCardsForSlot={this.showUpgradeCardsForSlot}
                             />
                         ) : ""
                     }
