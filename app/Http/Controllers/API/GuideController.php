@@ -17,7 +17,7 @@ class GuideController extends Controller
         if(isset($_GET['skip'])) $skip = $_GET['skip'];
         if(isset($_GET['take'])) $take = $_GET['take'];
 
-        $guides = Guide::where('status', 'published')
+        $guides = Guide::where('status', 'published')->where('type', 'hero')
             ->join('users', 'users.id', '=', 'guides.user_id')
             ->select('guides.id', 'guides.type', 'guides.title', 'user_id', 'guides.created_at', 'guides.updated_at', 'guides.views', 'guides.votes', 'hero_code', 'guides.slug', 'guides.featured', 'users.username');
 
