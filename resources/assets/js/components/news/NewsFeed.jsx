@@ -12,8 +12,9 @@ var NewsFeed = React.createClass({
         }
     },
     componentWillMount: function() {
+        this.fetching = false;
         this.options = {
-            stagger: true,
+            stagger: false,
             staggerAmount: 50
         };
         this.masonryOptions = {
@@ -29,38 +30,46 @@ var NewsFeed = React.createClass({
     componentWillUnmount: function() {
         window.removeEventListener('scroll', this.handleScroll);
     },
+    shouldComponentUpdate: function(nextProps, nextState) {
+        if(this.state.news.length !== nextState.news.length) return true;
+        if(this.state.newsEnd !== nextState.newsEnd) return true;
+
+        return false;
+    },
     handleScroll: function() {
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
             this.getResults();
         }
     },
     getResults: function() {
-        var _this = this;
-        Action.fetchNews(this.state.news.length, function(error, data) {
-            if(error === null && data !== null) {
-                if(data.length > 0) {
-                    _this.addResults(data);
-                } else {
-                    _this.setState({newsEnd: true});
+        if(!this.fetching) {
+            Action.fetchNews(this.state.news.length, function(error, data) {
+                if(error === null && data !== null) {
+                    if(data.length > 0) {
+                        this.addResults(data);
+                        this.fetching = false;
+                    } else {
+                        this.fetching = false;
+                        this.setState({newsEnd: true});
+                    }
                 }
-            }
-        });
+            }.bind(this));
+        }
+        this.fetching = true;
     },
     addResults: function(response) {
         if(this.options.stagger) {
-            var _this = this;
             var i = 0;
             var interval = setInterval(function() {
-                _this.setState({news: _this.state.news.concat(response[i])}); // Stagger this somehow?
+                this.setState({news: this.state.news.concat(response[i])}); // Stagger this somehow?
                 i++;
                 if(i >= response.length) clearInterval(interval);
-            }, _this.options.staggerAmount);
+            }.bind(this), this.options.staggerAmount);
         } else {
             this.setState({news: this.state.news.concat(response)});
         }
     },
     render: function() {
-
         var childElements = this.state.news.map(function(element){
             return (
                 <a className="article-preview"
