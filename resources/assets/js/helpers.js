@@ -149,7 +149,6 @@ module.exports = {
     },
     prettyDate : function(time)
     {
-        console.log("GOT: ", time);
         var local = new Date();
         var system_date = new Date(Date.parse(time));
         var user_date = new Date(local.getUTCFullYear(), local.getUTCMonth(), local.getUTCDate(),  local.getUTCHours(), local.getUTCMinutes(), local.getUTCSeconds());
