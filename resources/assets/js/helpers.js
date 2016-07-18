@@ -79,6 +79,9 @@ module.exports = {
             default : return null; break;
         }
     },
+    isNullOrUndefined: function(object) {
+        return typeof object === 'undefined' || object === null;
+    },
     getStatisticCategory: function(stat) {
         if(stat.includes("{ATTR:HP}")){
             return "HEALTH";
