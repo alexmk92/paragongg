@@ -21,6 +21,11 @@ var CardsFilter = React.createClass({
             showPassiveCards : true,
             showPrimeHelixCards : true,
             showUpgradeCards : true,
+            showCommonCards : true,
+            showUncommonCards : true,
+            showStarterCards : true,
+            showRareCards : true,
+            showEpicCards : true,
             affinities : [
                 { name : "Fury" },
                 { name : "Order" },
@@ -63,7 +68,8 @@ var CardsFilter = React.createClass({
                 { name : "Show cards I don't own", iconName : "", ref: "TOGGLE_OWNED", checked : true}
             ] });
         }
-        options.push({ group : [
+        options.push(
+            { group : [
                 { name : "Show Active Cards", iconName : "", ref: "TOGGLE_ACTIVE", checked : true},
                 { name : "Show Passive Cards", iconName : "", ref: "TOGGLE_PASSIVE", checked : true},
                 { name : "Show Upgrade Cards", iconName : "", ref: "TOGGLE_UPGRADE", checked : true},
@@ -72,7 +78,15 @@ var CardsFilter = React.createClass({
             { group : [
                 { name : "Cost (Ascending)", iconName : "", ref: "SORT_ASC", checked : true},
                 { name : "Cost (Descending)", iconName : "", ref: "SORT_DESC", checked : false}
-            ]});
+            ]},
+            { group: [
+                { name : "Starter", iconName : "", ref: "RARITY_STARTER", checked : true},
+                { name : "Common", iconName : "", ref: "RARITY_COMMON", checked : true},
+                { name : "Uncommon", iconName : "", ref: "RARITY_UNCOMMON", checked : true},
+                { name : "Rare", iconName : "", ref: "RARITY_RARE", checked : true},
+                { name : "Epic", iconName : "", ref: "RARITY_EPIC", checked : true}
+            ]}
+        );
 
         this.setState({ moreOptions : options });
     },
@@ -128,6 +142,16 @@ var CardsFilter = React.createClass({
         if(!this.state.showPassiveCards && card.type.toUpperCase() === "PASSIVE")
             matches = false;
         if(!this.state.showPrimeHelixCards && card.type.toUpperCase() === "PRIME")
+            matches = false;
+        if(!this.state.showStarterCards && card.rarity.toUpperCase() === "STARTER")
+            matches = false;
+        if(!this.state.showCommonCards && card.rarity.toUpperCase() === "COMMON")
+            matches = false;
+        if(!this.state.showUncommonCards && card.rarity.toUpperCase() === "UNCOMMON")
+            matches = false;
+        if(!this.state.showRareCards && card.rarity.toUpperCase() === "RARE")
+            matches = false;
+        if(!this.state.showEpicCards && card.rarity.toUpperCase() === "EPIC")
             matches = false;
         if(!this.state.showOwnedCards && AUTHED && card.owned === false)
             matches = false;
@@ -217,6 +241,11 @@ var CardsFilter = React.createClass({
         var newUpgradeOption = this.state.showUpgradeCards;
         var newOwnedOption = this.state.showOwnedCards;
         var newCostOrder = this.state.costOrder;
+        var newStarterCardOption = this.state.showStarterCards;
+        var newCommonCardOption = this.state.showCommonCards;
+        var newUncommonCardOption = this.state.showUncommonCards;
+        var newRareCardOption = this.state.showRareCards;
+        var newEpicCardOption = this.state.showEpicCards;
 
         var newOptions = this.state.moreOptions.map(function(option) {
             if(newOption.ref === "SORT_ASC") {
@@ -255,12 +284,22 @@ var CardsFilter = React.createClass({
             case "TOGGLE_UPGRADE": newUpgradeOption = !this.state.showUpgradeCards;break;
             case "TOGGLE_PRIME": newHelixOption = !this.state.showPrimeHelixCards;break;
             case "TOGGLE_OWNED": newOwnedOption = !this.state.showOwnedCards;break;
+            case "RARITY_STARTER": newStarterCardOption = !this.state.showStarterCards;break;
+            case "RARITY_COMMON": newCommonCardOption = !this.state.showCommonCards;break;
+            case "RARITY_UNCOMMON": newUncommonCardOption = !this.state.showUncommonCards;break;
+            case "RARITY_RARE": newRareCardOption = !this.state.showRareCards;break;
+            case "RARITY_EPIC": newEpicCardOption = !this.state.showEpicCards;break;
             case "SORT_DESC": newCostOrder = "DESC";break;
             case "SORT_ASC": newCostOrder = "ASC";break;
         }
 
         this.setState({
             moreOptions : newOptions,
+            showCommonCards : newCommonCardOption,
+            showUncommonCards : newUncommonCardOption,
+            showStarterCards : newStarterCardOption,
+            showRareCards : newRareCardOption,
+            showEpicCards : newEpicCardOption,
             showPrimeHelixCards : newHelixOption,
             showPassiveCards : newPassiveOption,
             showActiveCards : newActiveOption,
