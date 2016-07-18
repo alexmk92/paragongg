@@ -13,15 +13,9 @@ var GuidesFeed = React.createClass({
     getInitialState: function() {
         return {
             heroes : this.props.heroes,
-            selectedType: 'featured',
+            selectedType: 'recent',
             take: 10,
             guides: {
-                featured: {
-                    guides : this.props.guides.featured,
-                    skip : this.props.guides.featured.length,
-                    fetching: false,
-                    endOfPage: false
-                },
                 recent: {
                     guides : this.props.guides.recent,
                     skip : this.props.guides.recent.length,
@@ -184,10 +178,6 @@ var GuideResults = React.createClass({
         }.bind(this));
         return (
             <Tabs defaultSelected={0} expandable={false} className="padless" onSelectedTabUpdated={this.setSelectedType}>
-                {/* Featured */}
-                <TabPanel title="Featured">
-                    {guides}
-                </TabPanel>
                 {/* Recently updated */}
                 <TabPanel title="Most recent">
                     {guides}

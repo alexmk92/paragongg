@@ -162,6 +162,7 @@ Route::group(['prefix' => 'api', 'namespace' => 'API', 'middleware' => 'cors'], 
     Route::post('/v1/comments/store', 'CommentController@store');
 
     Route::get('/v1/decks', 'DeckController@index');
+    Route::get('/v1/decks/find/{id}', 'DeckController@show');
     Route::get('/v1/guides', 'GuideController@index');
     Route::get('/v1/cards', 'CardController@index');
     Route::get('/v1/cards/find/{id}', 'CardController@show');

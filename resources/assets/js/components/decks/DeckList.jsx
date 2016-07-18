@@ -14,7 +14,7 @@ var DeckList = React.createClass({
     getInitialState: function() {
         console.log(this.props);
         return {
-            selectedType: 'featured',
+            selectedType: 'recent',
             heroes : this.props.heroes || null,
             take: 10,
             decks: {
@@ -203,12 +203,6 @@ var DeckList = React.createClass({
                 <HeroPanel title="Hero decks" placeholder="Search by hero name..." showAffinityFilter={false} heroes={HEROES} isActive={true} onHeroSelected={this.onHeroSelected} onHeroesListUpdated={this.heroesListUpdated}  linkType="decks"/>
 
                 <Tabs defaultSelected={0} expandable={false} className="padless" onSelectedTabUpdated={this.setSelectedType}>
-                    {/* Featured */}
-                    <TabPanel title="Featured">
-                        <ul className="main-list">
-                            { this.renderDeckList() }
-                        </ul>
-                    </TabPanel>
                     {/* Recently updated */}
                     <TabPanel title="Recently updated">
                         <ul className="main-list">

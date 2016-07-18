@@ -53,7 +53,7 @@ class GuideController extends Controller
             ->get();
 
         $guides['views'] = Guide::where('status', 'published');
-        if($hero) $guides['featured'] = $guides['featured']->where('hero_code', $hero->code);
+        if($hero) $guides['views'] = $guides['views']->where('hero_code', $hero->code);
         $guides['views'] = $guides['views']->join('users', 'users.id', '=', 'guides.user_id')
             ->select('guides.id', 'guides.type', 'guides.title', 'user_id', 'guides.created_at', 'guides.updated_at', 'guides.views', 'guides.votes', 'hero_code', 'guides.slug', 'guides.featured', 'users.username')
             ->orderBy('views', 'DESC')
@@ -250,7 +250,7 @@ class GuideController extends Controller
     public function show($id, Request $request)
     {
         $guide  = Guide::findOrFail($id);
-        if($guide->status == 'draft' && !auth()->check() || $guide->user_id != auth()->user()->id) abort(404);
+        if($guide->status == 'draft' && !auth()->check() && $guide->user_id != auth()->user()->id) abort(404);
         $thread = findOrCreateThread($request->path());
         $deck   = null;
         $hero   = null;

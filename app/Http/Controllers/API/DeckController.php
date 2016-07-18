@@ -114,4 +114,10 @@ class DeckController extends Controller
 
         return response()->json($decks);
     }
+
+    public function show($id)
+    {
+        $deck = Deck::findOrFail($id);
+        return response()->json($deck);
+    }
 }

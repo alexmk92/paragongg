@@ -147,18 +147,18 @@ var DeckPreview = React.createClass({
         var updated_at = new Date(this.props.deck.updated_at);
 
         if(this.props.featured === 1)
-            return <span className="badge featured">Featured</span>
+            return <span className="stat featured">Featured</span>
 
         var timeDiff = Math.abs(created_at.getTime() - updated_at.getTime());
         var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
         if(updated_at.getTime() > created_at.getTime() && (diffDays > 0 && diffDays < 10)) {
-            return <span className="badge updated">Recently Updated</span>
+            return <span className="stat updated">Recently Updated</span>
         }
 
         if(diffDays === 0 && diffDays < 7) {
             return (
-                <span className={"badge new"}>New</span>
+                <span className={"stat new"}>New</span>
             );
         }
 
@@ -171,46 +171,73 @@ var DeckPreview = React.createClass({
         });
         return total;
     },
+    getTimeLabel: function() {
+        var created_at = new Date(this.props.created);
+        var updated_at = new Date(this.props.updated);
+
+        return updated_at.getTime() > created_at.getTime() ? "last updated" : "created";
+    },
     render: function() {
         var userVoted = this.props.deck.voted ? "active" : "";
         return (
-            <li className="deck-preview-container">
-                <div className="hero-portrait">
-                    <PreloadImage src={ Helpers.getHeroImageURL(this.props.deck.hero) } />
+            <a className="deck-preview cf" href={"/guides/" + this.props.deck.id + "/" + this.props.deck.slug}>
+                <div className="deck-hero">
+                    <PreloadImage src={ Helpers.S3URL() + "images/heroes/" + this.props.deck.hero.code + "/" + this.props.deck.hero.image + "/portrait_small.png" }
+                                  fallbackSrc="assets/images/heroes/null.png"
+                    />
                 </div>
-
-                <div className="title-wrapper">
-                    <h3><a href={this.state.deckURL}>{ this.props.deck.title }</a></h3>
-                    <span className="author">{ this.getStatLabel() }<span className="subtext">Published by</span> <a href="#">{ this.props.deck.author ? this.props.deck.author.username : "anonymous" }</a></span>
-                </div>
-
-                <div className="build-overview">
-                    <span className="large-text">{ this.getCardTotal() }<span className="subtext">CARDS</span></span>
-                    <span className="large-text">{ this.props.deck.builds.length }<span className="subtext">BUILDS</span></span>
-                </div>
-
-                <div className="mid-section">
-                    <div className="votes-panel">
-                        <i className={"fa fa-star " + userVoted} onClick={ this.upvoteDeck }></i>
-                        <span>{ Helpers.delimitNumbers(this.props.deck.votes || 0) }</span>
+                <div className="deck-details">
+                    <div className="title"><h3>{ this.props.deck.title }</h3></div>
+                    <div className="details">
+                        <span className="emphasis">{ this.props.deck.hero.name }</span> deck by <span className="emphasis">{ this.props.deck.author ? this.props.deck.author.username : "anonymous" }</span> { this.getTimeLabel() } <span className="emphasis">{ Helpers.prettyDate(this.props.deck.updated) }</span>
                     </div>
-                    { this.renderDeckPreview() }
-                </div>
-
-
-                <div className="stat-bar">
-                    <div className="buttons-left">
-                        <a href="#">SHARE</a>
-                    </div>
-                    <div className="buttons-right">
-                        <span><i className="fa fa-eye"></i> { Helpers.delimitNumbers(this.props.deck.views || 0) }</span>
+                    <div className="stats">
+                        { this.getStatLabel() }
+                        <span className="stat"><i className="fa fa-star" aria-hidden="true"></i> { this.props.deck.votes }</span>
+                        <span className="stat"><i className="fa fa-eye" aria-hidden="true"></i> { this.props.deck.views }</span>
                     </div>
                 </div>
-                <div className="black-overlay"></div>
-                <div className="affinity-bar">
-                    { this.renderAffinityBar() }
-                </div>
-            </li>
+            </a>
+
+            //
+            //
+            // <li className="deck-preview-container">
+            //     <div className="hero-portrait">
+            //         <PreloadImage src={ Helpers.getHeroImageURL(this.props.deck.hero) } />
+            //     </div>
+            //
+            //     <div className="title-wrapper">
+            //         <h3><a href={this.state.deckURL}>{ this.props.deck.title }</a></h3>
+            //         <span className="author">{ this.getStatLabel() }<span className="subtext">Published by</span> <a href="#">{ this.props.deck.author ? this.props.deck.author.username : "anonymous" }</a></span>
+            //     </div>
+            //
+            //     <div className="build-overview">
+            //         <span className="large-text">{ this.getCardTotal() }<span className="subtext">CARDS</span></span>
+            //         <span className="large-text">{ this.props.deck.builds.length }<span className="subtext">BUILDS</span></span>
+            //     </div>
+            //
+            //     <div className="mid-section">
+            //         <div className="votes-panel">
+            //             <i className={"fa fa-star " + userVoted} onClick={ this.upvoteDeck }></i>
+            //             <span>{ Helpers.delimitNumbers(this.props.deck.votes || 0) }</span>
+            //         </div>
+            //         { this.renderDeckPreview() }
+            //     </div>
+            //
+            //
+            //     <div className="stat-bar">
+            //         <div className="buttons-left">
+            //             <a href="#">SHARE</a>
+            //         </div>
+            //         <div className="buttons-right">
+            //             <span><i className="fa fa-eye"></i> { Helpers.delimitNumbers(this.props.deck.views || 0) }</span>
+            //         </div>
+            //     </div>
+            //     <div className="black-overlay"></div>
+            //     <div className="affinity-bar">
+            //         { this.renderAffinityBar() }
+            //     </div>
+            // </li>
         );
     }
 });
