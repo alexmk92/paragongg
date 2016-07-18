@@ -9,7 +9,7 @@
         <form action="" method="POST">
             {!! csrf_field() !!}
             <label>Set current patch</label>
-            <input type="text" name="patch" placeholder="e.g. v.28">
+            <input type="text" name="patch" placeholder="e.g. v.28" value="{{ $patch->value }}">
             <button type="submit">Save patch name</button>
         </form>
     </div>

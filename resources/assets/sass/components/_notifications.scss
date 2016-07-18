@@ -6,6 +6,7 @@
     width: 100%;
     max-width: 350px;
     z-index: 1337;
+    pointer-events: none;
 }
 .notification {
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.75);
@@ -18,6 +19,8 @@
     cursor: pointer;
     animation: fadeOut 5s linear forwards;
     background: $panel-color;
+    margin-top: 5px;
+    position: relative;
     &.notification-success {
         border-left: 5px solid $green;
     }
@@ -47,83 +50,10 @@
     }
 }
 
-// USED ON DECK BUILDER PAGE
-.multiple-notification-panel {
-    display: block;
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 100%;
-    max-width: 350px;
-    height: auto;
-    padding: 40px 0px;
-    z-index: 1337;
-
-    .notification-panel-wrapper {
-        position: absolute;
-        width: 100%;
-        bottom: 0;
-
-        .notification-panel {
-            position: relative;
-            display: block;
-            bottom: 0;
-            width: 100%;
-            max-width: 350px;
-            z-index: 1337;
-            margin-bottom: 10px;
-
-            .notification {
-                opacity: 1;
-                transition: all 200ms;
-                animation: none;
-
-                &.fade-out {
-                    opacity: 0;
-                    transform: translateY(-10px);
-                }
-            }
-        }
-    }
-}
-
-@media screen and (max-width: $media-tablet) {
-    .multiple-notification-panel {
-        max-width: 100%;
-        padding: 0;
-        width: 100%;
-        top: 0px;
-        left: 0;
-        right: 0;
-        z-index: 9999999;
-        bottom: initial;
-
-        .notification-panel-wrapper {
-            .notification-panel {
-                position: absolute;
-                max-width: 100%;
-                top: 60px;
-                right: 0;
-                bottom: 0;
-                margin: 0;
-
-                .notification {
-                    background: rgba(24, 29, 39, 0.95);
-                    padding: 10px 20px;
-                    text-align: left;
-
-                    .notification-title {
-                        padding-right: 10px;
-                    }
-                }
-            }
-        }
-    }
-}
-
 @keyframes fadeOut {
     0% {
         opacity: 0;
+        display: block;
     }
     10% {
         opacity: 1;
@@ -135,9 +65,13 @@
     99% {
         opacity: 0;
         transform: translateY(-10px);
+        display: block;
     }
     100% {
-        transform: translateY(-99999px);
+        transform: translateY(99999px);
         opacity: 0;
+        //height: 0;
+        display: none;
+        pointer-events: none;
     }
 }

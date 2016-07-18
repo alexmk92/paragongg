@@ -56,7 +56,7 @@
                     </script>
                 </div>
                 <label>Source (if any)</label>
-                <input name="source" type="text" placeholder="e.g. http://paragon.com/blog">
+                <input name="source" type="text" placeholder="e.g. http://paragon.com/blog" value="{{ $news->source }}">
                 <hr>
                 <button name="draft" type="submit" class="btn"><i class="fa fa-pencil" aria-hidden="true"></i> Save to drafts</button>
                 <button name="publish" type="submit" class="btn"><i class="fa fa-check" aria-hidden="true"></i> Publish article</button>
