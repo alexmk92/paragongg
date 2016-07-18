@@ -14,11 +14,11 @@ var NewsFeed = React.createClass({
     componentWillMount: function() {
         this.fetching = false;
         this.options = {
-            stagger: false,
+            stagger: true,
             staggerAmount: 50
         };
         this.masonryOptions = {
-            percentPosition: true,
+            percentPosition: false,
             //transitionDuration: 0,
             gutter: 30
         };
