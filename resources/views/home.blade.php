@@ -26,7 +26,7 @@
         @if(isset($featuredNews))
         <a href="/news/{{ $featuredNews->id  }}/{{ $featuredNews->slug  }}" class="featured-panel-main">
             @if($featuredNews->impact)
-                <div class="panel-background anim-slowZoom" style="background-image:url({{ S3URL() }}/images/news/impact/{{ $news->impact }});"></div>
+                <div class="panel-background anim-slowZoom" style="background-image:url({{ S3URL() }}/images/news/impact/{{ $featuredNews->impact }});"></div>
             @else
                 <div class="panel-background anim-slowZoom" style="background-image:url(/assets/images/featuredNews.jpg);"></div>
             @endif
