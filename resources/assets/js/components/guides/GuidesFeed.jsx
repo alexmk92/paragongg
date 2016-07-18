@@ -150,10 +150,9 @@ var GuideResults = React.createClass({
     setSelectedType: function(index) {
         var type = '';
         switch(index) {
-            case 0: type = 'featured'; break;
-            case 1: type = 'recent'; break;
-            case 2: type = 'rated'; break;
-            case 3: type = 'views'; break;
+            case 0: type = 'recent'; break;
+            case 1: type = 'rated'; break;
+            case 2: type = 'views'; break;
             default: break;
         }
         this.props.onSelectedTypeChanged(type);
