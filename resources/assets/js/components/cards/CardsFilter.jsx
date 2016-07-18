@@ -166,6 +166,9 @@ var CardsFilter = React.createClass({
         if(nextProps.visibleCardCount !== this.props.visibleCardCount) {
             return true;
         }
+        if(nextProps.affinities !== this.props.affinities) {
+            return true;
+        }
         if(this.props.forceRedraw) {
             this.forceUpdate();
         }
