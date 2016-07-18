@@ -189,7 +189,7 @@ var DeckPreview = React.createClass({
                 <div className="deck-details">
                     <div className="title"><h3>{ this.props.deck.title }</h3></div>
                     <div className="details">
-                        <span className="emphasis">{ this.props.deck.hero.name }</span> deck by <span className="emphasis">{ this.props.deck.author ? this.props.deck.author.username : "anonymous" }</span> { this.getTimeLabel() } <span className="emphasis">{ Helpers.prettyDate(this.props.deck.updated) }</span>
+                        <span className="emphasis">{ this.props.deck.hero.name }</span> deck by <span className="emphasis">{ this.props.deck.author ? this.props.deck.author.username : "anonymous" }</span> { this.getTimeLabel() } <span className="emphasis">{ Helpers.prettyDate(this.props.deck.updated_at) }</span>
                     </div>
                     <div className="stats">
                         { this.getStatLabel() }

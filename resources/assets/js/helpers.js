@@ -149,6 +149,7 @@ module.exports = {
     },
     prettyDate : function(time)
     {
+        console.log("GOT: ", time);
         var local = new Date();
         var system_date = new Date(Date.parse(time));
         var user_date = new Date(local.getUTCFullYear(), local.getUTCMonth(), local.getUTCDate(),  local.getUTCHours(), local.getUTCMinutes(), local.getUTCSeconds());
@@ -165,6 +166,30 @@ module.exports = {
         if (diff <= 129600) {return "1 day ago";}
         if (diff < 604800) {return Math.round(diff / 86400) + " days ago";}
         if (diff <= 777600) {return "1 week ago";}
+        if (diff <= (777600 * 2)) { return "2 weeks ago"; }
+        if (diff <= (777600 * 3)) { return "3 weeks ago"; }
+        if (diff <= (777600 * 4)) { return "1 month ago"; }
+        if (diff <= ((777600 * 4) * 2)) { return "2 months ago"; }
+        if (diff <= ((777600 * 4) * 3)) { return "3 months ago"; }
+        if (diff <= ((777600 * 4) * 4)) { return "4 months ago"; }
+        if (diff <= ((777600 * 4) * 5)) { return "5 months ago"; }
+        if (diff <= ((777600 * 4) * 6)) { return "6 months ago"; }
+        if (diff <= ((777600 * 4) * 7)) { return "7 months ago"; }
+        if (diff <= ((777600 * 4) * 8)) { return "8 months ago"; }
+        if (diff <= ((777600 * 4) * 9)) { return "9 months ago"; }
+        if (diff <= ((777600 * 4) * 10)) { return "10 months ago"; }
+        if (diff <= ((777600 * 4) * 11)) { return "11 months ago"; }
+        if (diff <= ((777600 * 4) * 12)) { return "1 year ago"; }
+        if (diff <= ((777600 * 4) * 12) * 2) { return "2 years ago"; }
+        if (diff <= ((777600 * 4) * 12) * 3) { return "3 years ago"; }
+        if (diff <= ((777600 * 4) * 12) * 4) { return "4 years ago"; }
+        if (diff <= ((777600 * 4) * 12) * 5) { return "5 years ago"; }
+        if (diff <= ((777600 * 4) * 12) * 6) { return "6 years ago"; }
+        if (diff <= ((777600 * 4) * 12) * 7) { return "7 years ago"; }
+        if (diff <= ((777600 * 4) * 12) * 8) { return "8 years ago"; }
+        if (diff <= ((777600 * 4) * 12) * 9) { return "9 years ago"; }
+        if (diff <= ((777600 * 4) * 12) * 10) { return "10 years ago"; }
+
         return "on " + system_date;
     },
     uuid : function()
