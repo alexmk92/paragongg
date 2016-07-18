@@ -32,7 +32,7 @@ var CardEffects = React.createClass({
             { type : "{attr:endmg}", value : "Energy Damage", icon : "pgg pgg-energy-damage" },
             { type : "{attr:critch}", value : "Crit Chance", icon : "pgg pgg-critical-strike-chance" }
         ];
-
+        
         return description.map(function (string, i) {
             if (/({[a-zA-Z:]+})/.test(string)) {
                 var node = null;
@@ -60,10 +60,10 @@ var CardEffects = React.createClass({
     getStats: function(effects) {
         var items = [];
         effects.forEach(function(stat, i) {
-            if(stat.stat) {
+            if(stat.stat && stat.stat.toUpperCase() !== "DAMAGEBONUSSOURCE") {
                 var statistic = Helpers.getFormattedStatistic(stat.stat);
                 items.push(
-                    <li key={stat.label + "_" + i}>
+                    <li key={"stat_" + i}>
                         <span className="value">{ Helpers.dropZeroesAndDelimitNumbers((stat.value * statistic.multiplier)) + "" + statistic.modifier }</span>
                         <i className={statistic.icon} aria-hidden="true" /><span>{ statistic.label}</span>
                     </li>
@@ -81,6 +81,7 @@ var CardEffects = React.createClass({
                 );
             }
         }.bind(this));
+        console.log(items);
         return items;
     },
     render: function() {

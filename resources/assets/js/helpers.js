@@ -75,6 +75,7 @@ module.exports = {
             case "ENERGYRESISTANCERATING" : return { label : "Energy Armor", icon: "pgg pgg-energy-armor", modifier : "", multiplier: 1 }; break;
             case "PHYSICALRESISTANCERATING" : return { label : "Physical Armor", icon : "pgg pgg-physical-armor", modifier : "", multiplier: 1 }; break;
             case "WELLRIGPLACEMENTTIMER" : return { label : "Placement Time", icon: "pgg pgg-harvester-placement-time", modifier : "s", multiplier: 1 }; break;
+            //case "DAMAGEBONUSSOURCE
             default : return { label : ("undefined label: " + statLabel), icon: "", modifier : "", multiplier: 1 }; break;
         }
     },
