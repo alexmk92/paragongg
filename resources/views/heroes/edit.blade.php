@@ -12,15 +12,15 @@
         <hr>
         <h3>Hero ability videos</h3>
         <label>LMB</label>
-        <input type="text" name="ability_video_lmb" @if(isset($hero->abilities[0]->video))value="{{ $hero->abilities[0]->video }}"@endif>
+        <input type="text" name="ability_video_lmb" @if(isset($hero->abilities[0]['video']))value="{{ $hero->abilities[0]['video'] }}"@endif>
         <label>RMB</label>
-        <input type="text" name="ability_video_rmb">
+        <input type="text" name="ability_video_rmb" @if(isset($hero->abilities[1]['video']))value="{{ $hero->abilities[1]['video'] }}"@endif>
         <label>Q</label>
-        <input type="text" name="ability_video_q">
+        <input type="text" name="ability_video_q" @if(isset($hero->abilities[2]['video']))value="{{ $hero->abilities[2]['video'] }}"@endif>
         <label>E</label>
-        <input type="text" name="ability_video_e">
+        <input type="text" name="ability_video_e" @if(isset($hero->abilities[3]['video']))value="{{ $hero->abilities[3]['video'] }}"@endif>
         <label>Ultimate</label>
-        <input type="text" name="ability_video_ultimate">
+        <input type="text" name="ability_video_ultimate" @if(isset($hero->abilities[4]['video']))value="{{ $hero->abilities[4]['video'] }}"@endif>
         <hr>
         <h3>Hero Stats</h3><br>
         <label><i class="pgg pgg-max-health"></i> Max Health</label>
