@@ -3,7 +3,7 @@
     @include('account.nav')
     <div class="wrapper">
         <h3>Edit profile</h3>
-        <form role="form" method="POST" action="{{ Request::url() }}" enctype="multipart/form-data">
+        <form role="form" method="POST" action="{{ url('/account/profile') }}" enctype="multipart/form-data">
             @if (count($errors) > 0)
                 <div class="alert alert-danger">
                     <ul>
