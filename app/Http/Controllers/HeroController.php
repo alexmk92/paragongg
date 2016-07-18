@@ -151,7 +151,7 @@ class HeroController extends Controller
             );
         }
         if($request->has('stat_movement_speed')) {
-            $baseStats->stat_movement_speed = array(
+            $baseStats->movement_speed = array(
                 "value" => (float) $request->stat_stat_movement_speed,
                 "scaling" => (float) $request->stat_stat_movement_speed_scaling
             );
