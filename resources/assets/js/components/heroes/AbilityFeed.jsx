@@ -3,7 +3,30 @@ var Helpers = require('../../helpers');
 var Giffy = require('../Giffy');
 
 var AbilityItem = React.createClass({
-    getFormattedDescription: function(description) {
+    getModifierString: function(ability, modifierType) {
+        if(ability.type.toLowerCase() === "primary") {
+            var rank = this.props.currentRank -1 || 0;
+            return ability.modifiersByLevel[rank][modifierType];
+        }
+        var prevValue = null;
+        var returnString = "";
+        ability.modifiersByLevel.forEach(function(modifier) {
+            var value = Math.ceil(modifier[modifierType]);
+            if(prevValue !== value) {
+                returnString += Math.ceil(modifier[modifierType]) + "/";
+            }
+            prevValue = value;
+        });
+        return returnString.substring(0, returnString.length -1);
+    },
+    getUltDamageFromPrimary: function(ability, string) {
+        if(string.toLowerCase() === this.props.primaryAbility.name.toLowerCase()) {
+            return this.getModifierString(this.props.primaryAbility, 'damage');
+        }
+        return null;
+    },
+    getFormattedDescription: function(ability) {
+        var description = ability.description;
         description = description.split(" ");
 
         var statuses = [
@@ -11,7 +34,9 @@ var AbilityItem = React.createClass({
             { type : "{status:slow}", value : "Slow",  icon : "" },
             { type : "{status:bleed}", value : "Bleed",  icon : "" },
             { type : "{status:psn}", value : "Poison",  icon : "" },
-            { type : "{status:burn}", value : "Burn",  icon : "" }
+            { type : "{status:burn}", value : "Burn",  icon : "" },
+            { type : "{status:stun}", value : "Stun",  icon : "" },
+            { type : "{status:slnc}", value : "Silence",  icon : "" },
         ];
         var attributes = [
             { type : "{attr:physar}", value : "Physical Armor", icon : "pgg pgg-physical-armor" },
@@ -33,20 +58,165 @@ var AbilityItem = React.createClass({
             { type : "{attr:critch}", value : "Crit Chance", icon : "pgg pgg-critical-strike-chance" }
         ];
 
+        var prevType = 'text';
+        var multiplier = 1;
+        var wordsSinceDealing = 0;
+        console.log(ability);
         return description.map(function (string, i) {
+            if(string.toLowerCase() === 'dealing') {
+                prevType = 'dealing';
+            } else {
+                // This allows us to override the ult or ability name in the text, i.e. Rampage would have his
+                // Q replaced with the ability value instead of label
+               wordsSinceDealing+=1;
+                if(wordsSinceDealing > 3) {
+                    prevType = 'text';
+                    wordsSinceDealing = 0;
+                }
+            }
+            if(string.toLowerCase().indexOf('{damage}') > -1) {
+                var damageString = this.getModifierString(ability, 'damage');
+                if(string.toLowerCase().indexOf('attr:endmg') > -1) {
+                    var attribute = null;
+                    attributes.some(function(attr) {
+                        if(attr.type === '{attr:endmg}') {
+                            attribute = attr;
+                            return true;
+                        }
+                        return false;
+                    });
+                    if(attribute !== null) {
+                        return (
+                            <span>
+                                <span className="statValue" key={"str-"+i}>{damageString} </span>
+                                <span className="stat" key={"attr"+i}><i className={attribute.icon + " pull-icon-left"}></i>{attribute.value} </span>
+                            </span>
+                        );
+                    } else {
+                        return <span className="statValue" key={"str-"+i}>{damageString} </span>;
+                    }
+                }
+                return <span className="statValue" key={"str-"+i}>{damageString} </span>;
+            } else if(string.toLowerCase().indexOf('{cooldown}') > -1) {
+                var cooldownString = this.getModifierString(ability, 'cooldown');
+                return <span className="statValue" key={"str-"+i}>{cooldownString} </span>;
+            } else if(string.toLowerCase().indexOf('{duration}') > -1) {
+                var durationString = this.getModifierString(ability, 'duration');
+                return <span className="statValue" key={"str-"+i}>{durationString} </span>;
+            } else if(string.toLowerCase().indexOf('{energycost}') > -1) {
+                var energycostString = this.getModifierString(ability, 'energycost');
+                return <span className="statValue" key={"str-"+i}>{energycostString} </span>;
+            } else if(string.toLowerCase().indexOf('{slowpercent}') > -1) {
+                var slowString = this.getModifierString(ability, 'slowpercent');
+                return <span className="statValue" key={"str-"+i}>{slowString} </span>;
+            } else if(string.toLowerCase().indexOf('{atkspdvalue}') > -1) {
+                var atkSpdString = this.getModifierString(ability, 'atkspdvalue');
+                return <span className="statValue" key={"str-"+i}>{atkSpdString} </span>;
+            } else if(string.toLowerCase().indexOf('{slowamount}') > -1) {
+                var slowAmountString = this.getModifierString(ability, 'slowamount');
+                return <span className="statValue" key={"str-"+i}>{slowAmountString} </span>;
+            } else if(string.toLowerCase().indexOf('{stunduration}') > -1) {
+                var stunString = this.getModifierString(ability, 'stunduration');
+                return <span className="statValue" key={"str-"+i}>{stunString} </span>;
+            } else if(string.toLowerCase().indexOf('{bonusdamage}') > -1) {
+                var bonusDmgString = this.getModifierString(ability, 'bonusdamage');
+                return <span className="statValue" key={"str-"+i}>{bonusDmgString} </span>;
+            } else if(string.toLowerCase().indexOf('{ultduration}') > -1) {
+                var ultDurationString = this.getModifierString(ability, 'ultduration');
+                return <span className="statValue" key={"str-"+i}>{ultDurationString} </span>;
+            } else if(string.toLowerCase().indexOf('{damageabilityprimary}') > -1) {
+                var damageAbilityString = this.getModifierString(ability, 'damageabilityprimary');
+                return <span className="statValue" key={"str-"+i}>{damageAbilityString} </span>;
+            } else if(string.toLowerCase().indexOf('{healthpassive}') > -1) {
+                var healthPassiveString = this.getModifierString(ability, 'healthpassive');
+                return <span className="statValue" key={"str-"+i}>{healthPassiveString} </span>;
+            } else if(string.toLowerCase().indexOf('{damageabilityult}') > -1) {
+                var ultDamage = this.getModifierString(ability, 'damageabilityult');
+                return <span className="statValue" key={"str-"+i}>{ultDamage} </span>;
+            } else if(string.toLowerCase().indexOf('{delayduration}') > -1) {
+                var delayDurationString = this.getModifierString(ability, 'delayduration');
+                return <span className="statValue" key={"str-"+i}>{delayDurationString} </span>;
+            } else if(string.toLowerCase().indexOf('{movespeedboost}') > -1) {
+                var moveSpeedBoostString = this.getModifierString(ability, 'movespeedboost');
+                return <span className="statValue" key={"str-"+i}>{moveSpeedBoostString} </span>;
+            } else if(string.toLowerCase().indexOf('{slowamount}') > -1) {
+                var slowAmountString = this.getModifierString(ability, 'slowamount');
+                return <span className="statValue" key={"str-"+i}>{slowAmountString} </span>;
+            } else if(string.toLowerCase().indexOf('{slowduration}') > -1) {
+                var slowDurationString = this.getModifierString(ability, 'slowduration');
+                return <span className="statValue" key={"str-"+i}>{slowDurationString} </span>;
+            } else if(string.toLowerCase().indexOf('{radius}') > -1) {
+                var radiusString = this.getModifierString(ability, 'radius');
+                return <span className="statValue" key={"str-"+i}>{radiusString} </span>;
+            } else if(string.toLowerCase().indexOf('{multiplier}') > -1) {
+                var multiplierString = this.getModifierString(ability, 'multiplier');
+                return <span className="statValue" key={"str-"+i}>{multiplierString}x </span>;
+            } else if(string.toLowerCase().indexOf('{dmgbonusabilityprim}') > -1) {
+                var dmgAbilityBonusString = this.getModifierString(ability, 'dmgbonusabilityprim');
+                return <span className="statValue" key={"str-"+i}>{dmgAbilityBonusString}% </span>;
+            } else if(string.toLowerCase().indexOf('{regenamount}') > -1) {
+                var regenAmountstring = this.getModifierString(ability, 'regenamount');
+                return <span className="statValue" key={"str-"+i}>{regenAmountstring}/s </span>;
+            } else if(string.toLowerCase().indexOf('{jungleregenamount}') > -1) {
+                var jungleRegenAmountstring = this.getModifierString(ability, 'jungleregenamount');
+                return <span className="statValue" key={"str-"+i}>{jungleRegenAmountstring}/s </span>;
+            } else if(string.toLowerCase().indexOf('{regennum}') > -1) {
+                var regenNumString = this.getModifierString(ability, 'regennum');
+                return <span className="statValue" key={"str-"+i}>{regenNumString}/s </span>;
+            } else if(string.toLowerCase().indexOf('{speedboost}') > -1) {
+                var speedBoostString = this.getModifierString(ability, 'speedboost');
+                return <span className="statValue" key={"str-"+i}>{speedBoostString} </span>;
+            } else if(string.toLowerCase().indexOf('{envalue}') > -1) {
+                var energyValueString = this.getModifierString(ability, 'envalue');
+                return <span className="statValue" key={"str-"+i}>{energyValueString} </span>;
+            } else if(string.toLowerCase().indexOf('{physvalue}') > -1) {
+                var physValueString = this.getModifierString(ability, 'physvalue');
+                return <span className="statValue" key={"str-"+i}>{physValueString} </span>;
+            } else if(string.toLowerCase().indexOf('{movespeed}') > -1) {
+                var moveSpeedString = this.getModifierString(ability, 'movespeed');
+                return <span className="statValue" key={"str-"+i}>{moveSpeedString} </span>;
+            } else if(string.toLowerCase().indexOf('{silencedur}') > -1) {
+                var silenceDuration = this.getModifierString(ability, 'silencedur');
+                return <span className="statValue" key={"str-"+i}>{silenceDuration} </span>;
+            } else if(string.toLowerCase().indexOf('{damageduration}') > -1) {
+                var damageDuration = this.getModifierString(ability, 'damageduration');
+                return <span className="statValue" key={"str-"+i}>{damageDuration} </span>;
+            } else if(string.toLowerCase().indexOf('{splitdamage}') > -1) {
+                var splitDamage = this.getModifierString(ability, 'splitdamage');
+                return <span className="statValue" key={"str-"+i}>{splitDamage} </span>;
+            } else if(string.toLowerCase().indexOf('{mana}') > -1) {
+                var manaAmount = this.getModifierString(ability, 'mana');
+                return <span className="statValue" key={"str-"+i}>{manaAmount} </span>;
+            } else if(string.toLowerCase().indexOf('{manacost}') > -1) {
+                var manaCostString = this.getModifierString(ability, 'manacost');
+                return <span className="statValue" key={"str-"+i}>{manaCostString} </span>;
+            } else if(string.toLowerCase().indexOf('{stackingdmg}') > -1) {
+                var stackDamageString = this.getModifierString(ability, 'stackingdmg');
+                return <span className="statValue" key={"str-"+i}>{stackDamageString} </span>;
+            } else if(string.toLowerCase().indexOf('{percentage}') > -1) {
+                var percentString = this.getModifierString(ability, 'percentage');
+                return <span className="statValue" key={"str-"+i}>{percentString}% </span>;
+            }
+
+            // only format abilities which references the ability for damage (such as kallari ult, but not her Q)
+            if(prevType === 'dealing' && this.getUltDamageFromPrimary(ability, string.toLowerCase())) {
+                prevType = 'text';
+                var ultString = this.getUltDamageFromPrimary(ability, string.toLowerCase());
+                return <span className="statValue" key={"str-"+i}>{ultString} </span>;
+            }
             if (/({[a-zA-Z:]+})/.test(string)) {
                 var node = null;
                 statuses.some(function (status) {
-                    if(status.type.toLowerCase() === string.toLowerCase()) {
-                        node = <span key={"status-"+i}><i className={status.icon + " pull-icon-left"}></i>{status.value} </span>
+                    if(string.toLowerCase().indexOf(status.type.toLowerCase()) > -1) {
+                        node = <span className="stat" key={"status-"+i}><i className={status.icon + " pull-icon-left"}></i>{status.value} </span>;
                         return true;
                     }
                     return false;
                 });
                 if(node === null) {
                     attributes.some(function (attribute) {
-                        if(attribute.type.toLowerCase() === string.toLowerCase()) {
-                            node = <span key={"attr"+i}><i className={attribute.icon + " pull-icon-left"}></i>{attribute.value} </span>
+                        if(string.toLowerCase().indexOf(attribute.type.toLowerCase()) > -1) {
+                            node = <span className="stat" key={"attr"+i}><i className={attribute.icon + " pull-icon-left"}></i>{attribute.value} </span>;
                             return true;
                         }
                         return false;
@@ -55,7 +225,7 @@ var AbilityItem = React.createClass({
                 return node;
             }
             return <span key={"str-"+i}>{string} </span>;
-        });
+        }.bind(this));
     },
     renderCooldown: function(ability) {
         if(ability.modifiersByLevel) {
@@ -126,7 +296,7 @@ var AbilityItem = React.createClass({
                                     { this.renderCooldown(ability) }
                                 </div>
                             </h3>
-                            <p>{this.getFormattedDescription(ability.description)}</p>
+                            <p>{this.getFormattedDescription(ability)}</p>
                         </div>
                     </div>
                 </div>
@@ -148,7 +318,7 @@ var AbilityFeed = React.createClass({
     render: function() {
         var abilities = this.props.abilities.map(function(ability, i) {
             return (
-                <AbilityItem key={ ability.name } ability={ ability } index={i} onSelectedAbilityChanged={this.setSelectedAbility} selectedAbility={this.state.selectedAbility} />
+                <AbilityItem primaryAbility={this.props.abilities[0]} currentRank={this.props.currentRank} key={ ability.name } ability={ ability } index={i} onSelectedAbilityChanged={this.setSelectedAbility} selectedAbility={this.state.selectedAbility} />
             );
         }.bind(this));
         return (

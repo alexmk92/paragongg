@@ -37,8 +37,6 @@ var HeroContainer = React.createClass({
     },
     shouldComponentUpdate: function(nextProps, nextState) {
         if(nextState.heroRank !== this.state.heroRank) return true;
-        console.log(this.state);
-        console.log(nextState);
         if(nextState.hasFallbackImage !== this.state.hasFallbackImage) return true;
 
         return false;

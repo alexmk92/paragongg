@@ -120,6 +120,13 @@
             .text-container {
                 display: table-cell;
                 vertical-align: middle;
+
+                .stat {
+                    color: $tertiary-highlight;
+                }
+                .statValue {
+                    color: $quarternary-highlight;
+                }
             }
         }
     }
