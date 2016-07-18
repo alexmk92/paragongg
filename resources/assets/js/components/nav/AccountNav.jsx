@@ -1,6 +1,6 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
-var Helpers  = require('../helpers');
+var Helpers  = require('../../helpers');
 
 var AccountNav = React.createClass({
     getInitialState: function() {

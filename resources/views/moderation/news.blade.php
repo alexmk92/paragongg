@@ -20,7 +20,7 @@
                     <tr>
                         <td>{{ $post->id }}</td>
                         <td><a href="/users/{{ $post->author->username }}">{{ $post->author->username }}</a></td>
-                        <td><a href="/news/{{ $post->slug }}">{{ $post->title }}</a></td>
+                        <td><a href="/news/{{$post->id}}/{{ $post->slug }}">{{ $post->title }}</a></td>
                         <td>
                             @if(!$post->featured)
                                 <a class="btn btn-faded" href="/moderation/news/feature/{{ $post->id }}">Feature</a>

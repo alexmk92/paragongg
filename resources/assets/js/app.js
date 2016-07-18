@@ -5,7 +5,8 @@ require("../sass/app.scss");
 require("./lib/InteractiveParallax");
 
 // React react
-require("./components/AccountNav");
+require("./components/nav/MobileMenu");
+require("./components/nav/AccountNav");
 require("./components/Tooltip");
 require("./components/guides/GuidesFeed");
 require("./components/cards/CardsFeed");

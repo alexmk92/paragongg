@@ -3,17 +3,23 @@ $media-tablet : 1050px;
 $media-mobile : 750px;
 $media-desktop : 1400px;
 
-// Generic media queries
-@media screen and (max-width: $media-desktop) {
-  #page,
-  nav {
-    padding: 0px 10px;
+.hide-wide {
+  @media (min-width: $media-desktop) {
+    display: none !important;;
   }
 }
-
-@media screen and (max-width: $media-tablet) {
-  #page {
-    padding: 0px;
-    margin: 60px auto 0 !important;
+.hide-desktop {
+  @media (min-width: $media-tablet+1) and (max-width: $media-desktop) {
+    display: none !important;;
+  }
+}
+.hide-tablet {
+  @media (min-width: $media-mobile+1) and (max-width: $media-tablet) {
+    display: none !important;
+  }
+}
+.hide-mobile {
+  @media (max-width: $media-mobile) {
+    display: none !important;
   }
 }

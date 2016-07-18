@@ -74,7 +74,7 @@ var NewsFeed = React.createClass({
             return (
                 <a className="article-preview"
                    href={"/news/" + element.id + "/" + element.slug}
-                   key={element.slug}>
+                   key={element.id}>
                     <div className="preview-image">
                         <img src={Helpers.S3URL() + "images/news/thumbnails/" + element.thumbnail}/>
                     </div>
