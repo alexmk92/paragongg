@@ -10,8 +10,8 @@
     RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
 
     # Redirect http to https
-    #RewriteCond %{HTTP:X-Forwarded-Proto} !https
-    #RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [L,R=301]
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [L,R=301]
 
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
