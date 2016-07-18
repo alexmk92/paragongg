@@ -39,7 +39,9 @@
 
 {{-- Yield the main page content --}}
 <div id="page" class="cf">
+    @if(!$hideGlobalNotification)
     {!! globalNotification() !!}
+    @endif
     @yield('body')
 </div>
 
