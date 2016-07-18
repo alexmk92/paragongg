@@ -26,9 +26,10 @@ class MigrateDatabaseController extends Controller
         if($completed && $completed->value == true) abort(404);
 
         // Begin the migration
-        $this->migrateUsers();
-        $this->migrateGuides();
-        $this->migrateDecks();
+        //$this->migrateUsers();
+        //$this->migrateGuides();
+        //$this->migrateDecks();
+        $this->migrateNews();
 
         // Set migrationCompleted to true
         $this->updateSettings('migrationCompleted', true);
@@ -117,5 +118,30 @@ class MigrateDatabaseController extends Controller
         }
 
         //File::delete("../database/seeds/json/decks.json");
+    }
+
+    protected function migrateNews()
+    {
+        $json = File::get("../database/seeds/json/news.json");
+        $news = json_decode($json);
+        dd($news);
+
+        foreach($news as $entry) {
+            $newNews = new News();
+            $newNews->title      = $entry->title;
+            $newNews->slug       = createSlug($entry->title);
+            $newNews->body       = "This is a news post from an older version of Paragon.gg. Please view the source URL for more";
+            $newNews->user_id    = User::where('username', 'jamieshepherd')->first()->id;
+            $newNews->status     = 'published';
+            $newNews->source     = $entry->url;
+            $newNews->created_at = $entry->created_at;
+            $newNews->updated_at = $entry->updated_at;
+
+            $newNews->header = '';
+            $newNews->thumbnail = '';
+
+            $newNews->save();
+        }
+
     }
 }

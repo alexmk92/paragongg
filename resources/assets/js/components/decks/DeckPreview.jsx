@@ -180,7 +180,7 @@ var DeckPreview = React.createClass({
     render: function() {
         var userVoted = this.props.deck.voted ? "active" : "";
         return (
-            <a className="deck-preview cf" href={"/guides/" + this.props.deck.id + "/" + this.props.deck.slug}>
+            <a className="deck-preview cf" href={"/decks/" + this.props.deck._id + "/" + this.props.deck.slug}>
                 <div className="deck-hero">
                     <PreloadImage src={ Helpers.S3URL() + "images/heroes/" + this.props.deck.hero.code + "/" + this.props.deck.hero.image + "/portrait_small.png" }
                                   fallbackSrc="assets/images/heroes/null.png"

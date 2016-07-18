@@ -38,6 +38,10 @@
             <div class="article-body">
                 {!! $articleBody !!}
             </div>
+            @if($article->source)
+                <h2>Source</h2>
+                <a href="$article->source">{{ $article->source }}</a>
+            @endif
         </div>
     </article>
     @include('layouts.commentFeed')
