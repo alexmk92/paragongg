@@ -142,8 +142,9 @@ class DeckController extends Controller
         $heroes = Hero::select('affinities', 'code', 'name', 'slug', 'image', 'images', 'baseStats')->orderBy('name', 'asc')->get();
         $cards = app('App\Http\Controllers\CardController')->getCards();
         $userId = Auth::user() ? Auth::user()->id : "null";
+        $hideGlobalNotification = true;
 
-        return view('decks.create')->with('cards', $cards)->with('heroes', $heroes)->with('userId', $userId);
+        return view('decks.create', compact('cards', 'heroes', 'userId', 'hideGlobalNotification'));
     }
 
     // Store
