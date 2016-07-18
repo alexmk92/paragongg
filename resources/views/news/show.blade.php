@@ -40,7 +40,7 @@
             </div>
             @if($article->source)
                 <h2>Source</h2>
-                <a href="$article->source">{{ $article->source }}</a>
+                <a href="{{ $article->source }}">{{ $article->source }}</a>
             @endif
         </div>
     </article>

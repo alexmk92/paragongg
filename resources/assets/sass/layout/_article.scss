@@ -59,6 +59,9 @@
 article {
     padding-bottom: 150px;
     max-width: 800px;
+    .no-header {
+        padding-top: 80px;
+    }
     .article-body {
         font-size: 110%;
     }

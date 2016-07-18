@@ -8,9 +8,12 @@ use App\Hero;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\GeneratesShortcodes;
 use App\Http\Traits\UpdatesSettings;
+use App\News;
 use App\Setting;
 use App\User;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class MigrateDatabaseController extends Controller
 {
@@ -26,9 +29,9 @@ class MigrateDatabaseController extends Controller
         if($completed && $completed->value == true) abort(404);
 
         // Begin the migration
-        //$this->migrateUsers();
-        //$this->migrateGuides();
-        //$this->migrateDecks();
+        $this->migrateUsers();
+        $this->migrateGuides();
+        $this->migrateDecks();
         $this->migrateNews();
 
         // Set migrationCompleted to true
@@ -124,23 +127,28 @@ class MigrateDatabaseController extends Controller
     {
         $json = File::get("../database/seeds/json/news.json");
         $news = json_decode($json);
-        dd($news);
 
         foreach($news as $entry) {
             $newNews = new News();
             $newNews->title      = $entry->title;
             $newNews->slug       = createSlug($entry->title);
-            $newNews->body       = "This is a news post from an older version of Paragon.gg. Please view the source URL for more";
+            $newNews->body       = '<div class="no-header">This is a news post from an older version of Paragon.gg. Please view the source URL for more.</div>';
             $newNews->user_id    = User::where('username', 'jamieshepherd')->first()->id;
             $newNews->status     = 'published';
             $newNews->source     = $entry->url;
             $newNews->created_at = $entry->created_at;
             $newNews->updated_at = $entry->updated_at;
 
-            $newNews->header = '';
-            $newNews->thumbnail = '';
+            $newNews->header = '7366035285.jpg';
+
+            $storage = Storage::disk('s3');
+            $image = Image::make('https://s3-eu-west-1.amazonaws.com/paragongg/thumbnails/'.$entry->thumbnail)->stream()->getContents();
+            $storage->getDriver()->put('images/news/thumbnails/'.$entry->thumbnail, $image);
+            $newNews->thumbnail = $entry->thumbnail;
 
             $newNews->save();
+
+            $this->generate('/news/'.$newNews->id.'/'.$newNews->slug, 'news', $newNews->id);
         }
 
     }

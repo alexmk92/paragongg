@@ -80,7 +80,6 @@ class NewsController extends Controller
 
         session()->flash('notification', 'success|News saved.');
         return redirect('/news/'.$news->id.'/'.$news->slug);
-        return view('news.create');
     }
 
     // Read
