@@ -31,6 +31,11 @@ module.exports = {
         loaders: [
             {
                 test: /\.jsx?$/,
+                loader: 'webpack-strip?strip[]=debug,strip[]=console.log',
+                exclude: /node_modules/
+            },
+            {
+                test: /\.jsx?$/,
                 loader: 'babel-loader',
                 exclude: /node_modules/,
                 query: {

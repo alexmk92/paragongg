@@ -39,6 +39,9 @@
     }
     .sidebox {
         margin-bottom: 20px;
+        @media (max-width: $media-tablet) {
+            margin-bottom: 40px;
+        }
         &.panel {
             background: $panel-color;
             padding: 20px;

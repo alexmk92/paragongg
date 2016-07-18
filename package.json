@@ -41,7 +41,8 @@
     "strip-loader": "^0.1.2",
     "style-loader": "^0.13.0",
     "webpack": "^1.13.0",
-    "webpack-node-externals": "^1.2.0"
+    "webpack-node-externals": "^1.2.0",
+    "webpack-strip": "^0.1.0"
   },
   "keywords": [],
   "scripts": {
