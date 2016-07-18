@@ -79,9 +79,11 @@ var GuidesFeed = React.createClass({
             var guideURL = '/api/v1/guides?filter=' + this.state.selectedType + '&skip=' + skip + '&take=' + this.state.take;
             if(typeof HERO !== 'undefined' && HERO !== null) {
                 guideURL += '&hero=' + HERO.code;
-            } else {
+            } else if(typeof TYPE !== "undefined" && TYPE !== null && TYPE === "GAMEPLAY") {
                 guideURL += "&type=gameplay"
             }
+            console.log(TYPE);
+            console.log(guideURL);
             Helpers.ajax({
                 type: 'GET',
                 url: guideURL,

@@ -4,6 +4,7 @@
 @endsection
 @section('scripts')
     <script type="text/javascript">
+        var TYPE = "GAMEPLAY";
         var GUIDES = {!! json_encode($guides) !!};
     </script>
 @endsection
