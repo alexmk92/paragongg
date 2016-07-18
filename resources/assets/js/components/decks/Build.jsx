@@ -53,6 +53,7 @@ var Build = React.createClass({
         var hasQuantity = this.validateQuantity(true);
         newBuild.cost = this.getBuildCost();
 
+        this.lastSelectedSlot = -1;
         this.props.onBuildChanged(newBuild, lastModifiedSlot, deselectSelectedCard, toggleQuickBind, !hasQuantity, activeTab);
     },
     updateBuildsWithNewDeck: function() {
@@ -262,8 +263,10 @@ var Build = React.createClass({
                         if(slotEffect.stat) statString = slotEffect.stat.toUpperCase();
                         if(slotEffect.description) statString = slotEffect.description.toUpperCase();
                         var slotEffectType = Helpers.getFormattedStatistic(statString);
-                        passiveList += slotEffectType.label + ", ";
-                        if(selectedEffectType.label === slotEffectType.label) {
+                        if(!Helpers.isNullOrUndefined(slotEffectType)) {
+                            passiveList += slotEffectType.label + ", ";
+                        }
+                        if(!Helpers.isNullOrUndefined(selectedEffectType) && !Helpers.isNullOrUndefined(slotEffectType) && selectedEffectType.label === slotEffectType.label) {
                             hasSamePassiveEffect = true;
                         }
                     });
@@ -301,7 +304,9 @@ var Build = React.createClass({
     },
     bindUpgradeToCard: function(upgradeSlot, card, bindUpgradeAtNextAvailableIndex) {
         if(this.props.selectedCard !== null && (this.getBuildCost() + this.props.selectedCard.cost) > 60) {
+            this.lastSelectedSlot = -1;
             this.invokeNotification("warning", "You cannot add that card because you would exceed the card points total for this build!");
+            this.forceUpdate();
             return false;
         }
 
@@ -433,6 +438,7 @@ var Build = React.createClass({
             var card = "";
             var cardPulse = "";
             var upgradePulse = "";
+            var isClientMobile = Helpers.isClientMobile();
 
             if(this.props.autoPlaceIndex === i && Helpers.isClientMobile() && this.props.selectedCard !== null) {
                 if(this.props.selectedCard.type !== "Upgrade") {
@@ -470,12 +476,6 @@ var Build = React.createClass({
 
                     if (this.props.lastModifiedSlot === i) {
                         //cardPulse = "pulse-glow";
-                    }
-                }
-                if(this.props.selectedCard.type.toUpperCase() === "UPGRADE") {
-                    activeClass += " faded";
-                    if(!this.hasSamePassiveEffects(this.props.selectedCard, slot.card)) {
-                        activeClass += " faded";
                     }
                 }
             }
@@ -548,6 +548,18 @@ var Build = React.createClass({
                     }
                 }
             }.bind(this))();
+            if(!Helpers.isNullOrUndefined(this.props.selectedCard) && !isClientMobile) {
+                if(this.props.selectedCard.type.toUpperCase() === "UPGRADE") {
+                    if(!this.hasSamePassiveEffects(this.props.selectedCard, slot.card)) {
+                        activeClass += " faded";
+                    }
+                }
+            }
+            if(this.lastSelectedSlot > -1 && !isClientMobile) {
+                if(i !== this.lastSelectedSlot && activeClass.indexOf("faded") < 0) {
+                    activeClass += " faded";
+                }
+            }
             return (
                 <li id={"c_" + i}
                     onContextMenu={this.removeCardFromSlot.bind(this, i, true)}
@@ -623,13 +635,19 @@ var Build = React.createClass({
     },
     bindCardToSlot: function(index, event) {
         event.preventDefault();
-        this.lastSelectedSlot = index;
         this.lastModifiedSlot = index;
         this.currentBindIndex = index;
+
+        if(event.target.className.indexOf("fa-trash") > -1) {
+            this.lastSelectedSlot = -1;
+        } else {
+            this.lastSelectedSlot = index;
+        }
 
         if(this.props.selectedCard !== null) {
             if(this.props.selectedCard.type !== "Upgrade" && ((event.target.className.indexOf("glow-layer") > -1 || event.target.className.indexOf("delete-wrapper") > -1 || event.target.className.indexOf("fa-refresh") > -1))) {
                 this.bindCard(index);
+                this.lastSelectedSlot = -1;
             } else if(this.props.selectedCard.type === "Upgrade") {
                 var bindSlot = null;
                 this.props.build.slots.forEach(function(slot, i) {
@@ -637,6 +655,7 @@ var Build = React.createClass({
                 });
                 if(event.target.className.indexOf("glow-layer") > -1 || event.target.className.indexOf("delete-wrapper") > -1)
                     this.bindUpgradeToCard(bindSlot, bindSlot.card, true)
+                this.lastSelectedSlot = -1;
             }
         } else if(Helpers.isClientMobile()) {
             var slot = this.props.build.slots[index];
@@ -656,12 +675,18 @@ var Build = React.createClass({
     },
     bindCard: function(index) {
         if(this.props.selectedCard !== null && (this.getBuildCost() + this.props.selectedCard.cost) > 60) {
+            this.lastSelectedSlot = index;
             this.invokeNotification("warning", "You cannot add that card because you would exceed the card points total for this build!");
             return false;
         }
 
-        this.lastSelectedSlot = index;
         this.lastModifiedSlot = index;
+
+        if(event.target.className.indexOf("fa-trash") > -1) {
+            this.lastSelectedSlot = -1;
+        } else {
+            this.lastSelectedSlot = index;
+        }
 
         if(this.validateQuantity(false) && this.validateSlot(index)) {
             var newSlots = this.props.build.slots;
@@ -708,7 +733,7 @@ var Build = React.createClass({
     },
     removeCardFromSlot: function(index, wasRightClick, event) {
         if(event) {
-            this.lastSelectedSlot = index;
+            this.lastSelectedSlot = -1;
             this.lastModifiedSlot = index;
 
             event.preventDefault();
