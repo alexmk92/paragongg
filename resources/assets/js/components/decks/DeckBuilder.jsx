@@ -880,6 +880,7 @@ var DeckBuilder = React.createClass({
 
         var newAffinities = this.getAffinities(hero);
 
+        console.log("NEW AFFINITIES:", newAffinities);
         // PROMPT USER IF THEY WANT TO DO THIS
         if(hero.code !== currentHero.code && (deck.length > 0 || (builds.length > 0 && builds[0].cost > 0))) {
             var confirmNode = document.body.appendChild(document.createElement('div'));
@@ -902,6 +903,7 @@ var DeckBuilder = React.createClass({
                 });
             }
         } else {
+            this.affinitiesUpdated = true;
             this.setState({
                 heroPanelActive : !this.state.heroPanelActive,
                 selectedHero    : hero,
