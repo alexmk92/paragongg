@@ -152,7 +152,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::get('/settings', 'AdminController@getSettings');
     Route::post('/settings', 'AdminController@setSettings');
 
-    Route::get('/migrate', 'MigrateDatabaseController@run');
+    //Route::get('/migrate', 'MigrateDatabaseController@run');
+    Route::get('/convertGuides', 'MigrateDatabaseController@convertGuides');
 
 });
 

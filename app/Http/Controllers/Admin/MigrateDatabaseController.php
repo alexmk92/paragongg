@@ -22,7 +22,7 @@ class MigrateDatabaseController extends Controller
     // Entry point for migration
     public function run()
     {
-        //$this->updateSettings('migrationCompleted', false);
+        $this->updateSettings('migrationCompleted', false);
         $completed = Setting::where('key', 'migrationCompleted')->first();
 
         // If this has already been migrated, abort
@@ -37,6 +37,26 @@ class MigrateDatabaseController extends Controller
         // Set migrationCompleted to true
         $this->updateSettings('migrationCompleted', true);
         session()->flash('notification', 'success|Migration has completed successfully.');
+        return redirect('/admin');
+    }
+
+    public function convertGuides()
+    {
+        $guides = Guide::all();
+
+        foreach($guides as $guide) {
+            $oldPattern = '/\{card:(.*?)\}([^{]+)\{\/card\}/';
+            if (preg_match($oldPattern, $guide->body, $matches)) {
+                $newBody = preg_replace($oldPattern, '{{${2}}}', $guide->body);
+
+                $guide->timestamps = false;
+                $guide->body = $newBody;
+                $guide->update();
+                $guide->timestamps = true;
+            }
+        }
+
+        session()->flash('notification', 'success|Guides updated to new format.');
         return redirect('/admin');
     }
 
