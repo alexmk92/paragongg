@@ -25,7 +25,7 @@ class GuideController extends Controller
         if($hero) $hero = Hero::where('slug', $hero)->firstOrFail();
         $guides = [];
 
-        $guides['featured'] = Guide::where('status', 'published')->where('type', 'hero');
+        $guides['featured'] = Guide::where('status', 'published');
         if($hero) $guides['featured'] = $guides['featured']->where('hero_code', $hero->code);
         $guides['featured'] = $guides['featured']->where('featured', true)
             ->join('users', 'users.id', '=', 'guides.user_id')
@@ -71,7 +71,6 @@ class GuideController extends Controller
     {
         $guides = [];
         $guides['featured'] = Guide::where('status', 'published')
-            ->where('type', 'gameplay')
             ->where('featured', true)
             ->join('users', 'users.id', '=', 'guides.user_id')
             ->select('guides.id', 'guides.type', 'guides.title', 'user_id', 'guides.created_at', 'guides.updated_at', 'guides.views', 'guides.votes', 'hero_code', 'guides.slug', 'guides.featured', 'users.username')
@@ -106,7 +105,7 @@ class GuideController extends Controller
             ->skip(0)
             ->get();
 
-        $guides['newest'] = Guide::where('status', 'published')
+        $guides['recent'] = Guide::where('status', 'published')
             ->where('type', 'gameplay')
             ->join('users', 'users.id', '=', 'guides.user_id')
             ->select('guides.id', 'guides.type', 'guides.title', 'user_id', 'guides.created_at', 'guides.updated_at', 'guides.views', 'guides.votes', 'hero_code', 'guides.slug', 'guides.featured', 'users.username')
