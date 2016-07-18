@@ -14,7 +14,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middleware = [
-        //'App\Http\Middleware\EB_SSL_Trust',
+        'App\Http\Middleware\EB_SSL_Trust',
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
     ];
 
