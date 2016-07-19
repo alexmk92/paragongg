@@ -91,9 +91,38 @@ var HeroPanel = React.createClass({
             }
         }
     },
-    getHeroes: function() {
+    sortHeroes: function() {
+        var sortedHeroes = [];
+
+        var mostRecentlyCreatedHero = null;
+        var nameSortedHeroes = this.props.heroes.sort(function(a, b) {
+            if(a.name < b.name) return -1;
+            if(a.name > b.name) return 1;
+            return 0;
+        });
+
+        nameSortedHeroes.forEach(function(recentHero) {
+            if(mostRecentlyCreatedHero === null || recentHero.created_at > mostRecentlyCreatedHero.created_at) {
+                mostRecentlyCreatedHero = recentHero;
+            }
+        });
+
+        var containsMostRecentHero = false;
+        this.props.heroes.forEach(function(hero, i) {
+            if(!containsMostRecentHero) {
+                sortedHeroes[i] = mostRecentlyCreatedHero;
+                containsMostRecentHero = true;
+            } else if(hero !== mostRecentlyCreatedHero) {
+                sortedHeroes[i] = hero;
+            }
+        }.bind(this));
+
+        return sortedHeroes;
+    },
+    renderHeroes: function() {
         var heroes = [];
-        this.props.heroes.forEach(function(hero) {
+        var sortedHeroes = this.sortHeroes();
+        sortedHeroes.forEach(function(hero) {
             if(this.shouldBeVisible(hero)) {
                 heroes.push(
                     <li key={"hero_panel_" + hero.name} onClick={this.selectedHero.bind(this, hero)}>
@@ -135,7 +164,7 @@ var HeroPanel = React.createClass({
                 <div className="heroes">
                     <ul>
                         <FlipMove>
-                            { this.getHeroes() }
+                            { this.renderHeroes() }
                         </FlipMove>
                     </ul>
                 </div>
