@@ -35,21 +35,21 @@ var CardsFilter = React.createClass({
                 { name : "Universal" }
             ],
             statistics : [
-                { name : "Physical Damage", iconName : "pgg-physical-damage", ref : "ATTACKRATING", checked : true },
-                { name : "Energy Pen", iconName : "pgg-energy-damage", ref : "ENERGYPENETRATIONRATING", checked : true },
-                { name : "Physical Pen", iconName : "pgg-physical-penetration", ref : "PHYSICALPENETRATIONRATING", checked : true },
-                { name : "Energy Armor", iconName : "pgg-energy-armor", ref : "ENERGYRESISTANCERATING", checked : true },
-                { name : "Physical Armor", iconName : "pgg-physical-armor", ref : "PHYSICALRESISTANCERATING", checked : true },
-                { name : "Crit Chance", iconName : "pgg-critical-strike-chance", ref : "CRITICALDAMAGECHANCE", checked : true },
-                { name : "Crit Damage", iconName : "pgg-critical-strike-damage", ref : "CRITICALDAMAGEBONUS", checked : true },
-                { name : "Max Mana", iconName : "pgg-max-mana", ref : "MAXENERGY", checked : true },
-                { name : "Max Health", iconName : "pgg-max-health", ref : "MAXHEALTH", checked : true },
-                { name : "Mana Regen", iconName : "pgg-mana-regeneration", ref : "ENERGYREGENRATE", checked : true },
-                { name : "Health Regen", iconName : "pgg-health-regeneration", ref : "HEALTHREGENRATE", checked : true },
-                { name : "Cooldown Reduction", iconName : "pgg-cooldown-reduction", ref : "COOLDOWNREDUCTIONPERCENTAGE", checked : true },
-                { name : "Lifesteal", iconName : "pgg-lifesteal", ref : "LIFESTEALRATING", checked : true },
-                { name : "Attack Speed", iconName : "pgg-attack-speed", ref : "ATTACKSPEEDRATING", checked : true },
-                { name : "Harvester Place Time", iconName : "pgg-harvester-placement-time", ref : "WELLRIGPLACEMENTTIMER", checked : true }
+                { name : "Physical Damage", iconName : "pgg-physical-damage", ref : "ATTACKRATING", checked : false },
+                { name : "Energy Pen", iconName : "pgg-energy-damage", ref : "ENERGYPENETRATIONRATING", checked : false },
+                { name : "Physical Pen", iconName : "pgg-physical-penetration", ref : "PHYSICALPENETRATIONRATING", checked : false },
+                { name : "Energy Armor", iconName : "pgg-energy-armor", ref : "ENERGYRESISTANCERATING", checked : false },
+                { name : "Physical Armor", iconName : "pgg-physical-armor", ref : "PHYSICALRESISTANCERATING", checked : false },
+                { name : "Crit Chance", iconName : "pgg-critical-strike-chance", ref : "CRITICALDAMAGECHANCE", checked : false },
+                { name : "Crit Damage", iconName : "pgg-critical-strike-damage", ref : "CRITICALDAMAGEBONUS", checked : false },
+                { name : "Max Mana", iconName : "pgg-max-mana", ref : "MAXENERGY", checked : false },
+                { name : "Max Health", iconName : "pgg-max-health", ref : "MAXHEALTH", checked : false },
+                { name : "Mana Regen", iconName : "pgg-mana-regeneration", ref : "ENERGYREGENRATE", checked : false },
+                { name : "Health Regen", iconName : "pgg-health-regeneration", ref : "HEALTHREGENRATE", checked : false },
+                { name : "Cooldown Reduction", iconName : "pgg-cooldown-reduction", ref : "COOLDOWNREDUCTIONPERCENTAGE", checked : false },
+                { name : "Lifesteal", iconName : "pgg-lifesteal", ref : "LIFESTEALRATING", checked : false },
+                { name : "Attack Speed", iconName : "pgg-attack-speed", ref : "ATTACKSPEEDRATING", checked : false },
+                { name : "Harvester Place Time", iconName : "pgg-harvester-placement-time", ref : "WELLRIGPLACEMENTTIMER", checked : false }
             ],
             moreOptions : [],
             types : [
@@ -182,6 +182,14 @@ var CardsFilter = React.createClass({
                     }
                 }.bind(this));
             }
+        }
+        if(matches === false) {
+            var expectedCount = this.state.statistics.length;
+            var actualCount = 0;
+            this.state.statistics.forEach(function(stat){
+                if(stat.checked === false) actualCount++;
+            });
+            matches = (actualCount === expectedCount);
         }
 
         return matches;
