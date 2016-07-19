@@ -368,4 +368,11 @@ class GuideController extends Controller
         $guide->delete();
         return view('home');
     }
+
+    // Strategy redirect
+    public function strategy($slug)
+    {
+        $guide = Guide::where('slug', $slug)->firstOrFail();
+        return redirect('/guides/'.$guide->id.'/'.$guide->slug);
+    }
 }

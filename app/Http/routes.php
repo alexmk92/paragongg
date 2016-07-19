@@ -101,6 +101,7 @@ Route::get('/guides/{id}/{slug?}', 'GuideController@show');
 /* MISC */
 Route::get('/report/{id}', 'ReportController@store');
 Route::get('/vote', 'VoteController@store');
+Route::get('/strategy/{slug}', 'GuideController@strategy');
 
 /* Account */
 Route::group(['prefix' => 'account', 'middleware' => 'auth'], function () {
