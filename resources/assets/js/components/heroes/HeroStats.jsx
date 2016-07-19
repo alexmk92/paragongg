@@ -105,7 +105,7 @@ var HeroStats = React.createClass({
             );
         });
         */
-
+        //var slug = Helpers.convertToSlug(this.props.hero.name);
         return (
             <div>
                 <span className="breadcrumb">
