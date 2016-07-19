@@ -51,7 +51,12 @@ var DropDown = React.createClass({
     },
     // Update the visibility of the component
     dropDownClicked: function() {
-        this.setState({ isVisible : !this.state.isVisible });
+        // This is a drop down menu
+        if(!Helpers.isNullOrUndefined(this.props.options)) {
+            this.setState({ isVisible : !this.state.isVisible });
+        } else if(!Helpers.isNullOrUndefined(this.props.behavesAsButton) && this.props.behavesAsButton === true) {
+            this.props.onButtonClicked();
+        }
     },
     renderOptionItem: function(option) {
         return (
@@ -67,39 +72,42 @@ var DropDown = React.createClass({
         );
     },
     renderOptions: function() {
-        var groups = [];
-        var isGroupSection = false;
+        if(!Helpers.isNullOrUndefined(this.props.options)) {
+            var groups = [];
+            var isGroupSection = false;
 
-        this.props.options.forEach(function(option) {
-            if(option.group) {
-                isGroupSection = true;
-                var group = option.group.map(function(optionGroup) {
-                   return this.renderOptionItem(optionGroup);
-                }.bind(this));
-                groups.push(group);
+            this.props.options.forEach(function(option) {
+                if(option.group) {
+                    isGroupSection = true;
+                    var group = option.group.map(function(optionGroup) {
+                        return this.renderOptionItem(optionGroup);
+                    }.bind(this));
+                    groups.push(group);
+                } else {
+                    isGroupSection = false;
+                    groups.push(this.renderOptionItem(option));
+                }
+            }.bind(this));
+
+            if(isGroupSection) {
+                return groups.map(function(group, i) {
+                    return <ul key={"option_list_" + i}>{group}</ul>
+                });
             } else {
-                isGroupSection = false;
-                groups.push(this.renderOptionItem(option));
+                return <ul key={"option_list_1"}>{ groups }</ul>
             }
-        }.bind(this));
-
-        if(isGroupSection) {
-            return groups.map(function(group, i) {
-                return <ul key={"option_list_" + i}>{group}</ul>
-            });
-        } else {
-            return <ul key={"option_list_1"}>{ groups }</ul>
         }
     },
     render: function() {
         var active = this.state.isVisible ? "active" : "";
         var options = this.renderOptions();
+        var customIconStyle = { fontSize : this.props.customIconSize ? this.props.customIconSize : "40px" };
         return (
             <div className="drop-down-menu">
                 <label>{ this.props.label }</label>
                 <div onClick={ this.dropDownClicked }
                      className={ "button " + this.props.label.toLowerCase() }>
-                    <i className={ this.props.buttonIcon } aria-hidden="true"></i>
+                    <i className={ this.props.buttonIcon } aria-hidden="true" style={customIconStyle}></i>
                 </div>
                 <div className={ "menu " + active }>
                     <div className="tooltip-triangle"></div>

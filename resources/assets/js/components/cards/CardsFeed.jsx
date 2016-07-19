@@ -12,7 +12,8 @@ var CardsFeed = React.createClass({
             filter_type : 'All',
             search_term : "",
             cost_order : "ASC",
-            cards : []
+            cards : [],
+            shouldResetCardFilter: false
         }
     },
     shouldComponentUpdate: function(nextProps, nextState) {
@@ -47,6 +48,24 @@ var CardsFeed = React.createClass({
         });
         return owned.length;
     },
+    resetCardFilter: function() {
+        this.setState({ shouldResetCardFilter : !this.state.shouldResetCardFilter })
+    },
+    renderCardList: function() {
+        if(this.state.cards.length > 0) {
+            return (
+                <ul className="card-list">
+                    <FlipMove>
+                        {this.state.cards}
+                    </FlipMove>
+                </ul>
+            );
+        } else {
+            return (
+                <p>Sorry, there are no cards that match that filter, <a href="#" onClick={this.resetCardFilter}>click here to reset</a></p>
+            )
+        }
+    },
     render: function() {
         var title = this.props.showTitle ? <h1>Paragon Cards</h1> : "";
         var stickTop = this.props.stickTopOnMobile ? "fixed" : "";
@@ -73,15 +92,13 @@ var CardsFeed = React.createClass({
                                  onFilterChanged={this.renderCards}
                                  cardsRedirectOnClick={ this.props.cardsRedirectOnClick }
                                  onCardClicked={this.onCardClicked}
+                                 shouldResetFilter={this.state.shouldResetCardFilter}
+                                 onCardFilterReset={this.resetCardFilter}
                     />
                     { doneMobileButton }
                 </div>
                 <div className="wrapper">
-                    <ul className="card-list">
-                        <FlipMove>
-                            {this.state.cards}
-                        </FlipMove>
-                    </ul>
+                    { this.renderCardList() }
                 </div>
             </div>
         )
