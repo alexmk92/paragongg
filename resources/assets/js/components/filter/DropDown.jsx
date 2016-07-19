@@ -101,13 +101,12 @@ var DropDown = React.createClass({
     render: function() {
         var active = this.state.isVisible ? "active" : "";
         var options = this.renderOptions();
-        var customIconStyle = { fontSize : this.props.customIconSize ? this.props.customIconSize : "40px" };
         return (
             <div className="drop-down-menu">
                 <label>{ this.props.label }</label>
                 <div onClick={ this.dropDownClicked }
                      className={ "button " + this.props.label.toLowerCase() }>
-                    <i className={ this.props.buttonIcon } aria-hidden="true" style={customIconStyle}></i>
+                    <i className={ this.props.buttonIcon } aria-hidden="true"></i>
                 </div>
                 <div className={ "menu " + active }>
                     <div className="tooltip-triangle"></div>
