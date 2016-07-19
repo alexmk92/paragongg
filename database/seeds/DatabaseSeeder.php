@@ -13,10 +13,10 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // Check if this is the first seed
-        $users = User::all();
-        if($users->count() == 0) {
-            $this->call(UsersTableSeeder::class);
-        }
+//        $users = User::all();
+//        if($users->count() == 0) {
+//            $this->call(UsersTableSeeder::class);
+//        }
 
     }
 }
