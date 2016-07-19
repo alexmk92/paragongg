@@ -70,7 +70,7 @@
             <div class="text-wrapper">
                 <div class="profile-username">
                     <img src="{{getAvatar($user)}}" class="user-avatar" />
-                    <h3>jamieshepherd</h3>
+                    <h3>{{ $user->username }}</h3>
                 </div>
                 {{--<div class="profile-player">--}}
                     {{--<span><i class="fa fa-gamepad" aria-hidden="true"></i> <a href="/players/jamieshepherd">jamieshepherd</a> <i class="fa fa-check-circle" title="Account linked" aria-hidden="true"></i></span>--}}
