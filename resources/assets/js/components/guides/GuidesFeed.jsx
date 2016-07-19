@@ -82,8 +82,6 @@ var GuidesFeed = React.createClass({
             } else if(typeof TYPE !== "undefined" && TYPE !== null && TYPE === "GAMEPLAY") {
                 guideURL += "&type=gameplay"
             }
-            console.log(TYPE);
-            console.log(guideURL);
             Helpers.ajax({
                 type: 'GET',
                 url: guideURL,
@@ -174,22 +172,27 @@ var GuideResults = React.createClass({
     },
     render: function() {
         var guides = [];
-        this.props.guides[this.props.selectedType].guides.forEach(function(guide) {
-            var hero = this.getHero(guide.hero_code);
-            guides.push(<GuidePreview key={guide.id + '_' + Helpers.uuid()}
-                                      id={guide.id}
-                                      slug={guide.slug}
-                                      title={guide.title}
-                                      created={guide.created_at}
-                                      updated={guide.updated_at}
-                                      user_id={guide.user_id}
-                                      username={guide.username}
-                                      featured={guide.featured}
-                                      hero={hero}
-                                      views={guide.views}
-                                      votes={guide.votes}
-            />);
-        }.bind(this));
+        if(this.props.guides[this.props.selectedType].guides.length > 0) {
+            this.props.guides[this.props.selectedType].guides.forEach(function(guide) {
+                var hero = this.getHero(guide.hero_code);
+                guides.push(<GuidePreview key={guide.id + '_' + Helpers.uuid()}
+                                          id={guide.id}
+                                          slug={guide.slug}
+                                          title={guide.title}
+                                          created={guide.created_at}
+                                          updated={guide.updated_at}
+                                          user_id={guide.user_id}
+                                          username={guide.username}
+                                          featured={guide.featured}
+                                          hero={hero}
+                                          views={guide.views}
+                                          votes={guide.votes}
+                />);
+            }.bind(this));
+        } else {
+            var type = Helpers.isNullOrUndefined(HERO) ? this.props.selectedType : HERO.name;
+            guides.push(<p>Sorry, there are no guides for {type}, <a href="/guides/create">be the first to create one</a></p>);
+        }
         return (
             <Tabs defaultSelected={0} expandable={false} className="padless" onSelectedTabUpdated={this.setSelectedType}>
                 {/* Recently updated */}
