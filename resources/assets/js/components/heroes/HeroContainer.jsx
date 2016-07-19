@@ -13,7 +13,8 @@ var HeroContainer = React.createClass({
         return {
             backgroundParallax : null,
             heroRank : 1,
-            hasFallbackImage: false
+            hasFallbackImage: false,
+            renderParticles: false
         }
     },
     updateParallax : function(e) {
@@ -36,6 +37,7 @@ var HeroContainer = React.createClass({
         }
     },
     shouldComponentUpdate: function(nextProps, nextState) {
+        if(nextState.renderParticles !== this.state.renderParticles) return true;
         if(nextState.heroRank !== this.state.heroRank) return true;
         if(nextState.hasFallbackImage !== this.state.hasFallbackImage) return true;
 
@@ -88,8 +90,10 @@ var HeroContainer = React.createClass({
         );
     },
     fallbackImageRendered: function() {
-        console.log("SETTING FALLBACK TO TRUE")
         this.setState({ hasFallbackImage : true });
+    },
+    heroModelLoaded: function() {
+        this.setState({ renderParticles: true });
     },
     render: function() {
         console.log(HERO);
@@ -103,13 +107,14 @@ var HeroContainer = React.createClass({
                             <HeroStats onHeroRankChanged={this.updateHeroRank} heroRank={this.state.heroRank} hero={ HERO } />
                         </div>
                     </div>
-                    <div id="particle-layer"></div>
+                    <div id="particle-layer" className={this.state.renderParticles ? 'visible' : ''}></div>
                     <div className="anim-fadeIn" id="hero-model-wrapper">
                         <div id="hero-model" className={"anim-flicker" + (this.state.hasFallbackImage ? ' fallback-portrait' : '')}>
                             <PreloadImage src={modelURL}
                                           fallbackSrc={Helpers.S3URL() + 'images/heroes/' + HERO.code + '/' + HERO.image + '/portrait_medium.png'}
                                           size="large"
                                           onFallbackImageRendered={this.fallbackImageRendered}
+                                          onImageLoaded={this.heroModelLoaded}
                             />
                         </div>
                     </div>
