@@ -50,7 +50,7 @@ class DeckController extends Controller
             ->take($take)
             ->get();
 
-        
+
 
         return response()->json($decks);
     }
