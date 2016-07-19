@@ -14,7 +14,7 @@ class OAuthController extends Controller
     {
         // If code exists
         if(isset($_GET['code'])) {
-            dd($_GET['code']);
+            // dd($_GET['code']);
             // If user is authenticated
             if(Auth::check()) {
                 $user = Auth::user();
