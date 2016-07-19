@@ -12,9 +12,9 @@ class OAuthController extends Controller
     // Index
     public function linkAccount()
     {
-
         // If code exists
         if(isset($_GET['code'])) {
+            dd($_GET['code']);
             // If user is authenticated
             if(Auth::check()) {
                 $user = Auth::user();
@@ -29,10 +29,9 @@ class OAuthController extends Controller
                 
                 session()->flash('notification', 'success|Epic account linked.');
 
-//                if(isset($_GET['state'])) {
-//                    return redirect($_GET['state']);
-//                }
-                session()->flash('epicoauthcode', $_GET['code']);
+                if(isset($_GET['state'])) {
+                    return redirect($_GET['state']);
+                }
                 return redirect()->back();
             }
         } elseif (isset($_GET['error']) && $_GET['error'] == 'cancelled') {
