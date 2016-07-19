@@ -5,20 +5,26 @@ var Helpers = require('../../helpers');
 var StatPanel = React.createClass({
     getInitialState: function() {
         return {
-            statistics : Helpers.getAllStatistics()
+            statistics : Helpers.getAllStatistics(),
         };
     },
     componentDidMount: function() {
         this.getCardStats();
     },
+    componentWillMount: function() {
+        this.heroRank = 1;
+    },
     shouldComponentUpdate: function(nextProps, nextState) {
         return nextProps !== this.props;
     },
-    componentWillReceiveProps: function(nextProps, nextState) {
+    componentWillReceiveProps: function(nextProps) {
         var newStatistics = this.state.statistics.map(function(stat) {
             stat.modified = false;
             return stat;
         });
+        console.log("NEXT HERO RANK IS: ", nextProps.heroRank);
+
+        this.heroRank = nextProps.heroRank;
         this.setState({ statistics : newStatistics });
         this.getCardStats();
     },
@@ -40,7 +46,7 @@ var StatPanel = React.createClass({
             allStats.forEach(function(baseStat) {
                 if(this.props.heroStats[baseStat.statRef]) {
                     var heroStat = this.props.heroStats[baseStat.statRef];
-                    baseStat.value = (heroStat.value + (this.props.heroRank * heroStat.scaling));
+                    baseStat.value = (heroStat.value + (this.heroRank * heroStat.scaling));
                 }
             }.bind(this));
         }
