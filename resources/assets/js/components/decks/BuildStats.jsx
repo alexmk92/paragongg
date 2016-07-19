@@ -235,7 +235,7 @@ var BuildStats = React.createClass({
         var statDetails = Helpers.getFormattedStatistic(statString);
 
         if(statCategory === "DAMAGE" || statCategory === "CRIT" || statCategory === "ATTACK SPEED") {
-            if(!Helpers.isNullOfUndefined(statDetails)) {
+            if(!Helpers.isNullOrUndefined(statDetails)) {
                 switch(statDetails.label.toUpperCase()) {
                     case "PHYSICAL DAMAGE" : currentValues.attackDamage += effect.value; break;
                     case "ATTACK SPEED" : currentValues.attackSpeed += effect.value; break;
