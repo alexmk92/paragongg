@@ -181,6 +181,10 @@ var DeckList = React.createClass({
                 />
             );
         }.bind(this));
+        if(decks.length === 0) {
+            var type = Helpers.isNullOrUndefined(HERO) ? this.state.selectedType : HERO.name;
+            return <p>Sorry, there are no decks for {type}, <a href="/decks/create">be the first to create one</a></p>
+        }
 
         return decks;
     },

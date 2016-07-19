@@ -17,7 +17,7 @@
             <p>Creating a guide for Paragon.gg is quick and easy, and will help the community learn gameplay mechanics or heroes with your help.</p>
             <p>If you don't want to write a full guide, you can also just build and share a card deck for your favourite hero. Head on over to the <a href="">decks</a> section to do that.</p>
             <a class="btn btn-primary btn-margin" href="/guides/create">Write a guide</a>
-            <a class="btn btn-primary btn-margin" href="/guides/create">Build a deck</a>
+            <a class="btn btn-primary btn-margin" href="/decks/create">Build a deck</a>
         </div>
         <div class="listbox panel">
             <h4>Featured guides</h4>
