@@ -638,7 +638,7 @@ var Build = React.createClass({
         this.lastModifiedSlot = index;
         this.currentBindIndex = index;
 
-        if(event.target.className.indexOf("fa-trash") > -1) {
+        if(event.target.className.indexOf("fa-trash") > -1 || this.lastSelectedSlot === index) {
             this.lastSelectedSlot = -1;
         } else {
             this.lastSelectedSlot = index;
