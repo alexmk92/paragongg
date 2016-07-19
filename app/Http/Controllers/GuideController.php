@@ -63,7 +63,7 @@ class GuideController extends Controller
             ->skip(0)
             ->get();
 
-        $heroes = Hero::select('name', 'slug', 'code', 'image', 'affinities')
+        $heroes = Hero::select('name', 'slug', 'code', 'image', 'affinities', 'created_at')
             ->get();
 
         return view('guides.index', compact('guides', 'heroes', 'hero'));
@@ -116,7 +116,7 @@ class GuideController extends Controller
             ->skip(0)
             ->get();
 
-        $heroes = Hero::select('name', 'slug', 'code', 'image', 'affinities')
+        $heroes = Hero::select('name', 'slug', 'code', 'image', 'affinities', 'created_at')
             ->get();
 
         return view('guides.indexGameplay', compact('guides', 'heroes'));

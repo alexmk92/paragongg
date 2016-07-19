@@ -37,9 +37,38 @@ var HeroesFilter = React.createClass({
     inputChanged: function(searchTerm) {
         this.setState({ search_term : searchTerm });
     },
+    sortHeroes: function() {
+        var sortedHeroes = [];
+
+        var mostRecentlyCreatedHero = null;
+        var nameSortedHeroes = this.props.heroes.sort(function(a, b) {
+            if(a.name < b.name) return -1;
+            if(a.name > b.name) return 1;
+            return 0;
+        });
+
+        nameSortedHeroes.forEach(function(recentHero) {
+            if(mostRecentlyCreatedHero === null || recentHero.created_at > mostRecentlyCreatedHero.created_at) {
+                mostRecentlyCreatedHero = recentHero;
+            }
+        });
+
+        var containsMostRecentHero = false;
+        this.props.heroes.forEach(function(hero, i) {
+            if(!containsMostRecentHero) {
+                sortedHeroes[i] = mostRecentlyCreatedHero;
+                containsMostRecentHero = true;
+            } else if(hero !== mostRecentlyCreatedHero) {
+                sortedHeroes[i] = hero;
+            }
+        }.bind(this));
+
+        return sortedHeroes;
+    },
     updateHeroes: function() {
         var heroes = [];
-        this.props.heroes.forEach(function(hero) {
+        var sortedHeroes = this.sortHeroes();
+        sortedHeroes.forEach(function(hero) {
             if(this.shouldBeVisible(hero) === true) {
                 heroes.push(<HeroPreview hero={hero}
                                          key={hero.code}
