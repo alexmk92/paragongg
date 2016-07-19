@@ -69,7 +69,7 @@ var HeroStats = React.createClass({
             console.log("STAT:", stat);
             if(stat.ref === "MAXHEALTH" || stat.ref === "MAXENERGY" || stat.ref === "HEALTHREGENRATE"
                 || stat.ref === "ENERGYREGENRATE" || stat.ref === "ENERGYRESISTANCERATING" || stat.ref === "PHYSICALRESISTANCERATING"
-                || stat.ref === "MAXMOVEMENTSPEED" || stat.ref === "ATTACKRATING") {
+                || stat.ref === "MAXMOVEMENTSPEED") {
                 var value = isNaN(stat.value) ? stat.value : Helpers.delimitNumbers((stat.value + ( this.props.heroRank * stat.scaling)).toFixed(1));
                 value += (stat.multiplier === 100 ? '%' : '');
                 var scaling = (stat.scaling !== null && stat.scaling > 0) ?
