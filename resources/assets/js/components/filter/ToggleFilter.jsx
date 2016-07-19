@@ -6,6 +6,11 @@ var ToggleFilter = React.createClass({
             isActive: this.props.active
         }
     },
+    componentWillReceiveProps: function(nextProps) {
+        if(nextProps.active !== this.state.active) {
+            this.setState({ isActive : nextProps.active });
+        }
+    },
     toggled: function() {
         this.setState({ isActive : !this.state.isActive });
         this.props.onToggleFilterChanged(!this.state.isActive, this.props.targetObject);

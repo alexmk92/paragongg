@@ -17,7 +17,6 @@ var CardPreview = React.createClass({
         }
     },
     render: function() {
-        console.log(this.props.card);
         var cachedBg = this.props.card.background || "z";
         var imageURL = Helpers.S3URL() + 'images/cards/' + this.props.card.code + '/' + this.props.card.background + '/background_medium.png';
         var divStyle = {

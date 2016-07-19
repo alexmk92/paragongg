@@ -9,7 +9,6 @@ var Tooltip = require('../libraries/tooltip/Toptip');
 
 var CardsFilter = React.createClass({
     getInitialState: function(){
-        this.tooltip = this.props.tooltip || new Tooltip();
         return {
             filter_owned : false,
             filter_affinities : [],
@@ -35,23 +34,23 @@ var CardsFilter = React.createClass({
                 { name : "Universal" }
             ],
             statistics : [
-                { name : "Physical Damage", iconName : "pgg-physical-damage", ref : "ATTACKRATING", checked : true },
-                { name : "Energy Pen", iconName : "pgg-energy-damage", ref : "ENERGYPENETRATIONRATING", checked : true },
-                { name : "Physical Pen", iconName : "pgg-physical-penetration", ref : "PHYSICALPENETRATIONRATING", checked : true },
-                { name : "Energy Armor", iconName : "pgg-energy-armor", ref : "ENERGYRESISTANCERATING", checked : true },
-                { name : "Physical Armor", iconName : "pgg-physical-armor", ref : "PHYSICALRESISTANCERATING", checked : true },
-                { name : "Crit Chance", iconName : "pgg-critical-strike-chance", ref : "CRITICALDAMAGECHANCE", checked : true },
-                { name : "Crit Damage", iconName : "pgg-critical-strike-damage", ref : "CRITICALDAMAGEBONUS", checked : true },
-                { name : "Max Mana", iconName : "pgg-max-mana", ref : "MAXENERGY", checked : true },
-                { name : "Max Health", iconName : "pgg-max-health", ref : "MAXHEALTH", checked : true },
-                { name : "Mana Regen", iconName : "pgg-mana-regeneration", ref : "ENERGYREGENRATE", checked : true },
-                { name : "Health Regen", iconName : "pgg-health-regeneration", ref : "HEALTHREGENRATE", checked : true },
-                { name : "Cooldown Reduction", iconName : "pgg-cooldown-reduction", ref : "COOLDOWNREDUCTIONPERCENTAGE", checked : true },
-                { name : "Lifesteal", iconName : "pgg-lifesteal", ref : "LIFESTEALRATING", checked : true },
-                { name : "Attack Speed", iconName : "pgg-attack-speed", ref : "ATTACKSPEEDRATING", checked : true },
-                { name : "Harvester Place Time", iconName : "pgg-harvester-placement-time", ref : "WELLRIGPLACEMENTTIMER", checked : true }
+                { name : "Physical Damage", iconName : "pgg-physical-damage", ref : "ATTACKRATING", checked : false },
+                { name : "Energy Pen", iconName : "pgg-energy-damage", ref : "ENERGYPENETRATIONRATING", checked : false },
+                { name : "Physical Pen", iconName : "pgg-physical-penetration", ref : "PHYSICALPENETRATIONRATING", checked : false },
+                { name : "Energy Armor", iconName : "pgg-energy-armor", ref : "ENERGYRESISTANCERATING", checked : false },
+                { name : "Physical Armor", iconName : "pgg-physical-armor", ref : "PHYSICALRESISTANCERATING", checked : false },
+                { name : "Crit Chance", iconName : "pgg-critical-strike-chance", ref : "CRITICALDAMAGECHANCE", checked : false },
+                { name : "Crit Damage", iconName : "pgg-critical-strike-damage", ref : "CRITICALDAMAGEBONUS", checked : false },
+                { name : "Max Mana", iconName : "pgg-max-mana", ref : "MAXENERGY", checked : false },
+                { name : "Max Health", iconName : "pgg-max-health", ref : "MAXHEALTH", checked : false },
+                { name : "Mana Regen", iconName : "pgg-mana-regeneration", ref : "ENERGYREGENRATE", checked : false },
+                { name : "Health Regen", iconName : "pgg-health-regeneration", ref : "HEALTHREGENRATE", checked : false },
+                { name : "Cooldown Reduction", iconName : "pgg-cooldown-reduction", ref : "COOLDOWNREDUCTIONPERCENTAGE", checked : false },
+                { name : "Lifesteal", iconName : "pgg-lifesteal", ref : "LIFESTEALRATING", checked : false },
+                { name : "Attack Speed", iconName : "pgg-attack-speed", ref : "ATTACKSPEEDRATING", checked : false },
+                { name : "Harvester Place Time", iconName : "pgg-harvester-placement-time", ref : "WELLRIGPLACEMENTTIMER", checked : false }
             ],
-            moreOptions : [],
+            moreOptions : this.getMoreOptionsForState(),
             types : [
                 { "name" : "Prime Helix" },
                 { "name" : "Passive" },
@@ -61,6 +60,15 @@ var CardsFilter = React.createClass({
         }
     },
     componentWillMount: function() {
+        this.tooltip = this.props.tooltip || new Tooltip();
+        this.filterWasReset = false;
+    },
+    componentWillReceiveProps: function(nextProps) {
+        if(nextProps.shouldResetFilter === true) {
+            this.resetCardFilter();
+        }
+    },
+    getMoreOptionsForState: function() {
         var options = [];
 
         if(AUTHED) {
@@ -88,7 +96,7 @@ var CardsFilter = React.createClass({
             ]}
         );
 
-        this.setState({ moreOptions : options });
+        return options;
     },
     filter: function(element) {
         switch(element.target.name) {
@@ -107,9 +115,16 @@ var CardsFilter = React.createClass({
         var cardAffinity = card.affinity.replace("Affinity.", "").toLowerCase();
         var hasSearchTerm = this.state.search_term.length > 0;
         var matches = false;
-        var statMatches = false;
+        var allStatsDisabled = false;
 
-        // TODO REFACTOR COMPONENT TO USE STATIC FILTERS ONLY PASSED THROUGH PROPS, NOT SET IN STATE
+        // Check if all stats are disabled
+        var expectedCount = this.state.statistics.length;
+        var actualCount = 0;
+        this.state.statistics.forEach(function(stat){
+            if(stat.checked === false) actualCount++;
+        });
+        allStatsDisabled = (actualCount === expectedCount);
+
         // SEARCH TERM AND AFFINITIES FOR DYNAMIC FILTERS
         if(this.state.filter_affinities.length !== 0) {
             this.state.filter_affinities.forEach(function(affinityFilter) {
@@ -156,7 +171,7 @@ var CardsFilter = React.createClass({
             matches = false;
         if(!this.state.showOwnedCards && AUTHED && card.owned === false)
             matches = false;
-        if(matches !== false) {
+        if(matches !== false && !allStatsDisabled) {
             if(card.effects) {
                 card.effects.forEach(function(effect) {
                     if(effect.stat) {
@@ -185,13 +200,6 @@ var CardsFilter = React.createClass({
             }
         }
 
-        var expectedCount = this.state.statistics.length;
-        var actualCount = 0;
-        this.state.statistics.forEach(function(stat){
-            if(stat.checked === false) actualCount++;
-        });
-        statMatches = (actualCount === expectedCount);
-
         //if(statMatches && matches) return false;
         //if(!matches) return false;
         //if(matches) return true;
@@ -204,12 +212,19 @@ var CardsFilter = React.createClass({
         if(nextProps.affinities !== this.props.affinities) {
             return true;
         }
+        if(nextState.filter_affinities.length !== this.state.filter_affinities.length) {
+            return true;
+        }
         if(this.props.forceRedraw) {
             this.forceUpdate();
         }
         return nextState !== this.state;
     },
     componentDidUpdate: function() {
+        if(this.filterWasReset === true) {
+            this.filterWasReset = false;
+            this.props.onCardFilterReset();
+        }
         this.updateCards();
     },
     componentDidMount: function() {
@@ -370,29 +385,44 @@ var CardsFilter = React.createClass({
     hideTooltip: function() {
         this.tooltip.hideTooltip();
     },
+    resetCardFilter: function() {
+        this.filterWasReset = true;
+        this.setState(this.getInitialState());
+    },
     render: function() {
-        var _this = this;
         var affinityFilters = [];
         if(this.props.affinities) {
             affinityFilters = this.props.affinities.map(function(affinity, i) {
-                    return <ToggleFilter key={ "affinity_toggle_" + affinity.name.toLowerCase() }
-                                         active={false}
-                                         targetObject={affinity}
-                                         className={ ("pgg pgg-affinity-" + affinity.name.toLowerCase() + " affinity-color ") }
-                                         label={ i === 0 ? "AFFINITIES" : "" }
-                                         onToggleFilterChanged={_this.affinityFilterChanged}
-                    />
-                }.bind(this));
+                var active = false;
+                this.state.filter_affinities.map(function(filterAffinity) {
+                    if(filterAffinity.type.toLowerCase() === affinity.name.toLowerCase()) {
+                        active = true;
+                    }
+                });
+                return <ToggleFilter key={ "affinity_toggle_" + affinity.name.toLowerCase() }
+                                     active={active}
+                                     targetObject={affinity}
+                                     className={ ("pgg pgg-affinity-" + affinity.name.toLowerCase() + " affinity-color ") }
+                                     label={ i === 0 ? "AFFINITIES" : "" }
+                                     onToggleFilterChanged={this.affinityFilterChanged}
+                />
+            }.bind(this));
         } else {
             affinityFilters = this.state.affinities.map(function(affinity, i) {
+                var active = false;
+                this.state.filter_affinities.map(function(filterAffinity) {
+                    if(filterAffinity.type.toLowerCase() === affinity.name.toLowerCase()) {
+                        active = true;
+                    }
+                });
                 return <ToggleFilter key={ "affinity_toggle_" + affinity.name.toLowerCase() }
                                      className={ ("pgg pgg-affinity-" + affinity.name.toLowerCase() + " affinity-color ") }
-                                     active={false}
+                                     active={active}
                                      targetObject={affinity}
                                      label={ i === 0 ? "AFFINITIES" : "" }
-                                     onToggleFilterChanged={_this.affinityFilterChanged}
+                                     onToggleFilterChanged={this.affinityFilterChanged}
                 />
-            });
+            }.bind(this));
         }
 
         return(
@@ -406,6 +436,7 @@ var CardsFilter = React.createClass({
                           columns={ 2 }
                           title="FILTER BY STATS"
                           buttonIcon="pgg pgg-armor-penetration"
+                          customIconSize="40px"
                           options={ this.state.statistics }
                           onOptionChanged={this.dropDownChanged}
                 />
@@ -413,8 +444,18 @@ var CardsFilter = React.createClass({
                           columns={ 2 }
                           title="SORT RESULTS"
                           buttonIcon="fa fa-sort"
+                          customIconSize="34px"
                           options={ this.state.moreOptions }
                           onOptionChanged={this.moreOptionsChanged}
+                />
+                <DropDown label="Reset"
+                          columns={0}
+                          title="RESET FILTER"
+                          buttonIcon="fa fa-refresh"
+                          customIconSize="30px"
+                          options={null}
+                          behavesAsButton={true}
+                          onButtonClicked={this.resetCardFilter}
                 />
             </div>
         )
