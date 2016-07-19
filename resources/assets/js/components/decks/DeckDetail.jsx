@@ -63,9 +63,6 @@ var DeckDetail = React.createClass({
                         <h2>{this.state.deck.title}</h2>
                         <p>{this.state.deck.description}</p>
                     </div>
-                    <div id="vote-wrapper">
-                        <i className={"fa fa-star " + (this.state.deck.voted ? "active" : "")} onClick={this.upvoteDeck}></i> <span>{this.state.deck.votes || 0}</span>
-                    </div>
                 </div>
 
                 <BuildPanel deck={DECK}

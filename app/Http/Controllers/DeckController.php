@@ -6,6 +6,7 @@ use App\Deck;
 use App\Hero;
 use App\Card;
 use App\Http\Traits\RetrievesCardCollection;
+use App\Shortcode;
 use App\User;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
@@ -359,7 +360,9 @@ class DeckController extends Controller
         // Finally sorted the collection
         $deck->cards = $sortedCards;
 
-        return view('decks.show', compact('deck', 'thread'));
+        $shortcode = Shortcode::where('resource_type', 'deck')->where('resource_id', $id)->first();
+
+        return view('decks.show', compact('deck', 'thread', 'shortcode'));
     }
 
     // Edit

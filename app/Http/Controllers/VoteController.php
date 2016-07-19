@@ -34,8 +34,10 @@ class VoteController extends Controller
         }
 
         if($exists) {
+            $node->timestamps = false;
             $node->votes--;
             $node->save();
+            $node->timestamps = true;
             $exists->delete();
             session()->flash('notification', 'success|Vote removed.');
             return redirect()->back();
@@ -46,8 +48,10 @@ class VoteController extends Controller
             $vote->ref_id  = (int) $request->ref_id;
             $vote->save();
 
+            $node->timestamps = false;
             $node->votes++;
             $node->save();
+            $node->timestamps = true;
 
             session()->flash('notification', 'success|Thanks for voting!');
             return redirect()->back();

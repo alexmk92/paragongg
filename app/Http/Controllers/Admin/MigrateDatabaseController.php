@@ -11,6 +11,7 @@ use App\Http\Traits\UpdatesSettings;
 use App\News;
 use App\Setting;
 use App\User;
+use App\Vote;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
@@ -29,15 +30,34 @@ class MigrateDatabaseController extends Controller
         if($completed && $completed->value == true) abort(404);
 
         // Begin the migration
-        $this->migrateUsers();
-        $this->migrateGuides();
-        $this->migrateDecks();
-        $this->migrateNews();
+        //$this->migrateUsers();
+        //$this->migrateGuides();
+        //$this->migrateDecks();
+        //$this->migrateNews();
 
         // Set migrationCompleted to true
         $this->updateSettings('migrationCompleted', true);
         session()->flash('notification', 'success|Migration has completed successfully.');
         return redirect('/admin');
+    }
+
+    public function decksReset()
+    {
+        $decks = Deck::where('votes', '>', 0)->get();
+        foreach($decks as $deck) {
+            $deck->timestamps = false;
+            $deck->votes = 0;
+            $deck->save();
+            $deck->timestamps = true;
+        }
+
+        $votes = Vote::where('type', 'deck')->get();
+        foreach($votes as $vote) {
+            $vote->delete();
+        }
+
+        session()->flash('notification', 'success|Decks all reset to 0 votes.');
+        return redirect('/decks');
     }
 
     public function convertGuides()
