@@ -21,13 +21,13 @@ var DropDown = React.createClass({
         var isDropDownMenu = false;
         while(elem.parentNode && iterations > 0) {
             // Check root node first
-            if(!Helpers.isNullOrUndefined(elem)) {
+            if(!Helpers.isNullOrUndefined(elem.className)) {
                 if(elem.className === "menu" || elem.className === "menu active" || elem.className.indexOf("button") > -1) {
                     isDropDownMenu = true;
                 } else {
                     // Traverse to child node and check for match
                     elem = elem.parentNode;
-                    if(!Helpers.isNullOrUndefined(elem)) {
+                    if(!Helpers.isNullOrUndefined(elem.className)) {
                         if(elem.className === "menu" || elem.className === "menu active" || elem.className.indexOf("button") > -1) {
                             isDropDownMenu = true;
                         }
