@@ -235,12 +235,14 @@ var BuildStats = React.createClass({
         var statDetails = Helpers.getFormattedStatistic(statString);
 
         if(statCategory === "DAMAGE" || statCategory === "CRIT" || statCategory === "ATTACK SPEED") {
-            switch(statDetails.label.toUpperCase()) {
-                case "PHYSICAL DAMAGE" : currentValues.attackDamage += effect.value; break;
-                case "ATTACK SPEED" : currentValues.attackSpeed += effect.value; break;
-                case "CRITICAL CHANCE" : currentValues.critChance += effect.value; break;
-                case "CRITICAL DAMAGE" : currentValues.critDamage += effect.value; break;
-                default: break;
+            if(!Helpers.isNullOfUndefined(statDetails)) {
+                switch(statDetails.label.toUpperCase()) {
+                    case "PHYSICAL DAMAGE" : currentValues.attackDamage += effect.value; break;
+                    case "ATTACK SPEED" : currentValues.attackSpeed += effect.value; break;
+                    case "CRITICAL CHANCE" : currentValues.critChance += effect.value; break;
+                    case "CRITICAL DAMAGE" : currentValues.critDamage += effect.value; break;
+                    default: break;
+                }
             }
         }
 
