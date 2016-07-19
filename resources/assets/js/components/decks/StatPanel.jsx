@@ -5,7 +5,7 @@ var Helpers = require('../../helpers');
 var StatPanel = React.createClass({
     getInitialState: function() {
         return {
-            statistics : Helpers.getAllStatistics(),
+            statistics : Helpers.getAllStatistics()
         };
     },
     componentDidMount: function() {
@@ -22,7 +22,6 @@ var StatPanel = React.createClass({
             stat.modified = false;
             return stat;
         });
-        console.log("NEXT HERO RANK IS: ", nextProps.heroRank);
 
         this.heroRank = nextProps.heroRank;
         this.setState({ statistics : newStatistics });
