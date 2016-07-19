@@ -96,10 +96,16 @@ module.exports = {
         else if(stat.includes("{ATTR:ATKSPD}")) {
             return "ATTACK SPEED";
         }
+        else if(stat.includes("{ATTR:PHYSDMG}")) {
+            return "PHYSICAL DAMAGE";
+        }
+        else if(stat.includes("{ATTR:ENDMG}")) {
+            return "ENERGY DAMAGE";
+        }
         else if(stat.includes("{ATTR:SPD}") || stat.includes("{ATTR:MP}") ||
             stat.includes("{ATTR:DMGBNS}") || stat.includes("{ATTR:PHYSDMG}") || stat.includes("{ATTR:ENDMG}") ||
             stat.includes("{STATUS:BLEED}") || stat.includes("{STATUS:PSN}") || stat.includes("{STATUS:BURN}")) {
-            return "DAMAGE";
+            return "DPS";
         }
         else if(stat.includes("{ATTR:PHYSPEN}") || stat.includes("{ATTR:ENPEN}") || stat.includes("{STATUS:PEN}")) {
             return "PENETRATION";
@@ -130,7 +136,7 @@ module.exports = {
             case "MAXENERGY" : return "MANA"; break;
             case "MAXHEALTH": return "HEALTH"; break;
             case "ENERGYREGENRATE" : return "ENERGY REGEN"; break;
-            case "ATTACKRATING" : return "DAMAGE"; break;
+            case "ATTACKRATING" : return "PHYSICAL DAMAGE"; break;
             case "LIFESTEALRATING" : return "LIFESTEAL"; break;
             case "PHYSICALPENETRATIONRATING" : return "PENETRATION"; break;
             case "ENERGYPENETRATIONRATING" : return "PENETRATION"; break;
