@@ -32,10 +32,11 @@ var CardStats = React.createClass({
         }
     },
     render: function() {
+        var slug = Helpers.convertToSlug(this.props.card.name);
         return (
             <div>
                 <span className="breadcrumb">
-                    <a href="/cards">CARDS</a> / <a href={ "/cards/" + this.props.card.name }>{ this.props.card.name }</a>
+                    <a href="/cards">CARDS</a> / <a href={ "/cards/" + slug }>{ this.props.card.name }</a>
                 </span>
                 <h1 id="name">
                     { this.props.card.name.toUpperCase() }
