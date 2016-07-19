@@ -48,6 +48,11 @@ var BuildStats = React.createClass({
                     if(effect.description) statString = effect.description.toUpperCase();
                     var statCategory = Helpers.getStatisticCategory(statString);
 
+                    // Always add a DPS field
+                    if(!this.doesCategoryExistInArray("DPS", newComparisons)) {
+                        if(statCategory !== "") newComparisons.push({ label : "DPS" });
+                    }
+
                     if(!this.doesCategoryExistInArray(statCategory, newComparisons)) {
                         if(statCategory !== "")
                             newComparisons.push({ label : statCategory });
@@ -101,6 +106,7 @@ var BuildStats = React.createClass({
 
         var explodedEquipment = [];
         var explodedUpgrades = [];
+
         this.props.cards.equipment.forEach(function(card) {
             for(var i = 0; i < card.quantity; i++) {
                 explodedEquipment.push(card);
@@ -112,7 +118,7 @@ var BuildStats = React.createClass({
             }
         });
 
-        if(type === "DAMAGE") {
+        if(type === "DPS") {
 
         } else {
             explodedEquipment.forEach(function(card) {
@@ -137,8 +143,8 @@ var BuildStats = React.createClass({
                             // Bind cards with a higher value
                             buildSlots.some(function(oldCard, i) {
                                 if(oldCard.value > newCard.value) {
-                                    upgradeCount = Math.min(upgradeCount - oldCard.upgradeSlots, 0);
-                                    upgradeCount = Math.min(upgradeCount + newCard.upgradeSlots, 0);
+                                    upgradeCount = Math.max(upgradeCount - oldCard.upgradeSlots, 0);
+                                    upgradeCount = Math.max(upgradeCount + newCard.upgradeSlots, 0);
                                     buildSlots[i] = newCard;
                                     return true;
                                 }
@@ -157,13 +163,13 @@ var BuildStats = React.createClass({
                     var statCategory = Helpers.getStatisticCategory(statString);
 
                     if(statCategory === type) {
-                        if(effect.value > maxEquipmentValue){
+                        if(effect.value > maxUpgradeValue){
                             maxUpgradeValue = effect.value;
                         }
                         var newUpgradeCard = {
                             value : effect.value
                         };
-                        if(upgradeSlots.length < upgradeCount) {
+                        if(upgradeCount > 0) {
                             upgradeSlots.push(newUpgradeCard);
                         } else {
                             // Bind cards with a higher value
@@ -181,8 +187,19 @@ var BuildStats = React.createClass({
 
             // Get the total for this build
             var total = 0;
-            buildSlots.forEach(function(card) { total += card.value; });
-            upgradeSlots.forEach(function(upgradeCard) { total += upgradeCard.value });
+
+            buildSlots.forEach(function(card) {
+                if(parseInt(card.value)) {
+                    total += card.value;
+                }
+            });
+            upgradeSlots.forEach(function(upgradeCard) {
+                if(parseInt(upgradeCard.value)) {
+                    total += upgradeCard.value;
+                }
+            });
+
+            console.log("TOTAL: ", total);
 
             return total;
         }
@@ -193,6 +210,10 @@ var BuildStats = React.createClass({
         if(effect.description) statString = effect.description.toUpperCase();
         var statCategory = Helpers.getStatisticCategory(statString);
         var statDetails = Helpers.getFormattedStatistic(statString);
+
+        console.log("STAT CATEGORY: ", statCategory);
+        console.log("STAT DETAILS: ", statDetails);
+        console.log("IS: " + statCategory + " EQUAL TO " + desiredEffect);
 
         if(statCategory === desiredEffect) {
             if(effect.stat && effect.stat.toUpperCase() === "LIFESTEALRATING") {
@@ -234,7 +255,7 @@ var BuildStats = React.createClass({
         var statCategory = Helpers.getStatisticCategory(statString);
         var statDetails = Helpers.getFormattedStatistic(statString);
 
-        if(statCategory === "DAMAGE" || statCategory === "CRIT" || statCategory === "ATTACK SPEED") {
+        if(statCategory === "PHYSICAL DAMAGE" || statCategory === "CRIT" || statCategory === "ATTACK SPEED") {
             if(!Helpers.isNullOrUndefined(statDetails)) {
                 switch(statDetails.label.toUpperCase()) {
                     case "PHYSICAL DAMAGE" : currentValues.attackDamage += effect.value; break;
@@ -268,7 +289,7 @@ var BuildStats = React.createClass({
             // TODO If not builds exist, then we will show deck stats
             var build = this.props.selectedBuild;
 
-            if(stat.label === "DAMAGE") {
+            if(stat.label === "DPS") {
                 var d = {
                     critChance : 0,
                     critDamage : 0,
@@ -314,21 +335,23 @@ var BuildStats = React.createClass({
                 if(d.attackSpeed < 100) d.attackSpeed += 100;
 
                 // (100/ASR) x BAT=Adj. Atk Time
+                if(d.baseAttackSpeed === 0) d.baseAttackSpeed = 100;
                 d.attackSpeed = Math.min(((100 / d.attackSpeed) * d.baseAttackSpeed) / 100, 2.5);
                 d.critDamage += 1;
 
                 var totalDps = (d.attackSpeed * d.attackDamage) + (d.attackSpeed * d.critChance * (d.critDamage-1) * d.attackDamage);
 
                 var maxTotal = d.attackDamage;
-                maxTotal += this.getMaxStat("DAMAGE");
+                maxTotal += this.getMaxStat("DPS");
                 maxTotal = maxTotal > total ? maxTotal : totalDps;
 
                 if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
-                comparisonData.data.push({ data : [maxTotal] }, { data : [totalDps] });
+                //comparisonData.data.push({ data : [maxTotal] }, { data : [totalDps] });
+                comparisonData.data.push({ data : [maxTotal] }); // we only have one collection as DPS doesnt have an algorithm for compute yet
 
-                var maxStartLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible " + stat.label + " (";
-                var maxEndLabel = "/<span style='text-transform: lowercase'>s</span>)";
-                var startLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds basic " + stat.label + " (";
+                //var maxStartLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible " + stat.label + " (";
+                //var maxEndLabel = "/<span style='text-transform: lowercase'>s</span>)";
+                var startLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds current " + stat.label + " (";
                 var endLabel = "/<span style='text-transform: lowercase'>s</span>)";
 
             } else if(stat.label === "HEALTH REGEN") {
@@ -502,20 +525,55 @@ var BuildStats = React.createClass({
                 var maxEndLabel = "<span style='text-transform: lowercase;'> attacks p/s</span>)";
                 var startLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds " + stat.label + " (";
                 var endLabel = "<span style='text-transform: lowercase;'> attacks p/s</span>)";
+            } else if(stat.label === "PHYSICAL DAMAGE") {
+                var total = (baseStats.physical_damage.value + (baseStats.physical_damage.scaling * this.state.currentRank)) || 0;
+                var maxTotal = total;
+                total = this.recurseSlotsAndGetValue(build, total, "PHYSICAL DAMAGE");
+
+                maxTotal += this.getMaxStat("PHYSICAL DAMAGE");
+                maxTotal = maxTotal > total ? maxTotal : total;
+
+                if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
+                comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
+
+                var maxStartLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible " + stat.label + " (";
+                var maxEndLabel = "/<span style='text-transform: lowercase'>s</span>)";
+                var startLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds " + stat.label + " (";
+                var endLabel = "/<span style='text-transform: lowercase'>s</span>)";
+            } else if(stat.label === "ENERGY DAMAGE") {
+                var total = (baseStats.energy_damage.value + (baseStats.energy_damage.scaling * this.state.currentRank)) || 0;
+                var maxTotal = total;
+                total = this.recurseSlotsAndGetValue(build, total, "ENERGY DAMAGE");
+
+                maxTotal += this.getMaxStat("ENERGY DAMAGE");
+                maxTotal = maxTotal > total ? maxTotal : total;
+
+                if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
+                comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
+
+                var maxStartLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible " + stat.label + " (";
+                var maxEndLabel = "/<span style='text-transform: lowercase'>s</span>)";
+                var startLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds " + stat.label + " (";
+                var endLabel = "/<span style='text-transform: lowercase'>s</span>)";
             }
 
-            // Push for maximum possible:
-            comparisonData.parts.push({
-                start : maxStartLabel,
-                end : maxEndLabel
-            });
-            // Push for this build labels:
-            comparisonData.parts.push({
-                start : startLabel,
-                end : endLabel
-            });
+            if(!Helpers.isNullOrUndefined(maxStartLabel) && !Helpers.isNullOrUndefined(maxEndLabel)) {
+                // Push for maximum possible:
+                comparisonData.parts.push({
+                    start : maxStartLabel,
+                    end : maxEndLabel
+                });
+            }
+            if(!Helpers.isNullOrUndefined(startLabel) && !Helpers.isNullOrUndefined(endLabel)) {
+                // Push for this build labels:
+                comparisonData.parts.push({
+                    start : startLabel,
+                    end : endLabel
+                });
+            }
         }
 
+        console.log(comparisonData);
         return comparisonData;
     },
     getAffinityWeighting: function() {
@@ -598,8 +656,9 @@ var BuildStats = React.createClass({
             data: []
         };
 
-        spiderChartData.categories = this.state.comparisons.map(function(comparisonData) {
-            return comparisonData.label
+        spiderChartData.categories = [];
+        this.state.comparisons.forEach(function(comparisonData) {
+            if(comparisonData.label !== "DPS") spiderChartData.categories.push(comparisonData.label);
         });
 
         if(this.props.builds.length > 0) {
