@@ -44,7 +44,8 @@ module.exports = {
             { ref : "ENERGYRESISTANCERATING", label : "Energy Armor", icon: "pgg pgg-energy-armor", modifier : "", value : 0, modified: false, multiplier: 1, statRef: "energy_armor"   },
             { ref : "PHYSICALRESISTANCERATING", label : "Physical Armor", icon : "pgg pgg-physical-armor", modifier : "", value : 0, modified: false, multiplier: 1, statRef: "physical_armor"   },
             { ref : "WELLRIGPLACEMENTTIMER", label : "Placement Time", icon: "pgg pgg-harvester-placement-time", modifier : "s", value : 0, modified: false, multiplier: 1, statRef: ""   },
-            { ref : "ATTACKRATING", label : "Physical Damage", icon: "pgg pgg-physical-damage", modifier : "", value : 0, modified: false, multiplier: 1, statRef: "physical_damage"   }
+            { ref : "ATTACKRATING", label : "Physical Damage", icon: "pgg pgg-physical-damage", modifier : "", value : 0, modified: false, multiplier: 1, statRef: "physical_damage"  },
+            { ref : "MAXMOVEMENTSPEED", label : "Max Movement Speed", icon: "pgg pgg-movement-speed", modifier : "", value : 0, modified: false, multiplier: 1, statRef: "movement_speed"  }
         ]
     },
     getAffinityColor: function(affinity) {

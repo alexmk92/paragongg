@@ -196,7 +196,14 @@ var AbilityItem = React.createClass({
             } else if(string.toLowerCase().indexOf('{percentage}') > -1) {
                 var percentString = this.getModifierString(ability, 'percentage');
                 return <span className="statValue" key={"str-"+i}>{percentString}% </span>;
+            } else if(string.toLowerCase().indexOf('{durationprimary}') > -1) {
+                var durationString = this.getModifierString(ability, 'durationprimary');
+                return <span className="statValue" key={"str-"+i}>{durationString} </span>;
+            } else if(string.toLowerCase().indexOf('{shield}') > -1) {
+                var shieldString = this.getModifierString(ability, 'shield');
+                return <span className="statValue" key={"str-"+i}>{shieldString} </span>;
             }
+            console.log(ability);
 
             // only format abilities which references the ability for damage (such as kallari ult, but not her Q)
             if(prevType === 'dealing' && this.getUltDamageFromPrimary(ability, string.toLowerCase())) {
