@@ -1,4 +1,5 @@
 var React = require('react');
+var Helpers = require('../../helpers');
 
 var DropDown = React.createClass({
     getInitialState: function() {
@@ -20,13 +21,17 @@ var DropDown = React.createClass({
         var isDropDownMenu = false;
         while(elem.parentNode && iterations > 0) {
             // Check root node first
-            if(elem.className === "menu" || elem.className === "menu active" || elem.className.contains("button")) {
-                isDropDownMenu = true;
-            } else {
-                // Traverse to child node and check for match
-                elem = elem.parentNode;
-                if(elem.className === "menu" || elem.className === "menu active" || elem.className.contains("button")) {
+            if(!Helpers.isNullOrUndefined(elem)) {
+                if(elem.className === "menu" || elem.className === "menu active" || elem.className.indexOf("button") > -1) {
                     isDropDownMenu = true;
+                } else {
+                    // Traverse to child node and check for match
+                    elem = elem.parentNode;
+                    if(!Helpers.isNullOrUndefined(elem)) {
+                        if(elem.className === "menu" || elem.className === "menu active" || elem.className.indexOf("button") > -1) {
+                            isDropDownMenu = true;
+                        }
+                    }
                 }
             }
             iterations--;
