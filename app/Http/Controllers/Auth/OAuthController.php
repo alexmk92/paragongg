@@ -32,6 +32,7 @@ class OAuthController extends Controller
 //                if(isset($_GET['state'])) {
 //                    return redirect($_GET['state']);
 //                }
+                session()->flash('epicoauthcode', $_GET['code']);
                 return redirect()->back();
             }
         } elseif (isset($_GET['error']) && $_GET['error'] == 'cancelled') {
