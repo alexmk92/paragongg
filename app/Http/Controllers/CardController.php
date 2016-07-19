@@ -45,23 +45,23 @@ class CardController extends Controller
         $cards = Card::all();
         $cardsOwned = null;
 
-        if(Auth::check() && Auth::user()->epicAccountLinked()) {
-            $cardsOwned = $this->cardCollection();
-
-            if($cardsOwned) {
-                foreach($cards as $card) {
-                    $key = array_search($card->code, array_column($cardsOwned, 'id'));
-
-                    if($key) {
-                        $card->owned = true;
-                        $card->count = $cardsOwned[$key]['count'];
-                    } else {
-                        $card->owned = false;
-                    }
-                }
-            }
-
-        }
+//        if(Auth::check() && Auth::user()->epicAccountLinked()) {
+//            $cardsOwned = $this->cardCollection();
+//
+//            if($cardsOwned) {
+//                foreach($cards as $card) {
+//                    $key = array_search($card->code, array_column($cardsOwned, 'id'));
+//
+//                    if($key) {
+//                        $card->owned = true;
+//                        $card->count = $cardsOwned[$key]['count'];
+//                    } else {
+//                        $card->owned = false;
+//                    }
+//                }
+//            }
+//
+//        }
 
         return $cards;
     }
