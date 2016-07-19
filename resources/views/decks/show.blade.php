@@ -12,28 +12,28 @@
             </div>
         @endif
         <div id="deck-sidebar-list" class="sidebox panel" data-title="{{ $deck->title }}"></div>
-        <div class="sidebox panel rating">
-            <label>Was this guide helpful?</label>
-            <a href="/vote?type=deck&ref_id={{ $deck->id }}" class="btn btn-primary btn-half">
-                <i class="fa fa-star"/></i> {{ $deck->votes }} votes
-            </a><div class="btn btn-primary btn-half btn-share">
-                <div class="initial">
-                    <i class="fa fa-retweet" aria-hidden="true"></i> Share it
-                </div>
-                <div class="social-buttons">
-                    <a href="https://www.reddit.com/r/paragon/submit?url={{ urlencode( 'http://para.gg/'.$shortcode->code) }}&title={{ urlencode($deck->title) }}"
-                       onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=768,width=1024');return false;"><i class="fa fa-reddit-alien" aria-hidden="true"></i></a>
-                    <a href="https://twitter.com/intent/tweet?text={{ urlencode($deck->title) }}%20-%20&url={{ urlencode( 'http://para.gg/'.$shortcode->code) }}"
-                       onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode( 'http://para.gg/'.$shortcode->code) }}&t={{ urlencode($deck->title) }}"
-                       onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;"><i class="fa fa-facebook-official" aria-hidden="true"></i></a>
-                </div>
-            </div>
-            @if($shortcode)
-                <label style="margin-top: 30px;">Or use this shareable link</label>
-                <input type="text" onfocus="this.select();" onmouseup="return false;" readonly="readonly" class="copypasta" value="http://para.gg/{{ $shortcode->code }}"/>
-            @endif
-        </div>
+        {{--<div class="sidebox panel rating">--}}
+            {{--<label>Was this guide helpful?</label>--}}
+            {{--<a href="/vote?type=deck&ref_id={{ $deck->id }}" class="btn btn-primary btn-half">--}}
+                {{--<i class="fa fa-star"/></i> {{ $deck->votes }} votes--}}
+            {{--</a><div class="btn btn-primary btn-half btn-share">--}}
+                {{--<div class="initial">--}}
+                    {{--<i class="fa fa-retweet" aria-hidden="true"></i> Share it--}}
+                {{--</div>--}}
+                {{--<div class="social-buttons">--}}
+                    {{--<a href="https://www.reddit.com/r/paragon/submit?url={{ urlencode( 'http://para.gg/'.$shortcode->code) }}&title={{ urlencode($deck->title) }}"--}}
+                       {{--onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=768,width=1024');return false;"><i class="fa fa-reddit-alien" aria-hidden="true"></i></a>--}}
+                    {{--<a href="https://twitter.com/intent/tweet?text={{ urlencode($deck->title) }}%20-%20&url={{ urlencode( 'http://para.gg/'.$shortcode->code) }}"--}}
+                       {{--onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;"><i class="fa fa-twitter" aria-hidden="true"></i></a>--}}
+                    {{--<a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode( 'http://para.gg/'.$shortcode->code) }}&t={{ urlencode($deck->title) }}"--}}
+                       {{--onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;"><i class="fa fa-facebook-official" aria-hidden="true"></i></a>--}}
+                {{--</div>--}}
+            {{--</div>--}}
+            {{--@if($shortcode)--}}
+                {{--<label style="margin-top: 30px;">Or use this shareable link</label>--}}
+                {{--<input type="text" onfocus="this.select();" onmouseup="return false;" readonly="readonly" class="copypasta" value="http://para.gg/{{ $shortcode->code }}"/>--}}
+            {{--@endif--}}
+        {{--</div>--}}
         <div id="deck-sidebar-cost-curve" class="sidebox panel"></div>
     </div>
 

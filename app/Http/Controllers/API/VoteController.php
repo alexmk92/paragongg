@@ -37,7 +37,7 @@ class VoteController extends Controller
             $vote->save();
 
             $node->timestamps = false;
-            $node->votes ++;
+            $node->votes++;
             $node->save();
             $node->timestamps = true;
 
