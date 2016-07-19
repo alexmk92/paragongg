@@ -99,6 +99,10 @@
             font-size: 30px;
             margin-top: 4px;
         }
+        &.reset {
+            font-size: 26px;
+            margin-top: 6px;
+        }
         &:hover {
             color: $secondary-highlight;
         }

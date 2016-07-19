@@ -25,7 +25,7 @@ class VoteController extends Controller
             return redirect()->back();
         }
 
-        $exists = Vote::where('user_id', Auth::user()->id)->where('ref_id', (int) $request->ref_id)->where('type', $request->type)->first();
+        $exists = Vote::where('user_id', Auth::user()->id)->where('ref_id', $request->ref_id)->where('type', $request->type)->first();
         $node = $this->getNode($request->type, $request->ref_id);
 
         if(!$node) {
@@ -34,18 +34,18 @@ class VoteController extends Controller
         }
 
         if($exists) {
+            $exists->delete();
             $node->timestamps = false;
             $node->votes--;
             $node->save();
             $node->timestamps = true;
-            $exists->delete();
             session()->flash('notification', 'success|Vote removed.');
             return redirect()->back();
         } else {
             $vote = new Vote();
             $vote->type    = $request->type;
             $vote->user_id = Auth::user()->id;
-            $vote->ref_id  = (int) $request->ref_id;
+            $vote->ref_id  = $request->ref_id;
             $vote->save();
 
             $node->timestamps = false;

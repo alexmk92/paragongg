@@ -436,7 +436,6 @@ var CardsFilter = React.createClass({
                           columns={ 2 }
                           title="FILTER BY STATS"
                           buttonIcon="pgg pgg-armor-penetration"
-                          customIconSize="40px"
                           options={ this.state.statistics }
                           onOptionChanged={this.dropDownChanged}
                 />
@@ -444,7 +443,6 @@ var CardsFilter = React.createClass({
                           columns={ 2 }
                           title="SORT RESULTS"
                           buttonIcon="fa fa-sort"
-                          customIconSize="34px"
                           options={ this.state.moreOptions }
                           onOptionChanged={this.moreOptionsChanged}
                 />
@@ -452,7 +450,6 @@ var CardsFilter = React.createClass({
                           columns={0}
                           title="RESET FILTER"
                           buttonIcon="fa fa-refresh"
-                          customIconSize="30px"
                           options={null}
                           behavesAsButton={true}
                           onButtonClicked={this.resetCardFilter}
