@@ -11,7 +11,6 @@ var TabPanel  = Tabbable.TabPanel;
 
 var GuidesFeed = React.createClass({
     getInitialState: function() {
-        console.log(this.props.guides);
         return {
             heroes : this.props.heroes,
             selectedType: 'recent',
@@ -226,20 +225,16 @@ var GuidePreview = React.createClass({
         var updated_at = new Date(this.props.updated);
 
         if(this.props.featured === 1)
-            return <span className="stat featured">Featured</span>
+            return <span className="stat featured">Featured</span>;
 
         var timeDiff = Math.abs(created_at.getTime() - updated_at.getTime());
         var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-        if(updated_at.getTime() > created_at.getTime() && (diffDays > 0 && diffDays < 10)) {
-            return <span className="stat updated">Recently Updated</span>
-        }
+        if(updated_at.getTime() > created_at.getTime() && (diffDays > 0 && diffDays < 10))
+            return <span className="stat updated">Recently Updated</span>;
 
-        if(diffDays === 0 && diffDays < 7) {
-            return (
-                <span className={"stat new"}>New</span>
-            );
-        }
+        if(diffDays === 0 || diffDays < 7)
+            return <span className={"stat new"}>New</span>;
 
         return "";
     },
@@ -252,7 +247,6 @@ var GuidePreview = React.createClass({
     renderGuideImage: function() {
         var guideURL = "/assets/images/heroes/null.png";
         if(typeof this.props.hero !== "undefined" && this.props.hero !== null) {
-            console.log(this.props.hero);
             guideURL = Helpers.S3URL() + "images/heroes/" + this.props.hero.code + "/" + this.props.hero.image + "/portrait_small.png";
         }
         return (

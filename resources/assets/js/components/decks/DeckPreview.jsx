@@ -156,7 +156,7 @@ var DeckPreview = React.createClass({
             return <span className="stat updated">Recently Updated</span>
         }
 
-        if(diffDays === 0 && diffDays < 7) {
+        if(diffDays === 0 || diffDays < 7) {
             return (
                 <span className={"stat new"}>New</span>
             );
