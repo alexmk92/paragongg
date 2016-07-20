@@ -68,3 +68,37 @@
         }
     }
 }
+
+@media screen and (max-width: $media-mobile) {
+    .select-menu {
+        float: none !important;
+        .menu {
+            &:before {
+                content: "SELECT AN OPTION";
+                text-align: center;
+                background: $panel-color-dark;
+                display: block;
+                padding: 10px 0px;
+                width: 100%;
+                color: $faded-line;
+                max-height: 50px;
+                border-top: 1px solid $faded-line;
+                position: fixed;
+            }
+            max-height: 35% !important;
+            height: 35% !important;
+            overflow-y: auto;
+            overflow-x: hidden;
+            width: 100% !important;
+            position: fixed !important;
+            bottom: 0px !important;
+            z-index: 30000 !important;
+            background: $panel-color !important;
+
+            li {
+                text-align: center !important;
+                padding: 10px 15px !important;
+            }
+        }
+    }
+}

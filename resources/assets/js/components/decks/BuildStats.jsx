@@ -779,7 +779,7 @@ var BuildStats = React.createClass({
 
                    <div id="chart-wrapper" className="cf">
                        <div className={"chart left " + hiddenClass} style={hiddenStyle}>
-                           <h3 style={{marginBottom: '25px'}}>{ this.props.selectedBuild !== null ? "Build" : "Deck" }
+                           <h3 style={{marginBottom: '25px'}}>{ this.props.selectedBuild !== null ? "Build " : "Deck " }
                                Overview</h3>
                            <SpiderWebChart requireModuleDependencies={this.props.requireModuleDependencies}
                                            updateTarget={this.state.updateTarget} type="BUILD-OVERVIEW"
