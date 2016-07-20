@@ -537,9 +537,9 @@ var BuildStats = React.createClass({
                 comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
 
                 var maxStartLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible " + stat.label + " (";
-                var maxEndLabel = "/<span style='text-transform: lowercase'>s</span>)";
+                var maxEndLabel = "";
                 var startLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds " + stat.label + " (";
-                var endLabel = "/<span style='text-transform: lowercase'>s</span>)";
+                var endLabel = "";
             } else if(stat.label === "ENERGY DAMAGE") {
                 var total = (baseStats.energy_damage.value + (baseStats.energy_damage.scaling * this.state.currentRank)) || 0;
                 var maxTotal = total;
@@ -552,9 +552,9 @@ var BuildStats = React.createClass({
                 comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
 
                 var maxStartLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible " + stat.label + " (";
-                var maxEndLabel = "/<span style='text-transform: lowercase'>s</span>)";
+                var maxEndLabel = "";
                 var startLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds " + stat.label + " (";
-                var endLabel = "/<span style='text-transform: lowercase'>s</span>)";
+                var endLabel = "";
             }
 
             if(!Helpers.isNullOrUndefined(maxStartLabel) && !Helpers.isNullOrUndefined(maxEndLabel)) {
