@@ -227,13 +227,15 @@ var GuidePreview = React.createClass({
         if(this.props.featured === 1)
             return <span className="stat featured">Featured</span>;
 
-        var timeDiff = Math.abs(created_at.getTime() - updated_at.getTime());
-        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        var recentUpdatedTimeDiff = Math.abs(updated_at.getTime() - new Date().getTime());
+        var recentUpdatedDiffDays = Math.ceil(recentUpdatedTimeDiff / (1000 * 3600 * 24));
 
-        if(updated_at.getTime() > created_at.getTime() && (diffDays > 0 && diffDays < 10))
+        if(updated_at.getTime() > created_at.getTime() && (recentUpdatedDiffDays >= 0 && recentUpdatedDiffDays <= 10))
             return <span className="stat updated">Recently Updated</span>;
 
-        if(diffDays === 0 || diffDays < 7)
+        var timeDiff = Math.abs(created_at.getTime() - new Date().getTime());
+        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        if(diffDays >= 0 && diffDays < 7)
             return <span className={"stat new"}>New</span>;
 
         return "";
