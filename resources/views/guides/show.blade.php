@@ -42,20 +42,22 @@
         </div>
     </div>
     <article>
-        <h1 class="article-title">{{ $guide->title }}</h1>
-        <div class="article-details">
-            <time>Posted by <strong><img class="user-avatar inline small" src="{{getAvatar($guide->author)}}">{{ $guide->author->username }}</strong> on {{ $guide->created_at->format('jS F Y, h:i A') }}<span class="updated_at"> (Updated: {{ $guide->created_at->format('jS F Y, h:i A') }})</span></time>
-        </div>
-        @if($guide->abilities && $guide->abilities != ',,,,,,,,,,,,,,')
-            @include('guides.abilityTable')
-        @endif
-        @if($deck && $deck->builds)
-            <h2 class="no-line">Deck builds</h2>
-            <div id="deck-builds"></div>
-        @endif
-        <div class="article-body">
-            {!! $guideBody !!}
-        </div>
+        <div class="article-wrapper">
+            <h1 class="article-title">{{ $guide->title }}</h1>
+            <div class="article-details">
+                <time>Posted by <strong><img class="user-avatar inline small" src="{{getAvatar($guide->author)}}">{{ $guide->author->username }}</strong> on {{ $guide->created_at->format('jS F Y, h:i A') }}<span class="updated_at"> (Updated: {{ $guide->created_at->format('jS F Y, h:i A') }})</span></time>
+            </div>
+            @if($guide->abilities && $guide->abilities != ',,,,,,,,,,,,,,')
+                @include('guides.abilityTable')
+            @endif
+            @if($deck && $deck->builds)
+                <h2 class="no-line">Deck builds</h2>
+                <div id="deck-builds"></div>
+            @endif
+            <div class="article-body">
+                {!! $guideBody !!}
+            </div>
+         </div>
     </article>
     @include('layouts.commentFeed')
     @if($guide->status == 'draft')

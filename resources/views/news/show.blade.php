@@ -30,7 +30,7 @@
         </div>
     </div>
     <article>
-        <div class="article-body">
+        <div class="article-wrapper">
             <h1 class="article-title">{{ $article->title }}</h1>
             <div class="article-details">
                 <time>Posted by <strong><img class="user-avatar inline small" src="{{getAvatar($article->author)}}">{{ $article->author->username }}</strong> on {{ $article->created_at->format('jS F Y, h:i A') }}<span class="updated_at"> (Updated: {{ $article->created_at->format('jS F Y, h:i A') }})</span></time>

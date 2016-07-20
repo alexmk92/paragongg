@@ -59,11 +59,18 @@
 article {
     padding-bottom: 150px;
     max-width: 800px;
-    .no-header {
+    &:first-child {
         padding-top: 80px;
     }
-    .article-body {
+    .article-wrapper {
         font-size: 110%;
+    }
+    .article-body {
+        p, ul, h1, h2, h3, h4, h5 {
+            &:first-child {
+                padding-top: 80px;
+            }
+        }
         ul {
             margin: 20px 0;
             list-style: disc inside;
