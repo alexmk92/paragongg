@@ -18,8 +18,16 @@ var Build = React.createClass({
     componentDidMount: function() {
         this.refs.buildTitleInput.focus();
     },
+    shouldComponentUpdate: function(nextProps, nextState) {
+        console.log("NEXT PROPS: ", nextProps);
+        // This allows us to update the build with the new deleted cards each load
+        if(nextProps.build.code !== this.props.build.code) {
+            return true;
+        }
+        return nextProps !== this.props;
+    },
     componentDidUpdate: function() {
-        this.updateBuildsWithNewDeck();
+        //this.updateBuildsWithNewDeck();
         // Perform a quick bind on the selected card
         if(this.props.shouldQuickBindCards) {
             this.quickBind(this.props.selectedCard);
@@ -58,123 +66,116 @@ var Build = React.createClass({
     },
     updateBuildsWithNewDeck: function() {
         var lastOfTypeRemoved = false;
+        var deletedACard = false;
         if(this.props.lastDeletedCard) {
-            this.props.build.slots.forEach(function(slot, slotIndex) {
-                var newBuild = this.props.build;
-                var newSlots = this.props.build.slots;
+            var foundCards = [];
+            var newBuild = this.props.build;
 
+            newBuild.slots.forEach(function(slot, slotIndex) {
                 // ALL PARENT CARDS
                 if(slot.card && this.props.lastDeletedCard.type !== "Upgrade")
                 {
-                    // 0 cards found in the deck
-                    if(this.props.deck.indexOf(slot.card) < 0) {
-                        newSlots.forEach(function(slot, i) {
-                            if(slotIndex === i) {
-                                slot.occupied = false;
-                                slot.card = null;
-                                slot.upgrades = [];
-                                newSlots[i] = slot;
-                            }
-                        }.bind(this));
-
-                        newBuild.slots = newSlots;
-                        this.buildUpdated(newBuild, slotIndex, this.props.shouldQuickBindCards, null);
+                    // Get a reference to the card we're removing so we know its quantity
+                    var cardFound = false;
+                    var refCard = null;
+                    if(foundCards.length > 0) {
+                        foundCards.some(function(foundCard) {
+                            cardFound = (slot.card.name === foundCard.name);
+                            if(cardFound) refCard = JSON.parse(JSON.stringify(slot.card));
+                            return cardFound;
+                        });
                     }
-                    // Check for cards that had a multi delete
-                    else if(this.props.deck.indexOf(slot.card) > -1) {
-                        if(!lastOfTypeRemoved) {
-                            var placedQuantity = 0;
-                            var lastEncounteredIndex = -1;
-                            // Set the quantity, but add 1 as its already been decremented prior
-                            var quantityToCheck = this.props.lastDeletedCard.quantity + 1;
-                            if(1 < quantityToCheck) {
-                                newSlots.forEach(function(slot, slotIndex) {
-                                    if(slot.card) {
-                                        if(this.props.lastDeletedCard.code === slot.card.code) {
-                                            placedQuantity++;
-                                            lastEncounteredIndex = slotIndex;
-                                        }
-                                    }
-                                }.bind(this));
+                    if(!cardFound) {
+                        foundCards.push(slot.card);
+                        refCard = JSON.parse(JSON.stringify(slot.card));
+                    }
 
-                                // Check if a card of this type was placed, if it has been we need to remove it
-                                if(placedQuantity >= quantityToCheck) {
-                                    newSlots[lastEncounteredIndex].occupied = false;
-                                    newSlots[lastEncounteredIndex].card = null;
-                                    newSlots[lastEncounteredIndex].upgrades = [];
-                                }
-                                newBuild.slots = newSlots;
-
-                                lastOfTypeRemoved = true;
+                    // Loop over the card slots and see if we need to remove any, we do this
+                    // by checking the cards in the deck and decrementing the reference value
+                    if(refCard && refCard.quantity > 0 && !deletedACard) {
+                        var cardFound = false;
+                        this.props.deck.some(function(deckCard) {
+                            if(deckCard.name === this.props.lastDeletedCard.name && slot.card.name === deckCard.name) {
+                                cardFound = true;
+                                refCard.quantity--;
+                                deletedACard = true;
+                                newBuild.slots[slotIndex].card = null;
                                 this.buildUpdated(newBuild, slotIndex, this.props.shouldQuickBindCards, null);
                             }
+                         }.bind(this));
+                    }
+                    if(!deletedACard && slot.card.name === this.props.lastDeletedCard.name) {
+                        // Check if there are any left in deck
+                        var amountLeft = 0;
+                        this.props.deck.some(function(deckCard) {
+                           if(deckCard.name === this.props.lastDeletedCard.name && slot.card.name === deckCard.name) {
+                               amountLeft = deckCard.quantity;
+                               return true;
+                           }
+                           return false;
+                        }.bind(this));
+                        if(amountLeft <= 0) {
+                            deletedACard = true;
+                            refCard.quantity--;
+                            newBuild.slots[slotIndex].card = null;
+                            this.buildUpdated(newBuild, slotIndex, this.props.shouldQuickBindCards, null);
                         }
                     }
-                }
-                else if(slot.card) {
-                    // Then delete any missing children
-                    var deletedSlot = null;
-                    var deletedSlotIndex = null;
-                    var placedQuantity = 0;
-
-                    slot.upgrades.forEach(function(upgradeSlot, index) {
+                } else if(slot.upgrades.length > 0 && this.props.lastDeletedCard.type === "Upgrade") {
+                    // Get a reference to the card we're removing so we know its quantity
+                    slot.upgrades.forEach(function(upgradeSlot, upgradeSlotIndex) {
                         if(upgradeSlot.card) {
-                            if(this.props.deck.indexOf(upgradeSlot.card) < 0) {
-                                deletedSlotIndex = index;
-                                deletedSlot = upgradeSlot;
+                            // Get a reference to the card we're removing so we know its quantity
+                            var cardFound = false;
+                            var refCard = null;
+                            if(foundCards.length > 0) {
+                                foundCards.some(function(foundCard) {
+                                    cardFound = (upgradeSlot.card.name === foundCard.name);
+                                    if(cardFound) refCard = JSON.parse(JSON.stringify(upgradeSlot.card));
+                                    return cardFound;
+                                });
                             }
-                            // Check for cards that had a multi delete
-                            else if(this.props.deck.indexOf(upgradeSlot.card) > -1) {
-                                // Set the quantity, but add 1 as its already been decremented prior
-                                var quantityToCheck = this.props.lastDeletedCard.quantity + 1;
-                                if(1 < quantityToCheck) {
-                                    if(this.props.lastDeletedCard.code === upgradeSlot.card.code) {
-                                        placedQuantity++;
-                                        deletedSlot = upgradeSlot;
-                                        deletedSlotIndex = index;
+                            if(!cardFound) {
+                                foundCards.push(upgradeSlot.card);
+                                refCard = JSON.parse(JSON.stringify(upgradeSlot.card));
+                            }
+
+                            // Loop over the card slots and see if we need to remove any, we do this
+                            // by checking the cards in the deck and decrementing the reference value
+                            if(refCard && refCard.quantity > 0 && !deletedACard) {
+                                var cardFound = false;
+                                this.props.deck.some(function(deckCard) {
+                                    if(deckCard.name === this.props.lastDeletedCard.name && upgradeSlot.card.name === deckCard.name) {
+                                        cardFound = true;
+                                        refCard.quantity--;
+                                        deletedACard = true;
+                                        newBuild.slots[slotIndex].upgrades[upgradeSlotIndex].card = null;
+                                        this.buildUpdated(newBuild, slotIndex, this.props.shouldQuickBindCards, null);
                                     }
-                                    // Check if a card of this type was placed, if it has been we need to remove it
-                                    if(placedQuantity < quantityToCheck) {
-                                        deletedSlot = null;
-                                        deletedSlotIndex = null;
+                                }.bind(this));
+                            }
+                            if(!deletedACard && upgradeSlot.card.name === this.props.lastDeletedCard.name) {
+                                // Check if there are any left in deck
+                                var amountLeft = 0;
+                                this.props.deck.some(function(deckCard) {
+                                    if(deckCard.name === this.props.lastDeletedCard.name && upgradeSlot.card.name === deckCard.name) {
+                                        amountLeft = deckCard.quantity;
+                                        return true;
                                     }
+                                    return false;
+                                }.bind(this));
+                                if(amountLeft <= 0) {
+                                    deletedACard = true;
+                                    refCard.quantity--;
+                                    newBuild.slots[slotIndex].upgrades[upgradeSlotIndex].card = null;
+                                    this.buildUpdated(newBuild, slotIndex, this.props.shouldQuickBindCards, null);
                                 }
                             }
                         }
                     }.bind(this));
-                    if(deletedSlot !== null && deletedSlotIndex !== null) {
-                        newBuild = this.props.build;
-                        if(newBuild.slots.indexOf(slot) > -1) {
-                            newBuild.slots[newBuild.slots.indexOf(slot)].upgrades[deletedSlotIndex].card = null;
-                            this.buildUpdated(newBuild, slotIndex, this.props.shouldQuickBindCards, null);
-                        }
-                    }
                 }
             }.bind(this));
         }
-        /* This was buggy, I dont think we need it
-        else {
-            var newBuild = this.props.build;
-            this.props.build.slots.forEach(function(slot, slotIndex) {
-                if(slot.card) {
-                    // 0 cards found in the deck
-                    if(this.props.deck.indexOf(slot.card) < 0) {
-                        newSlots.forEach(function(slot, i) {
-                            if(slotIndex === i) {
-                                slot.occupied = false;
-                                slot.card = null;
-                                slot.upgrades = [];
-                                newSlots[i] = slot;
-                            }
-                        }.bind(this));
-
-                        newBuild.slots = newSlots;
-                        this.buildUpdated(newBuild, slotIndex, this.props.shouldQuickBindCards, null);
-                    }
-                }
-            }.bind(this));
-        }
-        */
     },
     getUpgradeSlots: function(slot, activeClass) {
         // Dont show this section on unplaced cards
@@ -371,6 +372,8 @@ var Build = React.createClass({
         //this.forceUpdate();
     },
     removeUpgradeFromCard: function(upgradeSlot, card, event) {
+        if(Helpers.isNullOrUndefined(event)) return;
+
         event.preventDefault();
         var newBuild = this.props.build;
         var lastModdedSlot = null;
@@ -420,8 +423,6 @@ var Build = React.createClass({
                         if(upgradeEffect.stat) statString = upgradeEffect.stat.toUpperCase();
                         if(upgradeEffect.description) statString = upgradeEffect.description.toUpperCase();
                         var slotEffectType = Helpers.getFormattedStatistic(statString);
-                        console.log(slotEffectType);
-                        console.log(selectedEffectType);
                         if(!Helpers.isNullOrUndefined(selectedEffectType) && !Helpers.isNullOrUndefined(slotEffectType) && selectedEffectType.label === slotEffectType.label) {
                             hasSamePassiveEffect = true;
                         }
@@ -634,6 +635,8 @@ var Build = React.createClass({
         return false;
     },
     bindCardToSlot: function(index, event) {
+        if(Helpers.isNullOrUndefined(event)) return;
+
         event.preventDefault();
         this.lastModifiedSlot = index;
         this.currentBindIndex = index;
@@ -732,6 +735,8 @@ var Build = React.createClass({
         return points;
     },
     removeCardFromSlot: function(index, wasRightClick, event) {
+        if(Helpers.isNullOrUndefined(event)) return;
+
         if(event) {
             this.lastSelectedSlot = -1;
             this.lastModifiedSlot = index;
@@ -800,6 +805,8 @@ var Build = React.createClass({
         }
     },
     showTooltip: function(card, selector, event) {
+        if(Helpers.isNullOrUndefined(event)) return;
+
         if(!Helpers.isClientMobile()) {
             if(card) {
                 if(event.target.className.toLowerCase().indexOf(selector.toLowerCase()) > -1) {
