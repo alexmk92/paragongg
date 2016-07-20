@@ -50,7 +50,6 @@ var DeckBuilder = React.createClass({
     componentDidMount: function() {
         if(typeof CURRENT_DECK !== "undefined" && CURRENT_DECK) {
             var newBuilds = this.getCardsForBuild(CURRENT_DECK.builds);
-            console.log("NEW BUILDS IS: ", newBuilds);
             var titleField = this.refs.deckNameInput;
             titleField.value = CURRENT_DECK.title;
             var descriptionField = this.refs.deckDescriptionInput;
@@ -146,25 +145,12 @@ var DeckBuilder = React.createClass({
         });
         return cardToReturn;
     },
-    componentDidUpdate: function() {
+    componentDidUpdate: function(prevProps, prevState) {
         this.deckList = null;
         this.hideTooltip();
         if(this.lastHoveredCard && !Helpers.isClientMobile()) {
             this.setTooltipContent(this.lastHoveredCard);
         }
-        /* STICKY BAR CODE
-         if(Helpers.isClientMobile()) {
-         if(this.state.activeTab !== -1 || this.state.isMobileSearchShowing) {
-         if(typeof document.body.className === "undefined" || document.body.className === "") {
-         document.body.className = "no-scroll";
-         }
-         } else {
-         if(typeof document.body.className === "undefined" || document.body.className === "no-scroll"){
-         document.body.className = "";
-         }
-         }
-         }
-         */
     },
     componentWillUpdate: function(nextProps, nextState) {
         if((nextState.deck.length > this.state.deck.length) && (nextState.activeTab === 1 || nextState.activeTab === -1)) {
@@ -174,6 +160,9 @@ var DeckBuilder = React.createClass({
     shouldComponentUpdate: function(nextProps, nextState) {
         if(this.state.selectedHero !== nextState.selectedHero) {
             this.forceUpdate();
+        }
+        if(this.state.builds !== nextState.builds) {
+            return true;
         }
         if(this.updateDeckList === true) {
             this.updateDeckList = false;
@@ -360,6 +349,8 @@ var DeckBuilder = React.createClass({
         }
     },
     selectCard: function(card, event) {
+        if(Helpers.isNullOrUndefined(event)) return;
+
         event.preventDefault();
         var elem = event.target;
 
@@ -394,6 +385,8 @@ var DeckBuilder = React.createClass({
         }
     },
     deleteCardFromDeck : function(cardToDelete, event) {
+        if(Helpers.isNullOrUndefined(event)) return;
+
         event.preventDefault();
         var newActiveTab = this.state.activeTab;
         var newSelectedCard = (this.state.selectedCard === cardToDelete) ? null : this.state.selectedCard;
@@ -418,14 +411,157 @@ var DeckBuilder = React.createClass({
         }
 
         this.lastDeletedCard = cardToDelete;
+        var updatedBuilds = this.updateBuildsWithNewDeck(newDeck);
+        var newSelectedBuild = this.state.selectedBuild;
+        updatedBuilds.forEach(function(build) {
+            if(this.state.selectedBuild) {
+                if(build.code === this.state.selectedBuild.code) {
+                    newSelectedBuild = build;
+                }
+            }
+        }.bind(this));
+
         this.setState({
             deck : newDeck,
+            builds : updatedBuilds,
             playFlashAnimation: false,
             playFlashTabAnimation: newFlashTabAnimation,
             selectedCard : newSelectedCard,
+            selectedBuild : newSelectedBuild,
             activeTab: newActiveTab,
             isBuildsPanelShowing: newIsBuildsPanelShowing
         });
+    },
+    updateBuildsWithNewDeck: function(newDeck) {
+        var newBuilds = this.state.builds.map(function(build) {
+            return this.updateBuildWithNewDeck(build, newDeck);
+        }.bind(this));
+        return newBuilds;
+    },
+    updateBuildWithNewDeck: function(build, deck) {
+        var deletedACard = false;
+        var newBuild = JSON.parse(JSON.stringify(build));
+        if(this.lastDeletedCard) {
+            var foundCards = [];
+            newBuild.slots.forEach(function(slot, slotIndex) {
+                // ALL PARENT CARDS
+                if(slot.card && this.lastDeletedCard.type !== "Upgrade" && !deletedACard)
+                {
+                    // Get a reference to the card we're removing so we know its quantity
+                    var cardFound = false;
+                    var refCard = null;
+                    if(foundCards.length > 0) {
+                        foundCards.some(function(foundCard) {
+                            cardFound = (slot.card.name === foundCard.name);
+                            if(cardFound) refCard = JSON.parse(JSON.stringify(slot.card));
+                            return cardFound;
+                        });
+                    }
+                    if(!cardFound) {
+                        foundCards.push(slot.card);
+                        refCard = JSON.parse(JSON.stringify(slot.card));
+                    }
+
+                    // Loop over the card slots and see if we need to remove any, we do this
+                    // by checking the cards in the deck and decrementing the reference value
+                    if(refCard && refCard.quantity > 0 && !deletedACard) {
+                        var cardFound = false;
+                        deck.some(function(deckCard) {
+                            if(deckCard.name === this.lastDeletedCard.name && slot.card.name === deckCard.name) {
+                                cardFound = true;
+                                refCard.quantity--;
+                                deletedACard = true;
+                                newBuild.slots[slotIndex].card = null;
+                            }
+                        }.bind(this));
+                    }
+                    if(!deletedACard && slot.card.name === this.lastDeletedCard.name) {
+                        // Check if there are any left in deck
+                        var amountLeft = 0;
+                        deck.some(function(deckCard) {
+                            if(deckCard.name === this.lastDeletedCard.name && slot.card.name === deckCard.name) {
+                                amountLeft = deckCard.quantity;
+                                return true;
+                            }
+                            return false;
+                        }.bind(this));
+                        if(amountLeft <= 0) {
+                            deletedACard = true;
+                            refCard.quantity--;
+                            newBuild.slots[slotIndex].card = null;
+                        }
+                    }
+                } else if(slot.upgrades.length > 0 && this.lastDeletedCard.type === "Upgrade" && !deletedACard) {
+                    // Get a reference to the card we're removing so we know its quantity
+                    slot.upgrades.forEach(function(upgradeSlot, upgradeSlotIndex) {
+                        if(upgradeSlot.card) {
+                            // Get a reference to the card we're removing so we know its quantity
+                            var cardFound = false;
+                            var refCard = null;
+                            if(foundCards.length > 0) {
+                                foundCards.some(function(foundCard) {
+                                    cardFound = (upgradeSlot.card.name === foundCard.name);
+                                    if(cardFound) refCard = JSON.parse(JSON.stringify(upgradeSlot.card));
+                                    return cardFound;
+                                });
+                            }
+                            if(!cardFound) {
+                                foundCards.push(upgradeSlot.card);
+                                refCard = JSON.parse(JSON.stringify(upgradeSlot.card));
+                            }
+
+                            // Loop over the card slots and see if we need to remove any, we do this
+                            // by checking the cards in the deck and decrementing the reference value
+                            if(refCard && refCard.quantity > 0 && !deletedACard) {
+                                var cardFound = false;
+                                deck.some(function(deckCard) {
+                                    if(deckCard.name === this.lastDeletedCard.name && upgradeSlot.card.name === deckCard.name) {
+                                        cardFound = true;
+                                        refCard.quantity--;
+                                        deletedACard = true;
+                                        newBuild.slots[slotIndex].upgrades[upgradeSlotIndex].card = null;
+                                    }
+                                }.bind(this));
+                            }
+                            if(!deletedACard && upgradeSlot.card.name === this.lastDeletedCard.name) {
+                                // Check if there are any left in deck
+                                var amountLeft = 0;
+                                deck.some(function(deckCard) {
+                                    if(deckCard.name === this.lastDeletedCard.name && upgradeSlot.card.name === deckCard.name) {
+                                        amountLeft = deckCard.quantity;
+                                        return true;
+                                    }
+                                    return false;
+                                }.bind(this));
+                                if(amountLeft <= 0) {
+                                    deletedACard = true;
+                                    refCard.quantity--;
+                                    newBuild.slots[slotIndex].upgrades[upgradeSlotIndex].card = null;
+                                }
+                            }
+                        }
+                    }.bind(this));
+                }
+            }.bind(this));
+        }
+        newBuild.cost = this.getBuildCost(newBuild);
+        return newBuild;
+    },
+    getBuildCost: function(build) {
+        var points = 0;
+        if(build !== null) {
+            build.slots.forEach(function(slot) {
+                if(typeof slot.card !== "undefined" && slot.card !== null) {
+                    points += slot.card.cost;
+                    slot.upgrades.forEach(function(upgradeSlot) {
+                        if(upgradeSlot.card) {
+                            points += upgradeSlot.card.cost;
+                        }
+                    });
+                }
+            });
+        }
+        return points;
     },
     renderDeckList: function() {
         var editDeckButton = "";
@@ -549,8 +685,6 @@ var DeckBuilder = React.createClass({
                         if(upgradeEffect.stat) statString = upgradeEffect.stat.toUpperCase();
                         if(upgradeEffect.description) statString = upgradeEffect.description.toUpperCase();
                         var slotEffectType = Helpers.getFormattedStatistic(statString);
-                        console.log(slotEffectType);
-                        console.log(selectedEffectType);
                         if(!Helpers.isNullOrUndefined(selectedEffectType) && !Helpers.isNullOrUndefined(slotEffectType) && selectedEffectType.label === slotEffectType.label) {
                             hasSamePassiveEffect = true;
                         }
@@ -684,6 +818,8 @@ var DeckBuilder = React.createClass({
         return this.state.builds.count;
     },
     selectBuild: function(build, event) {
+        if(Helpers.isNullOrUndefined(event)) return;
+
         event.preventDefault();
         var elem = event.target;
         if(elem.className !== "fa fa-trash" && elem.className !== "delete-icon" && elem.className.indexOf("delete-build-wrapper") < 0) {
@@ -698,6 +834,8 @@ var DeckBuilder = React.createClass({
         }
     },
     deleteBuild: function(build, event) {
+        if(Helpers.isNullOrUndefined(event)) return;
+
         event.preventDefault();
         if(this.state.selectedBuild.code === build.code) {
             var newActiveTab = this.state.activeTab;
@@ -951,7 +1089,6 @@ var DeckBuilder = React.createClass({
 
         var newAffinities = this.getAffinities(hero);
 
-        console.log("NEW AFFINITIES:", newAffinities);
         // PROMPT USER IF THEY WANT TO DO THIS
         if(hero.code !== currentHero.code && (deck.length > 0 || (builds.length > 0 && builds[0].cost > 0))) {
             var confirmNode = document.body.appendChild(document.createElement('div'));
