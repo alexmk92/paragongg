@@ -131,3 +131,32 @@
         }
     }
 }
+
+@media screen and (max-width: $media-mobile) {
+    #abilities-wrapper {
+        .ability-container {
+            display: table;
+            table-layout: fixed;
+            height: auto;
+            overflow: visible;
+            padding: 0;
+            width: 100%;
+
+            & .video-wrapper {
+                float: none !important;
+                width: 100%;
+                display: table-footer-group;
+            }
+
+            & .text-wrapper {
+                float: none !important;
+                width: 100%;
+                display: table-header-group;
+
+                .text-container {
+                    padding: 20px 30px;
+                }
+            }
+        }
+    }
+}
