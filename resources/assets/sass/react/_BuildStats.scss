@@ -35,6 +35,7 @@
         display: inline-block;
 
         &.left {
+            width: 40%;
             float: left;
 
             &.hidden {
@@ -44,6 +45,8 @@
 
         &.right {
             float: right;
+            width: 60%;
+            max-width: 500px;
 
             &.hidden {
                 float: left;
@@ -79,6 +82,62 @@
 
             &.active {
                 border-left: 4px solid $secondary-highlight;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: $media-tablet) {
+    #rank-slider {
+        display: none !important;
+    }
+    #deck-detail-wrapper {
+        width: 100% !important;
+    }
+    #chart-wrapper {
+        .chart {
+            display: inline-block;
+
+            &.left {
+                width: 100%;
+                max-width: 100%;
+            }
+
+            &.right {
+                width: 100%;
+                max-width: 100%;
+            }
+
+            &.stacked {
+                display: block;
+                margin-bottom: 30px;
+
+                .highcharts-container {
+                    margin-left: -10px;
+                }
+            }
+
+            .toggle-button {
+                padding-left: 10px;
+                border-left: 4px solid $font-color-faded;
+                transition: all 350ms ease-in-out;
+                display: block;
+                margin: 20px 0 25px 0;
+                font-size: 16px;
+
+                span {
+                    &:hover {
+                        cursor: pointer;
+                    }
+                }
+
+                &:hover {
+                    cursor: pointer;
+                }
+
+                &.active {
+                    border-left: 4px solid $secondary-highlight;
+                }
             }
         }
     }

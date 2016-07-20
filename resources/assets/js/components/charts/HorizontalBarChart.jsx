@@ -226,10 +226,9 @@ var HorizontalBarChart = React.createClass({
         });
     },
     render: function() {
-        var styles = { width : this.props.width || "500px", height: this.props.height || "170px" };
+        var styles = { width : "100%", height: this.props.height || "170px", maxWidth : this.props.width || "700px", position: 'relative' };
         return (
-            <div style={ styles } id={ this.props.container || "horizontal-bar-container" }>
-            </div>
+            <div style={ styles } id={ this.props.container || "horizontal-bar-container" }></div>
         );
     }
 });
