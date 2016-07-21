@@ -138,7 +138,7 @@ var BuildPanel = React.createClass({
                     </li>
                 )
             }
-            jsx.push(<span key="no-builds" style={{display: 'block', fontSize: '16px', marginTop: '-30px'}}>Sorry, there are no builds in this deck!</span>);
+            jsx.push(<span key="no-builds" style={{display: 'block', fontSize: '16px', marginTop: '-30px', padding: '20px 0 60px 0'}}>Sorry, there are no builds in this deck, therefore we computed a statistical analysis on what can be achieved from this deck!</span>);
             return jsx;
         }
     },
