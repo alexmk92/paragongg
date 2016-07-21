@@ -381,7 +381,7 @@ var BuildStats = React.createClass({
 
                 if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
                 //comparisonData.data.push({ data : [maxTotal] }, { data : [totalDps] });
-                comparisonData.data.push({ data : [maxTotal] }); // we only have one collection as DPS doesnt have an algorithm for compute yet
+                //comparisonData.data.push({ data : [maxTotal] }); // we only have one collection as DPS doesnt have an algorithm for compute yet
                 if(!Helpers.isNullOrUndefined(this.props.selectedBuild)) {
                     comparisonData.data.push({ data : [maxTotal] });
                 }
