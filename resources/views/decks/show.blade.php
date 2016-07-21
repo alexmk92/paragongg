@@ -13,7 +13,7 @@
         @endif
         <div id="deck-sidebar-list" class="sidebox panel" data-title="{{ $deck->title }}"></div>
         <div class="sidebox panel rating">
-            <label>Was this guide helpful?</label>
+            <label>Was this deck helpful?</label>
             <a href="/vote?type=deck&ref_id={{ $deck->id }}" class="btn btn-primary btn-half">
                 <i class="fa fa-star"/></i> {{ $deck->votes }} votes
             </a><div class="btn btn-primary btn-half btn-share">
