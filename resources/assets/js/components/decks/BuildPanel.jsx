@@ -153,7 +153,7 @@ var BuildPanel = React.createClass({
                     label = <span className="upgrade-label">EMPTY SLOT</span>;
                 } else {
                     label = <span className="upgrade-label"><span className="subtext">{upgradeSlot.card.cost}CP </span>{upgradeSlot.card.name}</span>;
-                    slotStyle = { backgroundImage: 'url('+Helpers.getCardImageURL(slot.card, 'medium', 'icon')+')' }
+                    slotStyle = { backgroundImage: 'url('+Helpers.getCardImageURL(upgradeSlot.card, 'medium', 'icon')+')' }
                 }
 
                 return (
