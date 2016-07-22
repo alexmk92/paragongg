@@ -145,6 +145,7 @@ var BuildStats = React.createClass({
         if(type === "DPS") {
 
         } else {
+            console.log("TRYING FOR EFFECT: ", type);
             explodedEquipment.forEach(function(card) {
                 card.effects.forEach(function(effect) {
                     var statString = "";
@@ -153,6 +154,9 @@ var BuildStats = React.createClass({
                     var statCategory = Helpers.getStatisticCategory(statString);
 
                     if(statCategory === type) {
+                        if(statCategory === "CRIT" && effect.value < 1) {
+                            effect.value *= 100;
+                        }
                         if(effect.value > maxEquipmentValue){
                             maxEquipmentValue = effect.value;
                         }
@@ -187,6 +191,12 @@ var BuildStats = React.createClass({
                     var statCategory = Helpers.getStatisticCategory(statString);
 
                     if(statCategory === type) {
+                        if(statCategory === "CRIT") {
+                            console.log(upgradeCard.name + " HAS VALUE OF " + effect.value);
+                        }
+                        if(statCategory === "CRIT" && effect.value < 1) {
+                            effect.value *= 100;
+                        }
                         if(effect.value > maxUpgradeValue){
                             maxUpgradeValue = effect.value;
                         }
@@ -223,8 +233,6 @@ var BuildStats = React.createClass({
                 }
             });
 
-            console.log("TOTAL: ", total);
-
             return total;
         }
     },
@@ -235,12 +243,12 @@ var BuildStats = React.createClass({
         var statCategory = Helpers.getStatisticCategory(statString);
         var statDetails = Helpers.getFormattedStatistic(statString);
 
-        if(statCategory === desiredEffect) {
-            if(effect.stat && effect.stat.toUpperCase() === "LIFESTEALRATING") {
-                return { value : effect.value / 100, isPercentage : true }
-            } else {
-                return { value : effect.value, isPercentage : false };
+
+        if(statCategory === desiredEffect && !Helpers.isNullOrUndefined(effect.value)) {
+            if(statCategory === "CRIT") { // Critical strike is expressed as a float, 0.059 === 5.9%
+                return { value : effect.value * 100, isPercentage : true }
             }
+            return { value : effect.value, isPercentage : false };
         } else {
             return { value : 0, isPercentage : false };
         }
@@ -290,7 +298,72 @@ var BuildStats = React.createClass({
         return currentValues;
     },
     getComparisonData: function() {
-        var baseStats = this.props.hero.baseStats || null;
+        var baseStats = this.props.hero.baseStats || {
+                "physical_damage" : {
+                    "value" : 0.0,
+                    "scaling" : 0.0
+                },
+                "energy_damage" : {
+                    "value" : 0.0,
+                    "scaling" : 0.0
+                },
+                "crit_chance" : {
+                    "value" : 0.0,
+                    "scaling" : 0.0
+                },
+                "crit_bonus" : {
+                    "value" : 150.0,
+                    "scaling" : 0.0
+                },
+                "attack_speed" : {
+                    "value" : 0.0,
+                    "scaling" : 0.0
+                },
+                "physical_pen" : {
+                    "value" : 0.0,
+                    "scaling" : 0.0
+                },
+                "energy_pen" : {
+                    "value" : 0.0,
+                    "scaling" : 0.0
+                },
+                "max_health" : {
+                    "value" : 0.0,
+                    "scaling" : 0.0
+                },
+                "health_regen" : {
+                    "value" : 0.0,
+                    "scaling" : 0.0
+                },
+                "max_mana" : {
+                    "value" : 0.0,
+                    "scaling" : 0.0
+                },
+                "mana_regen" : {
+                    "value" : 0.0,
+                    "scaling" : 0.0
+                },
+                "lifesteal" : {
+                    "value" : 0.0,
+                    "scaling" : 0.0
+                },
+                "physical_armor" : {
+                    "value" : 0.0,
+                    "scaling" : 0.0
+                },
+                "energy_armor" : {
+                    "value" : 0.0,
+                    "scaling" : 0.0
+                },
+                "cooldown_reduction" : {
+                    "value" : 0.0,
+                    "scaling" : 0.0
+                },
+                "movement_speed" : {
+                    "value" : 0.0,
+                    "scaling" : 0.0
+                }
+            };
         if(baseStats === null) return null;
 
         var stat = this.state.comparisons[this.state.compareIndex];
@@ -891,67 +964,67 @@ var BuildStats = React.createClass({
         var newComparisons = this.getComparisonFields();
         this.setState({ compareAllBuilds: !this.state.compareAllBuilds, updateTarget : "BUILD-OVERVIEW", comparisons : newComparisons });
     },
-   render: function() {
+    render: function() {
 
-       var hiddenStyle = this.props.builds.length > 0 ? {} : { display: "none" };
-       var hiddenClass = this.props.builds.length > 0 ? "" : "hidden";
+        var hiddenStyle = this.props.builds.length > 0 ? {} : { display: "none" };
+        var hiddenClass = this.props.builds.length > 0 ? "" : "hidden";
 
-       var affinityWeightingData = this.getAffinityWeighting();
-       var statComparisonData = this.getComparisonData();
-       if(statComparisonData !== null) {
-           var spiderChartData = this.getOverviewData();
+        var affinityWeightingData = this.getAffinityWeighting();
+        var statComparisonData = this.getComparisonData();
+        if(statComparisonData !== null) {
+            var spiderChartData = this.getOverviewData();
 
-           return (
-               <div>
-                   <div id="deck-stat-container" style={hiddenStyle}>
-                       <div id="statistic-title-wrapper">
-                           <h3>{ this.props.selectedBuild !== null ? "Build" : "Deck" } statistics</h3>
-                           <div id="rank-slider">
-                               <Rcslider defaultValue={1} min={1} max={15} onChange={this.sliderChanged}
-                                         tipFormatter={null}/>
-                           </div>
-                       </div>
-                       { this.renderStatPanel() }
-                   </div>
+            return (
+                <div>
+                    <div id="deck-stat-container" style={hiddenStyle}>
+                        <div id="statistic-title-wrapper">
+                            <h3>{ this.props.selectedBuild !== null ? "Build" : "Deck" } statistics</h3>
+                            <div id="rank-slider">
+                                <Rcslider defaultValue={1} min={1} max={15} onChange={this.sliderChanged}
+                                          tipFormatter={null}/>
+                            </div>
+                        </div>
+                        { this.renderStatPanel() }
+                    </div>
 
-                   <div id="chart-wrapper" className="cf">
-                       <div className="chart left">
-                           <h3 style={{marginBottom: '25px'}}>{ Helpers.isNullOrUndefined(this.props.selectedBuild) ? "Deck " : "Build " }
-                               Composition</h3>
-                           <SpiderWebChart requireModuleDependencies={this.props.requireModuleDependencies}
-                                           updateTarget={this.state.updateTarget} type="BUILD-OVERVIEW"
-                                           series={spiderChartData} container="overview-container"/>
-                       </div>
-                       <div className="chart right">
-                           <div className="chart stacked">
-                               <h3>{ Helpers.isNullOrUndefined(this.props.selectedBuild) ? "Deck Statistics" : "Build Comparison" }  <SelectBox
-                                   optionSelectedAtIndex={this.updateComparisonType} label="compare:"
-                                   value={this.state.comparisons[this.state.compareIndex] ? this.state.comparisons[this.state.compareIndex].label : ""}
-                                   items={this.state.comparisons}/></h3>
-                               <HorizontalBarChart updateTarget={this.state.updateTarget} type="BUILD-COMPARISON"
-                                                   container="build-comparison-container" max={statComparisonData.max}
-                                                   useValue={true} height={ statComparisonData.chartHeight }
-                                                   colors={ statComparisonData.chartColors }
-                                                   series={statComparisonData}/>
-                           </div>
-                           <div className="chart stacked">
-                               <h3>{ Helpers.isNullOrUndefined(this.props.selectedBuild) ? "Deck" : "Build" } Affinity Weighting</h3>
-                               <HorizontalBarChart updateTarget={this.state.updateTarget} type="AFFINITY-WEIGHTING"
-                                                   container="affinity-weighting-container"
-                                                   max={affinityWeightingData.max} useValue={false}
-                                                   height={ affinityWeightingData.chartHeight }
-                                                   colors={ affinityWeightingData.chartColors }
-                                                   series={affinityWeightingData}/>
-                           </div>
-                       </div>
-                   </div>
-               </div>
-           )
-       } else {
-           return <p>This hero has no base stats, therefore no stat panel can be shown</p>
-       }
+                    <div id="chart-wrapper" className="cf">
+                        <div className="chart left">
+                            <h3 style={{marginBottom: '25px'}}>{ Helpers.isNullOrUndefined(this.props.selectedBuild) ? "Deck " : "Build " }
+                                Composition</h3>
+                            <SpiderWebChart requireModuleDependencies={this.props.requireModuleDependencies}
+                                            updateTarget={this.state.updateTarget} type="BUILD-OVERVIEW"
+                                            series={spiderChartData} container="overview-container"/>
+                        </div>
+                        <div className="chart right">
+                            <div className="chart stacked">
+                                <h3>{ Helpers.isNullOrUndefined(this.props.selectedBuild) ? "Deck Statistics" : "Build Comparison" }  <SelectBox
+                                    optionSelectedAtIndex={this.updateComparisonType} label="compare:"
+                                    value={this.state.comparisons[this.state.compareIndex] ? this.state.comparisons[this.state.compareIndex].label : ""}
+                                    items={this.state.comparisons}/></h3>
+                                <HorizontalBarChart updateTarget={this.state.updateTarget} type="BUILD-COMPARISON"
+                                                    container="build-comparison-container" max={statComparisonData.max}
+                                                    useValue={true} height={ statComparisonData.chartHeight }
+                                                    colors={ statComparisonData.chartColors }
+                                                    series={statComparisonData}/>
+                            </div>
+                            <div className="chart stacked">
+                                <h3>{ Helpers.isNullOrUndefined(this.props.selectedBuild) ? "Deck" : "Build" } Affinity Weighting</h3>
+                                <HorizontalBarChart updateTarget={this.state.updateTarget} type="AFFINITY-WEIGHTING"
+                                                    container="affinity-weighting-container"
+                                                    max={affinityWeightingData.max} useValue={false}
+                                                    height={ affinityWeightingData.chartHeight }
+                                                    colors={ affinityWeightingData.chartColors }
+                                                    series={affinityWeightingData}/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )
+        } else {
+            return <p>This hero has no base stats, therefore no stat panel can be shown</p>
+        }
 
-   }
+    }
 });
 
 module.exports = BuildStats;

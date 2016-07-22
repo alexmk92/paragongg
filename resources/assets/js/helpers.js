@@ -30,22 +30,22 @@ module.exports = {
     // To be used by all components that consume all stats, such as the StatPanel
     getAllStatistics: function() {
         return [
-            { ref : "ATTACKSPEEDRATING", label : "Attack Speed", icon: "pgg pgg-attack-speed", modifier : "", value : 0, modified: false, multiplier: 1, statRef: "attack_speed" },
-            { ref : "COOLDOWNREDUCTIONPERCENTAGE", label : "Cooldown Reduction", icon: "pgg pgg-cooldown-reduction", modifier : "%", value : 0, modified: false, multiplier: 100, statRef: "cooldown_reduction" },
-            { ref : "MAXENERGY", label : "Max Mana", icon: "pgg pgg-max-mana", modifier : "", value : 0, modified: false, multiplier: 1, statRef: "max_mana" },
-            { ref : "MAXHEALTH", label : "Max Health", icon: "pgg pgg-max-health", modifier : "", value : 0, modified: false, multiplier: 1, statRef: "max_health" },
-            { ref : "ENERGYREGENRATE", label : "Energy Regen", icon: "pgg pgg-mana-regeneration", modifier : "/s", value : 0, modified: false, multiplier: 1, statRef: "mana_regen"   },
-            { ref : "LIFESTEALRATING", label : "Lifesteal", icon: "pgg pgg-lifesteal", modifier : "", value : 0, modified: false, multiplier: 1, statRef: "lifesteal"   },
-            { ref : "PHYSICALPENETRATIONRATING", label : "Physical Pen", icon: "pgg pgg-physical-penetration", modifier : "", value : 0, modified: false, multiplier: 1, statRef: "physical_pen"   },
-            { ref : "ENERGYPENETRATIONRATING", label : "Energy Pen", icon: "pgg pgg-armor-penetration", modifier : "", value : 0, modified: false, multiplier: 1, statRef: "energy_pen"   },
-            { ref : "CRITICALDAMAGEBONUS", label : "Critical Damage", icon: "pgg pgg-critical-strike-damage", modifier : "%", value : 0, modified: false, multiplier: 100, statRef: "crit_bonus"   },
-            { ref : "CRITICALDAMAGECHANCE", label : "Critical Chance", icon: "pgg pgg-critical-strike-chance", modifier : "%", value : 0, modified: false, multiplier: 100, statRef: "crit_chance"   },
-            { ref : "HEALTHREGENRATE", label : "Health Regen", icon: "pgg pgg-health-regeneration", modifier : "/s", value : 0, modified: false, multiplier: 1, statRef: "health_regen"  },
-            { ref : "ENERGYRESISTANCERATING", label : "Energy Armor", icon: "pgg pgg-energy-armor", modifier : "", value : 0, modified: false, multiplier: 1, statRef: "energy_armor"   },
-            { ref : "PHYSICALRESISTANCERATING", label : "Physical Armor", icon : "pgg pgg-physical-armor", modifier : "", value : 0, modified: false, multiplier: 1, statRef: "physical_armor"   },
-            { ref : "WELLRIGPLACEMENTTIMER", label : "Placement Time", icon: "pgg pgg-harvester-placement-time", modifier : "s", value : 0, modified: false, multiplier: 1, statRef: ""   },
-            { ref : "ATTACKRATING", label : "Physical Damage", icon: "pgg pgg-physical-damage", modifier : "", value : 0, modified: false, multiplier: 1, statRef: "physical_damage"  },
-            { ref : "MAXMOVEMENTSPEED", label : "Max Movement Speed", icon: "pgg pgg-movement-speed", modifier : "", value : 0, modified: false, multiplier: 1, statRef: "movement_speed"  }
+            { ref : "ATTACKSPEEDRATING", label : "Attack Speed", icon: "pgg pgg-attack-speed", modifier : "", value : 0, modified: false, multiplier: 1, divider: 100, statRef: "attack_speed" },
+            { ref : "COOLDOWNREDUCTIONPERCENTAGE", label : "Cooldown Reduction", icon: "pgg pgg-cooldown-reduction", modifier : "%", value : 0, modified: false, multiplier: 100, divider: 1, statRef: "cooldown_reduction" },
+            { ref : "MAXENERGY", label : "Max Mana", icon: "pgg pgg-max-mana", modifier : "", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "max_mana" },
+            { ref : "MAXHEALTH", label : "Max Health", icon: "pgg pgg-max-health", modifier : "", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "max_health" },
+            { ref : "ENERGYREGENRATE", label : "Energy Regen", icon: "pgg pgg-mana-regeneration", modifier : "/s", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "mana_regen"   },
+            { ref : "LIFESTEALRATING", label : "Lifesteal", icon: "pgg pgg-lifesteal", modifier : "%", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "lifesteal"   },
+            { ref : "PHYSICALPENETRATIONRATING", label : "Physical Pen", icon: "pgg pgg-physical-penetration", modifier : "", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "physical_pen"   },
+            { ref : "ENERGYPENETRATIONRATING", label : "Energy Pen", icon: "pgg pgg-armor-penetration", modifier : "", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "energy_pen"   },
+            { ref : "CRITICALDAMAGEBONUS", label : "Critical Damage", icon: "pgg pgg-critical-strike-damage", modifier : "%", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "crit_bonus"   },
+            { ref : "CRITICALDAMAGECHANCE", label : "Critical Chance", icon: "pgg pgg-critical-strike-chance", modifier : "%", value : 0, modified: false, multiplier: 100, divider: 1, statRef: "crit_chance"   },
+            { ref : "HEALTHREGENRATE", label : "Health Regen", icon: "pgg pgg-health-regeneration", modifier : "/s", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "health_regen"  },
+            { ref : "ENERGYRESISTANCERATING", label : "Energy Armor", icon: "pgg pgg-energy-armor", modifier : "", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "energy_armor"   },
+            { ref : "PHYSICALRESISTANCERATING", label : "Physical Armor", icon : "pgg pgg-physical-armor", modifier : "", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "physical_armor"   },
+            { ref : "WELLRIGPLACEMENTTIMER", label : "Placement Time", icon: "pgg pgg-harvester-placement-time", modifier : "s", value : 0, modified: false, multiplier: 1, divider: 1, statRef: ""   },
+            { ref : "ATTACKRATING", label : "Physical Damage", icon: "pgg pgg-physical-damage", modifier : "", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "physical_damage"  },
+            { ref : "MAXMOVEMENTSPEED", label : "Max Movement Speed", icon: "pgg pgg-movement-speed", modifier : "", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "movement_speed"  }
         ]
     },
     getAffinityColor: function(affinity) {
@@ -219,10 +219,10 @@ module.exports = {
         });
     },
     dropZeroesAndDelimitNumbers: function(str) {
-        if(isNaN(parseFloat(Number(this.delimitNumbers(str)).toFixed(1)))) {
+        if(isNaN(parseFloat(Number(this.delimitNumbers(str)).toFixed(2)))) {
             return parseFloat((Number(str).toFixed(1)));
         } else {
-            return parseFloat(Number(this.delimitNumbers(str)).toFixed(1))
+            return parseFloat(Number(this.delimitNumbers(str)).toFixed(2))
         }
     },
     /**
