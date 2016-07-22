@@ -47,18 +47,21 @@ class DeckController extends Controller
         $decks['recent'] = $decks['recent']->skip($skip)
             ->take($take)
             ->get();
+        $decks['recent'] = $this->enhanceDecks($decks['recent']);
 
         $decks['rated'] = Deck::select('title', 'hero.image', 'hero.name', 'hero.code', 'slug', 'author_id', 'created_at', 'updated_at', 'views', 'votes')->orderBy('votes', 'DESC');
         if($hero) $decks['rated'] = $decks['rated']->where('hero.code', $hero->code);
         $decks['rated'] = $decks['rated']->skip($skip)
             ->take($take)
             ->get();
+        $decks['rated'] = $this->enhanceDecks($decks['rated']);
 
         $decks['views'] = Deck::select('title', 'hero.image', 'hero.name', 'hero.code', 'slug', 'author_id', 'created_at', 'updated_at', 'views', 'votes')->orderBy('views', 'DESC');
         if($hero) $decks['views'] = $decks['views']->where('hero.code', $hero->code);
         $decks['views'] = $decks['views']->skip($skip)
             ->take($take)
             ->get();
+        $decks['views'] = $this->enhanceDecks($decks['views']);
 
         return view('decks.index')
             ->with('decks', $decks)
@@ -66,68 +69,13 @@ class DeckController extends Controller
             ->with('hero', $hero);
     }
 
-    protected function sortDecks($decks)
+    protected function enhanceDecks($decks)
     {
         foreach($decks as $deck) {
-            $uniqueCards = Card::whereIn('code', $deck->cards)->get();
-            $author = User::where('id', $deck->author_id)->first();
-            if(count($author) == 0) {
-                $author = null;
+            if($deck->author_id) {
+                $user = User::select('username', 'avatar')->where('id', $deck->author_id)->first();
+                $deck->author = $user;
             }
-            $deck->author = $author;
-
-            $sortedCards = [
-                "prime" => [],
-                "equipment" => [],
-                "upgrades" => [],
-                "all" => []
-            ];
-
-            foreach($uniqueCards as $card) {
-                switch($card->type) {
-                    case "Prime": $key = "prime" ; break;
-                    case "Active": $key = "equipment"; break;
-                    case "Passive": $key = "equipment"; break;
-                    case "Upgrade": $key = "upgrades"; break;
-                    default : break;
-                }
-
-                if(count($sortedCards[$key]) == 0){
-                    $card->quantity = 0;
-                    array_push($sortedCards[$key], $card);
-                } else {
-                    if(!isset($card->quantity)) {
-                        $card->quantity = 0;
-                    }
-                    array_push($sortedCards[$key], $card);
-                }
-            }
-            // Find a better way to do this so we get the quants
-            foreach($sortedCards['prime'] as $sortedCard) {
-                foreach($deck->cards as $cardCode) {
-                    if($cardCode == $sortedCard->code) {
-                        $sortedCard->quantity++;
-                    }
-                }
-            }
-            foreach($sortedCards['equipment'] as $sortedCard) {
-                foreach($deck->cards as $cardCode) {
-                    if($cardCode == $sortedCard->code) {
-                        $sortedCard->quantity++;
-                    }
-                }
-            }
-            foreach($sortedCards['upgrades'] as $sortedCard) {
-                foreach($deck->cards as $cardCode) {
-                    if($cardCode == $sortedCard->code) {
-                        $sortedCard->quantity++;
-                    }
-                }
-            }
-            $sortedCards["all"] = array_merge($sortedCards["equipment"], $sortedCards["upgrades"], $sortedCards["prime"]);
-
-            // Finally sorted the collection
-            $deck->cards = $sortedCards;
         }
 
         return $decks;

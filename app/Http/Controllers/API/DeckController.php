@@ -49,10 +49,21 @@ class DeckController extends Controller
         $decks = $decks->skip($skip)
             ->take($take)
             ->get();
-
-
+        $decks = $this->enhanceDecks($decks);
 
         return response()->json($decks);
+    }
+
+    protected function enhanceDecks($decks)
+    {
+        foreach($decks as $deck) {
+            if($deck->author_id) {
+                $user = User::select('username', 'avatar')->where('id', $deck->author_id)->first();
+                $deck->author = $user;
+            }
+        }
+
+        return $decks;
     }
 
     public function show($id)
