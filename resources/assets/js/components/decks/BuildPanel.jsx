@@ -80,13 +80,13 @@ var BuildPanel = React.createClass({
                         <li id={"c_" + i}
                             className={slot.type + " active-placed"}
                             key={"slot_" + i}
-                            onMouseEnter={this.setTooltipContent.bind(this, slot.card)}
-                            onMouseOver={this.showTooltip.bind(this, slot.card, "glow-layer")}
-                            onMouseLeave={this.hideTooltip}
                         >
                             <span className="slot-label">{slot.type}</span>
                             <div className="placed-card"
                                  key={"card-" + i}
+                                 onMouseEnter={this.setTooltipContent.bind(this, slot.card)}
+                                 onMouseOver={this.showTooltip.bind(this, slot.card)}
+                                 onMouseLeave={this.hideTooltip}
                             >
                                 <PreloadImage src={Helpers.getCardImageURL(slot.card)}
                                               placeholderSrc="/assets/images/cards/card-placeholder.png"
@@ -161,7 +161,7 @@ var BuildPanel = React.createClass({
                          key={"upgrade-slot-" + Helpers.uuid() }
                          style={ slotStyle }
                          onMouseEnter={this.setTooltipContent.bind(this, upgradeSlot.card, null)}
-                         onMouseOver={this.showTooltip.bind(this, upgradeSlot.card, "upgrade-label")}
+                         onMouseOver={this.showTooltip.bind(this, upgradeSlot.card)}
                          onMouseLeave={this.hideTooltip}
                     >
                         { label }
@@ -173,7 +173,6 @@ var BuildPanel = React.createClass({
     },
     /* TOOLTIP METHODS */
     setTooltipContent: function(card) {
-        console.log("RENDERING CARD: ", card);
         if(card)
         {
             var content = (

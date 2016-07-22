@@ -30,7 +30,7 @@ var StatPanel = React.createClass({
     getStatisticList: function() {
         return this.state.statistics.map(function(statistic, i) {
             var active = statistic.modified ? "active" : "";
-            var value = Helpers.dropZeroesAndDelimitNumbers(statistic.value);
+            var value = Helpers.dropZeroesAndDelimitNumbers(((statistic.value / statistic.divider) * statistic.multiplier));
             return(
                 <li key={"statistic-" + i}>
                     <span className={ active }><i className={ statistic.icon } aria-hidden="true" /> { (value || 0) + "" + statistic.modifier + " " + statistic.label  } </span>
