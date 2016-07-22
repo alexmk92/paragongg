@@ -79,13 +79,6 @@ article {
             max-width: 100%;
             margin: 30px 0;
         }
-        blockquote {
-            background: $panel-color;
-            border-radius: 5px;
-            border-left: 5px solid $faded-line;
-            margin: 30px 0;
-            padding: 15px;
-        }
     }
     .article-title {
         padding-top: 30px;
@@ -153,6 +146,13 @@ article {
             }
         }
     }
+}
+
+blockquote {
+    background: $panel-color;
+    border-left: 5px solid $faded-line;
+    margin: 30px 0;
+    padding: 15px;
 }
 
 .toc {
