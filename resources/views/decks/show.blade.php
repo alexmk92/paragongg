@@ -39,8 +39,8 @@
 
     <div id="deck-detail-wrapper">
         <div id="deck-container"></div>
+        @include('layouts.commentFeed')
     </div>
-    @include('layouts.commentFeed')
 @endsection
 @section('scripts')
     <script type="text/javascript">

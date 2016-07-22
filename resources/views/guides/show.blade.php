@@ -71,5 +71,6 @@
 @section('scripts')
     <script type="text/javascript">
         var DECK = {!! json_encode($deck) !!};
+        console.log("DECK IS: ", DECK);
     </script>
 @endsection
