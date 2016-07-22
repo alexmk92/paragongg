@@ -15,6 +15,10 @@ var BuildPanel = React.createClass({
     },
     componentDidMount: function() {
         this.tooltip = new Toptip();
+        if(!Helpers.isNullOrUndefined(this.props.modifyState) && this.props.modifyState === false) {
+            return;
+        }
+
         var newBuilds = this.props.deck.builds.map(function(build) {
             build.slots = build.slots.map(function(slot) {
                 if(slot.card) {
@@ -55,6 +59,9 @@ var BuildPanel = React.createClass({
             selectedTab: index,
             selectedBuild: build
         });
+    },
+    componentWillReceiveProps: function(nextProps) {
+        console.log("UPDATING WITH: ", nextProps.buildIndex);
     },
     renderBuildTabs: function() {
         var untitledCount = 1;
@@ -121,30 +128,13 @@ var BuildPanel = React.createClass({
                     )
                 }
             }.bind(this));
-
         }  else {
-            var jsx = [];
-            for(var i = 0; i < 6; i++) {
-                var type = i < 5 ? "Active" : "Passive";
-                jsx.push(
-                    <li id={"c_" + i}
-                        className={type + " empty-slot"}
-                        key={"slot_" + i}
-                        onMouseEnter={this.hideTooltip}
-                        onMouseOver={this.hideTooltip}
-                        onMouseLeave={this.hideTooltip}
-                    >
-                        <span className="slot-label">{type}</span>
-                        <div className="placed-card"
-                             key={"card-" + i}
-                        >
-                        </div>
-                    </li>
-                )
-            }
+            return <blockquote>Sorry there are no builds in this deck</blockquote>
+            /*
             if(!Helpers.isNullOrUndefined(this.props.hasStats) && this.props.hasStats === true)
                 jsx.push(<span key="no-builds" style={{display: 'block', fontSize: '16px', marginTop: '-30px', padding: '20px 0 60px 0'}}>Sorry, there are no builds in this deck, therefore we computed a statistical analysis on what can be achieved from this deck!</span>);
             return jsx;
+            */
         }
     },
     renderUpgradeSlots: function(slot) {

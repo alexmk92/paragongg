@@ -1,14 +1,8 @@
+/*
 var React = require('react');
 var ReactDOM = require('react-dom');
 var BuildPanel = require('./components/decks/BuildPanel');
 
-var TestComponent = React.createClass({
-    render: function() {
-        return(
-            <div>HI THERE</div>
-        )
-    }
-});
 
 window.onload = function() {
     if(DECK) {
@@ -24,7 +18,7 @@ window.onload = function() {
                         if(!isNaN(buildIndex)) {
                             child.innerHTML = "";
                             child.appendChild(root);
-                            ReactDOM.render(<BuildPanel hasStats={false} deck={DECK} buildIndex={buildIndex} />, root);
+                            ReactDOM.render(<BuildPanel modifyState={false} hasStats={false} deck={DECK} buildIndex={buildIndex} />, root);
                         }
                     }
                 }
@@ -33,3 +27,4 @@ window.onload = function() {
     }
 };
 //<div id="deck-builds"></div>
+*/

@@ -23,6 +23,12 @@ var DeckDetail = React.createClass({
         return this.state !== nextState;
     },
     componentWillMount: function() {
+        // Add a left align class to the comment feed component
+        var commentFeed = document.querySelector('#comment-feed');
+        if(commentFeed) {
+            commentFeed.className = 'left-align';
+        }
+
         // Replace the current notification panel.
         this.notificationPanel = new Notification();
         this.notificationPanel.initialiseNotifications();
