@@ -742,7 +742,12 @@ var DeckBuilder = React.createClass({
     },
     getCardsInDeck : function(types) {
         var cardList = [];
-        this.state.deck.forEach(function(card) {
+        var deck = this.state.deck.sort(function(a, b) {
+            if(a.name < b.name) return -1;
+            if(a.name > b.name) return 1;
+            return 0;
+        });
+        deck.forEach(function(card) {
             var hasType = false;
             types.forEach(function(type) {
                 if(!hasType) hasType = card.type === type;
