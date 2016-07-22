@@ -63,18 +63,14 @@ article {
         font-size: 110%;
     }
     .article-body {
-        margin-top: 60px;
-
-        > p, > ul, > h1, > h2, > h4, > h5 {
-            padding-top: 15px;
+        padding-top: 50px;
+        >:first-child {
+            padding-top: 0;
         }
         ul {
-            margin: 20px 0;
+            margin: 30px 0;
             list-style: disc inside;
             li {
-                list-style: none;
-                border-left: 3px solid $tertiary-highlight;
-                padding-left: 15px;
                 line-height: 150%;
                 margin-bottom: 15px;
             }
@@ -87,7 +83,7 @@ article {
             background: $panel-color;
             border-radius: 5px;
             border-left: 5px solid $faded-line;
-            margin: 20px 0;
+            margin: 30px 0;
             padding: 15px;
         }
     }
@@ -101,7 +97,6 @@ article {
     .article-details {
         border-bottom: 1px solid $faded-line;
         padding-bottom: 30px;
-        margin-bottom: -30px;
     }
     h1,h2,h3 {
         padding-top: 80px;
