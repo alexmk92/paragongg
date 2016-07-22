@@ -6,8 +6,32 @@ var CardEffects = require('../../cards/CardEffects');
 
 // this will eventually be the side bar
 var DeckSidebarList = React.createClass({
+    getInitialState: function() {
+        return {
+            cards : this.props.deck.cards
+        }
+    },
     componentDidMount: function() {
         this.tooltip = this.props.sharedTooltip || new Toptip();
+    },
+    componentWillMount: function() {
+
+        var newCards = {
+            all : this.sortCards('all'),
+            upgrades : this.sortCards('upgrades'),
+            equipment : this.sortCards('equipment'),
+            prime : this.sortCards('prime')
+        };
+        this.setState({ cards : newCards });
+    },
+    sortCards: function(type) {
+        var newCards = this.props.deck.cards[type].sort(function(a, b) {
+            if(a.name < b.name) return -1;
+            if(a.name > b.name) return 1;
+            return 0;
+        });
+
+        return newCards;
     },
     /* TOOLTIP METHODS */
     setTooltipContent: function(card) {
@@ -44,8 +68,8 @@ var DeckSidebarList = React.createClass({
         this.tooltip.hideTooltip();
     },
     renderCards: function(type) {
-        if(typeof this.props.deck.cards[type] !== "undefined" && this.props.deck.cards[type].length > 0) {
-            return this.props.deck.cards[type].map(function(card) {
+        if(typeof this.state.cards[type] !== "undefined" && this.props.deck.cards[type].length > 0) {
+            return this.state.cards[type].map(function(card) {
                 var background = { backgroundImage : 'url(' + Helpers.getCardImageURL(card, "medium", "icon") + ')'};
                 return (
                     <li style={background}
