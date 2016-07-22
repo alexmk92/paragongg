@@ -53,9 +53,9 @@ function getOAuthToken($user)
     if(Carbon::now() > $user->oauth_expires) {
         if(Carbon::now() > $user->oauth_refresh_expires) {
             //redirect('https://accounts.epicgames.com/login/index?state='.urlencode(Request::url()).'&client_id=8483bd1714c44d33ab64277635d68464&loginSubheading=Paragon.GG+Account+Link');
-            //dd(Request::url());
-            //header("Location: https://accounts.epicgames.com/login/index?state=".urlencode(Request::url())."&client_id=8483bd1714c44d33ab64277635d68464&loginSubheading=Paragon.GG+Account+Refresh");
-            //die();
+            //dd(Request::path());
+            header("Location: https://accounts.epicgames.com/login/index?state=/".urlencode(Request::path())."&client_id=8483bd1714c44d33ab64277635d68464&loginSubheading=Paragon.GG+Account+Refresh");
+            die();
         } else {
             getOAuthLogin($user, $user->oauth_refresh_token);
         }
