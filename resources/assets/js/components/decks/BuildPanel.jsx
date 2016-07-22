@@ -71,8 +71,12 @@ var BuildPanel = React.createClass({
             )
         }.bind(this));
     },
-    renderBuildSlots: function() {
+    renderBuildSlots: function(buildIndex) {
         var build = this.state.selectedBuild;
+        // Render the build at the given index if sent by an inline build
+        if(!Helpers.isNullOrUndefined(buildIndex)) {
+            build = this.state.builds[0];
+        }
         if(build && build.slots.length > 0) {
             return build.slots.map(function(slot, i) {
                 if(slot.card !== null) {
@@ -138,7 +142,8 @@ var BuildPanel = React.createClass({
                     </li>
                 )
             }
-            jsx.push(<span key="no-builds" style={{display: 'block', fontSize: '16px', marginTop: '-30px', padding: '20px 0 60px 0'}}>Sorry, there are no builds in this deck, therefore we computed a statistical analysis on what can be achieved from this deck!</span>);
+            if(!Helpers.isNullOrUndefined(this.props.hasStats) && this.props.hasStats === true)
+                jsx.push(<span key="no-builds" style={{display: 'block', fontSize: '16px', marginTop: '-30px', padding: '20px 0 60px 0'}}>Sorry, there are no builds in this deck, therefore we computed a statistical analysis on what can be achieved from this deck!</span>);
             return jsx;
         }
     },
@@ -206,18 +211,33 @@ var BuildPanel = React.createClass({
         this.tooltip.hideTooltip();
     },
     render: function() {
-        return (
-            <div>
-                <ul className="build-tabs">
-                    { this.renderBuildTabs() }
-                </ul>
-                <div className="builds-wrapper">
-                    <ul className={"build-list"}>
-                    { this.renderBuildSlots() }
+        if(Helpers.isNullOrUndefined(this.props.buildIndex)) {
+            // render all builds in this
+            return (
+                <div>
+                    <ul className="build-tabs">
+                        { this.renderBuildTabs() }
                     </ul>
+                    <div className="builds-wrapper">
+                        <ul className={"build-list"}>
+                            { this.renderBuildSlots() }
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        )
+            )
+        } else {
+            // This is an inline build
+            return (
+                <div>
+                    <div className="builds-wrapper">
+                        <ul className={"build-list"}>
+                            { this.renderBuildSlots(this.props.buildIndex) }
+                        </ul>
+                    </div>
+                </div>
+            )
+        }
+
     }
 });
 

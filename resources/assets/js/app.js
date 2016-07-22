@@ -27,3 +27,4 @@ require("./components/heroes/HeroesFeed");
 require("./components/heroes/HeroContainer");
 require("./components/heroes/AbilityFeed");
 require("./components/libraries/particles/ParticleWrapper");
+require('./BuildInjector');
