@@ -176,7 +176,6 @@ Draggable.prototype.doesNodeIntersectDraggableAtIndex = function(currentY, index
     if(this.draggableState.currentItemIndex !== -1 && this.draggableState.currentItemIndex !== index) {
         // add as this will be 0 indexed, this allows us to find the correct top offset as its starting point
         var intersectNodeHeight = this.draggableState.itemHeight * (index + 1);
-        var tolerance = this.draggableState.itemHeight * 0.45; // we want a threshold of when indexes should be swapped 65% here
 
         // Map the x/y coordinates to the container so we can find how much we moved, this will give us a 0,0 coordinate space
         var containerBounds = this.draggableState.itemContainer.getBoundingClientRect();
