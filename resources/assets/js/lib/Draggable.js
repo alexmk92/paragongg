@@ -142,9 +142,11 @@ Draggable.prototype.highlightDropzone = function(mouseY) {
         var childNodes = this.draggableState.itemContainer.getElementsByTagName('li');
         if(!Helpers.isNullOrUndefined(childNodes)) {
             // This will hide the border for ones we dont want to place
+            var foundDraggable = false;
             for(var i = 0; i < childNodes.length; i++) {
-                if(this.doesNodeIntersectDraggableAtIndex(mouseY, i)) {
-                    childNodes[i].className = childNodes[i].className.replace('droppable-hidden', '');
+                if(this.doesNodeIntersectDraggableAtIndex(mouseY, i) && !foundDraggable) {
+                    foundDraggable = true;
+                    childNodes[i].className = childNodes[i].className.replace('droppable-hidden', '').trim();
                 }
             }
         }
