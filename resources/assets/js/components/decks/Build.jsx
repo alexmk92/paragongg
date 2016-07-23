@@ -21,8 +21,7 @@ var Build = React.createClass({
             this.refs.buildTitleInput.value = this.props.build.title;
         }
     },
-    shouldComponentUpdate: function(nextProps, nextState) {
-        console.log("NEXT PROPS: ", nextProps);
+    shouldComponentUpdate: function(nextProps) {
         // This allows us to update the build with the new deleted cards each load
         if(nextProps.build.code !== this.props.build.code) {
             return true;
