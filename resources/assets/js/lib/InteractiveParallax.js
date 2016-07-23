@@ -16,7 +16,6 @@ var InteractiveParallax = function(props)  {
         startScale : props.scale,
         enableScrollZoom: !typeof props.scrollZoom === "undefined"
     };
-    console.log("Parallax state is: ", this.state);
 
     if(this.state.enableScrollZoom) {
         window.addEventListener("scroll", this.zoomElement.bind(this));
