@@ -102,12 +102,6 @@ var HeroContainer = React.createClass({
         return(
             <div>
                 <div onMouseOver={this.updateParallax} className="hero-container">
-                    <div id="left-wrapper">
-                        <div id="hero-stats">
-                            <HeroStats onHeroRankChanged={this.updateHeroRank} heroRank={this.state.heroRank} hero={ HERO } />
-                        </div>
-                    </div>
-                    <div id="particle-layer" className={this.state.renderParticles ? 'visible' : ''}></div>
                     <div className="anim-fadeIn" id="hero-model-wrapper">
                         <div id="hero-model" className={"anim-flicker" + (this.state.hasFallbackImage ? ' fallback-portrait' : '')}>
                             <PreloadImage src={modelURL}
@@ -118,6 +112,12 @@ var HeroContainer = React.createClass({
                             />
                         </div>
                     </div>
+                    <div id="left-wrapper">
+                        <div id="hero-stats">
+                            <HeroStats onHeroRankChanged={this.updateHeroRank} heroRank={this.state.heroRank} hero={ HERO } />
+                        </div>
+                    </div>
+                    <div id="particle-layer" className={this.state.renderParticles ? 'visible' : ''}></div>
                 </div>
                 { this.renderGraph() }
                 { this.renderTopStatistics() }

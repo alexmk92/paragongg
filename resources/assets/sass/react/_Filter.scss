@@ -8,8 +8,13 @@
     .search-bar-wrapper {
         display: inline-block;
         margin-right: 30px;
+        width: 500px;
         input {
-            width: 500px;
+            width: 100%;
+        }
+        @media (max-width: $media-mobile) {
+            display: block;
+            width: 100%;
         }
     }
 }

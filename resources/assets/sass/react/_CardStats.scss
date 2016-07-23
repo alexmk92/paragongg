@@ -22,18 +22,19 @@ canvas {
 }
 
 .card-container {
-    width: 1350px;
     min-height: 800px;
-    position: relative;
 
     #card-model-wrapper {
-        position: absolute;
+        float: right;
         max-width: 600px;
         width: 600px;
-        right: 0;
-        top: 150px;
-        height: 100%;
+        margin-top: 100px;
         z-index: 10;
+
+        @media (max-width: $media-wide) {
+            width: auto;
+            margin-right: 50px;
+        }
 
         #card-model {
             position: relative;
@@ -85,10 +86,7 @@ canvas {
 
     .card-stats-wrapper {
         max-width: 650px;
-        width: 600px;
-        height: 100%;
-        top: 0px;
-        position: absolute;
+        width: 100%;
         z-index: 10;
 
         .attributes {

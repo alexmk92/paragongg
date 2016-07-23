@@ -116,7 +116,7 @@
             position: relative;
             display: inline-table;
             width: 40%;
-            
+
             .text-container {
                 display: table-cell;
                 vertical-align: middle;
@@ -129,32 +129,23 @@
                 }
             }
         }
-    }
-}
-
-@media screen and (max-width: $media-mobile) {
-    #abilities-wrapper {
-        .ability-container {
-            display: table;
-            table-layout: fixed;
+        @media (max-width: $media-mobile) {
+            display: block;
             height: auto;
             overflow: visible;
             padding: 0;
             width: 100%;
+            margin-bottom: 150px;
 
-            & .video-wrapper {
-                float: none !important;
+            .video-wrapper, .text-wrapper:nth-child(even) {
+                float: none;
                 width: 100%;
+                margin-bottom: 20px;
             }
 
-            & .text-wrapper {
-                float: none !important;
+            .text-wrapper, .text-wrapper:nth-child(even) {
+                float: none;
                 width: 100%;
-                display: table-header-group;
-
-                .text-container {
-                    padding: 20px 30px;
-                }
             }
         }
     }
