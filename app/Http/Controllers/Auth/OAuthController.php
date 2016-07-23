@@ -29,8 +29,6 @@ class OAuthController extends Controller
                     Log::error("Couldn't fetch OAuth token for user: ".$user->username."(".$user->id.")");
                     abort(500);
                 }
-                
-                session()->flash('notification', 'success|Epic account linked.');
 
                 if(isset($_GET['state'])) {
                     return redirect($_GET['state']);

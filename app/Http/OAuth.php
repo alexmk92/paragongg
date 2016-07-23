@@ -35,6 +35,10 @@ function getOAuthLogin($user, $code)
     }
     $response = json_decode($res);
 
+    if(!$user->epic_account_id) {
+        session()->flash('notification', 'success|Epic account linked.');
+    }
+
     $user->epic_account_id       = $response->account_id;
     $user->oauth_token           = $response->access_token;
     $user->oauth_expires         = Carbon::now()->addSeconds($response->expires_in);
