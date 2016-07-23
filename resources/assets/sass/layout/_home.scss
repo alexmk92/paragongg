@@ -34,6 +34,9 @@
         transition: all 0.3s;
         border: 1px solid #222222;
 
+        @media (max-width: $media-tablet) {
+            width: 100%;
+        }
         @media (max-width: $media-mobile) {
             width: 100%;
             max-width: none;
@@ -62,8 +65,27 @@
     }
     .featured-panel-wrapper {
         float: right;
-        @media (max-width: $media-mobile) {
+        @media (max-width: $media-wide) {
+            margin-left: 30px;
+        }
+        @media (max-width: $media-tablet) {
+            margin-left: 0;
             float: none;
+            .featured-panel {
+                display: inline-block;
+                width: 48%;
+                &:nth-of-type(2) {
+                    margin-left: 3%;
+                }
+            }
+        }
+        @media (max-width: $media-mobile) {
+            .featured-panel {
+                width: 100%;
+                &:nth-of-type(2) {
+                    margin-left: 0;
+                }
+            }
         }
     }
     .featured-panel {
@@ -91,14 +113,7 @@
         }
     }
 }
-.summary-info {
-    vertical-align: top;
-    @media (max-width: $media-mobile) {
-        float: none !important;
-        width: 100% !important;
-        margin: 0 0 60px !important;
-    }
-}
+
 .summary-info-discussions {
     float: right;
     width: 430px;
@@ -144,8 +159,28 @@
 }
 .summary-info-wrapper {
     margin-bottom: 50px;
-    .summary-info-decks, .summary-info-guides {
+    .summary-info {
+        vertical-align: top;
         width: 430px;
+        @media (max-width: $media-wide) {
+            width: 30%;
+            &.summary-info-discussions {
+                width: 30%;
+            }
+            &.summary-info-guides {
+                margin-right: 4%;
+            }
+            &.summary-info-discussions {
+                margin-left: 4%;
+            }
+        }
+        @media (max-width: $media-mobile) {
+            float: none !important;
+            width: 100% !important;
+            margin: 0 0 60px !important;
+        }
+    }
+    .summary-info-decks, .summary-info-guides {
         display: inline-block;
         .hero-avatar {
             width: 32px;
