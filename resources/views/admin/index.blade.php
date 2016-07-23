@@ -2,7 +2,7 @@
 @section('body')
     @include('admin.nav')
     <div class="wrapper">
-        <span class="breadcrumb"><a href="/admin">Admin</a>
+        <span class="breadcrumb"><a href="/admin">Admin</a></span>
         <h1>Dashboard</h1>
         <hr/>
         <div class="content-wrapper">
