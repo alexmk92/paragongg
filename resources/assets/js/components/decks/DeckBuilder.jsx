@@ -86,6 +86,7 @@ var DeckBuilder = React.createClass({
         window.addEventListener("scroll", this.onWindowScroll);
         window.addEventListener("mousedown", this.onMouseDown);
         window.addEventListener("mouseup", this.onMouseUp);
+        window.addEventListener("mousemove", this.onMouseMove);
 
         // HANDLE STICKY BAR
         /*
@@ -113,11 +114,20 @@ var DeckBuilder = React.createClass({
         this.updateViewForDimensions();
     },
     onMouseDown: function() {
-        this.isMouseDown = false;
-    },
-    onMouseUp: function() {
         this.isMouseDown = true;
-        this.endDrag();
+    },
+    onMouseMove: function() {
+        if(this.isDragging) {
+            if (document.selection) {
+                document.selection.empty()
+            } else {
+                window.getSelection().removeAllRanges()
+            }
+        }
+    },
+    onMouseUp: function(e) {
+        this.isMouseDown = false;
+        this.endDrag(e);
     },
     onWindowScroll: function() {
         var sidebar = document.querySelector("#sidebar");
@@ -181,7 +191,6 @@ var DeckBuilder = React.createClass({
             this.forceUpdate();
         }
         if(this.state.builds !== nextState.builds) {
-            console.log("BUILDS ARE DIFFERENT");
             return true;
         }
         if(this.updateDeckList === true) {
@@ -314,13 +323,16 @@ var DeckBuilder = React.createClass({
     hideTooltip: function() {
         this.tooltip.hideTooltip();
     },
-    beginDrag: function(e, index) {
-        if(this.isMouseDown) {
-            this.isDragging = true;
-            this.draggableBuilds.beginDrag(e, index);
-        } else {
-            this.endDrag(e);
-        }
+    beginDrag: function(index, e) {
+        e.persist();
+        setTimeout(function() {
+            if(this.isMouseDown) {
+                this.isDragging = true;
+                this.draggableBuilds.beginDrag(index, e);
+            } else {
+                this.endDrag(e);
+            }
+        }.bind(this), 100);
     },
     updateDragPosition: function(e) {
         this.draggableBuilds.updateDragPosition(e);
@@ -613,7 +625,7 @@ var DeckBuilder = React.createClass({
         }
         if(this.state.deck.length === 0) {
             return (
-                <div className={ "sidebox panel cf" + this.isActiveTab(0) }>
+                <div className={ "sidebox panel cf " + this.isActiveTab(0) }>
                     { editDeckButton }
                     <ul className="deck-list">
                         <li key="no_cards">
@@ -628,7 +640,7 @@ var DeckBuilder = React.createClass({
         if(!Helpers.isNullOrUndefined(this.deckList) && this.deckList.length > 0) {
             this.updateDeckList = true;
             return(
-                <div className={ "sidebox panel cf" + this.isActiveTab(0) }>
+                <div className={ "sidebox panel cf " + this.isActiveTab(0) }>
                     { editDeckButton }
                     <span className="subtext">PRIME HELIX</span>
                     <ul className="deck-list">
@@ -646,7 +658,7 @@ var DeckBuilder = React.createClass({
             );
         } else if(Helpers.isClientMobile() && this.deckOptionFilter && this.deckOptionFilter === "UPGRADES") {
             return(
-                <div className={ "sidebox panel cf" + this.isActiveTab(0) }>
+                <div className={ "sidebox panel cf " + this.isActiveTab(0) }>
                     { editDeckButton }
                     <span className="subtext">UPGRADE</span>
                     <ul className="deck-list">
@@ -656,7 +668,7 @@ var DeckBuilder = React.createClass({
             );
         } else if(Helpers.isClientMobile() && this.deckOptionFilter && this.deckOptionFilter === "EQUIPMENT") {
             return(
-                <div className={ "sidebox panel cf" + this.isActiveTab(0) }>
+                <div className={ "sidebox panel cf " + this.isActiveTab(0) }>
                     { editDeckButton }
                     <span className="subtext">EQUIPMENT</span>
                     <ul className="deck-list">
@@ -666,7 +678,7 @@ var DeckBuilder = React.createClass({
             );
         } else {
             return (
-                <div className={ "sidebox panel cf" + this.isActiveTab(0) }>
+                <div className={ "sidebox panel cf " + this.isActiveTab(0) }>
                     { editDeckButton }
                     <span className="subtext">PRIME HELIX</span>
                     <ul className="deck-list">
@@ -1337,7 +1349,7 @@ var DeckBuilder = React.createClass({
                             <div className={"mobile-header " + this.isActiveTab(1)} onClick={this.setActiveTab.bind(this, -1, null, "")}>
                                 <span>YOUR BUILDS <i className="fa fa-close" /></span>
                             </div>
-                            <div className={ "sidebox panel cf" + this.isActiveTab(1) }>
+                            <div className={ "sidebox panel cf " + this.isActiveTab(1) }>
                                 <ul className="deck-list draggable-container">
                                     {this.getBuilds()}
                                 </ul>
@@ -1346,7 +1358,7 @@ var DeckBuilder = React.createClass({
                     </div>
                     {this.renderCostCurve()}
                 </div>
-                <div className={"deck-builder wrapper " + (this.state.isBuildsPanelShowing ? "hidden" : "") + buildClass + " " + (this.isDragging ? 'disable-highlighting' : '')}>
+                <div className={"deck-builder wrapper " + (this.state.isBuildsPanelShowing ? "hidden" : "") + buildClass + " " + (this.isDragging ? '' : '')}>
                     <div className="content-wrapper">
                         <div className="deck-title">
                             <div className="hero-portrait-container"
@@ -1358,14 +1370,14 @@ var DeckBuilder = React.createClass({
                                      alt="click me"
                                 />
                             </div>
-                            <div className="title-container">
+                            <div className="title-container ">
                                 <span className="breadcrumb">Building a <strong>{ this.state.selectedHero.name }</strong> deck</span>
-                                <input type="text" onChange={setTitle} className="h2" placeholder="Enter deck name..." ref="deckNameInput"/>
+                                <input type="text" onChange={setTitle} className="h2 " placeholder="Enter deck name..." ref="deckNameInput"/>
                             </div>
                         </div>
                         <HeroPanel title="Select a hero" showAffinityFilter={false} heroes={HEROES} isActive={this.state.heroPanelActive} onHeroSelected={this.onHeroPanelSelectedHero} />
                         <textarea onChange={setDescription}
-                            className={this.state.heroPanelActive ? "p deck-description hidden" : "p deck-description"}
+                            className={" " + (this.state.heroPanelActive ? "p deck-description hidden" : "p deck-description")}
                             ref="deckDescriptionInput"
                             placeholder="Enter a short description about your deck, what team compositions might you use this deck against? Under what situations would you use the different builds?">
                         </textarea>

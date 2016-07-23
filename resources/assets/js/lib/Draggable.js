@@ -17,7 +17,11 @@ var Draggable = function(dataSource, component, type) {
         currentItemIndex : -1, // -1 if no item is selected, else the index we want to modify
         itemContainer: null,  // This is the parent of the draggable component, we reference coordinates with this
         itemHeight: 0, // The height of the item, used so we can determine the new position
-        totalItems: 0 // The number of items in the collection so we can find the new index
+        totalItems: 0, // The number of items in the collection so we can find the new index
+        usesAnchor: false,
+        draggableAnchorSet: false,
+        anchorX: 145,
+        anchorY : 84
     };
 };
 
@@ -39,6 +43,11 @@ Draggable.prototype.setDataSource = function(dataSource, shouldUpdateComponent) 
 Draggable.prototype.beginDrag = function(itemIndex, event) {
     var elem = event.target;
     if(!Helpers.isNullOrUndefined(elem)) {
+        // Reset the anchor point
+        this.draggableState.anchorX = 0;
+        this.draggableState.anchorY = 0;
+        this.draggableState.draggableAnchorSet = false;
+
         // Get the node with the draggable class.
         if(!elem.className.indexOf('draggable') > -1) {
             var attempts = 10;
@@ -78,15 +87,47 @@ Draggable.prototype.beginDrag = function(itemIndex, event) {
     }
 };
 
+Draggable.prototype.setDraggableAnchor = function(mouseX, mouseY) {
+    // Set the anchor for where the tooltip origin should start, relative to the item body
+    if(this.draggableState.usesAnchor && !this.draggableState.draggableAnchorSet) {
+        // Map the mouses current x/y coords to the anchor point on the tooltip body
+        // add as this will be 0 indexed, this allows us to find the correct top offset as its starting point
+        var itemHeight = this.draggableState.itemHeight;
+
+        // Map the x/y coordinates to the container so we can find how much we moved, this will give us a 0,0 coordinate space
+        var containerBounds = this.draggableState.itemContainer.getBoundingClientRect();
+
+        // get the ending client x/y position
+        var startX = (mouseX + document.body.scrollLeft) - containerBounds.left;
+        var startY = (mouseY + document.body.scrollTop) - containerBounds.top;
+
+        // Find which node is being intersected
+        var foundAnchor = false;
+        for(var i = 0; i < this.draggableState.totalItems; i++) {
+            var heightAtIndex = itemHeight * (i+1);
+            var upperBounds = heightAtIndex;
+            var lowerBounds = heightAtIndex - itemHeight;
+            if(startY > lowerBounds && startY < upperBounds && !foundAnchor) {
+                foundAnchor = true;
+                this.draggableState.anchorX = Math.ceil(startX);
+                //this.draggableState.anchorY = Math.ceil((upperBounds - startY));
+            }
+        }
+        this.draggableState.draggableAnchorSet = true;
+    }
+};
+
 Draggable.prototype.updateDragPosition = function(e) {
     if(e) {
         var mouseX = e.clientX + document.body.scrollLeft;
         var mouseY = e.clientY + document.body.scrollTop;
 
         if(!Helpers.isNullOrUndefined(this.draggableState.dragNode)) {
+            this.setDraggableAnchor(mouseX, mouseY);
+
             var dragTooltip = document.querySelector('#drag-tooltip-container');
             if(Helpers.isNullOrUndefined(dragTooltip)) {
-                var dragTooltip = document.createElement('div');
+                dragTooltip = document.createElement('div');
                 dragTooltip.id = 'drag-tooltip-container';
                 dragTooltip.style.position = 'absolute';
                 dragTooltip.style.zIndex = 999999999;
@@ -94,8 +135,8 @@ Draggable.prototype.updateDragPosition = function(e) {
                 dragTooltip.appendChild(this.draggableState.dragNode);
                 document.body.appendChild(dragTooltip);
             }
-            dragTooltip.style.top = mouseY + 'px';
-            dragTooltip.style.left = mouseX + 'px';
+            dragTooltip.style.top = (mouseY - this.draggableState.anchorY) + 'px';
+            dragTooltip.style.left = (mouseX - this.draggableState.anchorX) + 'px';
         }
         this.highlightDropzone(mouseY);
     }
@@ -142,9 +183,11 @@ Draggable.prototype.highlightDropzone = function(mouseY) {
         var childNodes = this.draggableState.itemContainer.getElementsByTagName('li');
         if(!Helpers.isNullOrUndefined(childNodes)) {
             // This will hide the border for ones we dont want to place
+            var foundDraggable = false;
             for(var i = 0; i < childNodes.length; i++) {
-                if(this.doesNodeIntersectDraggableAtIndex(mouseY, i)) {
-                    childNodes[i].className = childNodes[i].className.replace('droppable-hidden', '');
+                if(this.doesNodeIntersectDraggableAtIndex(mouseY, i) && !foundDraggable) {
+                    foundDraggable = true;
+                    childNodes[i].className = childNodes[i].className.replace('droppable-hidden', '').trim();
                 }
             }
         }

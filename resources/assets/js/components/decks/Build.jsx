@@ -17,9 +17,11 @@ var Build = React.createClass({
     },
     componentDidMount: function() {
         this.refs.buildTitleInput.focus();
+        if(this.props.build.title !== "") {
+            this.refs.buildTitleInput.value = this.props.build.title;
+        }
     },
-    shouldComponentUpdate: function(nextProps, nextState) {
-        console.log("NEXT PROPS: ", nextProps);
+    shouldComponentUpdate: function(nextProps) {
         // This allows us to update the build with the new deleted cards each load
         if(nextProps.build.code !== this.props.build.code) {
             return true;
@@ -35,6 +37,8 @@ var Build = React.createClass({
         if(this.props.build.title === "") {
             this.refs.buildTitleInput.value = "";
             this.refs.buildTitleInput.focus();
+        } else {
+            this.refs.buildTitleInput.value = this.props.build.title;
         }
         this.renderQueuedCards();
     },
@@ -871,7 +875,7 @@ var Build = React.createClass({
 
         return (
             <div className="builds-wrapper">
-                <input onChange={newTitle} defaultValue={ "" } className="h2" placeholder="ENTER BUILD TITLE" ref="buildTitleInput" />
+                <input defaultValue={this.props.build.title} onChange={newTitle} defaultValue={ "" } className="h2" placeholder="ENTER BUILD TITLE" ref="buildTitleInput" />
                 <span className="build-cost">{ this.getBuildCost() }/60 <span>CP</span></span>
                 <ul className={"build-list " + buildListClass }>
                     { this.getBuildSlots() }
