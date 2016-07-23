@@ -14,6 +14,7 @@ trait RetrievesCardCollection
 {
     public function getCardCollection($user)
     {
+        Cache::forget('user.'.$user->id.'.cards');
         if(!Cache::has('user.'.$user->id.'.cards')) {
             $client = new Client();
             try {

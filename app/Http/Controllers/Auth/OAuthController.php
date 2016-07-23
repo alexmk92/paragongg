@@ -14,10 +14,10 @@ class OAuthController extends Controller
     {
         // If code exists
         if(isset($_GET['code'])) {
-            if(isset($_GET['state']) && $_GET['state'] == 'testenv') {
+            // For testing purposes pass '/testenv' as state
+            if(isset($_GET['state']) && $_GET['state'] == '/testenv') {
                 return redirect("http://paragon.dev/auth?code=".$_GET['code']);
             }
-            // dd($_GET['code']);
             // If user is authenticated
             if(Auth::check()) {
                 $user = Auth::user();

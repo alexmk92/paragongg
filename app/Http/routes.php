@@ -13,7 +13,6 @@
 
 Route::get('/', 'HomeController@index');
 Route::auth();
-
 Route::get('/auth', 'Auth\OAuthController@linkAccount')->middleware('auth');
 
 /* STATIC */
