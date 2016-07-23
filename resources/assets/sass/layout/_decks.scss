@@ -3,7 +3,8 @@
     padding-top: 30px;
     border-top: 1px solid $panel-color-dark;
 }
-.deck-list {
+.deck-list,
+#drag-tooltip-container {
     overflow-x: hidden;
     position: relative;
     margin: 10px 0px 20px 0px;

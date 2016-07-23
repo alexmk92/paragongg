@@ -9,6 +9,7 @@ var Build = require('./Build');
 var DeckSidebarCostCurve = require('./widgets/DeckSidebarCostCurve');
 var ConfirmModal = require('../ConfirmModal');
 var Notification = require('../libraries/notification/Notification');
+var Draggable = require('../../lib/Draggable');
 
 var DeckBuilder = React.createClass({
     getInitialState: function(){
@@ -38,8 +39,14 @@ var DeckBuilder = React.createClass({
             activeTab: Helpers.isClientMobile() ? -1 : 0
         }
     },
+    onDraggableDataSourceChanged: function(data, type) {
+        if(type === 'BUILDS') {
+            this.setState({ builds : data });
+        }
+    },
     componentWillMount: function() {
         // Replace the current notification panel.
+        this.isDragging = false;
         this.deckList = null;
         this.updateDeckList = false;
         this.notificationPanel = new Notification();
@@ -48,6 +55,7 @@ var DeckBuilder = React.createClass({
         }
     },
     componentDidMount: function() {
+        this.draggableBuilds = new Draggable(this.state.builds, this, 'BUILDS');
         if(typeof CURRENT_DECK !== "undefined" && CURRENT_DECK) {
             var newBuilds = this.getCardsForBuild(CURRENT_DECK.builds);
             var titleField = this.refs.deckNameInput;
@@ -72,9 +80,12 @@ var DeckBuilder = React.createClass({
 
         this.lastDeletedCard = null;
         this.placementSlotIndex = -1;
+        this.isMouseDown = false;
 
         window.addEventListener("resize", this.updateViewForDimensions);
         window.addEventListener("scroll", this.onWindowScroll);
+        window.addEventListener("mousedown", this.onMouseDown);
+        window.addEventListener("mouseup", this.onMouseUp);
 
         // HANDLE STICKY BAR
         /*
@@ -100,6 +111,13 @@ var DeckBuilder = React.createClass({
         }
 
         this.updateViewForDimensions();
+    },
+    onMouseDown: function() {
+        this.isMouseDown = false;
+    },
+    onMouseUp: function() {
+        this.isMouseDown = true;
+        this.endDrag();
     },
     onWindowScroll: function() {
         var sidebar = document.querySelector("#sidebar");
@@ -148,6 +166,7 @@ var DeckBuilder = React.createClass({
     componentDidUpdate: function(prevProps, prevState) {
         this.deckList = null;
         this.hideTooltip();
+        this.draggableBuilds.setDataSource(this.state.builds, false);
         if(this.lastHoveredCard && !Helpers.isClientMobile()) {
             this.setTooltipContent(this.lastHoveredCard);
         }
@@ -162,6 +181,7 @@ var DeckBuilder = React.createClass({
             this.forceUpdate();
         }
         if(this.state.builds !== nextState.builds) {
+            console.log("BUILDS ARE DIFFERENT");
             return true;
         }
         if(this.updateDeckList === true) {
@@ -253,7 +273,7 @@ var DeckBuilder = React.createClass({
     },
     /** TOOLTIP FUNCTIONS **/
     setTooltipContent: function(card) {
-        if(card)
+        if(card && !this.isDragging)
         {
             if(this.state.selectedCard !== null && (card.code === this.state.selectedCard.code)) {
                 return false;
@@ -282,7 +302,7 @@ var DeckBuilder = React.createClass({
         }
     },
     showTooltip: function(card) {
-        if(card) {
+        if(card && !this.isDragging) {
             if(this.state.selectedCard !== null && (card.code === this.state.selectedCard.code)) {
                 return false;
             }
@@ -293,6 +313,21 @@ var DeckBuilder = React.createClass({
     },
     hideTooltip: function() {
         this.tooltip.hideTooltip();
+    },
+    beginDrag: function(e, index) {
+        if(this.isMouseDown) {
+            this.isDragging = true;
+            this.draggableBuilds.beginDrag(e, index);
+        } else {
+            this.endDrag(e);
+        }
+    },
+    updateDragPosition: function(e) {
+        this.draggableBuilds.updateDragPosition(e);
+    },
+    endDrag: function(e) {
+        this.isDragging = false;
+        this.draggableBuilds.endDrag(e);
     },
     /** CARD FUNCTIONS **/
     deckCount: function() {
@@ -823,7 +858,7 @@ var DeckBuilder = React.createClass({
         return this.state.builds.count;
     },
     selectBuild: function(build, event) {
-        if(Helpers.isNullOrUndefined(event)) return;
+        if(Helpers.isNullOrUndefined(event) || this.isDragging) return;
 
         event.preventDefault();
         var elem = event.target;
@@ -867,7 +902,7 @@ var DeckBuilder = React.createClass({
         }
     },
     getBuilds: function() {
-        var buildList = this.state.builds.map(function(build) {
+        var buildList = this.state.builds.map(function(build, buildIndex) {
             var className = "";
             var childClassName = "";
             var deleteWrapperClass = "";
@@ -913,9 +948,12 @@ var DeckBuilder = React.createClass({
 
 
             return (
-                <li className={"build-item " + className}
+                <li className={"draggable build-item " + className}
                     key={build.code}
                     onClick={this.selectBuild.bind(this, build)}
+                    onMouseDown={this.beginDrag.bind(this, buildIndex)}
+                    onMouseUp={this.endDrag}
+                    onMouseMove={this.updateDragPosition}
                 >
                     <div className={ "wrapper with-background " + childClassName } style={{ backgroundImage : "url(" + wrapperBackgroundImageURL + ")" }}>
                         <span className="title">{build.title === "" ? "UNTITLED DECK" : build.title} <span className="subtext">{build.cost}CP</span></span>
@@ -1300,7 +1338,7 @@ var DeckBuilder = React.createClass({
                                 <span>YOUR BUILDS <i className="fa fa-close" /></span>
                             </div>
                             <div className={ "sidebox panel cf" + this.isActiveTab(1) }>
-                                <ul className="deck-list">
+                                <ul className="deck-list draggable-container">
                                     {this.getBuilds()}
                                 </ul>
                             </div>
@@ -1308,7 +1346,7 @@ var DeckBuilder = React.createClass({
                     </div>
                     {this.renderCostCurve()}
                 </div>
-                <div className={"deck-builder wrapper " + (this.state.isBuildsPanelShowing ? "hidden" : "") + buildClass}>
+                <div className={"deck-builder wrapper " + (this.state.isBuildsPanelShowing ? "hidden" : "") + buildClass + " " + (this.isDragging ? 'disable-highlighting' : '')}>
                     <div className="content-wrapper">
                         <div className="deck-title">
                             <div className="hero-portrait-container"

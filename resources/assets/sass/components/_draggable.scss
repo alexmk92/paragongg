@@ -1,0 +1,16 @@
+#drag-inactive {
+    opacity: 0.3;
+}
+
+#drag-tooltip-container {
+    opacity: 0.4;
+}
+
+.droppable {
+    border-bottom: 3px solid $tertiary-highlight !important;
+    transition: all 150ms ease-in-out !important;
+}
+
+.droppable-hidden {
+    border-bottom: none !important;
+}
