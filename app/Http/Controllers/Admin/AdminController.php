@@ -3,14 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Card;
+use App\Deck;
+use App\Guide;
 use App\Hero;
 use App\Http\Traits\UpdatesSettings;
 use App\Job;
 use App\Setting;
+use App\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Collection;
 
 class AdminController extends Controller
 {
@@ -18,7 +22,11 @@ class AdminController extends Controller
 
     public function index()
     {
-        return view('admin.index');
+        $stats = new Collection();
+        $stats->users  = User::count();
+        $stats->guides = Guide::count();
+        $stats->decks  = Deck::count();
+        return view('admin.index', compact('stats'));
     }
 
     public function jobs()
