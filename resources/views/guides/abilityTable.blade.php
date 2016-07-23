@@ -1,5 +1,6 @@
 <div class="ability-table-wrapper">
     <h2 class="no-line">Ability Order</h2>
+    <div class="table-scroller">
     <table class="ability-table">
         <thead>
         <tr>
@@ -120,4 +121,5 @@
         </tr>
         </tbody>
     </table>
+    </div>
 </div>

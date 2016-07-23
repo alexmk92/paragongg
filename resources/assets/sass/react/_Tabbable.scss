@@ -1,4 +1,7 @@
 .Tabbable {
+    @media (max-width: $media-mobile) {
+        background: $panel-color-dark;
+    }
     .Tabbable__Tab {
         display: inline-block;
         background: $panel-color-dark;

@@ -45,6 +45,10 @@ class CardController extends Controller
         $cards = Card::all();
         $cardsOwned = null;
 
+        if(getenv('APP_ENV') == 'local') {
+            return $cards;
+        }
+
         if(Auth::check() && Auth::user()->epicAccountLinked()) {
             $cardsOwned = $this->cardCollection();
 

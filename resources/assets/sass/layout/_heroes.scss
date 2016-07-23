@@ -16,6 +16,19 @@
             margin: 15px;
             border: 1px solid #222222;
             transition: all 0.2s;
+            @media (max-width: $media-mobile) {
+                width: 200px;
+                height: 200px;
+            }
+            @media (max-width: 500px) {
+                width: 150px;
+                height: 150px;
+            }
+            @media (max-width: 400px) {
+                width: 244px;
+                height: 244px;
+            }
+
             .hero-preview-title {
                 position: absolute;
                 bottom: 0;
@@ -92,6 +105,9 @@
         text-transform: uppercase;
         color: white;
     }
+    .search-bar-wrapper {
+        display: inline-block;
+    }
     .search-bar {
         display: inline-block;
         margin-bottom: 0;
@@ -102,6 +118,12 @@
         padding: 0 0 0 20px;
         &:focus {
             border-color: $secondary-highlight;
+        }
+        @media (max-width: $media-mobile) {
+            margin-left: 0;
+            padding-left: 0;
+            border: none;
+            margin-top: 8px;
         }
     }
     .heroes {

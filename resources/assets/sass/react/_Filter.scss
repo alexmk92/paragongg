@@ -5,6 +5,13 @@
         font-size: 14px;
         margin-bottom: 10px;
     }
+    .search-bar-wrapper {
+        display: inline-block;
+        margin-right: 30px;
+        input {
+            width: 500px;
+        }
+    }
 }
 .toggle-filter {
     display: inline-block;
@@ -189,13 +196,5 @@
                 }
             }
         }
-    }
-}
-
-.search-bar-wrapper {
-    display: inline-block;
-    margin-right: 30px;
-    input {
-        width: 500px;
     }
 }

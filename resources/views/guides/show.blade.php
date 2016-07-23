@@ -5,11 +5,12 @@
 @section('body')
     <div class="article-header">
         @if($guide->type == 'hero')
-            <img src="/assets/images/heroes/{{ $hero->slug }}/banner.jpg"/>
+            <img src="/assets/images/heroes/{{ $hero->slug }}/banner.jpg" class="banner"/>
+            <img src="/assets/images/heroes/{{ $hero->slug }}/banner-mobile.jpg" class="banner-mobile"/>
         @else
             <img src="/assets/images/gameplay-banner.jpg"/>
         @endif
-        <div id="sidebar" class="article-sidebar panel">
+        <div id="sidebar" class="article-sidebar panel hide-mobile">
             <div class="sidebox panel toc">
                 <h4>Table of Contents</h4>
                 {!! $guideTOC !!}
@@ -45,7 +46,7 @@
         <div class="article-wrapper">
             <h1 class="article-title">{{ $guide->title }}</h1>
             <div class="article-details">
-                <time>Posted by <strong><img class="user-avatar inline small" src="{{getAvatar($guide->author)}}">{{ $guide->author->username }}</strong> on {{ $guide->created_at->format('jS F Y, h:i A') }}<span class="updated_at"> (Updated: {{ $guide->created_at->format('jS F Y, h:i A') }})</span></time>
+                <span>Posted by <strong><img class="user-avatar inline small" src="{{getAvatar($guide->author)}}">{{ $guide->author->username }}</strong> on <time datetime="{{ $guide->created_at }}">{{ $guide->created_at->format('jS F Y, h:i A') }}</time><span class="updated_at"> (Updated: {{ $guide->created_at->format('jS F Y, h:i A') }})</span></span>
             </div>
             @if($guide->abilities && $guide->abilities != ',,,,,,,,,,,,,,')
                 @include('guides.abilityTable')

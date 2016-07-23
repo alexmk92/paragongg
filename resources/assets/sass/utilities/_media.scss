@@ -1,25 +1,38 @@
 // Media
-$media-tablet : 1050px;
-$media-mobile : 750px;
-$media-desktop : 1400px;
+$media-tablet: 900px;
+$media-mobile: 650px;
+$media-desktop: 1050px;
+$media-wide: 1400px;
 
 .hide-wide {
-  @media (min-width: $media-desktop) {
-    display: none !important;;
-  }
+    @media (min-width: $media-wide) {
+        display: none !important;
+    }
 }
+
 .hide-desktop {
-  @media (min-width: $media-tablet+1) and (max-width: $media-desktop) {
-    display: none !important;;
-  }
+    @media (min-width: $media-desktop+1) and (max-width: $media-wide) {
+        display: none !important;;
+    }
 }
+
 .hide-tablet {
-  @media (min-width: $media-mobile+1) and (max-width: $media-tablet) {
-    display: none !important;
-  }
+    @media (min-width: $media-tablet+1) and (max-width: $media-desktop) {
+        display: none !important;
+    }
 }
+
 .hide-mobile {
-  @media (max-width: $media-mobile) {
-    display: none !important;
-  }
+    @media (max-width: $media-tablet) {
+        display: none !important;
+    }
+}
+
+.show-only-mobile {
+    @media (max-width: $media-mobile) {
+        display: block;
+    }
+    @media (min-width: $media-mobile+1) {
+        display: none;
+    }
 }

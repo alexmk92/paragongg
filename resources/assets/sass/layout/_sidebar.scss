@@ -103,4 +103,14 @@
             padding: 5px;
         }
     }
+    @media (max-width: $media-tablet) {
+        float: none;
+        width: 100%;
+        padding-left: 0;
+    }
+    @media (max-width: $media-mobile) {
+        float: none;
+        width: 100%;
+        padding-left: 0;
+    }
 }

@@ -125,17 +125,3 @@ p, input.p, div.p {
         margin-bottom: 0;
     }
 }
-time {
-    &:hover {
-        .updated_at {
-            opacity: 1;
-        }
-    }
-    .updated_at {
-        transition: opacity 0.3s;
-        opacity: 0;
-    }
-}
-//"nimbus-sans-condensed"
-//"proxima-nova-condensed"
-//"proxima-nova"

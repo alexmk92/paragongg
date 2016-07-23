@@ -5,6 +5,7 @@
         border: 1px solid $faded-line;
     }
 }
+
 #deck-detail-wrapper {
     overflow: hidden;
 
@@ -26,27 +27,23 @@
             }
         }
 
-        #deck-info {
-            position: relative;
-            padding-left: 75px;
-            margin-bottom: 110px;
+        .deck-info {
+            margin-bottom: 20px;
 
-            #hero-avatar {
-                position: absolute;
-                top: 0;
-                left: 0;
+            .hero-avatar {
+                float: left;
+                margin-right: 20px;
                 width: 75px;
                 height: 75px;
-                border-radius: 50%;
-                overflow: hidden;
                 display: inline-block;
 
                 img {
+                    border-radius: 50%;
                     width: 100%;
                 }
             }
 
-            #title-wrapper {
+            .title-wrapper {
                 display: inline-block;
                 padding: 0 20px;
                 max-width: 90%;
@@ -54,35 +51,21 @@
                     margin-bottom: 10px;
                 }
             }
-
-            #vote-wrapper {
-                display: inline-block;
-                vertical-align: top;
-                padding-top: 14px;
-                float: right;
-                text-align: center;
-
-                i {
-                    display: block;
-                    font-size: 2em;
-                    padding-bottom: 10px;
-                    transition: all 200ms ease-in-out;
-
-                    &.active {
-                        color: $secondary-highlight;
-                    }
-
-                    &:hover {
-                        cursor: pointer;
-                        color: $secondary-highlight;
-                    }
-                }
+            .description {
+                clear: left;
+                margin-top: 20px;
+                font-size: 15px;
             }
         }
     }
+    @media screen and (max-width: $media-tablet) {
+        width: 100%;
+    }
 }
+
 .build-tabs {
     li {
+        font-size: 13px;
         cursor: pointer;
         text-transform: uppercase;
         background: $panel-color;

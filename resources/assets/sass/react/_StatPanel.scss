@@ -7,9 +7,12 @@
         display: inline-block;
         background: $panel-color-dark;
         border: 1px solid $panel-color;
-
-        &:nth-child(even) {
+        &:nth-child(2) {
             border-left: none;
+        }
+
+        @media (max-width: $media-tablet) {
+            width: 100%;
         }
 
         &.wide {

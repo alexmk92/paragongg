@@ -48,6 +48,21 @@
                 }
             }
         }
+        @media (max-width: $media-mobile) {
+            .guide-details {
+                .details {
+                    clear: left;
+                    padding-top: 10px;
+                    line-height: 22px;
+                }
+            }
+            .guide-hero {
+                img, .preload-container img {
+                    width: 48px;
+                    height: 48px;
+                }
+            }
+        }
     }
     .guide-hero, .deck-hero {
         float: left;
@@ -58,9 +73,9 @@
             }
             img {
                 position: relative;
-                width: 96px !important;
-                height: 96px !important;
-                border-radius: 5px !important;
+                width: 96px;
+                height: 96px;
+                border-radius: 5px;
             }
         }
     }
@@ -81,4 +96,7 @@
 .switcher {
     float: right;
     margin-top: 15px;
+    @media (max-width: $media-mobile) {
+        float: none;
+    }
 }

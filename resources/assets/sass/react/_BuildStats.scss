@@ -15,6 +15,9 @@
             margin-right: 35px;
             float: right;
             width: 300px;
+            @media (max-width: $media-tablet) {
+                display: none;
+            }
         }
     }
 }
@@ -85,16 +88,7 @@
             }
         }
     }
-}
-
-@media screen and (max-width: $media-tablet) {
-    #rank-slider {
-        display: none !important;
-    }
-    #deck-detail-wrapper {
-        width: 100% !important;
-    }
-    #chart-wrapper {
+    @media screen and (max-width: $media-tablet) {
         .chart {
             display: inline-block;
 

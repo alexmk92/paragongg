@@ -1,9 +1,11 @@
 #sidebar {
     .article-preview {
         margin: 0 0 20px;
-        background: url('/assets/example-article-background.jpg');
         background-size: cover;
         min-height: 10px;
+        @media (max-width: $media-mobile) {
+            width: 100%;
+        }
         .preview-details {
             padding: 10px 15px;
         }

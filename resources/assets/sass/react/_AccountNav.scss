@@ -2,6 +2,11 @@
     .account-nav-trigger {
         cursor: pointer;
         text-align: right;
+        span {
+            @media (max-width: $media-mobile) {
+                display: none;
+            }
+        }
     }
     .account-nav-panel {
         position: absolute;
@@ -26,6 +31,13 @@
         width: 20px;
         height: 20px;
         margin-right: 7px;
+        @media (max-width: $media-mobile) {
+            width: 30px;
+            height: 30px;
+            margin-top: -8px;
+            margin-right: 0;
+        }
+
         .fa-caret-down {
             font-size: 12px;
         }
