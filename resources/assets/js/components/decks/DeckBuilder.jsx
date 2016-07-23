@@ -117,7 +117,7 @@ var DeckBuilder = React.createClass({
         this.isMouseDown = true;
     },
     onMouseMove: function() {
-        if(this.isMouseDown && this.isDragging) {
+        if(this.isDragging) {
             if (document.selection) {
                 document.selection.empty()
             } else {
@@ -125,9 +125,9 @@ var DeckBuilder = React.createClass({
             }
         }
     },
-    onMouseUp: function() {
+    onMouseUp: function(e) {
         this.isMouseDown = false;
-        this.endDrag();
+        this.endDrag(e);
     },
     onWindowScroll: function() {
         var sidebar = document.querySelector("#sidebar");
@@ -191,7 +191,6 @@ var DeckBuilder = React.createClass({
             this.forceUpdate();
         }
         if(this.state.builds !== nextState.builds) {
-            console.log("BUILDS ARE DIFFERENT");
             return true;
         }
         if(this.updateDeckList === true) {
@@ -327,7 +326,6 @@ var DeckBuilder = React.createClass({
     beginDrag: function(index, e) {
         e.persist();
         setTimeout(function() {
-            console.log("FIRING EVENT, IS MOUSE DOWN IS: " + this.isMouseDown);
             if(this.isMouseDown) {
                 this.isDragging = true;
                 this.draggableBuilds.beginDrag(index, e);
@@ -340,7 +338,6 @@ var DeckBuilder = React.createClass({
         this.draggableBuilds.updateDragPosition(e);
     },
     endDrag: function(e) {
-        console.log("ending drag");
         this.isDragging = false;
         this.draggableBuilds.endDrag(e);
     },
