@@ -57,8 +57,11 @@
                 font-size: 15px;
             }
         }
+        @media (max-width: $media-mobile) {
+            text-align: center;
+        }
     }
-    @media screen and (max-width: $media-tablet) {
+    @media (max-width: $media-tablet) {
         width: 100%;
     }
 }

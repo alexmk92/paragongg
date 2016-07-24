@@ -5,6 +5,7 @@
         <span class="breadcrumb"><a href="/moderation">Moderation</a> / <a href="/moderation/guides">Guides</a></span>
         <h1>Guides</h1>
         <hr>
+        <div class="table-scroller">
         <table class="minimal">
             <thead>
                 <tr>
@@ -31,5 +32,6 @@
                 @endforeach
             </tbody>
         </table>
+        </div>
     </div>
 @endsection

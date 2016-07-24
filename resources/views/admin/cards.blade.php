@@ -7,6 +7,7 @@
         <hr>
         <a class="btn" href="/admin/maintenance/update-cards"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Update cards database</a>
         <hr>
+        <div class="table-scroller">
         <table class="minimal">
             <thead>
             <tr>
@@ -27,5 +28,6 @@
             @endforeach
             </tbody>
         </table>
+        </div>
     </div>
 @endsection

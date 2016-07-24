@@ -4,6 +4,7 @@
     <div class="wrapper">
         <h3>Your guides</h3>
         <div class="content-wrapper">
+            <div class="table-scroller">
             <table class="minimal">
                 <thead>
                 <tr>
@@ -31,6 +32,7 @@
                 @endforeach
                 </tbody>
             </table>
+            </div>
         </div>
     </div>
 @endsection

@@ -8,6 +8,7 @@
         <a class="btn" href="/admin/maintenance/update-heroes"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Update heroes database</a>
         <a class="btn" href="/admin/maintenance/update-hero-images"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Update hero images</a>
         <hr>
+        <div class="table-scroller">
         <table class="minimal">
             <thead>
             <tr>
@@ -28,5 +29,6 @@
             @endforeach
             </tbody>
         </table>
+        </div>
     </div>
 @endsection

@@ -6,6 +6,7 @@
         <h1>News</h1>
         <a class="btn btn-primary btn-margin" href="/news/create">Create post</a>
         <hr>
+        <div class="table-scroller">
         <table class="minimal">
             <thead>
                 <tr>
@@ -35,5 +36,6 @@
                 @endforeach
             </tbody>
         </table>
+        </div>
     </div>
 @endsection
