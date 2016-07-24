@@ -1125,7 +1125,7 @@ var DeckBuilder = React.createClass({
         var deck = this.state.deck;
         var builds = this.state.builds;
 
-        if(this.refs.deckNameInput.value === "") {
+        if(this.refs.deckNameInput.value === "" && !Helpers.isClientMobile()) {
             this.refs.deckNameInput.focus();
         }
 
