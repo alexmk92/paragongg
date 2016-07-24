@@ -424,9 +424,9 @@ var CardsFilter = React.createClass({
         var tempHash = newHash;
         this.state.statistics.forEach(function(statistic) {
             var stat = statistic.checked ? 1 : 0;
-            if(newHash.indexOf('#') > -1 && newHash.indexOf('statistics') < 0) {
+            if(tempHash.indexOf('#') > -1 && tempHash.indexOf('statistics') < 0) {
                 tempHash += '&statistics=' + stat;
-            } else if(newHash.indexOf('#') < 0 && newHash.indexOf('statistics') < 0) {
+            } else if(tempHash.indexOf('#') < 0 && tempHash.indexOf('statistics') < 0) {
                 tempHash += '#statistics=' + stat;
             } else {
                 tempHash += stat;
