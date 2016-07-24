@@ -55,7 +55,7 @@ return [
     |
     */
 
-    'from' => ['support@paragon.gg' => null, 'Paragon.gg Support' => null],
+    'from' => ['address' => 'support@paragon.gg', 'name' => 'Paragon.gg Support'],
 
     /*
     |--------------------------------------------------------------------------
