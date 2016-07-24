@@ -1,11 +1,12 @@
 var React = require('react');
-var ReactDOM = require('react-dom')
+var ReactDOM = require('react-dom');
 var CardEffects = require('./CardEffects');
 var SearchBar = require('../filter/SearchBar');
 var ToggleFilter = require('../filter/ToggleFilter');
 var DropDown = require('../filter/DropDown');
 var CardPreview = require('./CardPreview');
 var Tooltip = require('../libraries/tooltip/Toptip');
+var Helpers = require('../../helpers');
 
 var CardsFilter = React.createClass({
     getInitialState: function(){
@@ -16,15 +17,15 @@ var CardsFilter = React.createClass({
             search_term : "",
             costOrder : "ASC",
             showOwnedCards : true,
-            showActiveCards : true,
-            showPassiveCards : true,
-            showPrimeHelixCards : true,
-            showUpgradeCards : true,
-            showCommonCards : true,
-            showUncommonCards : true,
-            showStarterCards : true,
-            showRareCards : true,
-            showEpicCards : true,
+            showActiveCards : false,
+            showPassiveCards : false,
+            showPrimeHelixCards : false,
+            showUpgradeCards : false,
+            showCommonCards : false,
+            showUncommonCards : false,
+            showStarterCards : false,
+            showRareCards : false,
+            showEpicCards : false,
             affinities : [
                 { name : "Fury" },
                 { name : "Order" },
@@ -61,7 +62,156 @@ var CardsFilter = React.createClass({
     },
     componentWillMount: function() {
         this.tooltip = this.props.tooltip || new Tooltip();
+        // Get filter affinities from URL:
         this.filterWasReset = false;
+
+        var options = this.getInitialMoreOptions();
+
+        this.setState({
+            filter_affinities : this.getInitialFilterAffinities(),
+            statistics : this.getInitialFilterStats(),
+            moreOptions : options.moreOptions,
+            costOrder : options.booleanValues.costOrder,
+            showOwnedCards : options.booleanValues.showOwnedCards,
+            showActiveCards : options.booleanValues.showActiveCards,
+            showPassiveCards : options.booleanValues.showPassiveCards,
+            showPrimeHelixCards : options.booleanValues.showPrimeHelixCards,
+            showUpgradeCards : options.booleanValues.showUpgradeCards,
+            showCommonCards : options.booleanValues.showCommonCards,
+            showUncommonCards : options.booleanValues.showUncommonCards,
+            showStarterCards : options.booleanValues.showStarterCards,
+            showRareCards : options.booleanValues.showRareCards,
+            showEpicCards : options.booleanValues.showEpicCards
+        })
+    },
+    getInitialMoreOptions: function() {
+        var hash = window.location.hash;
+        var newOptions = JSON.parse(JSON.stringify(this.state.moreOptions));
+        var returnOptions = [];
+
+        var booleanValues = {
+            costOrder : "ASC",
+            showOwnedCards : true,
+            showActiveCards : false,
+            showPassiveCards : false,
+            showPrimeHelixCards : false,
+            showUpgradeCards : false,
+            showCommonCards : false,
+            showUncommonCards : false,
+            showStarterCards : false,
+            showRareCards : false,
+            showEpicCards : false
+        };
+
+        newOptions.forEach(function (optionGroup) {
+            var options = optionGroup.group.map(function(option) {
+                if(hash.indexOf(option.type) > -1) {
+                    option.checked = false;
+
+                    var components = hash.split('&');
+                    if(Helpers.isNullOrUndefined(components))
+                        components = hash.split('#');
+
+                    components.some(function (component) {
+                        if (component.indexOf(option.type) > -1) {
+                            component = component.replace('#', '');
+                            component = component.replace(option.type + '=', '');
+                            if (component.indexOf(',') > -1) {
+                                component = component.split(',');
+                                component.some(function (part) {
+                                    if (option.filterLabel.toLowerCase() === part.toLowerCase().trim()) {
+                                        console.log(part.toLowerCase().trim());
+                                        switch (part.toLowerCase()) {
+                                            case 'descending' : booleanValues.costOrder = 'DESC'; break;
+                                            case 'ascending' : booleanValues.costOrder = 'ASC'; break;
+                                            case 'passive' : booleanValues.showPassiveCards = true; break;
+                                            case 'active' : booleanValues.showActiveCards = true; break;
+                                            case 'prime' : booleanValues.showPrimeHelixCards = true; break;
+                                            case 'owned' : booleanValues.showOwnedCards = true; break;
+                                            case 'upgrade' : booleanValues.showUpgradeCards = true; break;
+                                            case 'starter' : booleanValues.showStarterCards = true; break;
+                                            case 'common' : booleanValues.showCommonCards = true; break;
+                                            case 'uncommon' : booleanValues.showUncommonCards = true; break;
+                                            case 'rare' : booleanValues.showRareCards = true; break;
+                                            case 'epic' : booleanValues.showEpicCards = true; break;
+                                            default: break;
+                                        }
+                                        option.checked = true;
+                                        return true;
+                                    }
+                                    return false;
+                                });
+                            } else {
+                                if (option.filterLabel.toLowerCase() === component.toLowerCase().trim()) {
+                                    switch (component.toLowerCase()) {
+                                        case 'descending' : booleanValues.costOrder = 'DESC'; break;
+                                        case 'ascending' : booleanValues.costOrder = 'ASC'; break;
+                                        case 'passive' : booleanValues.showPassiveCards = true; break;
+                                        case 'active' : booleanValues.showActiveCards = true; break;
+                                        case 'prime' : booleanValues.showPrimeHelixCards = true; break;
+                                        case 'owned' : booleanValues.showOwnedCards = true; break;
+                                        case 'upgrade' : booleanValues.showUpgradeCards = true; break;
+                                        case 'starter' : booleanValues.showStarterCards = true; break;
+                                        case 'common' : booleanValues.showCommonCards = true; break;
+                                        case 'uncommon' : booleanValues.showUncommonCards = true; break;
+                                        case 'rare' : booleanValues.showRareCards = true; break;
+                                        case 'epic' : booleanValues.showEpicCards = true; break;
+                                        default: break;
+                                    }
+                                    option.checked = true;
+                                }
+                            }
+                            return true;
+                        }
+                        return false;
+                    });
+                }
+                return option;
+            }.bind(this));
+            returnOptions.push({ group : options });
+        }.bind(this));
+
+        return { moreOptions : returnOptions, booleanValues : booleanValues };
+    },
+    getInitialFilterStats: function() {
+        var hash = window.location.hash;
+        var newStats = JSON.parse(JSON.stringify(this.state.statistics));
+        if (hash.toLowerCase().indexOf('statistics') > -1) {
+            hash = hash.replace(/#affinities.*&statistics/, '');
+            hash = hash.replace('statistics', '');
+            var component = hash.replace(/\D+/g, "").toLowerCase();
+            console.log(component);
+            newStats = newStats.map(function (statistic, i) {
+                console.log(component);
+                if (parseInt(component[i]) === 1) {
+                    statistic.checked = true;
+                }
+                return statistic;
+            });
+        }
+        return newStats;
+    },
+    getInitialFilterAffinities: function() {
+        var hash = window.location.hash;
+        var newAffinities = [];
+        hash = hash.replace('#', '').substring(0, hash.indexOf('&'));
+        if(hash.toLowerCase().indexOf('affinities') > -1) {
+            hash = hash.replace('affinities', '');
+            var hashComponents = hash.split(',');
+            hashComponents.map(function(component) {
+                component = component.replace(/\W+/g, "").toLowerCase();
+                this.state.affinities.some(function(affinity) {
+                    if(affinity.name.toLowerCase() === component) {
+                        newAffinities.push({
+                            type : affinity.name
+                        });
+                        return true;
+                    }
+                    return false;
+                });
+            }.bind(this));
+        }
+        return newAffinities;
     },
     componentWillReceiveProps: function(nextProps) {
         if(nextProps.shouldResetFilter === true) {
@@ -73,26 +223,26 @@ var CardsFilter = React.createClass({
 
         if(AUTHED) {
             options.push({ group : [
-                { name : "Show cards I don't own", iconName : "", ref: "TOGGLE_OWNED", checked : true}
+                { name : "Show cards I don't own", type: "owned", iconName : "", filterLabel : "owned", ref: "TOGGLE_OWNED", checked : true}
             ] });
         }
         options.push(
             { group : [
-                { name : "Show Active Cards", iconName : "", ref: "TOGGLE_ACTIVE", checked : true},
-                { name : "Show Passive Cards", iconName : "", ref: "TOGGLE_PASSIVE", checked : true},
-                { name : "Show Upgrade Cards", iconName : "", ref: "TOGGLE_UPGRADE", checked : true},
-                { name : "Show Prime Helix Cards", iconName : "", ref: "TOGGLE_PRIME", checked : true}
+                { name : "Show Active Cards", type: "category",  iconName : "", filterLabel : "active", ref: "TOGGLE_ACTIVE", checked : false},
+                { name : "Show Passive Cards", type: "category", iconName : "", filterLabel : "passive", ref: "TOGGLE_PASSIVE", checked : false},
+                { name : "Show Upgrade Cards", type: "category", iconName : "", filterLabel : "upgrade", ref: "TOGGLE_UPGRADE", checked : false},
+                { name : "Show Prime Helix Cards", type: "category", iconName : "", filterLabel : "prime", ref: "TOGGLE_PRIME", checked : false}
             ]},
             { group : [
-                { name : "Cost (Ascending)", iconName : "", ref: "SORT_ASC", checked : true},
-                { name : "Cost (Descending)", iconName : "", ref: "SORT_DESC", checked : false}
+                { name : "Cost (Ascending)", type: "cost", iconName : "", filterLabel : "ascending",  ref: "SORT_ASC", checked : true},
+                { name : "Cost (Descending)", type: "cost", iconName : "", filterLabel : "descending", ref: "SORT_DESC", checked : false}
             ]},
             { group: [
-                { name : "Starter", iconName : "", ref: "RARITY_STARTER", checked : true},
-                { name : "Common", iconName : "", ref: "RARITY_COMMON", checked : true},
-                { name : "Uncommon", iconName : "", ref: "RARITY_UNCOMMON", checked : true},
-                { name : "Rare", iconName : "", ref: "RARITY_RARE", checked : true},
-                { name : "Epic", iconName : "", ref: "RARITY_EPIC", checked : true}
+                { name : "Starter", iconName : "", type : "rarity", filterLabel : "starter", ref: "RARITY_STARTER", checked : false},
+                { name : "Common", iconName : "", type : "rarity", filterLabel : "common", ref: "RARITY_COMMON", checked : false},
+                { name : "Uncommon", iconName : "", type : "rarity", filterLabel : "uncommon", ref: "RARITY_UNCOMMON", checked : false},
+                { name : "Rare", iconName : "", type : "rarity", filterLabel : "rare", ref: "RARITY_RARE", checked : false},
+                { name : "Epic", iconName : "", type : "rarity", filterLabel : "epic", ref: "RARITY_EPIC", checked : false}
             ]}
         );
 
@@ -116,6 +266,8 @@ var CardsFilter = React.createClass({
         var hasSearchTerm = this.state.search_term.length > 0;
         var matches = false;
         var allStatsDisabled = false;
+        var allRaritiesDisabled = false;
+        var allCategoriesDisabled = false;
 
         // Check if all stats are disabled
         var expectedCount = this.state.statistics.length;
@@ -124,6 +276,19 @@ var CardsFilter = React.createClass({
             if(stat.checked === false) actualCount++;
         });
         allStatsDisabled = (actualCount === expectedCount);
+
+        var expectedRarityCount = 5;
+        var expectedCategoryCount = 4;
+        var rarityCount = 0;
+        var categoryCount = 0;
+        this.state.moreOptions.forEach(function(optionGroup) {
+           optionGroup.group.forEach(function(option) {
+               if(option.type === 'category' && !option.checked) categoryCount++;
+               if(option.type === 'rarity' && !option.checked) rarityCount++;
+           });
+        });
+        allRaritiesDisabled = (rarityCount === expectedRarityCount);
+        allCategoriesDisabled = (categoryCount === expectedCategoryCount);
 
         // SEARCH TERM AND AFFINITIES FOR DYNAMIC FILTERS
         if(this.state.filter_affinities.length !== 0) {
@@ -149,29 +314,52 @@ var CardsFilter = React.createClass({
         // SEARCH TERM ONLY
         else if((hasSearchTerm && card.name.toLowerCase().indexOf(this.state.search_term.toLowerCase()) > -1) || !hasSearchTerm) {
             matches = true;
+        }        console.log("DO WE MATCH? ", matches);
+        if(!allCategoriesDisabled) {
+            // CHECK OTHER PARAMETERS
+            /*
+            switch(card.type.toUpperCase()) {
+                case "UPGRADE": matches = this.state.showUpgradeCards; break;
+                case "ACTIVE": matches = this.state.showActiveCards; break;
+                case "PASSIVE": matches = this.state.showPassiveCards; break;
+                case "PRIME": matches = this.state.showPrimeHelixCards; break;
+                default: break;
+            }
+            */
+             if(!this.state.showUpgradeCards && card.type.toUpperCase() === "UPGRADE")
+             matches = false;
+             if(!this.state.showActiveCards && card.type.toUpperCase() === "ACTIVE")
+             matches = false;
+             if(!this.state.showPassiveCards && card.type.toUpperCase() === "PASSIVE")
+             matches = false;
+             if(!this.state.showPrimeHelixCards && card.type.toUpperCase() === "PRIME")
+             matches = false;
         }
-        // CHECK OTHER PARAMETERS
-        if(!this.state.showUpgradeCards && card.type.toUpperCase() === "UPGRADE")
-            matches = false;
-        if(!this.state.showActiveCards && card.type.toUpperCase() === "ACTIVE")
-            matches = false;
-        if(!this.state.showPassiveCards && card.type.toUpperCase() === "PASSIVE")
-            matches = false;
-        if(!this.state.showPrimeHelixCards && card.type.toUpperCase() === "PRIME")
-            matches = false;
-        if(!this.state.showStarterCards && card.rarity.toUpperCase() === "STARTER")
-            matches = false;
-        if(!this.state.showCommonCards && card.rarity.toUpperCase() === "COMMON")
-            matches = false;
-        if(!this.state.showUncommonCards && card.rarity.toUpperCase() === "UNCOMMON")
-            matches = false;
-        if(!this.state.showRareCards && card.rarity.toUpperCase() === "RARE")
-            matches = false;
-        if(!this.state.showEpicCards && card.rarity.toUpperCase() === "EPIC")
-            matches = false;
+        if(!allRaritiesDisabled) {
+            /*
+            switch(card.rarity.toUpperCase()) {
+                case "STARTER": matches = this.state.showStarterCards; break;
+                case "COMMON": matches = this.state.showCommonCards; break;
+                case "UNCOMMON": matches = this.state.showUncommonCards; break;
+                case "RARE": matches = this.state.showRareCards; break;
+                case "EPIC": matches = this.state.showEpicCards; break;
+                default: break;
+            }
+            */
+            if(!this.state.showStarterCards && card.rarity.toUpperCase() === "STARTER")
+                matches = false;
+            if(!this.state.showCommonCards && card.rarity.toUpperCase() === "COMMON")
+                matches = false;
+            if(!this.state.showUncommonCards && card.rarity.toUpperCase() === "UNCOMMON")
+                matches = false;
+            if(!this.state.showRareCards && card.rarity.toUpperCase() === "RARE")
+                matches = false;
+            if(!this.state.showEpicCards && card.rarity.toUpperCase() === "EPIC")
+                matches = false;
+        }
         if(!this.state.showOwnedCards && AUTHED && card.owned === false)
             matches = false;
-        if(matches !== false && !allStatsDisabled) {
+        if(matches === true && !allStatsDisabled) {
             if(card.effects) {
                 card.effects.forEach(function(effect) {
                     if(effect.stat) {
@@ -200,9 +388,6 @@ var CardsFilter = React.createClass({
             }
         }
 
-        //if(statMatches && matches) return false;
-        //if(!matches) return false;
-        //if(matches) return true;
         return matches;
     },
     shouldComponentUpdate: function(nextProps, nextState) {
@@ -225,6 +410,60 @@ var CardsFilter = React.createClass({
             this.filterWasReset = false;
             this.props.onCardFilterReset();
         }
+
+        var newHash = '';
+        // Set the new hash options
+        this.state.filter_affinities.forEach(function(affinity) {
+            if(newHash.indexOf('#affinities') < 0 && newHash.indexOf(affinity.type) < 0) {
+                newHash += '#affinities=' + affinity.type;
+            } else {
+                newHash += ',' + affinity.type;
+            }
+        });
+        // Set the new sort options - we dont want to show statistics in the string if it is 000000000
+        var tempHash = newHash;
+        this.state.statistics.forEach(function(statistic) {
+            var stat = statistic.checked ? 1 : 0;
+            if(newHash.indexOf('#') > -1 && newHash.indexOf('statistics') < 0) {
+                tempHash += '&statistics=' + stat;
+            } else if(newHash.indexOf('#') < 0 && newHash.indexOf('statistics') < 0) {
+                tempHash += '#statistics=' + stat;
+            } else {
+                tempHash += stat;
+            }
+        });
+        if(tempHash.indexOf('1') > -1) newHash = tempHash;
+        // Set the more options
+        this.state.moreOptions.forEach(function(groupContainer) {
+            if(!Helpers.isNullOrUndefined(groupContainer)) {
+                var expectedCount = groupContainer.group.length;
+                var checkedCount = 0;
+                var tmpHash = newHash;
+                groupContainer.group.forEach(function(option) {
+                    if(option.checked) {
+                        checkedCount++;
+                        if(tmpHash.indexOf('#') > -1 && tmpHash.indexOf(option.type) < 0) {
+                            tmpHash += '&' + option.type + '=' + option.filterLabel.toLowerCase();
+                        } else if(tmpHash.indexOf('#') < 0 && tmpHash.indexOf(option.type) < 0) {
+                            tmpHash += '#' + option.type + '=' + option.filterLabel.toLowerCase();
+                        } else {
+                            tmpHash += ',' + option.filterLabel.toLowerCase();
+                        }
+                    }
+                });
+                if(expectedCount !== checkedCount) {
+                    newHash = tmpHash;
+                }
+            }
+        }.bind(this));
+        if(!Helpers.isNullOrUndefined(this.state.searchTerm) && this.state.searchTerm !== '') {
+            if(newHash.indexOf('#') > -1 && newHash.indexOf('searchterm') < 0) {
+                newHash += '&searchterm=' + this.state.searchTerm;
+            } else if(newHash.indexOf('#') < 0 && tmpHash.indexOf('searchterm') < 0) {
+                newHash += '#searchterm=' + this.state.searchTerm;
+            }
+        }
+        window.location.hash = newHash;
         this.updateCards();
     },
     componentDidMount: function() {

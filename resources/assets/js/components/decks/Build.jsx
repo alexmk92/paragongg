@@ -16,10 +16,13 @@ var Build = React.createClass({
         this.queuedUpgrades = [];
     },
     componentDidMount: function() {
-        this.refs.buildTitleInput.focus();
+        if(!Helpers.isClientMobile()) {
+            this.refs.buildTitleInput.focus();
+        }
         if(this.props.build.title !== "") {
             this.refs.buildTitleInput.value = this.props.build.title;
         }
+        window.scrollTo(0, 0);
     },
     shouldComponentUpdate: function(nextProps) {
         // This allows us to update the build with the new deleted cards each load
@@ -28,15 +31,18 @@ var Build = React.createClass({
         }
         return nextProps !== this.props;
     },
-    componentDidUpdate: function() {
+    componentDidUpdate: function(prevProps, prevState) {
         //this.updateBuildsWithNewDeck();
         // Perform a quick bind on the selected card
+        if(prevProps.build.code !== this.props.build.code) {
+            window.scrollTo(0, 0);
+        }
         if(this.props.shouldQuickBindCards) {
             this.quickBind(this.props.selectedCard);
         }
         if(this.props.build.title === "") {
             this.refs.buildTitleInput.value = "";
-            this.refs.buildTitleInput.focus();
+            if(!Helpers.isClientMobile()) this.refs.buildTitleInput.focus();
         } else {
             this.refs.buildTitleInput.value = this.props.build.title;
         }
