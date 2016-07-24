@@ -1,4 +1,4 @@
-$placed-card-height : 187px;
+$placed-card-height : 180px;
 $placed-card-width : 141px;
 
 .builds-wrapper {
@@ -6,6 +6,7 @@ $placed-card-width : 141px;
         padding: 10px 10px 20px 0;
     }
     .build-list {
+        margin-top: 30px;
         li {
             display: inline-block;
             opacity: 0.4;
@@ -16,6 +17,7 @@ $placed-card-width : 141px;
             min-height: $placed-card-height;
             padding-top: 0px;
             margin-bottom: 60px;
+            margin-right: 10px;
 
             &.faded {
                 opacity: 0.3 !important;
@@ -50,6 +52,16 @@ $placed-card-width : 141px;
                     }
                     opacity: 0.9;
                 }
+            }
+
+            .slot-label {
+                display: block;
+                text-align: center;
+                width: 100%;
+                font-family: $font-condensed;
+                text-transform: uppercase;
+                font-size: 15px;
+                padding: 10px 0;
             }
 
             .delete-wrapper {
@@ -190,8 +202,9 @@ $placed-card-width : 141px;
                     bottom: 20px;
                     display: block;
                     width: 100%;
-                    padding: 0px 10px;
-                    font-size: 12px;
+                    padding: 0px 20px;
+                    font-size: 13px;
+                    line-height: 15px;
                     text-align: center;
                 }
             }
