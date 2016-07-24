@@ -26,6 +26,10 @@
         color: $font-color-faded;
         border-color: $faded-line;
     }
+    &.btn-green {
+        color: $green;
+        border-color: $green;
+    }
     &.btn-warning-hover:hover {
         color: $primary-highlight !important;
         border-color: $primary-highlight !important;

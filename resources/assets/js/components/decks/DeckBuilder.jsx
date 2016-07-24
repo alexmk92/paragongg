@@ -88,26 +88,13 @@ var DeckBuilder = React.createClass({
         window.addEventListener("mouseup", this.onMouseUp);
         window.addEventListener("mousemove", this.onMouseMove);
 
-        // HANDLE STICKY BAR
-        /*
-         var sidebar = document.querySelector("#sidebar");
-         if(sidebar) {
-         sidebar.addEventListener("mouseleave", function() {
-         document.body.className = "";
-         });
-         sidebar.addEventListener("scroll", function() {
-         document.body.className = "no-scroll";
-         });
-         }
-         */
-
         var textarea = document.querySelector('textarea.deck-description');
         textarea.addEventListener('keydown', autosize);
         function autosize(){
             var el = this;
             setTimeout(function(){
                 el.style.cssText = 'height:auto; padding:0';
-                el.style.cssText = 'height:' + (el.scrollHeight + 60) + 'px';
+                el.style.cssText = 'height:' + el.scrollHeight + 'px';
             },0);
         }
 
@@ -1303,28 +1290,21 @@ var DeckBuilder = React.createClass({
                         <i className="pgg pgg-arrow-left" aria-hidden="true"></i> BACK
                     </div>
                 );
-            } else if(!this.state.heroPanelActive) {
-                searchButtonMobile = (
-                    <button id="search-button-mobile" name="search-cards" type="submit" onClick={this.toggleSearchFilter}>
-                        <i className="fa fa-search" aria-hidden="true"></i> SEARCH CARDS
-                    </button>
-                );
             }
         }
 
         var sidebarClass = this.state.activeTab === -1 ? "hidden" : "";
         var buildClass = "";
         var actionBarHidden = this.state.isMobileSearchShowing ? "hidden" : "";
-        var buttonDisabled = this.isDeckValid() ? "" : "disabled";
+        var buttonDisabled = this.isDeckValid() ? "btn-green" : "btn-faded";
 
         return (
             <div>
                 <div id="sidebar" className={sidebarClass}>
                     <div id="action-button-wrapper" className={ actionBarHidden }>
                         { backButtonMobile }
-                        <button onClick={this.toggleBuildView.bind(this, false, "edit-button")} name="publish" type="submit" className={"btn inline narrow"}><i className="fa fa-pencil" aria-hidden="true"></i> EDIT DECK</button>
-                        <button name="publish" type="submit" onClick={this.saveDeck} className={"btn inline wide " + buttonDisabled}><i className="fa fa-check" aria-hidden="true"></i> SAVE DECK</button>
-                        { searchButtonMobile }
+                        <button onClick={this.toggleBuildView.bind(this, false, "edit-button")} name="publish" type="submit" className={"btn btn-half btn-faded"}><i className="fa fa-pencil" aria-hidden="true"></i> EDIT DECK</button>
+                        <button name="publish" type="submit" onClick={this.saveDeck} className={"btn btn-half " + buttonDisabled}><i className="fa fa-check" aria-hidden="true"></i> SAVE DECK</button>
                     </div>
                     <div className="dual-tab-wrapper">
                         <div className="dual-tab-tabs">

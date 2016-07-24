@@ -11,7 +11,7 @@ body {
     min-height: 100%;
 
     @media (max-width: $media-mobile) {
-        margin-bottom: 0;
+        margin-bottom: 200px;
     }
 
     &.no-scroll {
@@ -26,6 +26,9 @@ body {
     @media (max-width: $media-wide) {
         padding: 30px 30px 60px 30px;
         margin: 60px auto 0;
+    }
+    @media (max-width: $media-mobile) {
+        padding-bottom: 0;
     }
 }
 .custom-background {

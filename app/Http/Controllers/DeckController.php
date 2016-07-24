@@ -89,7 +89,7 @@ class DeckController extends Controller
         $userId = Auth::user() ? Auth::user()->id : "null";
         $hideGlobalNotification = true;
 
-        return view('decks.create', compact('cards', 'heroes', 'userId', 'hideGlobalNotification'));
+        return view('decks.create', compact('cards', 'heroes', 'userId', 'hideGlobalNotification', 'hideFooter'));
     }
 
     // Store
