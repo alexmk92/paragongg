@@ -1,9 +1,15 @@
 var React = require('react');
+var Helpers = require('../helpers');
 
 var SelectBox = React.createClass({
     getInitialState: function() {
         return {
             isMenuVisible: false
+        }
+    },
+    componentWillMount: function() {
+        if(Helpers.isClientMobile()) {
+            this.setState({ isMenuVisible : false });
         }
     },
     toggleMenu: function() {
@@ -29,7 +35,7 @@ var SelectBox = React.createClass({
         return (
             <div className="select-menu" onClick={this.toggleMenu}>
                 <span>{this.props.label} <span className="value-label">{this.props.value}</span> <i className="fa fa-sort-down"></i></span>
-                <ul className={"menu" + (this.state.isMenuVisible ? " active" : "")}>
+                <ul className={"menu" + ((this.state.isMenuVisible === true) ? " active" : "")}>
                     { this.renderItems() }
                 </ul>
             </div>
