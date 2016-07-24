@@ -13,13 +13,19 @@ $placed-card-width : 141px;
             height: auto;
             transition: all 250ms ease-in-out;
             background-size: $placed-card-width $placed-card-height;
+            background-repeat: no-repeat;
+            background-position: bottom;
             min-width: $placed-card-width;
             min-height: $placed-card-height;
             padding-top: 0px;
             margin-bottom: 60px;
             margin-right: 10px;
 
-            &.faded {
+            &.empty-slot {
+                background-image: url('/assets/images/cards/card-placeholder.png');
+            }
+
+                &.faded {
                 opacity: 0.3 !important;
 
                 &:hover {
