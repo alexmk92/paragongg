@@ -550,183 +550,188 @@
     }
 }
 
-@media screen and (max-width: $media-tablet) {
-    body {
-        #deck-builder {
-            padding-top: 45px;
-            .subtext {
-                position: relative;
-                z-index: 1;
-            }
-            .filter-wrapper {
-                .search-bar-wrapper {
-                    width: 50%;
-                    input {
-                        width: 100%;
-                    }
-                }
-            }
-            #cost-curve-wrapper {
-                display: none;
-            }
-            #sidebar {
-                top: 0;
-                max-width: 100%;
-                width: 100%;
-                position: fixed;
-                -webkit-backface-visibility: hidden;
-                min-height: 100%;
-                display: block;
-                height: 100%;
-                opacity: 1;
-                z-index: 1999;
-                background: $panel-color-dark;
-                transition: all 200ms ease-in-out;
-
-                #action-button-wrapper {
-                    position: fixed;
-                    z-index: 1999;
-                    background: rgba(13, 16, 22, 0.975);
-                    border-bottom: 1px solid $panel-color;
+@media (max-width: $media-tablet) {
+    #deck-builder {
+        padding-top: 45px;
+        .subtext {
+            position: relative;
+            z-index: 1;
+        }
+        .filter-wrapper {
+            .search-bar-wrapper {
+                width: 50%;
+                input {
                     width: 100%;
-                    top: 60px;
-                    box-shadow: 0px 0px 5px #000;
-
-                    &.hidden {
-                        display: none;
-                    }
-
-                    #back-button-mobile {
-                        display: inline-block;
-                        font-family: $font-condensed;
-                        padding: 11px 15px;
-                        font-size: 12px;
-
-                        i {
-                            font-size: 18px;
-                            top: 3px;
-                            position: relative;
-                        }
-                    }
-                    #search-button-mobile {
-                        float: right;
-                        max-width: 180px;
-                        margin: 5px 0;
-                        font-size: 10px;
-                        font-family: $font-condensed;
-                    }
-
-                    .btn.inline.narrow {
-                        display: none;
-                    }
-                    .btn.inline.wide {
-                        float: right;
-                        width: 90px;
-                        max-width: 120px;
-                        margin: 5px 10px;
-                        font-size: 10px;
-                        font-family: $font-condensed;
-                    }
                 }
+            }
+        }
+        #cost-curve-wrapper {
+            display: none;
+        }
+        #sidebar {
+            top: 0;
+            max-width: 100%;
+            width: 100%;
+            position: fixed;
+            -webkit-backface-visibility: hidden;
+            min-height: 100%;
+            display: block;
+            height: 100%;
+            opacity: 1;
+            z-index: 1999;
+            background: $panel-color-dark;
+            transition: all 200ms ease-in-out;
 
-                .sidebox {
-                    &.panel {
-                        padding: 20px 8px 20px 18px;
-                    }
-                }
+            #action-button-wrapper {
+                position: fixed;
+                z-index: 1999;
+                background: rgba(13, 16, 22, 0.975);
+                border-bottom: 1px solid $panel-color;
+                width: 100%;
+                top: 60px;
+                box-shadow: 0px 0px 5px #000;
 
                 &.hidden {
-                    top: 100%;
+                    display: none;
+                }
 
-                    .dual-tab-wrapper {
-                        .dual-tab-panel {
-                            opacity: 0;
+                #back-button-mobile {
+                    display: inline-block;
+                    font-family: $font-condensed;
+                    padding: 11px 15px;
+                    font-size: 12px;
+
+                    i {
+                        font-size: 18px;
+                        top: 3px;
+                        position: relative;
+                    }
+                }
+                #search-button-mobile {
+                    float: right;
+                    max-width: 180px;
+                    margin: 5px 0;
+                    font-size: 10px;
+                    font-family: $font-condensed;
+                }
+
+                .btn.inline.narrow {
+                    display: none;
+                }
+                .btn.inline.wide {
+                    float: right;
+                    width: 90px;
+                    max-width: 120px;
+                    margin: 5px 10px;
+                    font-size: 10px;
+                    font-family: $font-condensed;
+                }
+            }
+
+            .sidebox {
+                &.panel {
+                    padding: 20px 8px 20px 18px;
+                }
+            }
+
+            &.hidden {
+                top: 100%;
+
+                .dual-tab-wrapper {
+                    .dual-tab-panel {
+                        opacity: 0;
+                    }
+                }
+            }
+
+            .dual-tab-wrapper {
+                .dual-tab-tabs {
+                    box-shadow: 0px 0px 50px #000;
+                    border-top: 1px solid $panel-color;
+                    z-index: 1338;
+                    position: fixed;
+                    -webkit-backface-visibility: hidden;
+                    bottom: 0;
+
+                    div {
+                        height: 55px;
+                        padding: 20px;
+                        transition: all 150ms ease-in-out;
+                        border-top: 2px solid rgba(0,0,0,0);
+
+                        &:nth-child(even) {
+                            border-left: 1px solid $panel-color;
+                        }
+
+                        &.active {
+                            border-top: 2px solid $primary-highlight;
                         }
                     }
                 }
 
-                .dual-tab-wrapper {
-                    .dual-tab-tabs {
-                        box-shadow: 0px 0px 50px #000;
-                        border-top: 1px solid $panel-color;
-                        z-index: 1338;
-                        position: fixed;
-                        -webkit-backface-visibility: hidden;
-                        bottom: 0;
+                .dual-tab-panel {
+                    background: $panel-color-dark;
+                    position: absolute;
+                    min-height: 100%;
+                    height: 100%;
+                    padding-top: 60px;
+                    padding-bottom: 100px;
+                    overflow-y: scroll;
 
-                        div {
-                            height: 55px;
-                            padding: 20px;
-                            transition: all 150ms ease-in-out;
-                            border-top: 2px solid rgba(0,0,0,0);
+                    .mobile-header {
+                        &.active {
+                            width: 100%;
+                            display: block;
+                            position: fixed;
+                            z-index: 1999;
+                            padding: 15px 20px;
+                            box-shadow: 0px 0px 50px #000;
+                            background: #181d27;
+                            border-bottom: 1px solid #212735;
 
-                            &:nth-child(even) {
-                                border-left: 1px solid $panel-color;
+                            span {
+                                font-size: 1em;
                             }
 
-                            &.active {
-                                border-top: 2px solid $primary-highlight;
+                            i {
+                                cursor: pointer;
+                                float: right;
+                                &:hover {
+                                    color: $secondary-highlight;
+                                }
                             }
                         }
                     }
 
-                    .dual-tab-panel {
-                        background: $panel-color-dark;
-                        position: absolute;
-                        min-height: 100%;
-                        height: 100%;
-                        padding-top: 60px;
-                        padding-bottom: 100px;
-                        overflow-y: scroll;
+                    .sidebox {
+                        &.panel {
+                            padding-top:60px;
+                            background: $panel-color-dark !important;
+                            .deck-list {
+                                li {
+                                    background-size: 100%;
+                                    background-position-y: 25%;
 
-                        .mobile-header {
-                            &.active {
-                                width: 100%;
-                                display: block;
-                                position: fixed;
-                                z-index: 1999;
-                                padding: 15px 20px;
-                                box-shadow: 0px 0px 50px #000;
-                                background: #181d27;
-                                border-bottom: 1px solid #212735;
-
-                                span {
-                                    font-size: 1em;
-                                }
-
-                                i {
-                                    float: right;
-                                }
-                            }
-                        }
-
-                        .sidebox {
-                            &.panel {
-                                padding-top:60px;
-                                background: $panel-color-dark !important;
-                                .deck-list {
-                                    li {
-                                        background-size: 100%;
-                                        background-position-y: 25%;
-
-                                        &.create-build {
-                                            background: $panel-color;
-                                            .dotted-button {
-                                                padding: 25px 15px;
+                                    &.create-build {
+                                        background: $panel-color;
+                                        .dotted-button {
+                                            padding: 25px 15px;
+                                            &:hover {
+                                                background: lighten($panel-color, 5%);
                                             }
                                         }
+                                    }
 
-                                        .wrapper {
-                                            padding: 22px 10px;
-                                            border: 1px solid #212735;
+                                    .wrapper {
+                                        padding: 22px 10px;
+                                        border: 1px solid #212735;
 
-                                            &.selected {
-                                                border: 1px solid $tertiary-highlight;
-                                            }
+                                        &.selected {
+                                            border: 1px solid $tertiary-highlight;
+                                        }
 
-                                            &.intro-row {
-                                                font-size: 1.15em;
-                                            }
+                                        &.intro-row {
+                                            font-size: 1.15em;
                                         }
                                     }
                                 }
@@ -735,33 +740,28 @@
                     }
                 }
             }
+        }
 
-            .build-builder {
-                margin-top: 40px;
-                #back-button {
-                    display: none;
-                }
+        .build-builder {
+            margin-top: 40px;
+            #back-button {
+                display: none;
             }
-            .deck-builder {
-                &.wrapper {
-                    width: 100%;
+        }
+        .deck-builder {
+            &.wrapper {
+                width: 100%;
 
-                    .content-wrapper {
+                .content-wrapper {
 
-                        .deck-title {
-                            padding: 20px 30px;
-                            .title-container {
-                                margin-bottom: 0px;
-                            }
-                            .hero-portrait-container {
-                                width: 85px;
-                                height: 85px;
-                            }
+                    .deck-title {
+                        margin-bottom: 30px;
+                        .title-container {
+                            margin-bottom: 0px;
                         }
-
-                        .p {
-                            font-size: 1.1em;
-                            padding: 5px 30px;
+                        .hero-portrait-container {
+                            width: 85px;
+                            height: 85px;
                         }
                     }
                 }
@@ -771,60 +771,46 @@
 }
 
 @media screen and (max-width: $media-mobile) {
-    body {
-        footer {
-            display: none;
-        }
-        #deck-builder {
+    footer {
+        display: none;
+    }
+    #deck-builder {
 
-            #sidebar {
-                .dual-tab-wrapper {
-                    .dual-tab-tabs {
+        #sidebar {
+            .dual-tab-wrapper {
+                .dual-tab-tabs {
 
-                        div {
-                        }
+                    div {
                     }
+                }
 
-                    .dual-tab-panel {
+                .dual-tab-panel {
 
-                        .sidebox {
-                            &.panel {
-                                .deck-list {
-                                    li {
-                                        background-size: 100%;
-                                    }
+                    .sidebox {
+                        &.panel {
+                            .deck-list {
+                                li {
+                                    background-size: 100%;
                                 }
                             }
                         }
                     }
                 }
             }
+        }
 
-            .deck-builder {
-                .content-wrapper {
-                    .deck-title {
-                        padding: 20px 10px !important;
-                        .hero-portrait-container {
-                            margin: 0px auto 40px auto;
-                            display: block;
-                        }
-                    }
-                }
-                textarea {
-                    &.p {
-                        height: 100px;
+        .deck-builder {
+            .content-wrapper {
+                .deck-title {
+                    .hero-portrait-container {
+                        margin: 0px auto 40px auto;
+                        display: block;
                     }
                 }
             }
-        }
-
-        .multiple-notification-panel {
-
-            .notification-panel-wrapper {
-                .notification-panel {
-
-                    .notification {
-                    }
+            textarea {
+                &.p {
+                    height: 100px;
                 }
             }
         }
@@ -874,7 +860,6 @@
         .deck-builder {
             .content-wrapper {
                 .deck-title {
-                    padding: 20px 10px !important;
                     .hero-portrait-container {
                         margin: 0px auto 40px auto;
                         display: block;

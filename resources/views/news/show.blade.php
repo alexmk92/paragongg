@@ -4,8 +4,9 @@
 @endsection
 @section('body')
     <div class="article-header">
-        <img src="{{ S3URL() }}/images/news/headers/{{ $article->header }}"/>
-        <div id="sidebar" class="article-sidebar panel">
+        <img src="{{ S3URL() }}/images/news/headers/{{ $article->header }}" class="banner"/>
+        <img src="{{ S3URL() }}/images/news/thumbnails/{{ $article->thumbnail }}" class="banner-mobile"/>
+        <div id="sidebar" class="article-sidebar panel hide-mobile">
             <div class="sidebox panel toc">
                 <h4>Table of Contents</h4>
                 {!! $articleTOC !!}
