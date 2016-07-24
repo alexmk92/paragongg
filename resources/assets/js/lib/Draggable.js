@@ -114,7 +114,7 @@ Draggable.prototype.setDraggableAnchor = function(mouseX, mouseY) {
             }
         }
         this.draggableState.draggableAnchorSet = true;
-    }
+    } 
 };
 
 Draggable.prototype.updateDragPosition = function(e) {

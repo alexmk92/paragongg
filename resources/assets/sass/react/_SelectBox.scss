@@ -85,8 +85,8 @@
                 border-top: 1px solid $faded-line;
                 position: fixed;
             }
-            max-height: 35% !important;
-            height: 35% !important;
+            max-height: 45% !important;
+            height: 45% !important;
             overflow-y: auto;
             overflow-x: hidden;
             width: 100% !important;
@@ -94,6 +94,11 @@
             bottom: 0px !important;
             z-index: 30000 !important;
             background: $panel-color !important;
+            display: none !important;
+
+            &.active {
+                display: block !important;
+            }
 
             li {
                 text-align: center !important;
