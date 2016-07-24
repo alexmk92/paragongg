@@ -13,8 +13,17 @@
 
         @media (max-width: $media-tablet) {
             width: 100%;
+            &:first-of-type {
+                display: none;
+            }
         }
-
+        @media (max-width: $media-mobile) {
+            .statistic-list {
+                li {
+                    width: 100% !important;
+                }
+            }
+        }
         &.wide {
             width: 100%;
             display: block;
@@ -51,20 +60,6 @@
                     &.active {
                         color: $green;
                     }
-                }
-            }
-        }
-    }
-}
-
-@media screen and (max-width: $media-mobile) {
-    #statistic-wrapper {
-        .statistic-panel {
-            width: 100%;
-
-            .statistic-list {
-                li {
-                    width: 100%;
                 }
             }
         }
