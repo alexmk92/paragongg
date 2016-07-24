@@ -267,9 +267,7 @@
         .build-cost {
             display: block;
             color: #fff;
-            margin-top: -10px;
-            margin-bottom: 50px;
-
+            margin: 20px 0 70px;
             span {
                 color: #5a606f;
             }
@@ -296,28 +294,34 @@
     }
 
     .build-list {
+        margin-top: 30px;
         li {
             display: inline-block;
             width: 141px;
-            height: 187px;
+            height: auto;
             background-size: 100% 100%;
+            background-repeat: no-repeat;
             opacity: 0.3;
             margin-bottom: 0;
             margin-right: 10px;
-            padding-top: 30px;
             position: relative;
             cursor: pointer;
 
             &.empty-slot {
-                background: url('/assets/images/cards/card-placeholder.png') no-repeat;
+                background-image: url('/assets/images/cards/card-placeholder.png');
 
                 &:hover {
-                    opacity: 0.4 !important;
+                    opacity: 0.4;
                 }
             }
 
             &.build-slot {
-                background: url('/assets/images/cards/card-placeholder.png') no-repeat;
+                background-image: url('/assets/images/cards/card-placeholder.png');
+                &.active-placed {
+                    vertical-align: top;
+                    opacity: 1;
+                    background-image: none;
+                }
             }
 
             .slot-label {
