@@ -7,9 +7,6 @@
     transition: all 500ms ease-in-out;
     text-align: center;
 
-    h2 {
-
-    }
     p {
         font-size: 12px;
     }
@@ -446,11 +443,8 @@
 
                 .title-container {
                     margin-bottom: 20px;
-                    position: relative;
-                    display: inline-block;
-                    left: 20px;
-                    width: 85%;
                     padding-top: 10px;
+                    overflow-x: hidden;
 
                     .breadcrumb {
                         font-family: $font-condensed, sans-serif;
@@ -458,13 +452,6 @@
                         text-transform: uppercase;
                         color: #5a606f;
                         display: block;
-                    }
-
-                    // this used to be the title container
-                    input {
-                        display: inline-block;
-                        min-width: 85%;
-                        width: 100% !important;
                     }
 
                     textarea {
@@ -477,16 +464,6 @@
                         min-height: 10px;
                         height: auto;
                         resize: none;
-
-                        &.h2 {
-                            font-weight: 600;
-                            font-size: 2em;
-                        }
-
-                        &.p {
-                            font-weight: 200;
-                            font-size: 1em;
-                        }
                     }
                 }
 
@@ -494,11 +471,14 @@
                     vertical-align: top;
                     border-radius: 50%;
                     display: inline-block;
+                    float: left;
                     width: 60px;
                     height: 60px;
                     overflow: hidden;
                     position: relative;
                     user-select: none;
+                    margin-right: 20px;
+                    margin-bottom: 10px;
                     &:hover {
                         cursor: pointer;
                     }
@@ -515,11 +495,11 @@
                     }
 
                     .hero-portrait {
+                        float: left;
                         transition: all 300ms ease-in-out;
                         z-index: 1;
                         vertical-align: top;
                         border-radius: 50%;
-                        position: absolute;
                         width: inherit;
                         height: inherit;
                         filter: brightness(100%);
@@ -534,10 +514,8 @@
                     }
                 }
 
-                & input.h2 {
-                    display: inline-block;
-                    min-width: 85%;
-                    width: auto;
+                input.h2 {
+                    width: 100%;
                 }
                 button {
                     position: absolute;
@@ -756,12 +734,21 @@
 
                     .deck-title {
                         margin-bottom: 30px;
+                        text-align: center;
                         .title-container {
                             margin-bottom: 0px;
+                            text-align: center;
+                            .h2, input {
+                                width: 100%;
+                                text-align: center;
+                            }
                         }
                         .hero-portrait-container {
+                            float: none;
                             width: 85px;
                             height: 85px;
+                            text-align: center;
+                            margin: 0 0 10px 0;
                         }
                     }
                 }
