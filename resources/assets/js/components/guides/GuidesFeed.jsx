@@ -51,6 +51,25 @@ var GuidesFeed = React.createClass({
         if(hasScrollbar) window.addEventListener('scroll', this.handleScroll);
         else window.addEventListener('wheel', this.handleScroll);
     },
+    componentWillMount: function() {
+        var hash = window.location.hash.toLowerCase();
+        if(hash.indexOf('recent') > -1) {
+            this.setState({ selectedType : 'recent' });
+        } else if(hash.indexOf('rated') > -1) {
+            this.setState({ selectedType : 'rated' });
+        } else if(hash.indexOf('views') > -1) {
+            this.setState({ selectedType : 'views' });
+        } else {
+            window.location.hash = '#filter=recent';
+        }
+    },
+    componentDidUpdate: function() {
+        var newHash = '';
+        if(newHash.indexOf('#') < 0) {
+            newHash = '#filter=' + this.state.selectedType;
+        }
+        window.location.hash = newHash;
+    },
     handleScroll: function() {
         var hasScrollbar = window.innerWidth > document.documentElement.clientWidth;
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight || !hasScrollbar) {
@@ -169,6 +188,14 @@ var GuideResults = React.createClass({
         }
         this.props.onSelectedTypeChanged(type);
     },
+    getIndexForType: function() {
+        switch(this.props.selectedType.toLowerCase()) {
+            case 'recent' : return 0; break;
+            case 'rated' : return 1; break;
+            case 'views' : return 2; break;
+            default : return 0;
+        }
+    },
     render: function() {
         var guides = [];
         if(this.props.guides[this.props.selectedType].guides.length > 0) {
@@ -193,7 +220,7 @@ var GuideResults = React.createClass({
             guides.push(<p>Sorry, there are no guides for {type}, <a href="/guides/create">be the first to create one</a></p>);
         }
         return (
-            <Tabs defaultSelected={0} expandable={false} className="padless" onSelectedTabUpdated={this.setSelectedType}>
+            <Tabs defaultSelected={this.getIndexForType()} expandable={false} className="padless" onSelectedTabUpdated={this.setSelectedType}>
                 {/* Recently updated */}
                 <TabPanel title="Most recent">
                     {guides}
