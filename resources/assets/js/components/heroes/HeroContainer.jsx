@@ -96,14 +96,17 @@ var HeroContainer = React.createClass({
         this.setState({ renderParticles: true });
     },
     render: function() {
-        console.log(HERO);
+        var modelClass = this.state.hasFallbackImage ? ' fallback-portrait' : '';
         var modelURL = Helpers.S3URL() + "images/heroes/" + HERO.code + "/cutout.png";
-        console.log("MODEL URL IS:", modelURL);
+        if(Helpers.isClientMobile()) {
+            modelClass = ' mobile-portrait';
+            modelURL = Helpers.S3URL() + "images/heroes" + HERO.code + "/" + HERO.image + "/portrait_medium.png";
+        }
         return(
             <div>
                 <div onMouseOver={this.updateParallax} className="hero-container">
                     <div className="anim-fadeIn" id="hero-model-wrapper">
-                        <div id="hero-model" className={"anim-flicker" + (this.state.hasFallbackImage ? ' fallback-portrait' : '')}>
+                        <div id="hero-model" className={"anim-flicker" + modelClass}>
                             <PreloadImage src={modelURL}
                                           fallbackSrc={Helpers.S3URL() + 'images/heroes/' + HERO.code + '/' + HERO.image + '/portrait_medium.png'}
                                           size="large"

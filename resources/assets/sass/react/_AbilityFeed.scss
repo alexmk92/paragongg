@@ -71,6 +71,15 @@
                     }
                 }
             }
+
+            @media (max-width: $media-mobile) {
+                text-align: center;
+
+                .ability-icon {
+                    margin: 0 auto;
+                    display: block;
+                }
+            }
         }
 
         p {
@@ -130,13 +139,29 @@
             }
         }
         @media (max-width: $media-mobile) {
-            display: block;
+            display: table;
             height: auto;
             overflow: visible;
             padding: 0;
             width: 100%;
-            margin-bottom: 150px;
+            margin-bottom: 50px;
 
+            .text-wrapper {
+                width: 100%;
+                display: table-header-group;
+
+                .text-container {
+                    p {
+                        text-align: center;
+                        margin: 10px 0 25px 0;
+                    }
+                }
+            }
+            .video-wrapper {
+                width: 100%;
+                display: table-footer-group;
+                min-height: 100px;
+            }
             .video-wrapper, .text-wrapper:nth-child(even) {
                 float: none;
                 width: 100%;
