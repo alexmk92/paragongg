@@ -12,7 +12,6 @@ var TabPanel  = Tabbable.TabPanel;
 
 var DeckList = React.createClass({
     getInitialState: function() {
-        console.log(this.props);
         return {
             selectedType: 'recent',
             heroes : this.props.heroes || null,
@@ -42,6 +41,17 @@ var DeckList = React.createClass({
     componentWillMount: function() {
         this.tooltip = new Tooltip();
 
+        var hash = window.location.hash.toLowerCase();
+        if(hash.indexOf('recent') > -1) {
+            this.setState({ selectedType : 'recent' });
+        } else if(hash.indexOf('rated') > -1) {
+            this.setState({ selectedType : 'rated' });
+        } else if(hash.indexOf('views') > -1) {
+            this.setState({ selectedType : 'views' });
+        } else {
+            window.location.hash = '#filter=recent';
+        }
+
         // Bind scroll event
         window.addEventListener('scroll', this.handleScroll);
     },
@@ -57,6 +67,13 @@ var DeckList = React.createClass({
         // Replace the current notification panel.
         this.notificationPanel = new Notification();
         this.notificationPanel.initialiseNotifications();
+    },
+    componentDidUpdate: function() {
+        var newHash = '';
+        if(newHash.indexOf('#') < 0) {
+            newHash = '#filter=' + this.state.selectedType;
+        }
+        window.location.hash = newHash;
     },
     setSelectedType: function(index) {
         var type = '';
@@ -77,7 +94,6 @@ var DeckList = React.createClass({
             if(HERO !== null) {
                 deckURL += '&hero=' + HERO.code;
             }
-            console.log(deckURL);
             Helpers.ajax({
                 type: 'GET',
                 url: deckURL,
@@ -106,29 +122,6 @@ var DeckList = React.createClass({
             this.setState({ decks: decks });
         }
     },
-    /*
-    getResults: function() {
-        if(!this.state.endOfPage && !this.state.fetching) {
-            Helpers.ajax({
-                type: 'GET',
-                url: '/api/v1/decks?skip=' + this.skip + '&take=' + this.take,
-                cache : false
-            }).then(function(decksList) {
-                if(decksList.data.length === 0) {
-                    this.setState({ endOfPage : true });
-                    return;
-                }
-
-                var newDecks = decksList.data.map(function(deck) {
-                    return deck;
-                });
-                this.skip += 10;
-                this.setState({ decks : this.state.decks.concat(newDecks), fetching: false });
-            }.bind(this));
-            this.setState({ fetching: true });
-        }
-    },
-    */
     handleScroll: function() {
         var hasScrollbar = window.innerWidth > document.documentElement.clientWidth;
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight + 50 || !hasScrollbar) {
@@ -153,7 +146,6 @@ var DeckList = React.createClass({
                 // Mutate state for the correc tdeck
                 for(var k in this.state.decks) {
                     if(k === this.state.selectedType) {
-                        console.log(newDecks);
                         newDecks[k].decks = this.state.decks[k].decks.map(function(oldDeck) {
                             if(oldDeck._id === deck._id) {
                                 oldDeck = deck;
@@ -194,12 +186,20 @@ var DeckList = React.createClass({
         if(this.state.decks[this.state.selectedType].endOfPage) jsx = <span><i className="fa fa-check"></i> You've reached the end of the page</span>;
         return jsx;
     },
+    getIndexForSelectedType: function() {
+        switch(this.state.selectedType.toLowerCase()) {
+            case 'recent' : return 0; break;
+            case 'rated' : return 1; break;
+            case 'views' : return 2; break;
+            default : return 0;
+        }
+    },
     render: function() {
         return(
             <div>
                 <HeroPanel title="Hero decks" placeholder="Search by hero name..." showAffinityFilter={false} heroes={HEROES} isActive={true} onHeroSelected={this.onHeroSelected} onHeroesListUpdated={this.heroesListUpdated}  linkType="decks"/>
 
-                <Tabs defaultSelected={0} expandable={false} className="padless" onSelectedTabUpdated={this.setSelectedType}>
+                <Tabs defaultSelected={this.getIndexForSelectedType()} expandable={false} className="padless" onSelectedTabUpdated={this.setSelectedType}>
                     {/* Recently updated */}
                     <TabPanel title="Recently updated">
                         <ul className="main-list">
