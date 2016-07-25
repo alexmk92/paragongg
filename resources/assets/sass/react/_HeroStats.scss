@@ -147,6 +147,16 @@ canvas {
                 box-shadow: 0px 0px 200px 30px rgba(255, 255, 255, 0.15);
             }
 
+            &.mobile-portrait {
+                width: 150px;
+                height: 150px;
+                margin: 0 auto;
+                border-radius: 50%;
+                border: 1px solid #222;
+                box-shadow: 0px 0px 200px 30px rgba(255, 255, 255, 0.15);
+                overflow: hidden;
+            }
+
             .preload-container {
 
                 img {
@@ -203,8 +213,6 @@ canvas {
             max-width: 500px;
             margin-top: 50px;
 
-
-
             h1 {
                 padding-bottom: 25px;
                 margin-bottom: 25px;
@@ -235,6 +243,11 @@ canvas {
                         &:nth-of-type(3) {
                             display: none;
                         }
+                    }
+                }
+                @media (max-width: $media-mobile) {
+                    .attribute {
+                        width: 100%;
                     }
                 }
             }
@@ -273,6 +286,16 @@ canvas {
                             color: #5a606f;
                         }
                     }
+                }
+            }
+            @media (max-width: $media-mobile) {
+                text-align: center;
+                #rank-slider {
+                    display: none; // until we figure out why it bugs on mobile
+                }
+                #stat-container {
+                    text-align: left;
+                    margin-top: 40px; // until we add hero roles
                 }
             }
         }
