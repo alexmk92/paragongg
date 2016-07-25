@@ -59,17 +59,19 @@ var DropDown = React.createClass({
         }
     },
     renderOptionItem: function(option) {
-        return (
-            <li className={ "cols-" + this.props.columns }
-                key={option.name}
-                onClick={ this.optionClicked.bind(this, option) }
-            >
+        if(!Helpers.isNullOrUndefined(option.name)) {
+            return (
+                <li className={ "cols-" + this.props.columns }
+                    key={option.name}
+                    onClick={ this.optionClicked.bind(this, option) }
+                >
                     <span className={ "option " + (option.checked ? "checked" : "") }>
                         <i className={ "pgg " + option.iconName } />
                         { option.name.toUpperCase() }
                     </span>
-            </li>
-        );
+                </li>
+            );
+        }
     },
     renderOptions: function() {
         if(!Helpers.isNullOrUndefined(this.props.options)) {
