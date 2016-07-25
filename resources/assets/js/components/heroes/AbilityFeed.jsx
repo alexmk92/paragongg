@@ -237,18 +237,27 @@ var AbilityItem = React.createClass({
     renderCooldown: function(ability) {
         if(ability.modifiersByLevel) {
             var cooldownString = "";
+            var hasNumber = false;
+            var maxNumbers = 4;
             ability.modifiersByLevel.forEach(function(stat) {
-               if(stat.cooldown) {
+               if(stat.cooldown && maxNumbers > 0) {
                    var num = Helpers.dropZeroesAndDelimitNumbers(stat.cooldown);
-                   if(cooldownString.indexOf(num) < 0)
-                        cooldownString += num + ' / ';
+                   if(cooldownString.indexOf(num) < 0) {
+                       cooldownString += num + ' / ';
+                       maxNumbers--;
+                   }
+                   hasNumber = true;
                }
             });
             cooldownString = cooldownString.substr(0, cooldownString.length - 2);
             cooldownString += ' seconds';
-            return (
-                <span className="ability-cooldown"><i className="fa fa-clock-o" /> { cooldownString }</span>
-            )
+            if(hasNumber) {
+                return (
+                    <span className="ability-cooldown"><i className="fa fa-clock-o" /> { cooldownString }</span>
+                )
+            } else {
+                return <span className="ability-cooldown">Passive</span>
+            }
         }
         return '';
     },
