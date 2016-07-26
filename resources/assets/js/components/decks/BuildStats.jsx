@@ -994,6 +994,18 @@ var BuildStats = React.createClass({
         var hiddenStyle = (!isBuildEmpty) ? {} : { display: "none" };
         if(!isBuildEmpty && this.state.showDeckOverview) isBuildEmpty = true;
 
+        /* ADD THIS UNDER STAT PANEL
+        <ul className="build-tabs">
+            <li key={"build_tab_0"} className={this.state.showDeckOverview ? '' : 'active'} onClick={this.showBuildOverview}>
+                <span>Build Overview</span>
+            </li>
+            <li key={"build_tab_1"} className={this.state.showDeckOverview ? 'active' : ''} onClick={this.showDeckOverview}>
+                <span>Deck Overview</span>
+            </li>
+        </ul>
+        <br/>
+        */
+
         var affinityWeightingData = this.getAffinityWeighting();
         var statComparisonData = this.getComparisonData();
         if(statComparisonData !== null) {
@@ -1015,15 +1027,7 @@ var BuildStats = React.createClass({
                     { emptyBuildWarning }
 
                     <div id="chart-wrapper" className="cf">
-                        <ul className="build-tabs">
-                            <li key={"build_tab_0"} className={this.state.showDeckOverview ? '' : 'active'} onClick={this.showBuildOverview}>
-                                <span>Build Overview</span>
-                            </li>
-                            <li key={"build_tab_1"} className={this.state.showDeckOverview ? 'active' : ''} onClick={this.showDeckOverview}>
-                                <span>Deck Overview</span>
-                            </li>
-                        </ul>
-                        <br/>
+
                         <div className="chart left">
                             <h3 style={{marginBottom: '25px'}}>{ isBuildEmpty ? "Deck " : "Build " }
                                 Composition</h3>
