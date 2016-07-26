@@ -491,19 +491,22 @@ var Build = React.createClass({
     },
     bindCardToSlot: function(index, event) {
         if(Helpers.isNullOrUndefined(event)) return;
-
         event.preventDefault();
+        var elem = event.target;
+
+        console.log("ELEM IS: ", elem);
+
         this.lastModifiedSlot = index;
         this.currentBindIndex = index;
 
-        if(event.target.className.indexOf("fa-trash") > -1 || this.lastSelectedSlot === index) {
+        if(elem.className.indexOf("fa-trash") > -1 || this.lastSelectedSlot === index) {
             this.lastSelectedSlot = -1;
         } else {
             this.lastSelectedSlot = index;
         }
 
         if(this.props.selectedCard !== null) {
-            if(this.props.selectedCard.type !== "Upgrade" && ((event.target.className.indexOf("glow-layer") > -1 || event.target.className.indexOf("delete-wrapper") > -1 || event.target.className.indexOf("fa-refresh") > -1))) {
+            if(this.props.selectedCard.type !== "Upgrade" && ((elem.className.indexOf("glow-layer") > -1 || elem.className.indexOf("delete-wrapper") > -1 || elem.className.indexOf("fa-refresh") > -1))) {
                 this.bindCard(index);
                 this.lastSelectedSlot = -1;
             } else if(this.props.selectedCard.type === "Upgrade") {
@@ -511,13 +514,16 @@ var Build = React.createClass({
                 this.props.build.slots.forEach(function(slot, i) {
                     if(i === index) bindSlot = slot;
                 });
-                if(event.target.className.indexOf("glow-layer") > -1 || event.target.className.indexOf("delete-wrapper") > -1)
-                    this.bindUpgradeToCard(bindSlot, bindSlot.card, true)
+                console.log("Checking upgrade");
+                if(elem.className.indexOf("glow-layer") > -1 || elem.className.indexOf("delete-wrapper") > -1)
+                    this.bindUpgradeToCard(bindSlot, bindSlot.card, true);
+                console.log("Bound upgrade");
                 this.lastSelectedSlot = -1;
             }
         } else if(Helpers.isClientMobile()) {
             var slot = this.props.build.slots[index];
-            var elem = event.target;
+            console.log("Getting the event target");
+            console.log("Got the event target");
             if(!slot.card) {
                 if(Helpers.hasClass(elem, "glow-layer")) this.requestActiveTab(0, index, "EQUIPMENT");
             } else if(slot.card && this.lastSelectedSlot === index) {
@@ -539,12 +545,6 @@ var Build = React.createClass({
         }
 
         this.lastModifiedSlot = index;
-
-        if(event.target.className.indexOf("fa-trash") > -1) {
-            this.lastSelectedSlot = -1;
-        } else {
-            this.lastSelectedSlot = index;
-        }
 
         if(this.validateQuantity(false) && this.validateSlot(index)) {
             var newSlots = this.props.build.slots;
