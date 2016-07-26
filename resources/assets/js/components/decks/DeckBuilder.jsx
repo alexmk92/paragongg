@@ -269,7 +269,7 @@ var DeckBuilder = React.createClass({
     },
     /** TOOLTIP FUNCTIONS **/
     setTooltipContent: function(card) {
-        if(card && !this.isDragging)
+        if(card && !this.isDragging && !Helpers.isClientMobile())
         {
             if(this.state.selectedCard !== null && (card.code === this.state.selectedCard.code)) {
                 return false;
@@ -298,7 +298,7 @@ var DeckBuilder = React.createClass({
         }
     },
     showTooltip: function(card) {
-        if(card && !this.isDragging) {
+        if(card && !this.isDragging && !Helpers.isClientMobile()) {
             if(this.state.selectedCard !== null && (card.code === this.state.selectedCard.code)) {
                 return false;
             }

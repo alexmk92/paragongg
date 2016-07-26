@@ -62,6 +62,7 @@ var CardsFilter = React.createClass({
     },
     componentWillMount: function() {
         this.tooltip = this.props.tooltip || new Tooltip();
+        
         // Get filter affinities from URL:
         this.filterWasReset = false;
 
@@ -599,6 +600,8 @@ var CardsFilter = React.createClass({
         this.props.onFilterChanged(cards, this.state.costOrder);
     },
     setTooltipContent: function(card) {
+        if(Helpers.isClientMobile()) return;
+
         var content = (
             <div className="pgg-tooltip pgg-tooltip-card">
                 <div className="card-head">
@@ -619,9 +622,11 @@ var CardsFilter = React.createClass({
         ReactDOM.render(content, tooltip);
     },
     showTooltip: function() {
+        if(Helpers.isClientMobile()) return;
         this.tooltip.showTooltip();
     },
     hideTooltip: function() {
+        if(Helpers.isClientMobile()) return;
         this.tooltip.hideTooltip();
     },
     resetCardFilter: function() {
