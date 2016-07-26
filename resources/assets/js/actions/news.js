@@ -10,4 +10,4 @@ module.exports = {
            callback(null, payload.data);
         });
     }
-}
+};

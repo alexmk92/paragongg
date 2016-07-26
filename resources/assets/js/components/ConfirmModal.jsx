@@ -5,10 +5,6 @@ var ConfirmModal = React.createClass({
     componentWillMount: function() {
         this.deferred = new Q.defer();
     },
-    componentWillUnmount: function() {
-        // Do any disposing here
-        //console.log("UNMOUNTED MODAL");
-    },
     cancel: function() {
         return this.deferred.reject("Modal Cancelled");
     },

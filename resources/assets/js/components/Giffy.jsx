@@ -12,9 +12,6 @@ var Giffy = React.createClass({
             if(video && video.poster) {
                 if(video.poster.indexOf(this.props.videoSrc) > -1 && this.props.isPlaying === false && index === this.props.videoIndex) {
                     video.pause();
-                    // IF WE WANT TO RESTART VIDEO>?
-                    //video.currentTime = 0;
-                    //video.load();
                 }
             }
         }.bind(this));
