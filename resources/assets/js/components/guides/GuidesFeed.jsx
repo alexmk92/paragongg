@@ -50,8 +50,7 @@ var GuidesFeed = React.createClass({
         var hasScrollbar = window.innerWidth > document.documentElement.clientWidth;
         if(hasScrollbar) window.addEventListener('scroll', this.handleScroll);
         else window.addEventListener('wheel', this.handleScroll);
-    },
-    componentWillMount: function() {
+
         var hash = window.location.hash.toLowerCase();
         if(hash.indexOf('recent') > -1) {
             this.setState({ selectedType : 'recent' });
@@ -71,8 +70,9 @@ var GuidesFeed = React.createClass({
         window.location.hash = newHash;
     },
     handleScroll: function() {
-        var hasScrollbar = window.innerWidth > document.documentElement.clientWidth;
+        var hasScrollbar = window.innerHeight > document.documentElement.clientHeight;
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight || !hasScrollbar) {
+            console.log("GETTING RESULTS");
             this.getResults();
         }
     },
