@@ -214,7 +214,8 @@ module.exports = {
     hashCode : function(str) {
         return str.split('').reduce(function (prevHash, currVal) {
             return (prevHash << 5) - prevHash + currVal.charCodeAt(0);
-        }, 0);    },
+        }, 0);
+    },
     delimitNumbers : function(str) {
         return (str + "").replace(/\b(\d+)((\.\d+)*)\b/g, function(a, b, c) {
             return (b.charAt(0) > 0 && !(c || ".").lastIndexOf(".") ? b.replace(/(\d)(?=(\d{3})+$)/g, "$1,") : b) + c;
@@ -334,7 +335,7 @@ module.exports = {
         // Allows us to run the mobile code on desktop for dev purposes.
 
         if(!check)
-            check = window.innerWidth <= 600;
+            check = window.innerWidth <= 900;
 
 
         return check;

@@ -40,8 +40,7 @@ var BuildStats = React.createClass({
     },
     getComparison: function(newComparisons, build) {
         // Get comparison data for deck
-        if(Helpers.isNullOrUndefined(build)) {
-            console.log(this.props);
+        if(this.isSelectedBuildEmpty(build)) {
             this.props.cards.all.forEach(function(card) {
                 if(card) {
                     card.effects.map(function(effect) {
@@ -62,29 +61,30 @@ var BuildStats = React.createClass({
                 }
             }.bind(this));
             return newComparisons;
+        } else {
+            // Get comparison data for the selected build
+            build.slots.forEach(function(slot) {
+                if(slot.card) {
+                    slot.card.effects.map(function(effect) {
+                        var statString = "";
+                        if(effect.stat) statString = effect.stat.toUpperCase();
+                        if(effect.description) statString = effect.description.toUpperCase();
+                        var statCategory = Helpers.getStatisticCategory(statString);
+
+                        // Always add a DPS field
+                        if(!this.doesCategoryExistInArray("DPS", newComparisons)) {
+                            if(statCategory !== "") newComparisons.push({ label : "DPS" });
+                        }
+
+                        if(!this.doesCategoryExistInArray(statCategory, newComparisons)) {
+                            if(statCategory !== "")
+                                newComparisons.push({ label : statCategory });
+                        }
+                    }.bind(this));
+                }
+            }.bind(this));
+            return newComparisons;
         }
-        // Get comparison data for the selected build
-        build.slots.forEach(function(slot) {
-            if(slot.card) {
-                slot.card.effects.map(function(effect) {
-                    var statString = "";
-                    if(effect.stat) statString = effect.stat.toUpperCase();
-                    if(effect.description) statString = effect.description.toUpperCase();
-                    var statCategory = Helpers.getStatisticCategory(statString);
-
-                    // Always add a DPS field
-                    if(!this.doesCategoryExistInArray("DPS", newComparisons)) {
-                        if(statCategory !== "") newComparisons.push({ label : "DPS" });
-                    }
-
-                    if(!this.doesCategoryExistInArray(statCategory, newComparisons)) {
-                        if(statCategory !== "")
-                            newComparisons.push({ label : statCategory });
-                    }
-                }.bind(this));
-            }
-        }.bind(this));
-        return newComparisons;
     },
     doesCategoryExistInArray: function(category, comparisons) {
         var found = false;
@@ -367,8 +367,9 @@ var BuildStats = React.createClass({
         if(baseStats === null) return null;
 
         var stat = this.state.comparisons[this.state.compareIndex];
+        var emptyBuild = this.isSelectedBuildEmpty(this.props.selectedBuild);
         var comparisonData = {
-            chartHeight: Helpers.isNullOrUndefined(this.props.selectedBuild) ? 80 : 120,
+            chartHeight: emptyBuild ? 80 : 120,
             chartColors : ["#343a4a", "#42a9e8"],
             max : 0,
             parts : [],
@@ -379,7 +380,8 @@ var BuildStats = React.createClass({
 
         // Get build details
         if(stat) {
-            // TODO If not builds exist, then we will show deck stats
+            // TODO This could probably be reformatted to only use DPS as an edge case, other stats
+            // could be analysed independently
             var build = this.props.selectedBuild;
 
             if(stat.label === "DPS") {
@@ -475,7 +477,7 @@ var BuildStats = React.createClass({
                 maxTotal = maxTotal > total ? maxTotal : total;
 
                 if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
-                if(!Helpers.isNullOrUndefined(this.props.selectedBuild)) {
+                if(!emptyBuild) {
                     comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
                 } else {
                     comparisonData.data.push({ data : [maxTotal] });
@@ -497,7 +499,7 @@ var BuildStats = React.createClass({
                 maxTotal = maxTotal > total ? maxTotal : total;
 
                 if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
-                if(!Helpers.isNullOrUndefined(this.props.selectedBuild)) {
+                if(!emptyBuild) {
                     comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
                 } else {
                     comparisonData.data.push({ data : [maxTotal] });
@@ -511,7 +513,7 @@ var BuildStats = React.createClass({
             } else if(stat.label === "HEALTH") {
                 var total = (baseStats.max_health.value + (baseStats.max_health.scaling * this.state.currentRank)) || 0;
                 var maxTotal = total;
-                if(!Helpers.isNullOrUndefined(this.props.selectedBuild)) {
+                if(!emptyBuild) {
                     total = this.recurseSlotsAndGetValue(build, total, "HEALTH");
                 }
 
@@ -519,7 +521,7 @@ var BuildStats = React.createClass({
                 maxTotal = maxTotal > total ? maxTotal : total;
 
                 if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
-                if(!Helpers.isNullOrUndefined(this.props.selectedBuild)) {
+                if(!emptyBuild) {
                     comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
                 } else {
                     comparisonData.data.push({ data : [maxTotal] });
@@ -533,7 +535,7 @@ var BuildStats = React.createClass({
                 var total = (baseStats.energy_armor.value + (baseStats.energy_armor.scaling * this.state.currentRank)) || 0;
                 total += (baseStats.physical_armor.value + (baseStats.physical_armor.scaling * this.state.currentRank)) || 0;
                 var maxTotal = total;
-                if(!Helpers.isNullOrUndefined(this.props.selectedBuild)) {
+                if(!emptyBuild) {
                     total = this.recurseSlotsAndGetValue(build, total, "MITIGATION");
                 }
 
@@ -541,7 +543,7 @@ var BuildStats = React.createClass({
                 maxTotal = maxTotal > total ? maxTotal : total;
 
                 if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
-                if(!Helpers.isNullOrUndefined(this.props.selectedBuild)) {
+                if(!emptyBuild) {
                     comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
                 } else {
                     comparisonData.data.push({ data : [maxTotal] });
@@ -554,7 +556,7 @@ var BuildStats = React.createClass({
             } else if(stat.label === "MANA") {
                 var total = (baseStats.max_health.value + (baseStats.max_health.scaling * this.state.currentRank)) || 0;
                 var maxTotal = total;
-                if(!Helpers.isNullOrUndefined(this.props.selectedBuild)) {
+                if(!emptyBuild) {
                     total = this.recurseSlotsAndGetValue(build, total, "MANA");
                 }
 
@@ -562,7 +564,7 @@ var BuildStats = React.createClass({
                 maxTotal = maxTotal > total ? maxTotal : total;
 
                 if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
-                if(!Helpers.isNullOrUndefined(this.props.selectedBuild)) {
+                if(!emptyBuild) {
                     comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
                 } else {
                     comparisonData.data.push({ data : [maxTotal] });
@@ -575,7 +577,7 @@ var BuildStats = React.createClass({
             } else if(stat.label === "PENETRATION") {
                 var total = (baseStats.max_health.value + (baseStats.max_health.scaling * this.state.currentRank)) || 0;
                 var maxTotal = total;
-                if(!Helpers.isNullOrUndefined(this.props.selectedBuild)) {
+                if(!emptyBuild) {
                     total = this.recurseSlotsAndGetValue(build, total, "PENETRATION");
                 }
 
@@ -583,7 +585,7 @@ var BuildStats = React.createClass({
                 maxTotal = maxTotal > total ? maxTotal : total;
 
                 if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
-                if(!Helpers.isNullOrUndefined(this.props.selectedBuild)) {
+                if(!emptyBuild) {
                     comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
                 } else {
                     comparisonData.data.push({ data : [maxTotal] });
@@ -596,7 +598,7 @@ var BuildStats = React.createClass({
             } else if(stat.label === "CDR") {
                 var total = (baseStats.cooldown_reduction.value + (baseStats.cooldown_reduction.scaling * this.state.currentRank)) || 0;
                 var maxTotal = total;
-                if(!Helpers.isNullOrUndefined(this.props.selectedBuild)) {
+                if(!emptyBuild) {
                     total = this.recurseSlotsAndGetValue(build, total, "CDR");
                 }
 
@@ -604,7 +606,7 @@ var BuildStats = React.createClass({
                 maxTotal = maxTotal > total ? maxTotal : total;
 
                 if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
-                if(!Helpers.isNullOrUndefined(this.props.selectedBuild)) {
+                if(!emptyBuild) {
                     comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
                 } else {
                     comparisonData.data.push({ data : [maxTotal] });
@@ -617,7 +619,7 @@ var BuildStats = React.createClass({
             } else if(stat.label === "LIFESTEAL") {
                 var total = (baseStats.lifesteal.value + (baseStats.lifesteal.scaling * this.state.currentRank)) || 0;
                 var maxTotal = total;
-                if(!Helpers.isNullOrUndefined(this.props.selectedBuild)) {
+                if(!emptyBuild) {
                     total = this.recurseSlotsAndGetValue(build, total, "LIFESTEAL");
                 }
 
@@ -625,7 +627,7 @@ var BuildStats = React.createClass({
                 maxTotal = maxTotal > total ? maxTotal : total;
 
                 if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
-                if(!Helpers.isNullOrUndefined(this.props.selectedBuild)) {
+                if(!emptyBuild) {
                     comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
                 } else {
                     comparisonData.data.push({ data : [maxTotal] });
@@ -639,7 +641,7 @@ var BuildStats = React.createClass({
                 var total = (baseStats.crit_chance.value + (baseStats.crit_chance.scaling * this.state.currentRank)) || 0;
                 //total += (baseStats.crit_bonus.value + (baseStats.crit_bonus.scaling * this.state.currentRank)) || 0;
                 var maxTotal = total;
-                if(!Helpers.isNullOrUndefined(this.props.selectedBuild)) {
+                if(!emptyBuild) {
                     total = this.recurseSlotsAndGetValue(build, total, "CRIT");
                 }
 
@@ -647,7 +649,7 @@ var BuildStats = React.createClass({
                 maxTotal = maxTotal > total ? maxTotal : total;
 
                 if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
-                if(!Helpers.isNullOrUndefined(this.props.selectedBuild)) {
+                if(!emptyBuild) {
                     comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
                 } else {
                     comparisonData.data.push({ data : [maxTotal] });
@@ -661,7 +663,7 @@ var BuildStats = React.createClass({
                 var total = (baseStats.physical_armor.value + (baseStats.physical_armor.scaling * this.state.currentRank)) || 0;
                 total += (baseStats.energy_armor.value + (baseStats.energy_armor.scaling * this.state.currentRank)) || 0;
                 var maxTotal = total;
-                if(!Helpers.isNullOrUndefined(this.props.selectedBuild)) {
+                if(!emptyBuild) {
                     total = this.recurseSlotsAndGetValue(build, total, "MITIGATION");
                 }
 
@@ -669,7 +671,7 @@ var BuildStats = React.createClass({
                 maxTotal = maxTotal > total ? maxTotal : total;
 
                 if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
-                if(!Helpers.isNullOrUndefined(this.props.selectedBuild)) {
+                if(!emptyBuild) {
                     comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
                 } else {
                     comparisonData.data.push({ data : [maxTotal] });
@@ -682,7 +684,7 @@ var BuildStats = React.createClass({
             } else if(stat.label === "ATTACK SPEED") {
                 var total = (baseStats.attack_speed.value + (baseStats.attack_speed.scaling * this.state.currentRank)) || 0;
                 var maxTotal = total;
-                if(!Helpers.isNullOrUndefined(this.props.selectedBuild)) {
+                if(!emptyBuild) {
                     total = this.recurseSlotsAndGetValue(build, total, "ATTACK SPEED") / 100;
                 }
 
@@ -691,7 +693,7 @@ var BuildStats = React.createClass({
                 maxTotal = maxTotal > total ? maxTotal : total;
 
                 if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
-                if(!Helpers.isNullOrUndefined(this.props.selectedBuild)) {
+                if(!emptyBuild) {
                     comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
                 } else {
                     comparisonData.data.push({ data : [maxTotal] });
@@ -704,7 +706,7 @@ var BuildStats = React.createClass({
             } else if(stat.label === "PHYSICAL DAMAGE") {
                 var total = (baseStats.physical_damage.value + (baseStats.physical_damage.scaling * this.state.currentRank)) || 0;
                 var maxTotal = total;
-                if(!Helpers.isNullOrUndefined(this.props.selectedBuild)) {
+                if(!emptyBuild) {
                     total = this.recurseSlotsAndGetValue(build, total, "PHYSICAL DAMAGE");
                 }
 
@@ -712,7 +714,7 @@ var BuildStats = React.createClass({
                 maxTotal = maxTotal > total ? maxTotal : total;
 
                 if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
-                if(!Helpers.isNullOrUndefined(this.props.selectedBuild)) {
+                if(!emptyBuild) {
                     comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
                 } else {
                     comparisonData.data.push({ data : [maxTotal] });
@@ -725,7 +727,7 @@ var BuildStats = React.createClass({
             } else if(stat.label === "ENERGY DAMAGE") {
                 var total = (baseStats.energy_damage.value + (baseStats.energy_damage.scaling * this.state.currentRank)) || 0;
                 var maxTotal = total;
-                if(!Helpers.isNullOrUndefined(this.props.selectedBuild)) {
+                if(!emptyBuild) {
                     total = this.recurseSlotsAndGetValue(build, total, "ENERGY DAMAGE");
                 }
 
@@ -733,7 +735,7 @@ var BuildStats = React.createClass({
                 maxTotal = maxTotal > total ? maxTotal : total;
 
                 if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
-                if(!Helpers.isNullOrUndefined(this.props.selectedBuild)) {
+                if(!emptyBuild) {
                     comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
                 } else {
                     comparisonData.data.push({ data : [maxTotal] });
@@ -778,7 +780,7 @@ var BuildStats = React.createClass({
         var maxCards = this.props.cards.all.length;
 
         // On a null build, show deck affinity weighting
-        if (Helpers.isNullOrUndefined(this.props.selectedBuild) || this.props.selectedBuild.slots.length === 0) {
+        if (this.isSelectedBuildEmpty(this.props.selectedBuild) || this.props.selectedBuild.slots.length === 0) {
             this.props.cards.all.forEach(function (card) {
                 // Push for maximum possible:
                 if (typeof affinityCounts[card.affinity] === "undefined") {
@@ -837,6 +839,15 @@ var BuildStats = React.createClass({
 
         return comparisonData;
     },
+    isSelectedBuildEmpty: function(build) {
+        if(Helpers.isNullOrUndefined(build)) return true;
+        var empty = true;
+        build.slots.some(function(slot) {
+            if(slot.card) empty = false;
+            return empty;
+        });
+        return empty;
+    },
     getOverviewData: function() {
         var spiderChartData = {
             categories: [],
@@ -848,7 +859,8 @@ var BuildStats = React.createClass({
             if(comparisonData.label !== "DPS") spiderChartData.categories.push(comparisonData.label);
         });
 
-        if(this.props.builds.length > 0) {
+        var emptyBuild = this.isSelectedBuildEmpty(this.props.selectedBuild);
+        if(this.props.builds.length > 0 && !emptyBuild) {
             var data = [];
             if(this.props.selectedBuild && !this.state.compareAllBuilds) {
                 data.push({
@@ -887,7 +899,7 @@ var BuildStats = React.createClass({
                         }.bind(this))
                     }
                 }.bind(this));
-            } else if(this.props.builds.length > 0 && this.state.compareAllBuilds) {
+            } else if(this.state.compareAllBuilds) {
                 this.props.builds.forEach(function(build, index) {
                     var title = build.title === "" ? ("Untitled Deck " + index) : build.title;
                     data.push({
@@ -929,7 +941,7 @@ var BuildStats = React.createClass({
             }
             spiderChartData.data = data;
         }
-        if(Helpers.isNullOrUndefined(this.props.selectedBuild)) {
+        else if(Helpers.isNullOrUndefined(this.props.selectedBuild) || emptyBuild) {
             data = [];
             data.push({
                 name : "",
@@ -966,8 +978,14 @@ var BuildStats = React.createClass({
     },
     render: function() {
 
-        var hiddenStyle = this.props.builds.length > 0 ? {} : { display: "none" };
-        var hiddenClass = this.props.builds.length > 0 ? "" : "hidden";
+        var isBuildEmpty = this.isSelectedBuildEmpty(this.props.selectedBuild);
+        console.log(isBuildEmpty);
+        var emptyBuildWarning = '';
+        if(this.props.builds.length > 0 && isBuildEmpty) {
+            emptyBuildWarning = <blockquote>This build has no cards, we are therefore showing stats possible for this deck.</blockquote>
+        }
+
+        var hiddenStyle = (!isBuildEmpty) ? {} : { display: "none" };
 
         var affinityWeightingData = this.getAffinityWeighting();
         var statComparisonData = this.getComparisonData();
@@ -978,7 +996,7 @@ var BuildStats = React.createClass({
                 <div>
                     <div id="deck-stat-container" style={hiddenStyle}>
                         <div id="statistic-title-wrapper">
-                            <h3>{ this.props.selectedBuild !== null ? "Build" : "Deck" } statistics</h3>
+                            <h3>{ isBuildEmpty !== null ? "Build" : "Deck" } statistics</h3>
                             <div id="rank-slider">
                                 <Rcslider defaultValue={1} min={1} max={15} onChange={this.sliderChanged}
                                           tipFormatter={null}/>
@@ -987,9 +1005,11 @@ var BuildStats = React.createClass({
                         { this.renderStatPanel() }
                     </div>
 
+                    { emptyBuildWarning }
+
                     <div id="chart-wrapper" className="cf">
                         <div className="chart left">
-                            <h3 style={{marginBottom: '25px'}}>{ Helpers.isNullOrUndefined(this.props.selectedBuild) ? "Deck " : "Build " }
+                            <h3 style={{marginBottom: '25px'}}>{ isBuildEmpty ? "Deck " : "Build " }
                                 Composition</h3>
                             <SpiderWebChart requireModuleDependencies={this.props.requireModuleDependencies}
                                             updateTarget={this.state.updateTarget} type="BUILD-OVERVIEW"
@@ -997,7 +1017,7 @@ var BuildStats = React.createClass({
                         </div>
                         <div className="chart right">
                             <div className="chart stacked">
-                                <h3>{ Helpers.isNullOrUndefined(this.props.selectedBuild) ? "Deck Statistics" : "Build Comparison" }  <SelectBox
+                                <h3>{ isBuildEmpty ? "Deck Statistics" : "Build Comparison" }  <SelectBox
                                     optionSelectedAtIndex={this.updateComparisonType} label="compare:"
                                     value={this.state.comparisons[this.state.compareIndex] ? this.state.comparisons[this.state.compareIndex].label : ""}
                                     items={this.state.comparisons}/></h3>
@@ -1008,7 +1028,7 @@ var BuildStats = React.createClass({
                                                     series={statComparisonData}/>
                             </div>
                             <div className="chart stacked">
-                                <h3>{ Helpers.isNullOrUndefined(this.props.selectedBuild) ? "Deck" : "Build" } Affinity Weighting</h3>
+                                <h3>{ isBuildEmpty ? "Deck" : "Build" } Affinity Weighting</h3>
                                 <HorizontalBarChart updateTarget={this.state.updateTarget} type="AFFINITY-WEIGHTING"
                                                     container="affinity-weighting-container"
                                                     max={affinityWeightingData.max} useValue={false}
