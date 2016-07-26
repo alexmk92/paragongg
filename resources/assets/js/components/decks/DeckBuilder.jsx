@@ -20,9 +20,9 @@ var DeckBuilder = React.createClass({
             deck: [],
             builds: [],
             selectedHero : HEROES[0],
+            cardCount : 0,
 
             affinities: [],
-            modal: false,
             addedCard : false,
             showCardSection: false,
             quickBind: false,
@@ -36,7 +36,7 @@ var DeckBuilder = React.createClass({
             lastModifiedSlot: null,
             isBuildsPanelShowing : false,
             isMobileSearchShowing: false,
-            activeTab: Helpers.isClientMobile() ? -1 : 0
+            activeTab: this.isClientMobile ? -1 : 0
         }
     },
     onDraggableDataSourceChanged: function(data, type) {
@@ -46,11 +46,12 @@ var DeckBuilder = React.createClass({
     },
     componentWillMount: function() {
         // Replace the current notification panel.
+        this.isClientMobile = Helpers.isClientMobile();
         this.isDragging = false;
         this.deckList = null;
         this.updateDeckList = false;
         this.notificationPanel = new Notification();
-        if(Helpers.isClientMobile()) {
+        if(this.isClientMobile) {
             this.setState({ activeTab: -1 })
         }
     },
@@ -76,7 +77,7 @@ var DeckBuilder = React.createClass({
                 playFlashTabAnimation: false
             })
         }
-        if(!Helpers.isClientMobile()) this.refs.deckNameInput.focus();
+        if(!this.isClientMobile) this.refs.deckNameInput.focus();
 
         this.lastDeletedCard = null;
         this.placementSlotIndex = -1;
@@ -164,7 +165,7 @@ var DeckBuilder = React.createClass({
         this.deckList = null;
         this.hideTooltip();
         this.draggableBuilds.setDataSource(this.state.builds, false);
-        if(this.lastHoveredCard && !Helpers.isClientMobile()) {
+        if(this.lastHoveredCard && !this.isClientMobile) {
             this.setTooltipContent(this.lastHoveredCard);
         }
     },
@@ -223,7 +224,7 @@ var DeckBuilder = React.createClass({
 
             var json = JSON.stringify(deckAndBuilds);
 
-            if(typeof CURRENT_DECK !== "undefined" && CURRENT_DECK) {
+            if(Helpers.isNullOrUndefined(CURRENT_DECK)) {
                 Helpers.post("/decks/edit/" + CURRENT_DECK._id, { data : json });
             } else {
                 Helpers.post("/decks/create", { data : json });
@@ -231,24 +232,15 @@ var DeckBuilder = React.createClass({
         }
     },
     updateViewForDimensions: function() {
+        this.isClientMobile = Helpers.isClientMobile();
         var sidebar = document.querySelector("#sidebar");
         var selectedCardWrapper = document.querySelector("#selected-card-wrapper");
 
-        if(!Helpers.isClientMobile()) {
+        if(!this.isClientMobile) {
             document.body.className = "";
             if(selectedCardWrapper) {
                 selectedCardWrapper.className = "";
             }
-            /*
-             if(sidebar) {
-             sidebar.className = "fixed-desktop";
-
-             // COMPUTE THE RIGHT HAND MARGIN
-             var containerRect = document.querySelector("#deck-builder").getBoundingClientRect();
-             var newRight = (containerRect.right - containerRect.width) - 20;
-             sidebar.style.right = newRight + "px";
-             }
-             */
             if(this.state.activeTab === -1) {
                 this.setState({ activeTab : 0 });
             }
@@ -256,20 +248,16 @@ var DeckBuilder = React.createClass({
             if(sidebar) {
                 if(sidebar.className !== "hidden")
                     sidebar.className = "";
-                sidebar.style.right = "0";
+                    sidebar.style.right = "0";
             }
             if(selectedCardWrapper && this.state.selectedCard) {
                 selectedCardWrapper.className = "visible";
             }
         }
     },
-    toggleModal: function() {
-        var modal = this.state.modal ? false : true;
-        this.setState({modal: modal});
-    },
     /** TOOLTIP FUNCTIONS **/
     setTooltipContent: function(card) {
-        if(card && !this.isDragging && !Helpers.isClientMobile())
+        if(card && !this.isDragging && !this.isClientMobile)
         {
             if(this.state.selectedCard !== null && (card.code === this.state.selectedCard.code)) {
                 return false;
@@ -298,7 +286,7 @@ var DeckBuilder = React.createClass({
         }
     },
     showTooltip: function(card) {
-        if(card && !this.isDragging && !Helpers.isClientMobile()) {
+        if(card && !this.isDragging && !this.isClientMobile) {
             if(this.state.selectedCard !== null && (card.code === this.state.selectedCard.code)) {
                 return false;
             }
@@ -328,14 +316,6 @@ var DeckBuilder = React.createClass({
         this.isDragging = false;
         this.draggableBuilds.endDrag(e);
     },
-    /** CARD FUNCTIONS **/
-    deckCount: function() {
-        var count = 0;
-        this.state.deck.forEach(function(card) {
-            count += card.quantity;
-        });
-        return count;
-    },
     validateHelix: function(selectedCard) {
         var valid = true;
         if(selectedCard.type === 'Prime') {
@@ -351,7 +331,7 @@ var DeckBuilder = React.createClass({
             return;
         }
 
-        if(this.deckCount() < 40) {
+        if(this.state.cardCount < 40) {
             if(!selectedCard.quantity)
                 selectedCard.quantity = 1;
             var newDeck = [];
@@ -373,7 +353,8 @@ var DeckBuilder = React.createClass({
                 deck : newDeck,
                 addedCard: true,
                 lastSelectedCard : selectedCard,
-                playFlashAnimation: true
+                playFlashAnimation: true,
+                cardCount: this.state.cardCount + 1
             });
         } else {
             this.notificationPanel.addNotification("warning", "Your deck is full!");
@@ -397,7 +378,7 @@ var DeckBuilder = React.createClass({
              }
              */
 
-            if(this.placementSlotIndex != -1 && Helpers.isClientMobile()) {
+            if(this.placementSlotIndex != -1 && this.isClientMobile) {
                 this.hideSelectedCardPopup();
                 this.setState({selectedCard: null, playFlashAnimation: false, activeTab: -1});
             }
@@ -410,7 +391,7 @@ var DeckBuilder = React.createClass({
             } else {
                 this.showSelectedCardPopup();
                 var activeTab = this.state.activeTab;
-                if(this.state.isBuildsPanelShowing && Helpers.isClientMobile()) {
+                if(this.state.isBuildsPanelShowing && this.isClientMobile) {
                     activeTab = -1;
                 }
                 this.setState({selectedCard: card, playFlashAnimation: false, activeTab: activeTab});
@@ -418,7 +399,7 @@ var DeckBuilder = React.createClass({
 
         }
     },
-    deleteCardFromDeck : function(cardToDelete, event) {
+    deleteCardFromDeck: function(cardToDelete, event) {
         if(Helpers.isNullOrUndefined(event)) return;
 
         event.preventDefault();
@@ -463,7 +444,8 @@ var DeckBuilder = React.createClass({
             selectedCard : newSelectedCard,
             selectedBuild : newSelectedBuild,
             activeTab: newActiveTab,
-            isBuildsPanelShowing: newIsBuildsPanelShowing
+            isBuildsPanelShowing: newIsBuildsPanelShowing,
+            cardCount: (this.state.cardCount-1 < 0) ? 0 : this.state.cardCount-1
         });
     },
     updateBuildsWithNewDeck: function(newDeck) {
@@ -599,7 +581,7 @@ var DeckBuilder = React.createClass({
     },
     renderDeckList: function() {
         var editDeckButton = "";
-        if(Helpers.isClientMobile() && (this.state.isBuildsPanelShowing)) {
+        if(this.isClientMobile && (this.state.isBuildsPanelShowing)) {
             editDeckButton = (
                 <button onClick={this.toggleBuildView.bind(this, false, "edit-button-mobile")}
                         name="publish"
@@ -643,7 +625,7 @@ var DeckBuilder = React.createClass({
                     </ul>
                 </div>
             );
-        } else if(Helpers.isClientMobile() && this.deckOptionFilter && this.deckOptionFilter === "UPGRADES") {
+        } else if(this.isClientMobile && this.deckOptionFilter && this.deckOptionFilter === "UPGRADES") {
             return(
                 <div className={ "sidebox panel cf " + this.isActiveTab(0) }>
                     { editDeckButton }
@@ -653,7 +635,7 @@ var DeckBuilder = React.createClass({
                     </ul>
                 </div>
             );
-        } else if(Helpers.isClientMobile() && this.deckOptionFilter && this.deckOptionFilter === "EQUIPMENT") {
+        } else if(this.isClientMobile && this.deckOptionFilter && this.deckOptionFilter === "EQUIPMENT") {
             return(
                 <div className={ "sidebox panel cf " + this.isActiveTab(0) }>
                     { editDeckButton }
@@ -812,7 +794,7 @@ var DeckBuilder = React.createClass({
 
                     if(types[0] === "Upgrade" && !this.validateCardType(this.state.selectedCard, card)) {
                         className += " invalid";
-                        if(Helpers.isClientMobile())
+                        if(this.isClientMobile)
                             shouldHideCard = true;
                     }
                 }
@@ -866,7 +848,7 @@ var DeckBuilder = React.createClass({
             if(this.state.selectedBuild === build) {
                 newActiveTab = 0;
             }
-            if(Helpers.isClientMobile() && (build === this.state.selectedBuild)) {
+            if(this.isClientMobile && (build === this.state.selectedBuild)) {
                 newActiveTab = -1;
             }
             this.setState({selectedBuild: build, playFlashAnimation: false, isBuildsPanelShowing: true, activeTab: newActiveTab });
@@ -890,7 +872,7 @@ var DeckBuilder = React.createClass({
                 newActiveTab = 0;
                 buildsPanelShowing = false;
                 newSelectedBuild = null;
-                if(Helpers.isClientMobile()) {
+                if(this.isClientMobile) {
                     newActiveTab = -1;
                 }
             } else {
@@ -1004,7 +986,7 @@ var DeckBuilder = React.createClass({
                 cost: 0
             };
             // We dont want to go directly to deck on mobile
-            var newActiveTab = Helpers.isClientMobile() ? -1 : 0;
+            var newActiveTab = this.isClientMobile ? -1 : 0;
             this.toggleBuildView(true, "add-build-button");
             this.setState({
                 builds : this.state.builds.concat(newBuild),
@@ -1044,7 +1026,7 @@ var DeckBuilder = React.createClass({
         if(disableSelected) newSelectedCard = null;
 
         // Was a mobile device
-        if(this.placementSlotIndex != -1 && Helpers.isClientMobile()) {
+        if(this.placementSlotIndex != -1 && this.isClientMobile) {
             this.placementSlotIndex = -1;
             newSelectedCard = null;
         }
@@ -1073,18 +1055,18 @@ var DeckBuilder = React.createClass({
         var flashTab = false;
 
         // filter for mobile
-        if(Helpers.isClientMobile())
+        if(this.isClientMobile)
             this.deckOptionFilter = filter;
 
         if(this.state.addedCard && this.state.isBuildsPanelShowing) {
             flashTab = true;
         }
 
-        if(index === this.state.activeTab && Helpers.isClientMobile()) {
+        if(index === this.state.activeTab && this.isClientMobile) {
             index = -1;
             flashTab = true;
         }
-        if(index === 1 && Helpers.isClientMobile()) {
+        if(index === 1 && this.isClientMobile) {
             window.scrollTo(0, 0);
         }
 
@@ -1125,7 +1107,7 @@ var DeckBuilder = React.createClass({
         var deck = this.state.deck;
         var builds = this.state.builds;
 
-        if(this.refs.deckNameInput.value === "" && !Helpers.isClientMobile()) {
+        if(this.refs.deckNameInput.value === "" && !this.isClientMobile) {
             this.refs.deckNameInput.focus();
         }
 
@@ -1165,7 +1147,7 @@ var DeckBuilder = React.createClass({
         }
     },
     getSelectedCardPopup: function() {
-        if(this.state.selectedCard && typeof this.state.selectedCard.code !== "undefined" && Helpers.isClientMobile()) {
+        if(this.state.selectedCard && typeof this.state.selectedCard.code !== "undefined" && this.isClientMobile) {
             var cardType = "UPGRADE";
             if(this.state.selectedCard.type === "Active" || this.state.selectedCard.type === "Passive") cardType = "EQUIPMENT";
             return (
@@ -1178,7 +1160,7 @@ var DeckBuilder = React.createClass({
                 </div>
             )
         }
-        else if((this.lastSelectedCard && typeof this.lastSelectedCard.code !== "undefined" && Helpers.isClientMobile())) {
+        else if((this.lastSelectedCard && typeof this.lastSelectedCard.code !== "undefined" && this.isClientMobile)) {
             return (
                 <div onClick={this.hideSelectedCardPopup} id="selected-card-wrapper" className="visible">
                     <span>Currently selected: <span className="subtext">{this.lastSelectedCard.name}</span> <i className="fa fa-close"></i></span>
@@ -1192,7 +1174,7 @@ var DeckBuilder = React.createClass({
         return <div onClick={this.hideSelectedCardPopup} id="selected-card-wrapper"></div>;
     },
     showSelectedCardPopup: function() {
-        if(Helpers.isClientMobile()) {
+        if(this.isClientMobile) {
             var selectedCardPopup = document.getElementById("selected-card-wrapper");
             if(selectedCardPopup) {
                 selectedCardPopup.className = "visible";
@@ -1200,7 +1182,7 @@ var DeckBuilder = React.createClass({
         }
     },
     hideSelectedCardPopup: function() {
-        if(Helpers.isClientMobile()) {
+        if(this.isClientMobile) {
             var selectedCardPopup = document.getElementById("selected-card-wrapper");
             if(selectedCardPopup) {
                 selectedCardPopup.className = "hidden";
@@ -1209,10 +1191,10 @@ var DeckBuilder = React.createClass({
         }
     },
     renderScrollTopButton: function() {
-        if(!Helpers.isClientMobile() && !this.state.isBuildsPanelShowing) {
+        if(!this.isClientMobile && !this.state.isBuildsPanelShowing) {
             return (
                 <div id="scroll-top">
-                    <h2>{this.deckCount()} / 40</h2>
+                    <h2>{this.state.cardCount} / 40</h2>
                     <p>CARDS IN DECK</p>
                 </div>
             )
@@ -1283,7 +1265,7 @@ var DeckBuilder = React.createClass({
 
         var backButtonMobile = "";
         var searchButtonMobile = "";
-        if(Helpers.isClientMobile()) {
+        if(this.isClientMobile) {
             if(this.state.isBuildsPanelShowing) {
                 backButtonMobile = (
                     <div id="back-button-mobile" onClick={this.toggleBuildView.bind(this, false)}>
@@ -1311,12 +1293,12 @@ var DeckBuilder = React.createClass({
                             <div onClick={this.setActiveTab.bind(this, 0, null, "", null)}
                                  className={this.isActiveTab(0)}
                             >
-                                <span>MY DECK <span className={"subtext " + (this.deckCount() >= 40 ? "max-capacity" : "") }> ( {this.deckCount()}/40 )</span></span>
+                                <span>MY DECK <span className={"subtext " + (this.state.cardCount >= 40 ? "max-capacity" : "") }> ( {this.state.cardCount}/40 )</span></span>
                             </div>
                             <div onClick={this.setActiveTab.bind(this, 1, null, "", null)}
                                  className={this.isActiveTab(1) }
                             >
-                                <span>MY BUILDS <span className={"subtext " + (this.deckCount() >= 40 ? "max-capacity" : "") }> ( {this.state.builds.length} )</span></span>
+                                <span>MY BUILDS <span className={"subtext " + (this.state.cardCount >= 40 ? "max-capacity" : "") }> ( {this.state.builds.length} )</span></span>
                             </div>
                         </div>
                         <div className="dual-tab-panel">
@@ -1363,7 +1345,7 @@ var DeckBuilder = React.createClass({
                         </textarea>
                         <div id="cards-feed" className={ this.state.showCardSection ? "" : "hidden" }>
                             <CardsFeed forceRedraw={true}
-                                       stickTopOnMobile={(Helpers.isClientMobile() && this.state.isMobileSearchShowing)}
+                                       stickTopOnMobile={(this.isClientMobile && this.state.isMobileSearchShowing)}
                                        affinities={this.state.affinities}
                                        tooltip={this.tooltip}
                                        cards={CARDS.allCards}
