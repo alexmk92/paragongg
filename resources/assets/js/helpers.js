@@ -214,7 +214,7 @@ module.exports = {
     hashCode : function(str) {
         return str.split('').reduce(function (prevHash, currVal) {
             return (prevHash << 5) - prevHash + currVal.charCodeAt(0);
-        }, 0);
+        }, 0);    
     },
     delimitNumbers : function(str) {
         return (str + "").replace(/\b(\d+)((\.\d+)*)\b/g, function(a, b, c) {

@@ -248,7 +248,7 @@ var DeckBuilder = React.createClass({
             if(sidebar) {
                 if(sidebar.className !== "hidden")
                     sidebar.className = "";
-                sidebar.style.right = "0";
+                    sidebar.style.right = "0";
             }
             if(selectedCardWrapper && this.state.selectedCard) {
                 selectedCardWrapper.className = "visible";
@@ -1339,9 +1339,9 @@ var DeckBuilder = React.createClass({
                         </div>
                         <HeroPanel title="Select a hero" showAffinityFilter={false} heroes={HEROES} isActive={this.state.heroPanelActive} onHeroSelected={this.onHeroPanelSelectedHero} />
                         <textarea onChange={setDescription}
-                                  className={" " + (this.state.heroPanelActive ? "p deck-description hidden" : "p deck-description")}
-                                  ref="deckDescriptionInput"
-                                  placeholder="Enter a short description about your deck, what team compositions might you use this deck against? Under what situations would you use the different builds?">
+                            className={" " + (this.state.heroPanelActive ? "p deck-description hidden" : "p deck-description")}
+                            ref="deckDescriptionInput"
+                            placeholder="Enter a short description about your deck, what team compositions might you use this deck against? Under what situations would you use the different builds?">
                         </textarea>
                         <div id="cards-feed" className={ this.state.showCardSection ? "" : "hidden" }>
                             <CardsFeed forceRedraw={true}
