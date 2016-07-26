@@ -15,7 +15,8 @@ var BuildStats = React.createClass({
             compareAllBuilds: true,
             compareIndex: 0,
             comparisons: [],
-            currentRank: 1
+            currentRank: 1,
+            showDeckOverview: false
         }
     },
     componentDidMount: function() {
@@ -368,6 +369,7 @@ var BuildStats = React.createClass({
 
         var stat = this.state.comparisons[this.state.compareIndex];
         var emptyBuild = this.isSelectedBuildEmpty(this.props.selectedBuild);
+        if(!emptyBuild && this.state.showDeckOverview) emptyBuild = true;
         var comparisonData = {
             chartHeight: emptyBuild ? 80 : 120,
             chartColors : ["#343a4a", "#42a9e8"],
@@ -842,9 +844,8 @@ var BuildStats = React.createClass({
     isSelectedBuildEmpty: function(build) {
         if(Helpers.isNullOrUndefined(build)) return true;
         var empty = true;
-        build.slots.some(function(slot) {
-            if(slot.card) empty = false;
-            return empty;
+        build.slots.forEach(function(slot) {
+            if(slot.card && empty) empty = false;
         });
         return empty;
     },
@@ -860,6 +861,7 @@ var BuildStats = React.createClass({
         });
 
         var emptyBuild = this.isSelectedBuildEmpty(this.props.selectedBuild);
+        if(!emptyBuild && this.state.showDeckOverview) emptyBuild = true;
         if(this.props.builds.length > 0 && !emptyBuild) {
             var data = [];
             if(this.props.selectedBuild && !this.state.compareAllBuilds) {
@@ -941,7 +943,7 @@ var BuildStats = React.createClass({
             }
             spiderChartData.data = data;
         }
-        else if(Helpers.isNullOrUndefined(this.props.selectedBuild) || emptyBuild) {
+        else if(Helpers.isNullOrUndefined(this.props.selectedBuild) || emptyBuild ) {
             data = [];
             data.push({
                 name : "",
@@ -976,16 +978,33 @@ var BuildStats = React.createClass({
         var newComparisons = this.getComparisonFields();
         this.setState({ compareAllBuilds: !this.state.compareAllBuilds, updateTarget : "BUILD-OVERVIEW", comparisons : newComparisons });
     },
+    showBuildOverview: function() {
+        this.setState({ showDeckOverview: false });
+    },
+    showDeckOverview: function() {
+        this.setState({ showDeckOverview: true });
+    },
     render: function() {
 
         var isBuildEmpty = this.isSelectedBuildEmpty(this.props.selectedBuild);
-        console.log(isBuildEmpty);
         var emptyBuildWarning = '';
         if(this.props.builds.length > 0 && isBuildEmpty) {
             emptyBuildWarning = <blockquote>This build has no cards, we are therefore showing stats possible for this deck.</blockquote>
         }
-
         var hiddenStyle = (!isBuildEmpty) ? {} : { display: "none" };
+        if(!isBuildEmpty && this.state.showDeckOverview) isBuildEmpty = true;
+
+        /* ADD THIS UNDER STAT PANEL
+        <ul className="build-tabs">
+            <li key={"build_tab_0"} className={this.state.showDeckOverview ? '' : 'active'} onClick={this.showBuildOverview}>
+                <span>Build Overview</span>
+            </li>
+            <li key={"build_tab_1"} className={this.state.showDeckOverview ? 'active' : ''} onClick={this.showDeckOverview}>
+                <span>Deck Overview</span>
+            </li>
+        </ul>
+        <br/>
+        */
 
         var affinityWeightingData = this.getAffinityWeighting();
         var statComparisonData = this.getComparisonData();
@@ -1008,6 +1027,7 @@ var BuildStats = React.createClass({
                     { emptyBuildWarning }
 
                     <div id="chart-wrapper" className="cf">
+
                         <div className="chart left">
                             <h3 style={{marginBottom: '25px'}}>{ isBuildEmpty ? "Deck " : "Build " }
                                 Composition</h3>
