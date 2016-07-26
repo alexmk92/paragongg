@@ -247,7 +247,7 @@ module.exports = {
         if (typeof payload.headers === "undefined") payload.headers = [];
         if (typeof payload.returnType === "undefined") payload.returnType = "json";
         if (typeof payload.type === "undefined") payload.type = "GET";
-        if (typeof payload.url === "undefined") callback({ code: 400, message: "A URL must be supplied for a request to be made. Please ensure your payload object include a url property" }, null);
+        if (typeof payload.url === "undefined") deferred.reject();
 
         var httpRequest;
         var requestData = "";
