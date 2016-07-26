@@ -224,7 +224,7 @@ var DeckBuilder = React.createClass({
 
             var json = JSON.stringify(deckAndBuilds);
 
-            if(Helpers.isNullOrUndefined(CURRENT_DECK)) {
+            if(typeof CURRENT_DECK !== "undefined" && CURRENT_DECK) {
                 Helpers.post("/decks/edit/" + CURRENT_DECK._id, { data : json });
             } else {
                 Helpers.post("/decks/create", { data : json });
