@@ -121,7 +121,6 @@ var CardsFilter = React.createClass({
                                 component = component.split(',');
                                 component.some(function (part) {
                                     if (option.filterLabel.toLowerCase() === part.toLowerCase().trim()) {
-                                        console.log(part.toLowerCase().trim());
                                         switch (part.toLowerCase()) {
                                             case 'descending' : booleanValues.costOrder = 'DESC'; break;
                                             case 'ascending' : booleanValues.costOrder = 'ASC'; break;
@@ -181,9 +180,7 @@ var CardsFilter = React.createClass({
             hash = hash.replace(/#affinities.*&statistics/, '');
             hash = hash.replace('statistics', '');
             var component = hash.replace(/\D+/g, "").toLowerCase();
-            console.log(component);
             newStats = newStats.map(function (statistic, i) {
-                console.log(component);
                 if (parseInt(component[i]) === 1) {
                     statistic.checked = true;
                 }
@@ -315,7 +312,7 @@ var CardsFilter = React.createClass({
         // SEARCH TERM ONLY
         else if((hasSearchTerm && card.name.toLowerCase().indexOf(this.state.search_term.toLowerCase()) > -1) || !hasSearchTerm) {
             matches = true;
-        }        console.log("DO WE MATCH? ", matches);
+        }
         if(!allCategoriesDisabled) {
             // CHECK OTHER PARAMETERS
             /*
@@ -400,9 +397,6 @@ var CardsFilter = React.createClass({
         }
         if(nextState.filter_affinities.length !== this.state.filter_affinities.length) {
             return true;
-        }
-        if(this.props.forceRedraw) {
-            this.forceUpdate();
         }
         return nextState !== this.state;
     },

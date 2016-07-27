@@ -29,8 +29,6 @@ var DeckSidebarList = React.createClass({
         }
     },
     sortCards: function(type) {
-        console.log(type);
-        console.log(this.props.deck.cards);
         var newCards = this.props.deck.cards[type].sort(function(a, b) {
             if(a.name < b.name) return -1;
             if(a.name > b.name) return 1;
@@ -73,6 +71,7 @@ var DeckSidebarList = React.createClass({
     hideTooltip: function() {
         this.tooltip.hideTooltip();
     },
+    /* DELEGATE METHODS */
     selectCard: function(card) {
         if(Helpers.isNullOrUndefined(this.props.implementsDelegate) || this.props.implementsDelegate === false) return true;
         this.props.onCardSelected(card);
@@ -81,6 +80,24 @@ var DeckSidebarList = React.createClass({
         if(Helpers.isNullOrUndefined(this.props.implementsDelegate) || this.props.implementsDelegate === false) return true;
         event.preventDefault();
         this.props.onCardDeleted(card);
+    },
+    /* ACCESSOR METHODS */
+    getPlacedCardQuantityForCardInBuild: function(card) {
+        var finalQuantity = 0;
+        this.props.selectedBuild.slots.forEach(function(slot) {
+            if(slot.card !== null) {
+                if(slot.card.code === card.code) {
+                    finalQuantity = (finalQuantity+1 > card.quantity) ? card.quantity : finalQuantity+1;
+                } else if(card.type === "Upgrade") {
+                    slot.upgrades.forEach(function(upgradeCard) {
+                        if(upgradeCard.card && upgradeCard.card.code === card.code) {
+                            finalQuantity = (finalQuantity+1 > card.quantity) ? card.quantity : finalQuantity+1;
+                        }
+                    });
+                }
+            }
+        });
+        return finalQuantity;
     },
     renderDeleteDetail: function(card) {
         if(!Helpers.isNullOrUndefined(this.props.implementsDelegate)) {
@@ -92,30 +109,48 @@ var DeckSidebarList = React.createClass({
         }
     },
     renderCards: function(type) {
-        var hidden = false;
-        if(typeof this.state.cards[type] !== "undefined" && this.props.deck.cards[type].length > 0 && !hidden) {
+        if(typeof this.state.cards[type] !== "undefined" && this.props.deck.cards[type].length > 0) {
             return this.state.cards[type].map(function(card) {
-                if(!Helpers.isNullOrUndefined(this.props.implementsDelegate) && !Helpers.isNullOrUndefined(card.hidden)) {
-                    hidden = card.hidden;
+                var quantityLabel = card.quantity + 'x';
+                var hidden = false;
+                var className = '';
+                // This block will only be called if the parent component implements delegate methods,
+                // right now only the DeckBuilder does this.
+                if(!Helpers.isNullOrUndefined(this.props.implementsDelegate)) {
+                    if(!Helpers.isNullOrUndefined(this.props.selectedCard)) {
+                        if(this.props.selectedCard.code === card.code) className = 'selected';
+                    }
+                    if(!Helpers.isNullOrUndefined(card.hidden) && card.hidden === true) {
+                        className += ' invalid';
+                    }
+                    if(!Helpers.isNullOrUndefined(this.props.showPlacedCount) && this.props.showPlacedCount === true && !Helpers.isNullOrUndefined(this.props.selectedBuild)) {
+                        var finalQuantity = this.getPlacedCardQuantityForCardInBuild(card);
+                        if(finalQuantity === card.quantity) className += ' disabled';
+                        quantityLabel = finalQuantity + '/' + card.quantity;
+                    }
                 }
                 var background = { backgroundImage : 'url(' + Helpers.getCardImageURL(card, "medium", "icon") + ')'};
-                return (
-                    <li style={background}
-                        key={"deck-item-" + card.code }
-                        onMouseEnter={this.setTooltipContent.bind(this, card)}
-                        onMouseOver={this.showTooltip}
-                        onMouseLeave={this.hideTooltip}
-                        onContextMenu={this.deleteCard.bind(this, card)}
-                        onClick={this.selectCard.bind(this, card)}
-                    >
-                        <div className="wrapper">
-                            <span className="count">{ card.quantity }x</span>
-                            <span className="name">{ card.name }</span>
-                            <span className="cost">{ card.cost }CP</span>
-                        </div>
-                        { this.renderDeleteDetail(card) }
-                    </li>
-                )
+                if(!hidden) {
+                    return (
+                        <li style={background}
+                            className={className}
+                            id={'card-' + card.code}
+                            key={'deck-item-' + card.code }
+                            onMouseEnter={this.setTooltipContent.bind(this, card)}
+                            onMouseOver={this.showTooltip}
+                            onMouseLeave={this.hideTooltip}
+                            onContextMenu={this.deleteCard.bind(this, card)}
+                            onClick={this.selectCard.bind(this, card)}
+                        >
+                            <div className="wrapper">
+                                <span className="count">{ quantityLabel }</span>
+                                <span className="name">{ card.name }</span>
+                                <span className="cost">{ card.cost }CP</span>
+                            </div>
+                            { this.renderDeleteDetail(card) }
+                        </li>
+                    )
+                }
             }.bind(this))
         } else {
             return (

@@ -82,7 +82,6 @@ var CardsFeed = React.createClass({
                 { title }
                 <div id="filter" className={stickTop}>
                     <CardsFilter stickTopOnMobile={this.props.stickTopOnMobile || null}
-                                 forceRedraw={this.props.forceRedraw || null}
                                  affinities={this.props.affinities || null}
                                  tooltip={this.props.tooltip || null}
                                  cards={this.props.cards}

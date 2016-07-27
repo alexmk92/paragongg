@@ -9,23 +9,18 @@ var StatPanel = React.createClass({
         };
     },
     componentDidMount: function() {
-        this.getCardStats();
+        this.getCardStats(this.props.build);
     },
     componentWillMount: function() {
         this.heroRank = 1;
     },
-    shouldComponentUpdate: function(nextProps, nextState) {
-        return nextProps !== this.props;
-    },
     componentWillReceiveProps: function(nextProps) {
-        var newStatistics = this.state.statistics.map(function(stat) {
-            stat.modified = false;
-            return stat;
-        });
-
         this.heroRank = nextProps.heroRank;
-        this.setState({ statistics : newStatistics });
-        this.getCardStats();
+
+        // Get the stats for the next build we pass in
+        if(!Helpers.isNullOrUndefined(nextProps.build)) {
+            this.getCardStats(nextProps.build);
+        }
     },
     getStatisticList: function() {
         return this.state.statistics.map(function(statistic, i) {
@@ -73,13 +68,13 @@ var StatPanel = React.createClass({
         });
         return newStats;
     },
-    getCardStats: function() {
-        if(typeof this.props.build === "undefined" && typeof this.props.cardStats === "undefined") {
+    getCardStats: function(build) {
+        if(typeof build === "undefined" && typeof this.props.cardStats === "undefined") {
             var moddedSlots = this.getBaseStats();
             this.setState({ statistics : moddedSlots });
         } else if(this.props.build) {
             var extractedCards = [];
-            this.props.build.slots.forEach(function(slot) {
+            build.slots.forEach(function(slot) {
                 if(slot.card) {
                     extractedCards.push(slot.card);
                     slot.upgrades.forEach(function(upgradeSlot) {

@@ -48,6 +48,9 @@ var BuildStats = React.createClass({
                         var statString = "";
                         // We don't want to include +Health of health regen pots on activataeables
                         if(Helpers.isNullOrUndefined(effect.cooldown)) {
+                            if(!Helpers.isNullOrUndefined(effect.passive) && effect.passive === true) {
+                                return;
+                            }
                             if(effect.stat) statString = effect.stat.toUpperCase();
                             if(effect.description) statString = effect.description.toUpperCase();
                             var statCategory = Helpers.getStatisticCategory(statString);
@@ -68,18 +71,23 @@ var BuildStats = React.createClass({
                 if(slot.card) {
                     slot.card.effects.map(function(effect) {
                         var statString = "";
-                        if(effect.stat) statString = effect.stat.toUpperCase();
-                        if(effect.description) statString = effect.description.toUpperCase();
-                        var statCategory = Helpers.getStatisticCategory(statString);
+                        if(Helpers.isNullOrUndefined(effect.cooldown)) {
+                            if(!Helpers.isNullOrUndefined(effect.passive) && effect.passive === true) {
+                                return;
+                            }
+                            if(effect.stat) statString = effect.stat.toUpperCase();
+                            if(effect.description) statString = effect.description.toUpperCase();
+                            var statCategory = Helpers.getStatisticCategory(statString);
 
-                        // Always add a DPS field
-                        if(!this.doesCategoryExistInArray("DPS", newComparisons)) {
-                            if(statCategory !== "") newComparisons.push({ label : "DPS" });
-                        }
+                            // Always add a DPS field
+                            if(!this.doesCategoryExistInArray("DPS", newComparisons)) {
+                                if(statCategory !== "") newComparisons.push({ label : "DPS" });
+                            }
 
-                        if(!this.doesCategoryExistInArray(statCategory, newComparisons)) {
-                            if(statCategory !== "")
-                                newComparisons.push({ label : statCategory });
+                            if(!this.doesCategoryExistInArray(statCategory, newComparisons)) {
+                                if(statCategory !== "")
+                                    newComparisons.push({ label : statCategory });
+                            }
                         }
                     }.bind(this));
                 }
@@ -146,7 +154,6 @@ var BuildStats = React.createClass({
         if(type === "DPS") {
 
         } else {
-            console.log("TRYING FOR EFFECT: ", type);
             explodedEquipment.forEach(function(card) {
                 card.effects.forEach(function(effect) {
                     var statString = "";
@@ -193,7 +200,6 @@ var BuildStats = React.createClass({
 
                     if(statCategory === type) {
                         if(statCategory === "CRIT") {
-                            console.log(upgradeCard.name + " HAS VALUE OF " + effect.value);
                         }
                         if(statCategory === "CRIT" && effect.value < 1) {
                             effect.value *= 100;
@@ -687,11 +693,10 @@ var BuildStats = React.createClass({
                 var total = (baseStats.attack_speed.value + (baseStats.attack_speed.scaling * this.state.currentRank)) || 0;
                 var maxTotal = total;
                 if(!emptyBuild) {
-                    total = this.recurseSlotsAndGetValue(build, total, "ATTACK SPEED") / 100;
+                    total = this.recurseSlotsAndGetValue(build, total, "ATTACK SPEED");
                 }
 
                 maxTotal += this.getMaxStat("ATTACK SPEED");
-                maxTotal /= 100;
                 maxTotal = maxTotal > total ? maxTotal : total;
 
                 if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
@@ -702,9 +707,9 @@ var BuildStats = React.createClass({
                 }
 
                 var maxStartLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible " + stat.label + " (";
-                var maxEndLabel = "<span style='text-transform: lowercase;'> attacks p/s</span>)";
+                var maxEndLabel = ")";
                 var startLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds " + stat.label + " (";
-                var endLabel = "<span style='text-transform: lowercase;'> attacks p/s</span>)";
+                var endLabel = ")";
             } else if(stat.label === "PHYSICAL DAMAGE") {
                 var total = (baseStats.physical_damage.value + (baseStats.physical_damage.scaling * this.state.currentRank)) || 0;
                 var maxTotal = total;
@@ -993,6 +998,9 @@ var BuildStats = React.createClass({
         }
         var hiddenStyle = (!isBuildEmpty) ? {} : { display: "none" };
         if(!isBuildEmpty && this.state.showDeckOverview) isBuildEmpty = true;
+        if(!Helpers.isNullOrUndefined(this.props.forceShowStatPanel) && this.props.forceShowStatPanel === true) {
+            hiddenStyle = {};
+        }
 
         /* ADD THIS UNDER STAT PANEL
         <ul className="build-tabs">
