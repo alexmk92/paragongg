@@ -396,7 +396,6 @@ var DeckBuilder = React.createClass({
                 }
                 this.setState({selectedCard: card, playFlashAnimation: false, activeTab: activeTab});
             }
-
         }
     },
     deleteCardFromDeck: function(cardToDelete, event) {

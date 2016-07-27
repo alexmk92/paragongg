@@ -86,7 +86,6 @@ var CardEffects = React.createClass({
                 );
             }
         }.bind(this));
-        console.log(items);
         return items;
     },
     render: function() {

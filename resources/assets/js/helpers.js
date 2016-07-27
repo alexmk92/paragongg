@@ -32,7 +32,7 @@ module.exports = {
     // To be used by all components that consume all stats, such as the StatPanel
     getAllStatistics: function() {
         return [
-            { ref : "ATTACKSPEEDRATING", label : "Attack Speed", icon: "pgg pgg-attack-speed", modifier : "", value : 0, modified: false, multiplier: 1, divider: 100, statRef: "attack_speed" },
+            { ref : "ATTACKSPEEDRATING", label : "Attack Speed", icon: "pgg pgg-attack-speed", modifier : "", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "attack_speed" },
             { ref : "COOLDOWNREDUCTIONPERCENTAGE", label : "Cooldown Reduction", icon: "pgg pgg-cooldown-reduction", modifier : "%", value : 0, modified: false, multiplier: 100, divider: 1, statRef: "cooldown_reduction" },
             { ref : "MAXENERGY", label : "Max Mana", icon: "pgg pgg-max-mana", modifier : "", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "max_mana" },
             { ref : "MAXHEALTH", label : "Max Health", icon: "pgg pgg-max-health", modifier : "", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "max_health" },
