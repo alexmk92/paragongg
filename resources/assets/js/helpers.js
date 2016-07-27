@@ -86,6 +86,7 @@ module.exports = {
         return typeof object === 'undefined' || object === null;
     },
     getStatisticCategory: function(stat) {
+        stat = stat.toUpperCase();
         if(stat.includes("{ATTR:HP}")){
             return "HEALTH";
         }
