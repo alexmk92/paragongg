@@ -53,12 +53,16 @@ var BuildStats = React.createClass({
                             }
                             if(effect.stat) statString = effect.stat.toUpperCase();
                             if(effect.description) statString = effect.description.toUpperCase();
-                            var statCategory = Helpers.getStatisticCategory(statString);
-
-                            if(Helpers.isNullOrUndefined(this.props.selectedBuild) && !this.doesCategoryExistInArray(statCategory, newComparisons)) {
-                                if(statCategory !== "" && statCategory !== "DPS") newComparisons.push({ label : statCategory });
-                            } else if(!this.doesCategoryExistInArray(statCategory, newComparisons)) {
-                                if(statCategory !== "") newComparisons.push({ label : statCategory });
+                            var statCategory = Helpers.getStatisticCategory(effect.stat);
+                            var formattedStat = Helpers.getFormattedStatistic(statString);
+                            if(!Helpers.isNullOrUndefined(formattedStat)) {
+                                if(Helpers.isNullOrUndefined(this.props.selectedBuild) && !this.doesCategoryExistInArray(statCategory, newComparisons)) {
+                                    if(statCategory !== "" && statCategory !== "DPS") newComparisons.push({ label : statCategory, ref: formattedStat.statRef, icon: formattedStat.icon, modifier: formattedStat.modifier });
+                                } else if(!this.doesCategoryExistInArray(statCategory, newComparisons)) {
+                                    if(statCategory !== "") newComparisons.push({ label : statCategory, ref: formattedStat.statRef, icon: formattedStat.icon, modifier: formattedStat.modifier });
+                                }
+                            } else {
+                                console.log(statString + " is not yet supported in helpers");
                             }
                         }
                     }.bind(this));
@@ -78,15 +82,19 @@ var BuildStats = React.createClass({
                             if(effect.stat) statString = effect.stat.toUpperCase();
                             if(effect.description) statString = effect.description.toUpperCase();
                             var statCategory = Helpers.getStatisticCategory(statString);
+                            var formattedStat = Helpers.getFormattedStatistic(statString);
+                            if(!Helpers.isNullOrUndefined(formattedStat)) {
+                                // Always add a DPS field
+                                if(!this.doesCategoryExistInArray("DPS", newComparisons)) {
+                                    if(statCategory !== "") newComparisons.push({ label : "DPS", ref: formattedStat.statRef, icon: formattedStat.icon, modifier: formattedStat.modifier });
+                                }
 
-                            // Always add a DPS field
-                            if(!this.doesCategoryExistInArray("DPS", newComparisons)) {
-                                if(statCategory !== "") newComparisons.push({ label : "DPS" });
-                            }
-
-                            if(!this.doesCategoryExistInArray(statCategory, newComparisons)) {
-                                if(statCategory !== "")
-                                    newComparisons.push({ label : statCategory });
+                                if(!this.doesCategoryExistInArray(statCategory, newComparisons)) {
+                                    if(statCategory !== "")
+                                        newComparisons.push({ label : statCategory, ref: formattedStat.statRef, icon: formattedStat.icon, modifier: formattedStat.modifier });
+                                }
+                            } else {
+                                console.log(statString + " is not supported in helpers");
                             }
                         }
                     }.bind(this));
@@ -463,25 +471,20 @@ var BuildStats = React.createClass({
                 maxTotal = maxTotal > total ? maxTotal : totalDps;
 
                 if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
-                //comparisonData.data.push({ data : [maxTotal] }, { data : [totalDps] });
-                //comparisonData.data.push({ data : [maxTotal] }); // we only have one collection as DPS doesnt have an algorithm for compute yet
                 if(!Helpers.isNullOrUndefined(this.props.selectedBuild)) {
                     comparisonData.data.push({ data : [maxTotal] });
                 }
 
-                //var maxStartLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible " + stat.label + " (";
-                //var maxEndLabel = "/<span style='text-transform: lowercase'>s</span>)";
                 var startLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds current " + stat.label + " (";
-                var endLabel = "/<span style='text-transform: lowercase'>s</span>)";
-
-            } else if(stat.label === "HEALTH REGEN") {
-                var total = (baseStats.health_regen.value + (baseStats.health_regen.scaling * this.state.currentRank)) || 0;
+                var endLabel = ")";
+            } else if(!Helpers.isNullOrUndefined(stat.label) && !Helpers.isNullOrUndefined(stat.ref)) {
+                var total = (baseStats[stat.ref].value + (baseStats[stat.ref].scaling * this.state.currentRank)) || 0;
                 var maxTotal = total;
                 if(!Helpers.isNullOrUndefined(this.props.selectedBuild)) {
-                    total = this.recurseSlotsAndGetValue(build, total, "HEALTH REGEN");
+                    total = this.recurseSlotsAndGetValue(build, total, stat.label.toUpperCase());
                 }
 
-                maxTotal += this.getMaxStat("HEALTH REGEN");
+                maxTotal += this.getMaxStat(stat.label);
                 maxTotal = maxTotal > total ? maxTotal : total;
 
                 if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
@@ -492,266 +495,9 @@ var BuildStats = React.createClass({
                 }
 
                 var maxStartLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible " + stat.label + " (";
-                var maxEndLabel = "/<span style='text-transform: lowercase'>s</span>)";
+                var maxEndLabel = "<span style='text-transform: lowercase'>" + stat.modifier + "</span>)";
                 var startLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds " + stat.label + " (";
-                var endLabel = "/<span style='text-transform: lowercase'>s</span>)";
-
-            } else if(stat.label === "ENERGY REGEN") {
-                var total = (baseStats.mana_regen.value + (baseStats.mana_regen.scaling * this.state.currentRank)) || 0;
-                var maxTotal = total;
-                if(!Helpers.isNullOrUndefined(this.props.selectedBuild)) {
-                    total = this.recurseSlotsAndGetValue(build, total, "ENERGY REGEN");
-                }
-
-                maxTotal += this.getMaxStat("ENERGY REGEN");
-                maxTotal = maxTotal > total ? maxTotal : total;
-
-                if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
-                if(!emptyBuild) {
-                    comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
-                } else {
-                    comparisonData.data.push({ data : [maxTotal] });
-                }
-
-                var maxStartLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible " + stat.label + " (";
-                var maxEndLabel = "/<span style='text-transform: lowercase'>s</span>)";
-                var startLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds " + stat.label + " (";
-                var endLabel = "/<span style='text-transform: lowercase'>s</span>)";
-
-            } else if(stat.label === "HEALTH") {
-                var total = (baseStats.max_health.value + (baseStats.max_health.scaling * this.state.currentRank)) || 0;
-                var maxTotal = total;
-                if(!emptyBuild) {
-                    total = this.recurseSlotsAndGetValue(build, total, "HEALTH");
-                }
-
-                maxTotal += this.getMaxStat("HEALTH");
-                maxTotal = maxTotal > total ? maxTotal : total;
-
-                if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
-                if(!emptyBuild) {
-                    comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
-                } else {
-                    comparisonData.data.push({ data : [maxTotal] });
-                }
-
-                var maxStartLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible " + stat.label + " (";
-                var maxEndLabel = ")";
-                var startLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds " + stat.label + " (";
-                var endLabel = ")";
-            } else if(stat.label === "MITIGATION") {
-                var total = (baseStats.energy_armor.value + (baseStats.energy_armor.scaling * this.state.currentRank)) || 0;
-                total += (baseStats.physical_armor.value + (baseStats.physical_armor.scaling * this.state.currentRank)) || 0;
-                var maxTotal = total;
-                if(!emptyBuild) {
-                    total = this.recurseSlotsAndGetValue(build, total, "MITIGATION");
-                }
-
-                maxTotal += this.getMaxStat("MITIGATION");
-                maxTotal = maxTotal > total ? maxTotal : total;
-
-                if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
-                if(!emptyBuild) {
-                    comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
-                } else {
-                    comparisonData.data.push({ data : [maxTotal] });
-                }
-
-                var maxStartLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible " + stat.label + " (";
-                var maxEndLabel = ")";
-                var startLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds " + stat.label + " (";
-                var endLabel = ")";
-            } else if(stat.label === "MANA") {
-                var total = (baseStats.max_health.value + (baseStats.max_health.scaling * this.state.currentRank)) || 0;
-                var maxTotal = total;
-                if(!emptyBuild) {
-                    total = this.recurseSlotsAndGetValue(build, total, "MANA");
-                }
-
-                maxTotal += this.getMaxStat("MANA");
-                maxTotal = maxTotal > total ? maxTotal : total;
-
-                if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
-                if(!emptyBuild) {
-                    comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
-                } else {
-                    comparisonData.data.push({ data : [maxTotal] });
-                }
-
-                var maxStartLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible " + stat.label + " (";
-                var maxEndLabel = ")";
-                var startLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds " + stat.label + " (";
-                var endLabel = ")";
-            } else if(stat.label === "PENETRATION") {
-                var total = (baseStats.max_health.value + (baseStats.max_health.scaling * this.state.currentRank)) || 0;
-                var maxTotal = total;
-                if(!emptyBuild) {
-                    total = this.recurseSlotsAndGetValue(build, total, "PENETRATION");
-                }
-
-                maxTotal += this.getMaxStat("PENETRATION");
-                maxTotal = maxTotal > total ? maxTotal : total;
-
-                if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
-                if(!emptyBuild) {
-                    comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
-                } else {
-                    comparisonData.data.push({ data : [maxTotal] });
-                }
-
-                var maxStartLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible " + stat.label + " (";
-                var maxEndLabel = ")";
-                var startLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds " + stat.label + " (";
-                var endLabel = ")";
-            } else if(stat.label === "CDR") {
-                var total = (baseStats.cooldown_reduction.value + (baseStats.cooldown_reduction.scaling * this.state.currentRank)) || 0;
-                var maxTotal = total;
-                if(!emptyBuild) {
-                    total = this.recurseSlotsAndGetValue(build, total, "CDR");
-                }
-
-                maxTotal += this.getMaxStat("CDR");
-                maxTotal = maxTotal > total ? maxTotal : total;
-
-                if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
-                if(!emptyBuild) {
-                    comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
-                } else {
-                    comparisonData.data.push({ data : [maxTotal] });
-                }
-
-                var maxStartLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible " + stat.label + " (";
-                var maxEndLabel = "%)";
-                var startLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds " + stat.label + " (";
-                var endLabel = "%)";
-            } else if(stat.label === "LIFESTEAL") {
-                var total = (baseStats.lifesteal.value + (baseStats.lifesteal.scaling * this.state.currentRank)) || 0;
-                var maxTotal = total;
-                if(!emptyBuild) {
-                    total = this.recurseSlotsAndGetValue(build, total, "LIFESTEAL");
-                }
-
-                maxTotal += this.getMaxStat("LIFESTEAL");
-                maxTotal = maxTotal > total ? maxTotal : total;
-
-                if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
-                if(!emptyBuild) {
-                    comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
-                } else {
-                    comparisonData.data.push({ data : [maxTotal] });
-                }
-
-                var maxStartLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible " + stat.label + " (";
-                var maxEndLabel = "%)";
-                var startLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds " + stat.label + " (";
-                var endLabel = "%)";
-            } else if(stat.label === "CRIT") {
-                var total = (baseStats.crit_chance.value + (baseStats.crit_chance.scaling * this.state.currentRank)) || 0;
-                //total += (baseStats.crit_bonus.value + (baseStats.crit_bonus.scaling * this.state.currentRank)) || 0;
-                var maxTotal = total;
-                if(!emptyBuild) {
-                    total = this.recurseSlotsAndGetValue(build, total, "CRIT");
-                }
-
-                maxTotal += this.getMaxStat("CRIT");
-                maxTotal = maxTotal > total ? maxTotal : total;
-
-                if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
-                if(!emptyBuild) {
-                    comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
-                } else {
-                    comparisonData.data.push({ data : [maxTotal] });
-                }
-
-                var maxStartLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible " + stat.label + "ICAL STRIKE CHANCE (";
-                var maxEndLabel = "%)";
-                var startLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds " + stat.label + "ICAL STRIKE CHANCE (";
-                var endLabel = "%)";
-            } else if(stat.label === "MITIGATION") {
-                var total = (baseStats.physical_armor.value + (baseStats.physical_armor.scaling * this.state.currentRank)) || 0;
-                total += (baseStats.energy_armor.value + (baseStats.energy_armor.scaling * this.state.currentRank)) || 0;
-                var maxTotal = total;
-                if(!emptyBuild) {
-                    total = this.recurseSlotsAndGetValue(build, total, "MITIGATION");
-                }
-
-                maxTotal += this.getMaxStat("MITIGATION");
-                maxTotal = maxTotal > total ? maxTotal : total;
-
-                if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
-                if(!emptyBuild) {
-                    comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
-                } else {
-                    comparisonData.data.push({ data : [maxTotal] });
-                }
-
-                var maxStartLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible " + stat.label + " (";
-                var maxEndLabel = "%)";
-                var startLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds " + stat.label + " (";
-                var endLabel = "%)";
-            } else if(stat.label === "ATTACK SPEED") {
-                var total = (baseStats.attack_speed.value + (baseStats.attack_speed.scaling * this.state.currentRank)) || 0;
-                var maxTotal = total;
-                if(!emptyBuild) {
-                    total = this.recurseSlotsAndGetValue(build, total, "ATTACK SPEED");
-                }
-
-                maxTotal += this.getMaxStat("ATTACK SPEED");
-                maxTotal = maxTotal > total ? maxTotal : total;
-
-                if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
-                if(!emptyBuild) {
-                    comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
-                } else {
-                    comparisonData.data.push({ data : [maxTotal] });
-                }
-
-                var maxStartLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible " + stat.label + " (";
-                var maxEndLabel = ")";
-                var startLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds " + stat.label + " (";
-                var endLabel = ")";
-            } else if(stat.label === "PHYSICAL DAMAGE") {
-                var total = (baseStats.physical_damage.value + (baseStats.physical_damage.scaling * this.state.currentRank)) || 0;
-                var maxTotal = total;
-                if(!emptyBuild) {
-                    total = this.recurseSlotsAndGetValue(build, total, "PHYSICAL DAMAGE");
-                }
-
-                maxTotal += this.getMaxStat("PHYSICAL DAMAGE");
-                maxTotal = maxTotal > total ? maxTotal : total;
-
-                if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
-                if(!emptyBuild) {
-                    comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
-                } else {
-                    comparisonData.data.push({ data : [maxTotal] });
-                }
-
-                var maxStartLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible " + stat.label + " (";
-                var maxEndLabel = ")";
-                var startLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds " + stat.label + " (";
-                var endLabel = ")";
-            } else if(stat.label === "ENERGY DAMAGE") {
-                var total = (baseStats.energy_damage.value + (baseStats.energy_damage.scaling * this.state.currentRank)) || 0;
-                var maxTotal = total;
-                if(!emptyBuild) {
-                    total = this.recurseSlotsAndGetValue(build, total, "ENERGY DAMAGE");
-                }
-
-                maxTotal += this.getMaxStat("ENERGY DAMAGE");
-                maxTotal = maxTotal > total ? maxTotal : total;
-
-                if(maxTotal > comparisonData.max) comparisonData.max = maxTotal;
-                if(!emptyBuild) {
-                    comparisonData.data.push({ data : [maxTotal] }, { data : [total] });
-                } else {
-                    comparisonData.data.push({ data : [maxTotal] });
-                }
-
-                var maxStartLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> Maximum possible " + stat.label + " (";
-                var maxEndLabel = ")";
-                var startLabel = "<i style='font-size: 16px;' class='" + stat.icon + "'></i> This builds " + stat.label + " (";
-                var endLabel = ")";
+                var endLabel = "<span style='text-transform: lowercase'>" + stat.modifier + "</span>)";
             }
 
             if(!Helpers.isNullOrUndefined(maxStartLabel) && !Helpers.isNullOrUndefined(maxEndLabel)) {
