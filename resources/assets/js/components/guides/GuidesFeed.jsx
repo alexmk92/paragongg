@@ -70,9 +70,8 @@ var GuidesFeed = React.createClass({
         window.location.hash = newHash;
     },
     handleScroll: function() {
-        var hasScrollbar = window.innerHeight > document.documentElement.clientHeight;
-        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight || !hasScrollbar) {
-            console.log("GETTING RESULTS");
+        var hasScrollbar = window.innerWidth > document.documentElement.clientWidth;
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight + 50 || !hasScrollbar) {
             this.getResults();
         }
     },
