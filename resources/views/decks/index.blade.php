@@ -13,9 +13,9 @@
 @endsection
 @section('body')
     <div id="sidebar">
-        <div class="sidebox panel">
+        <div class="sidebox panel create-deck">
             <h4>Create a deck</h4>
-            <p>Creating a deck for Paragon.gg is quick and easy, and will allow you to show the community the cards you use in Paragon.</p>
+            <p>Creating a deck for Paragon.gg is <strong>quick</strong> and <strong>easy</strong>, and will allow you to show the community the cards you use in Paragon.</p>
             <a class="btn btn-primary btn-margin" href="/decks/create">Build a deck</a>
         </div>
         <div class="listbox panel">

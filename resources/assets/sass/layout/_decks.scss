@@ -1,3 +1,12 @@
+#sidebar {
+    .sidebox.create-deck {
+        background: url('/assets/images/misc/create-deck.jpg') top right;
+        border: 1px solid #222222;
+        p {
+            max-width: 150px;
+        }
+    }
+}
 .deck-builder {
     margin-top: 30px;
     padding-top: 30px;
