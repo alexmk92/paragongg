@@ -66,6 +66,7 @@ class UpdateCardObject extends Job implements ShouldQueue
         $cardDetails = json_decode($cardDetails);
 
         $card = Card::where('code', $this->object->id)->first();
+        $card->name = $cardDetails->name;
         $card->slug = createSlug($card->name);
         $card->type = $cardDetails->slotType;
         $card->cost = $cardDetails->cost;
