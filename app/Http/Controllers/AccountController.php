@@ -85,7 +85,7 @@ class AccountController extends Controller
     public function guides()
     {
         $user = Auth::user();
-        $guides = Guide::where('user_id', $user->id)->get();
+        $guides = Guide::where('user_id', $user->id)->paginate(15);
         return view('account.guides', compact('user', 'guides'));
     }
 
@@ -93,7 +93,7 @@ class AccountController extends Controller
     public function decks()
     {
         $user = Auth::user();
-        $decks = Deck::where('author_id', $user->id)->get();
+        $decks = Deck::where('author_id', $user->id)->paginate(15);
 
         return view('account.decks', compact('user', 'decks'));
     }

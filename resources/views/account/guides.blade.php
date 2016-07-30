@@ -3,7 +3,7 @@
     @include('account.nav')
     <div class="wrapper">
         <h3>Your guides</h3>
-        <div class="content-wrapper">
+        <div class="content-wrapper table">
             <div class="table-scroller">
             <table class="minimal">
                 <thead>
@@ -11,6 +11,7 @@
                     <th>Title</th>
                     <th>Type</th>
                     <th>Status</th>
+                    <th>Publish</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -26,6 +27,9 @@
                             @else
                                 <a href="/guides/unpublish/{{ $guide->id }}" class="btn btn-faded">Unpublish</a>
                             @endif
+                        </td>
+                        <td>
+                            <a href="/guides/{{ $guide->id }}/{{ $guide->slug }}" class="btn btn-faded">View</a>
                             <a href="/guides/edit/{{ $guide->id }}" class="btn btn-faded">Edit</a>
                         </td>
                     </tr>
@@ -33,6 +37,8 @@
                 </tbody>
             </table>
             </div>
+            <hr/>
+            <div class="pagination-wrapper center cf">{!! $decks->render() !!}</div>
         </div>
     </div>
 @endsection

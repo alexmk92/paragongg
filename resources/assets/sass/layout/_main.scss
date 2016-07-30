@@ -63,6 +63,9 @@ body {
     &.wider {
         max-width: 1000px;
     }
+    &.table {
+        max-width: none;
+    }
 }
 .panel {
     padding: 20px;
