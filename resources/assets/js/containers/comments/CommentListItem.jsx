@@ -78,7 +78,7 @@ var CommentListItem = React.createClass({
             <li className={commentClass}>
                 <div className="comment-details">
                     <img className="user-avatar" src={Helpers.getUserAvatarImageURL(this.props.author)} alt="Your avatar" />
-                    <a href="">{ this.props.author.username } </a> <span><time className="created-at">{ Helpers.prettyDate(this.props.comment.created_at) }</time></span>
+                    <a href={"/users/" + this.props.author.username }>{ this.props.author.username } </a> <span><time className="created-at">{ Helpers.prettyDate(this.props.comment.created_at) }</time></span>
                 </div>
                 { this.getCommentBody() }
                 <div className="comment-actions">
