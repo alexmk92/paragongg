@@ -32,8 +32,9 @@ var Toptip = function() {
      */
     this.updatePosition = function(event) {
         var coords = this.checkBounds(event);
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
         this.tooltip.style.left = coords.x + "px";
-        this.tooltip.style.top = coords.y + document.body.scrollTop + "px";
+        this.tooltip.style.top = coords.y + scrollTop + "px";
     };
 
     /**

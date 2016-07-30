@@ -123,6 +123,11 @@ class CardController extends Controller
     // Pull latest cards
     public function pullCards()
     {
+        // Get our current cards list
+        $cards = Card::all();
+
+        //dd($cards);
+
         // Get latest cards list
         $client = new Client();
         $res = $client->request('GET', 'https://developer-paragon.epicgames.com/v1/cards', [
@@ -134,6 +139,13 @@ class CardController extends Controller
         ])->getBody();
 
         $response = json_decode($res);
+
+        // If card doesn't exist anymore, delete it
+        foreach($cards as $card) {
+            if(!is_value_in_array($card->code, $response)) {
+                $card->delete();
+            }
+        }
 
         // Run through each cards returned
         foreach($response as $object) {

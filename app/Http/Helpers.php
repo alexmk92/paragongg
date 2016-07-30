@@ -169,3 +169,14 @@ function getDeckFromString($string)
     
     return $deck;
 }
+
+function is_value_in_array($needle, $haystack) {
+    if(in_array($needle, $haystack)) {
+        return true;
+    }
+    foreach($haystack as $element) {
+        if(is_array($element) && is_value_in_array($needle, $element))
+            return true;
+    }
+    return false;
+}
