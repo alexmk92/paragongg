@@ -59,7 +59,12 @@
                 <hr>
                     <h5>What abilities do you take?</h5>
                     <label>Ability matrix</label>
-                    @include('guides.abilitySelectEdit')
+                    @if($guide->type == 'gameplay')
+                        @include('guides.abilitySelect')
+                    @else
+                        @include('guides.abilitySelectEdit')
+                    @endif
+
                 </div>
 
                 <hr>
