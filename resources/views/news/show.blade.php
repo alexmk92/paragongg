@@ -2,6 +2,10 @@
 @section('title')
     {{ $article->title }} -
 @endsection
+@section('meta_tags')
+<meta property="og:image" content="{{ S3URL() }}/images/news/thumbnails/{{ $article->thumbnail }}" />
+    <meta name="thumbnail" content="{{ S3URL() }}/images/news/thumbnails/{{ $article->thumbnail }}" />
+@endsection
 @section('body')
     <div class="article-header">
         <img src="{{ S3URL() }}/images/news/headers/{{ $article->header }}" class="banner"/>

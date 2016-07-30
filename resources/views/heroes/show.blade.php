@@ -2,6 +2,10 @@
 @section('title')
     {{ $hero->name }} -
 @endsection
+@section('meta_tags')
+<meta property="og:image" content="{{ S3URL() }}/images/heroes/{{ $hero->code }}/{{ $hero->image }}/portrait_small.png" />
+    <meta name="thumbnail" content="{{ S3URL() }}/images/heroes/{{ $hero->code }}/{{ $hero->image }}/portrait_small.png" />
+@endsection
 @section('body')
     <div id="hero-wrapper"></div>
 @endsection
