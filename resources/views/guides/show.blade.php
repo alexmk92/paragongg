@@ -10,6 +10,7 @@
 <meta property="og:image" content="/assets/images/heroes/null.png" />
     <meta name="thumbnail" content="/assets/images/heroes/null.png" />
 @endif
+    <meta name="description" content="{{ $guide->title }} - A {{ $hero->name or 'Gameplay' }} guide for Paragon by {{ $guide->author->username }}. Check out more decks, guides, and strategy on Paragon.gg.">
 @endsection
 @section('body')
     <div class="article-header">

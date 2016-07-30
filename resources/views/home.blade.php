@@ -1,4 +1,7 @@
 @extends('layouts/app')
+@section('meta_tags')
+    <meta name="description" content="Paragon.gg is the leading strategy, news and stats website for the Paragon, the MOBA from Epic Games. Check out decks, guides, cards, heroes, and much more.">
+@endsection
 @section('body')
     <div class="featured-wrapper">
         <div class="featured-panel-wrapper">

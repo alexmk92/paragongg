@@ -5,6 +5,7 @@
 @section('meta_tags')
 <meta property="og:image" content="{{ S3URL() }}/images/cards/{{ $card->code }}/{{ $card->icon }}/icon_small.png" />
     <meta name="thumbnail" content="{{ S3URL() }}/images/cards/{{ $card->code }}/{{ $card->icon }}/icon_small.png" />
+    <meta name="description" content="{{ $card->name }}, Type: {{ $card->type }}, Cost: {{ $card->cost }}, Affinity: {{ $card->affinity }}, Rarity: {{ $card->rarity }} - Check out more cards at Paragon.gg.">
 @endsection
 @section('body')
     <div id="card-detail-container"></div>

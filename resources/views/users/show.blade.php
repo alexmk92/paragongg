@@ -1,4 +1,11 @@
 @extends('layouts/app')
+@section('meta_tags')
+@if($user->bio)
+    <meta name="description" content="{{ $user->bio }}">
+@else
+    <meta name="description" content="{{ $user->username }} has not completed their Paragon.gg profile yet.">
+@endif
+@endsection
 @section('libraries')
     {{-- Is stream live --}}
     @if($twitchLive && $user->twitch_tv)

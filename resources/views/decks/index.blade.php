@@ -2,6 +2,9 @@
 @section('title')
     Paragon Decks -
 @endsection
+@section('meta_tags')
+    <meta name="description" content="A complete listing of all decks and stats for Paragon, the MOBA from Epic Games.">
+@endsection
 @section('scripts')
     <script type="text/javascript">
         var csrf   = '{{ csrf_token() }}';

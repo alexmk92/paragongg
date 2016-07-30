@@ -2,6 +2,9 @@
 @section('title')
     Paragon Cards -
 @endsection
+@section('meta_tags')
+    <meta name="description" content="A complete listing of all cards and stats in Paragon, the MOBA from Epic Games. Powered by the Paragon API.">
+@endsection
 @section('body')
     <div id="cards-feed"></div>
 @endsection

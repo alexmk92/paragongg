@@ -5,6 +5,7 @@
 @section('meta_tags')
 <meta property="og:image" content="{{ S3URL() }}/images/news/thumbnails/{{ $article->thumbnail }}" />
     <meta name="thumbnail" content="{{ S3URL() }}/images/news/thumbnails/{{ $article->thumbnail }}" />
+    <meta name="description" content="{{ strip_tags(substr($articleBody, 0,157)) }}...">
 @endsection
 @section('body')
     <div class="article-header">

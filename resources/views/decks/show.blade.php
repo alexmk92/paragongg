@@ -5,6 +5,7 @@
 @section('meta_tags')
 <meta property="og:image" content="{{ S3URL() }}/images/heroes/{{ $deck->hero['code'] }}/{{ $deck->hero['image'] }}/portrait_small.png" />
     <meta name="thumbnail" content="{{ S3URL() }}/images/heroes/{{ $deck->hero['code'] }}/{{ $deck->hero['image'] }}/portrait_small.png" />
+    <meta name="description" content="{{ $deck->title }} - A {{ $deck->hero['name'] }} deck for Paragon @if($deck->author_id)by {{ $deck->author['username'] }}@endif. Check out more decks, guides, and strategy on Paragon.gg.">
 @endsection
 @section('body')
     <div id="sidebar">
