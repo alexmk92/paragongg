@@ -2,6 +2,15 @@
 @section('title')
 {{ $guide->title }} -
 @endsection
+@section('meta_tags')
+@if($guide->type == 'hero')
+<meta property="og:image" content="{{ S3URL() }}/images/heroes/{{ $hero->code }}/{{ $hero->image }}/portrait_small.png" />
+    <meta name="thumbnail" content="{{ S3URL() }}/images/heroes/{{ $hero->code }}/{{ $hero->image }}/portrait_small.png" />
+@else
+<meta property="og:image" content="/assets/images/heroes/null.png" />
+    <meta name="thumbnail" content="/assets/images/heroes/null.png" />
+@endif
+@endsection
 @section('body')
     <div class="article-header">
         @if($guide->type == 'hero')

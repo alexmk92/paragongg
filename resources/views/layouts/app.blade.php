@@ -8,12 +8,8 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
-    <meta name="keywords" content="@yield('meta_keywords', 'paragon,news,strategy,guides,database,data,cards,moba,livestream,livestreams')"/>
-    @yield('meta_description')
-    @yield('meta_thumbnail')
-
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.3.15/slick.css" />
-
+    <meta name="keywords" content="@yield('meta_keywords', 'paragon,news,strategy,guides,stats,cards,moba,database,datalivestream,livestreams')"/>
+    @yield('meta_tags')
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="/assets/images/favicon.ico" />

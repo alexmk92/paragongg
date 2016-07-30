@@ -2,6 +2,10 @@
 @section('title')
     {{ $deck->title }} -
 @endsection
+@section('meta_tags')
+<meta property="og:image" content="{{ S3URL() }}/images/heroes/{{ $deck->hero['code'] }}/{{ $deck->hero['image'] }}/portrait_small.png" />
+    <meta name="thumbnail" content="{{ S3URL() }}/images/heroes/{{ $deck->hero['code'] }}/{{ $deck->hero['image'] }}/portrait_small.png" />
+@endsection
 @section('body')
     <div id="sidebar">
         @if (auth()->check() && $deck->author_id == auth()->user()->id)
