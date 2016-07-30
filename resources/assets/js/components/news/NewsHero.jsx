@@ -12,13 +12,13 @@ var NewsHero = React.createClass({
     render: function() {
         console.log(this.props.featured);
         var settings = {
-            dots: true,
+            dots: false,
             infinite: true,
             speed: 300,
             slidesToShow: 1,
             slidesToScroll: 1,
             centerMode: true,
-            initialSlide: 1
+            initialSlide: 0
         };
         var featured = [];
         this.props.featured.forEach(function(news) {
