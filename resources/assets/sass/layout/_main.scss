@@ -5,7 +5,6 @@ html {
 body {
     background: #08090d url('/assets/background.jpg') top right no-repeat;
     background-size: 100%;
-    animation: fadeIn 1000ms;
     margin: 0 0 150px;
     overflow-x: hidden;
     min-height: 100%;
@@ -19,6 +18,7 @@ body {
     }
 }
 #page {
+    animation: fadeIn 1000ms;
     margin: 100px auto 0;
     width: 100%;
     max-width: 1350px;
