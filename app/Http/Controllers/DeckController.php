@@ -108,6 +108,9 @@ class DeckController extends Controller
         $deck->votes       = 0;
         $deck->cards       = $payload->cards;
         $deck->builds      = $payload->builds;
+        if(isset($payload->affinities)) {
+            $deck->affinities = $payload->affinities;
+        }
         $deck->save();
 
         // Generate shortcode
@@ -414,6 +417,9 @@ class DeckController extends Controller
             $deck->hero        = Hero::where('code', $payload->hero)->firstOrFail()->toArray();
             $deck->cards       = $payload->cards;
             $deck->builds      = $payload->builds;
+            if(isset($payload->affinities)) {
+                $deck->affinities = $payload->affinities;
+            }
             $deck->save();
 
             // Generate shortcode
