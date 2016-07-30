@@ -49,7 +49,7 @@ var DeckList = React.createClass({
         } else if(hash.indexOf('views') > -1) {
             this.setState({ selectedType : 'views' });
         } else {
-            window.location.hash = '#filter=recent';
+            window.location.hash = '';
         }
 
         // Bind scroll event
