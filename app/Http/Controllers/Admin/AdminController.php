@@ -74,4 +74,28 @@ class AdminController extends Controller
         session()->flash('notification', 'success|Settings updated.');
         return redirect()->back();
     }
+
+    public function moderation()
+    {
+        $users = User::where('role', 'moderator')->get();
+        return view('admin.moderation', compact('users'));
+    }
+
+    public function mod(Request $request)
+    {
+        $user = User::where('username', $request->username)->firstOrFail();
+        $user->role = "moderator";
+        $user->save();
+        session()->flash('notification', 'success|Moderator status applied.');
+        return redirect('admin/moderation');
+    }
+
+    public function demod($id)
+    {
+        $user = User::findOrFail($id);
+        $user->role = "user";
+        $user->save();
+        session()->flash('notification', 'success|Moderator status removed.');
+        return redirect('admin/moderation');
+    }
 }

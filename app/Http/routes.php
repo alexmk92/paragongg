@@ -150,6 +150,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::get('/jobs', 'AdminController@jobs');
     Route::get('/cards', 'AdminController@cards');
     Route::get('/heroes', 'AdminController@heroes');
+    Route::get('/moderation', 'AdminController@moderation');
+    Route::post('/moderation/mod', 'AdminController@mod');
+    Route::get('/moderation/demod/{id}', 'AdminController@demod');
     Route::get('/maintenance', 'MaintenanceController@index');
     Route::get('/maintenance/update-cards', '\App\Http\Controllers\CardController@pullCards');
     Route::get('/maintenance/update-card-images', '\App\Http\Controllers\CardController@pullCardImages');
