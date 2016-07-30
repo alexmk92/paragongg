@@ -38,7 +38,7 @@
             </table>
             </div>
             <hr/>
-            <div class="pagination-wrapper center cf">{!! $decks->render() !!}</div>
+            <div class="pagination-wrapper center cf">{!! $guides->render() !!}</div>
         </div>
     </div>
 @endsection
