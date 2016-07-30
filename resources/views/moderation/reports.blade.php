@@ -27,5 +27,7 @@
             </tbody>
         </table>
         </div>
+        <hr/>
+        <div class="pagination-wrapper center cf">{!! $reports->render() !!}</div>
     </div>
 @endsection

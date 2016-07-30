@@ -6,7 +6,6 @@
         <h1>Heroes</h1>
         <hr>
         <a class="btn" href="/admin/maintenance/update-heroes"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Update heroes database</a>
-        <a class="btn" href="/admin/maintenance/update-hero-images"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Update hero images</a>
         <hr>
         <div class="table-scroller">
         <table class="minimal">
@@ -19,16 +18,18 @@
             </tr>
             </thead>
             <tbody>
-            @foreach($cards as $card)
+            @foreach($heroes as $hero)
                 <tr>
-                    <td>{{ $card->id }}</td>
-                    <td><a href="/heroes/{{ $card->slug }}">{{ $card->name }}</a></td>
-                    <td><a href="/heroes/{{ $card->slug }}">{{ $card->code }}</a></td>
-                    <td><a class="btn btn-faded" href="/heroes/edit/{{ $card->code }}"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a> <a class="btn btn-faded btn-warning-hover" href="/heroes/delete/{{ $card->code }}" onclick="return confirm('Are you sure you would like to delete this?');"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a></td>
+                    <td>{{ $hero->id }}</td>
+                    <td><a href="/heroes/{{ $hero->slug }}">{{ $hero->name }}</a></td>
+                    <td><a href="/heroes/{{ $hero->slug }}">{{ $hero->code }}</a></td>
+                    <td><a class="btn btn-faded" href="/heroes/edit/{{ $hero->code }}"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a> <a class="btn btn-faded btn-warning-hover" href="/heroes/delete/{{ $hero->code }}" onclick="return confirm('Are you sure you would like to delete this?');"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a></td>
                 </tr>
             @endforeach
             </tbody>
         </table>
         </div>
+        <hr/>
+        <div class="pagination-wrapper center cf">{!! $heroes->render() !!}</div>
     </div>
 @endsection

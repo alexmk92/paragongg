@@ -1,4 +1,7 @@
 .pagination-wrapper {
+    &.center {
+        text-align: center;
+    }
     &.right {
         .pagination {
             float: right;

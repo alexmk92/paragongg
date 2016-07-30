@@ -46,15 +46,15 @@ class AdminController extends Controller
     public function cards()
     {
         $cards = Card::orderBy('name', 'ASC')
-            ->get();
-        return view('admin.cards')->with('cards', $cards);
+            ->paginate(50);
+        return view('admin.cards', compact('cards'));
     }
 
     public function heroes()
     {
         $heroes = Hero::orderBy('name', 'ASC')
-            ->get();
-        return view('admin.heroes')->with('cards', $heroes);
+            ->paginate(50);
+        return view('admin.heroes', compact('heroes'));
     }
 
     public function getSettings()

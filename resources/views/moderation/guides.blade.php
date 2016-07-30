@@ -33,5 +33,7 @@
             </tbody>
         </table>
         </div>
+        <hr/>
+        <div class="pagination-wrapper center cf">{!! $guides->render() !!}</div>
     </div>
 @endsection

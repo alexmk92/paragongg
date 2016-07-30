@@ -29,5 +29,7 @@
             </tbody>
         </table>
         </div>
+        <hr/>
+        <div class="pagination-wrapper center cf">{!! $cards->render() !!}</div>
     </div>
 @endsection

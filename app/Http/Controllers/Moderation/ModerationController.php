@@ -28,7 +28,7 @@ class ModerationController extends Controller
     {
         $news = News::where('status', 'published')
             ->orderBy('created_at', 'DESC')
-            ->get();
+            ->paginate(25);
         return view('moderation.news', compact('news'));
     }
 
@@ -70,7 +70,7 @@ class ModerationController extends Controller
     {
         $guides = Guide::where('status', 'published')
             ->orderBy('created_at', 'DESC')
-            ->get();
+            ->paginate(25);
 
         return view('moderation.guides')->with('guides', $guides);
     }
@@ -102,7 +102,7 @@ class ModerationController extends Controller
     public function decks()
     {
         $decks = Deck::orderBy('created_at', 'DESC')
-            ->get();
+            ->paginate(25);
         return view('moderation.decks', compact('decks'));
     }
 
@@ -132,7 +132,7 @@ class ModerationController extends Controller
 
     public function cards()
     {
-        $cards = Card::orderBy('name')->get();
+        $cards = Card::orderBy('name')->paginate(50);
         return view('moderation.cards', compact('cards'));
     }
 
@@ -146,7 +146,7 @@ class ModerationController extends Controller
 
     public function heroes()
     {
-        $heroes = Hero::orderBy('name')->get();
+        $heroes = Hero::orderBy('name')->paginate(50);
         return view('moderation.heroes', compact('heroes'));
     }
 
@@ -160,7 +160,7 @@ class ModerationController extends Controller
 
     public function reports()
     {
-        $reports = Report::where('status', 'open')->get();
+        $reports = Report::where('status', 'open')->paginate(50);
         return view('moderation.reports', compact('reports'));
     }
 

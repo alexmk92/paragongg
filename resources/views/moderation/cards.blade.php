@@ -9,7 +9,6 @@
         <table class="minimal">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Code</th>
                     <th>Name</th>
                     <th>Actions</th>
@@ -18,7 +17,6 @@
             <tbody>
                 @foreach($cards as $card)
                     <tr>
-                        <td>{{ $card->id }}</td>
                         <td>{{ $card->code }}</td>
                         <td>{{ $card->name }}</td>
                         <td><a class="btn btn-faded" href="/moderation/cards/feature/{{ $card->id }}">Feature</a></td>
@@ -27,5 +25,7 @@
             </tbody>
         </table>
         </div>
+        <hr/>
+        <div class="pagination-wrapper center cf">{!! $cards->render() !!}</div>
     </div>
 @endsection

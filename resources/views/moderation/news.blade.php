@@ -5,7 +5,7 @@
         <span class="breadcrumb"><a href="/moderation">Moderation</a> / <a href="/moderation/news">News</a></span>
         <h1>News</h1>
         <a class="btn btn-primary btn-margin" href="/news/create">Create post</a>
-        <hr>
+        <hr/>
         <div class="table-scroller">
         <table class="minimal">
             <thead>
@@ -37,5 +37,7 @@
             </tbody>
         </table>
         </div>
+        <hr/>
+        <div class="pagination-wrapper center cf">{!! $news->render() !!}</div>
     </div>
 @endsection

@@ -29,5 +29,7 @@
             </tbody>
         </table>
         </div>
+        <hr/>
+        <div class="pagination-wrapper center cf">{!! $decks->render() !!}</div>
     </div>
 @endsection
