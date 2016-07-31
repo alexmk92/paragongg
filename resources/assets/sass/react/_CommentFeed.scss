@@ -111,7 +111,7 @@ $avatar-height : $avatar-width;
 
                 &.deleted-comment {
                     font-style: italic;
-                    color: $font-color-faded;
+                    color: $font-color-base;
                 }
             }
             .comment-actions {

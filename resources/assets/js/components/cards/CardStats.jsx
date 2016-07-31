@@ -59,7 +59,7 @@ var CardStats = React.createClass({
                 </div>
 
                 <div className="content">
-                    <label>Equipped Statistics</label>
+                    <label>Card Stats</label>
                     <CardEffects card={this.props.card} />
                 </div>
             </div>
