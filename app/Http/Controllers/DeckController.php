@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Deck;
+use App\Guide;
 use App\Hero;
 use App\Card;
 use App\Http\Traits\RetrievesCardCollection;
@@ -439,6 +440,14 @@ class DeckController extends Controller
         if($deck->author_id != Auth::user()->id) abort(403);
 
         $deck->delete();
+
+        $guides = Guide::where('deck', $id)->get();
+        foreach($guides as $guide) {
+            $guide->timestamps = false;
+            $guide->deck = null;
+            $guide->save();
+            $guide->timestamps = true;
+        }
 
         session()->flash('notification', 'success|Deck deleted successfully.');
         return redirect('/account/decks');
