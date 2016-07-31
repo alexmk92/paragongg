@@ -158,7 +158,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     //Route::get('/migrate', 'MigrateDatabaseController@run');
     //Route::get('/convertGuides', 'MigrateDatabaseController@convertGuides');
     //Route::get('/decksReset', 'MigrateDatabaseController@decksReset');
-    Route::get('/heroVideos', 'AdminController@heroVideos');
+    //Route::get('/heroVideos', 'AdminController@heroVideos');
 
 });
 
