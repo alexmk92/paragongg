@@ -1,0 +1,153 @@
+.user-profile {
+    .subheading {
+        font-family: $font-condensed;
+        text-transform: uppercase;
+    }
+    h1 {
+        font-weight: 100;
+        font-size: 46px;
+        line-height: 48px;
+        text-transform: none;
+    }
+    h3 {
+        margin-bottom: 30px;
+    }
+    header {
+        margin-top: 40px;
+        margin-bottom: 80px;
+        .verified {
+            color: $secondary-highlight;
+            margin-left: 5px;
+            .fa {
+                font-size: 24px;
+                vertical-align: middle;
+            }
+        }
+        .bio {
+            margin-top: 30px;
+            font-style: italic;
+            max-width: 600px;
+        }
+        .social {
+            margin-top: 20px;
+            li {
+                display: inline-block;
+                margin-bottom: 0;
+                margin-left: -10px;
+            }
+            a {
+                font-size: 20px;
+                padding: 10px;
+            }
+        }
+    }
+    .stat-list {
+        li {
+            margin-bottom: 20px;
+        }
+        span {
+            font-size: 20px;
+            &.faded {
+                font-weight: 300;
+                color: #999999;
+            }
+        }
+    }
+    #sidebar .sidebox {
+        margin-bottom: 60px;
+    }
+}
+.match-history {
+    padding-right: 30px;
+    border-right: 1px solid #222222;
+    ul {
+
+    }
+    .match-preview {
+        color: $font-color-faded;
+        display: block;
+        background: $panel-color;
+        padding: 10px 20px;
+        border-left: 4px solid $faded-line;
+        transition: all 0.2s;
+        vertical-align: middle;
+        margin-bottom: 20px;
+        table {
+            margin: 0;
+            font-size: inherit;
+            text-transform: none;
+            td,th {
+                vertical-align: middle;
+                padding: 0;
+            }
+            tr:hover {
+                background: none;
+            }
+        }
+        &.win {
+            border-color: $green;
+        }
+        &.loss {
+            border-color: $primary-highlight;
+        }
+        &.live {
+            border-color: $tertiary-highlight;
+        }
+        .hero-played {
+            width: 50px;
+            img {
+                width: 100%;
+            }
+        }
+        .kda {
+            padding: 0 20px;
+            font-size: 24px;
+            font-weight: 300;
+            width: 180px;
+            span {
+                padding: 0 5px;
+            }
+            .kills, .assists {
+                color: white;
+            }
+        }
+        .final {
+            text-align: right;
+        }
+        .tag {
+            background: $panel-color-dark;
+            padding: 7px 10px;
+            display: inline-block;
+            font-family: $font-condensed;
+            font-size: 13px;
+            text-transform: uppercase;
+            color: white;
+            margin-right: 10px;
+            .win, .loss, .live {
+                font-weight: bold;
+                margin-right: 7px;
+            }
+            .label {
+                margin-right: 5px;
+                color: $font-color-faded;
+            }
+            .win {
+                color: $green;
+            }
+            .loss {
+                color: $primary-highlight;
+            }
+            .live {
+                color: $tertiary-highlight;
+            }
+        }
+        &:hover {
+            margin-left: 10px;
+            background: lighten($panel-color, 2%);
+            .btn {
+                border-color: $secondary-highlight;
+                color: $secondary-highlight;
+            }
+        }
+    }
+}

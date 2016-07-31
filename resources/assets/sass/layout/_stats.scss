@@ -35,3 +35,27 @@
         }
     }
 }
+
+.completion-bar {
+    width: 100%;
+    background: $panel-color;
+    height: 30px;
+    position: relative;
+    .completed {
+        height: 30px;
+        opacity: 0.4;
+        background: $green;
+    }
+    span {
+        position: absolute;
+        top: 0;
+        left: 10px;
+        line-height: 30px;
+        font-size: 14px !important;
+        font-family: $font-condensed;
+        color: $font-color-base;
+        strong {
+            color: white;
+        }
+    }
+}

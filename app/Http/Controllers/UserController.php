@@ -25,4 +25,10 @@ class UserController extends Controller
         }
         return view('users.show', compact('user', 'guides', 'decks', 'twitchLive'));
     }
+
+    public function profile($username)
+    {
+        $customBackground = '/assets/images/backgrounds/profile.jpg';
+        return view('users.profile', compact('customBackground'));
+    }
 }
