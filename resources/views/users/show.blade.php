@@ -72,7 +72,7 @@
         {{--</div>--}}
     </div>
 
-    <div class="user-profile">
+    <div class="user-profile-gg">
         <div class="profile-banner" style="background-image: url(/assets/images/users/default-banner.jpg)">
             <div class="text-wrapper">
                 <div class="profile-username">
