@@ -125,7 +125,7 @@ var HeroContainer = React.createClass({
                 { this.renderGraph() }
                 { this.renderTopStatistics() }
                 <div id="abilities-wrapper">
-                    <AbilityFeed currentRank={this.state.heroRank} abilities={ HERO.abilities } />
+                    <AbilityFeed currentRank={this.state.heroRank} abilities={ HERO.abilities } videos={ HERO.videos } />
                 </div>
             </div>
         );

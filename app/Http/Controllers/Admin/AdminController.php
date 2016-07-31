@@ -98,4 +98,22 @@ class AdminController extends Controller
         session()->flash('notification', 'success|Moderator status removed.');
         return redirect('admin/moderation');
     }
+
+    public function heroVideos()
+    {
+        $heroes = Hero::all();
+        foreach($heroes as $hero) {
+            $videos = [];
+            for($i = 0; $i <= 5; $i++) {
+                if(isset($hero->abilities[$i]['video'])) {
+                    $videos[$i] = $hero->abilities[$i]['video'];
+                }
+            }
+            $hero->videos = $videos;
+            $hero->save();
+        }
+
+        session()->flash('notification', 'success|Heroes updated.');
+        return redirect('admin/heroes');
+    }
 }

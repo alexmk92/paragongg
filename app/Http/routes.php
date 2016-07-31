@@ -15,13 +15,6 @@ Route::get('/', 'HomeController@index');
 Route::auth();
 Route::get('/auth', 'Auth\OAuthController@linkAccount')->middleware('auth');
 
-Route::get('/testmail', function() {
-    Mail::raw('Text to e-mail', function($message) {
-        $message->from('us@example.com', 'Laravel');
-        $message->to('itsjamieshepherd@gmail.com');
-    });
-});
-
 /* STATIC */
 Route::get('/terms',   function(){ return view('static.terms');   });
 Route::get('/privacy', function(){ return view('static.privacy'); });
@@ -164,7 +157,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
 
     //Route::get('/migrate', 'MigrateDatabaseController@run');
     //Route::get('/convertGuides', 'MigrateDatabaseController@convertGuides');
-    Route::get('/decksReset', 'MigrateDatabaseController@decksReset');
+    //Route::get('/decksReset', 'MigrateDatabaseController@decksReset');
+    Route::get('/heroVideos', 'AdminController@heroVideos');
 
 });
 

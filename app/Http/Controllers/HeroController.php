@@ -157,28 +157,28 @@ class HeroController extends Controller
             );
         }
 
-        $abilities = $hero->abilities;
+        $videos = [];
         if($request->has('ability_video_lmb')) {
-              $abilities[0]['video'] = $request->ability_video_lmb;
+            $videos[0] = $request->ability_video_lmb;
         }
 
         if($request->has('ability_video_rmb')) {
-            $abilities[1]['video'] = $request->ability_video_rmb;
+            $videos[1] = $request->ability_video_rmb;
         }
 
         if($request->has('ability_video_q')) {
-            $abilities[2]['video'] = $request->ability_video_q;
+            $videos[2] = $request->ability_video_q;
         }
 
         if($request->has('ability_video_e')) {
-            $abilities[3]['video'] = $request->ability_video_e;
+            $videos[3] = $request->ability_video_e;
         }
 
         if($request->has('ability_video_ultimate')) {
-            $abilities[4]['video'] = $request->ability_video_ultimate;
+            $videos[4] = $request->ability_video_ultimate;
         }
 
-        $hero->abilities = $abilities;
+        $hero->videos = $videos;
         $hero->baseStats = $baseStats;
         $hero->save();
 
