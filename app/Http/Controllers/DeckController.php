@@ -436,7 +436,11 @@ class DeckController extends Controller
     public function delete($id)
     {
         $deck = Deck::findOrFail($id);
+        if($deck->author_id != Auth::user()->id) abort(403);
+
         $deck->delete();
-        return view('home');
+
+        session()->flash('notification', 'success|Deck deleted successfully.');
+        return redirect('/account/decks');
     }
 }

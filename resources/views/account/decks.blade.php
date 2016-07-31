@@ -26,6 +26,7 @@
                             <a href="/decks/{{ $deck->id }}/{{ $deck->slug }}" class="btn btn-faded">View</a>
                             <a href="/decks/edit/{{ $deck->id }}" class="btn btn-faded">Edit</a>
                             <a href="/decks/export/{{ $deck->id }}" class="btn btn-faded">Export</a>
+                            <a class="btn btn-faded btn-warning-hover" href="/decks/delete/{{ $deck->id }}" onclick="return confirm('Are you sure you would like to delete this?');"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
                         </td>
                     </tr>
                 @endforeach
