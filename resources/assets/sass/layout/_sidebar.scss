@@ -103,6 +103,18 @@
             padding: 5px;
         }
     }
+    .stat-list {
+        li {
+            margin-bottom: 20px;
+        }
+        span {
+            font-size: 20px;
+            &.faded {
+                font-weight: 300;
+                color: #999999;
+            }
+        }
+    }
     @media (max-width: $media-tablet) {
         float: none;
         width: 100%;

@@ -12,7 +12,7 @@
     <div class="user-profile">
         <header>
         <span class="subheading">Player profile</span>
-        <h1>jamieshepherd <span class="verified"><i class="fa fa-check-circle" aria-hidden="true"></i></span></h1>
+        <h1>jamieshepherd <span class="verified" title="This user has linked their Epic account"><i class="fa fa-check-circle" aria-hidden="true"></i></span></h1>
         <div class="bio">
         <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec.</p>
         <ul class="social">
@@ -76,7 +76,7 @@
             <h3>Match history</h3>
                 <ul>
                     <li>
-                        <a href="/match/51345f1kk" class="match-preview win">
+                        <a href="/tmatches/51345f1kk" class="match-preview win">
                             <table>
                                 <tr>
                                     <td class="hero-played">
@@ -98,7 +98,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="/match/51345f1kk" class="match-preview win">
+                        <a href="/tmatches/51345f1kk" class="match-preview win">
                             <table>
                                 <tr>
                                     <td class="hero-played">
@@ -120,7 +120,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="/match/51345f1kk" class="match-preview loss">
+                        <a href="/tmatches/51345f1kk" class="match-preview loss">
                             <table>
                                 <tr>
                                     <td class="hero-played">
@@ -142,7 +142,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="/match/51345f1kk" class="match-preview win">
+                        <a href="/tmatches/51345f1kk" class="match-preview win">
                             <table>
                                 <tr>
                                     <td class="hero-played">
@@ -164,7 +164,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="/match/51345f1kk" class="match-preview win">
+                        <a href="/tmatches/51345f1kk" class="match-preview win">
                             <table>
                                 <tr>
                                     <td class="hero-played">
@@ -186,7 +186,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="/match/51345f1kk" class="match-preview win">
+                        <a href="/tmatches/51345f1kk" class="match-preview win">
                             <table>
                                 <tr>
                                     <td class="hero-played">
@@ -208,7 +208,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="/match/51345f1kk" class="match-preview win">
+                        <a href="/tmatches/51345f1kk" class="match-preview win">
                             <table>
                                 <tr>
                                     <td class="hero-played">
@@ -230,7 +230,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="/match/51345f1kk" class="match-preview win">
+                        <a href="/tmatches/51345f1kk" class="match-preview win">
                             <table>
                                 <tr>
                                     <td class="hero-played">
@@ -252,7 +252,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="/match/51345f1kk" class="match-preview win">
+                        <a href="/tmatches/51345f1kk" class="match-preview win">
                             <table>
                                 <tr>
                                     <td class="hero-played">
@@ -274,7 +274,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="/match/51345f1kk" class="match-preview win">
+                        <a href="/tmatches/51345f1kk" class="match-preview win">
                             <table>
                                 <tr>
                                     <td class="hero-played">
@@ -296,7 +296,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="/match/51345f1kk" class="match-preview win">
+                        <a href="/tmatches/51345f1kk" class="match-preview win">
                             <table>
                                 <tr>
                                     <td class="hero-played">
@@ -318,7 +318,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="/match/51345f1kk" class="match-preview win">
+                        <a href="/tmatches/51345f1kk" class="match-preview win">
                             <table>
                                 <tr>
                                     <td class="hero-played">
@@ -340,7 +340,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="/match/51345f1kk" class="match-preview win">
+                        <a href="/tmatches/51345f1kk" class="match-preview win">
                             <table>
                                 <tr>
                                     <td class="hero-played">

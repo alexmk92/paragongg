@@ -132,6 +132,12 @@ $pgg-version: "1.0.0";
     &.pgg-epic-games-logo:before {
         content: "\62";
     }
+    &.pgg-tower:before {
+        content: "\65";
+    }
+    &.pgg-skull:before {
+        content: "\66";
+    }
 }
 
 &.pgg.affinity-color {

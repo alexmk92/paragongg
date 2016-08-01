@@ -1,0 +1,194 @@
+.match-details {
+    .subheading {
+        font-family: $font-condensed;
+        text-transform: uppercase;
+        .fa {
+            margin-right: 2px;
+            margin-bottom: 10px;
+        }
+    }
+    h1 {
+        font-weight: 100;
+        font-size: 46px;
+        line-height: 48px;
+        text-transform: none;
+    }
+    h3 {
+        margin-bottom: 30px;
+    }
+    header {
+        text-align: center;
+        margin-top: 40px;
+        margin-bottom: 100px;
+    }
+    #sidebar .sidebox {
+        margin-bottom: 60px;
+    }
+    .event-list {
+        max-height: 600px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        li {
+            font-family: $font-condensed;
+            width: 100%;
+            display: table;
+            cursor: default;
+            transition: margin 0.2s;
+            .timestamp, .event {
+                display: table-cell;
+            }
+            .timestamp {
+                width: 60px;
+                text-align: center;
+                background: #292e39;
+                font-size: 13px;
+                color: white;
+                padding: 13px 0;
+                vertical-align: middle;
+            }
+            .event {
+                background: $panel-color;
+                padding: 12px;
+                .pgg {
+                    margin-right: 10px;
+                    vertical-align: middle;
+                    float: left;
+                }
+                .content {
+                    display: block;
+                    line-height: 17px;
+                    overflow: hidden;
+                    width: auto;
+                }
+            }
+            .team0 {
+                color: $primary-highlight;
+            }
+            .team1 {
+                color: $secondary-highlight;
+            }
+            &:hover {
+                margin-left: 10px;
+            }
+        }
+    }
+    .match-stats {
+        padding-right: 30px;
+        border-right: 1px solid #222222;
+        .team-stats {
+            margin-bottom: 50px;
+            .team-score {
+                display: inline-block;
+                width: 50%;
+            }
+            .result {
+                display: inline-block;
+                width: 50%;
+                text-align: right;
+                font-family: $font-condensed;
+                font-size: 24px;
+                text-transform: uppercase;
+                .victory {
+                    color: $green;
+                }
+                .defeat {
+                    color: $font-color-faded;
+                }
+            }
+            .subheader {
+                display: block;
+                font-weight: bold;
+                &.team0 {
+                    color: $primary-highlight;
+                }
+                &.team1 {
+                    color: $secondary-highlight;
+                }
+            }
+            .score {
+                margin: 5px 0 20px;
+                display: block;
+                font-size: 30px;
+                color: white;
+            }
+            &.team0 table.scoreboard {
+                border-left: 4px solid rgba($primary-highlight,0.7);
+            }
+            &.team1 table.scoreboard {
+                border-left: 4px solid rgba($secondary-highlight,0.7);
+            }
+        }
+        table.scoreboard {
+            background: $panel-color;
+            border: 1px solid #262c39;
+            font-size: 15px;
+            text-transform: none;
+            .hero-preview {
+                float: left;
+                margin-right: 20px;
+                max-width: 50px;
+                border-radius: 50%;
+            }
+            .split {
+                display: table;
+                div {
+                    display: table-cell;
+                    vertical-align: middle;
+                }
+            }
+            span {
+                display: block;
+                color: $font-color-faded;
+                white-space: nowrap;
+                line-height: 18px;
+                span {
+                    display: inline;
+                }
+                &.highlight {
+                    color: $font-color-base;
+                }
+                &.small {
+                    font-family: $font-condensed;
+                    font-size: 14px;
+                }
+                .color, &.color {
+                    &.master {
+                        color: $color-master;
+                    }
+                }
+            }
+            td, th {
+                padding: 12px 20px;
+                vertical-align: middle;
+                text-align: left;
+            }
+            thead tr {
+                background: $panel-color-dark;
+                font-size: 13px;
+                font-family: $font-condensed;
+                color: $font-color-faded;
+                text-transform: uppercase;
+            }
+            tbody tr {
+                border-top: 1px solid #262c39;
+                &:hover {
+                    background: rgba(#0f1219, 0.5);
+                }
+            }
+            .damage {
+                text-align: center;
+
+            }
+            .damage-bar {
+                display: inline-block;
+                background: #555a68;
+                width: 40px;
+                height: 5px;
+                .completion {
+                    height: 5px;
+                    background: #6d9734;
+                }
+            }
+        }
+    }
+}

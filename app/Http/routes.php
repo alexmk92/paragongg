@@ -32,11 +32,14 @@ Route::get('/news/{id}/{slug?}', 'NewsController@show');
 Route::get('/users/{username}', 'UserController@show');
 
 /* PLAYERS */
-Route::get('/profile/{username}', 'UserController@profile')->middleware('admin');
+Route::get('/players/{username}', 'UserController@profile')->middleware('admin');
 //Route::get('/players', 'PlayerController@index');
 //Route::post('/players/search', 'PlayerController@search');
 //Route::get('/players/top', 'PlayerController@top');
 //Route::get('/players/{username}', 'PlayerController@show');
+
+/* MATCHES */
+Route::get('/tmatches/{id}', 'MatchController@show')->middleware('admin');
 
 /* GAMES */
 //Route::get('/games', 'GameController@index');
