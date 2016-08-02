@@ -129,8 +129,9 @@
                     <div class="team-score">
                         <span class="subheader team0">RED TEAM</span>
                         <span class="score">24 / 5 / 12</span>
-                    </div><div class="result">
-                        <span class="victory">Victory</span>
+                    </div>
+                    <div class="result">
+                        <span class="victory"></span>
                     </div>
                     <table class="scoreboard">
                         <thead>
@@ -409,7 +410,7 @@
                         <span class="subheader team1">BLUE TEAM</span>
                         <span class="score">24 / 5 / 12</span>
                     </div><div class="result">
-                        <span class="defeat">Defeat</span>
+                        <span class="defeat"></span>
                     </div>
                     <table class="scoreboard">
                         <thead>
