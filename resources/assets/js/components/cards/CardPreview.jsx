@@ -28,6 +28,7 @@ var CardPreview = React.createClass({
                     onMouseOver={this.props.onMouseOver}
                     onMouseLeave={this.props.onMouseLeave}
                     className={className}
+                    key={this.props.card.code}
                 >
                     <a href={ "/cards/" + this.props.card.slug }>
                     <PreloadImage src={imageURL}

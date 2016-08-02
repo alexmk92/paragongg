@@ -33,7 +33,16 @@
             width: 100%;
             display: table;
             cursor: default;
-            transition: margin 0.2s;
+            transition: all 0.8s;
+            opacity: 0.9;
+
+            &:first-child {
+                opacity: 1.0;
+                .event {
+                    padding: 24px;
+                }
+            }
+
             .timestamp, .event {
                 display: table-cell;
             }
@@ -47,8 +56,10 @@
                 vertical-align: middle;
             }
             .event {
+                vertical-align: middle;
                 background: $panel-color;
                 padding: 12px;
+                transition: padding 0.2s;
                 .pgg {
                     margin-right: 10px;
                     vertical-align: middle;
@@ -68,7 +79,10 @@
                 color: $secondary-highlight;
             }
             &:hover {
-                margin-left: 10px;
+                .event {
+                    padding: 24px;
+                }
+                opacity: 1;
             }
         }
     }

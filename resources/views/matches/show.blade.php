@@ -4,10 +4,10 @@
 @endsection
 @section('body')
     <div class="wrapper">
-    <div class="match-details">
-        <header>
+        <div class="match-details">
+        <header class="game-clock">
         <span class="subheading"><i class="fa fa-play-circle anim-pulse" aria-hidden="true"></i> Match live</span>
-        <h1>22:43</h1>
+        <h1>00:00</h1>
         </header>
         <div id="sidebar">
             <div class="sidebox cf">

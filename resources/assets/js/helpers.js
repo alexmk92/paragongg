@@ -61,6 +61,19 @@ module.exports = {
             default: return "#000";
         }
     },
+    prettyTime: function(totalSeconds, changingTime) {
+        if(!changingTime) {
+            var minutes = Math.floor(Math.abs(totalSeconds / 60));
+            var minString = parseInt(minutes / 1000);
+            var secString = parseInt(minutes % 60);
+
+            if(minString < 10) minString = '0' + minString;
+            if(secString < 10) secString = '0' + secString;
+            return minString + ':' + secString;
+        } else {
+            return (new Date(totalSeconds)).toUTCString().match(/(\d\d:\d\d:\d\d)/)[0].substr(3, 6);
+        }
+    },
     getFormattedStatistic: function(statLabel) {
         switch(statLabel.toUpperCase()) {
             case "ATTACKSPEEDRATING": return { label : "Attack Speed", icon: "pgg pgg-attack-speed", modifier : "", multiplier: 1, statRef: 'attack_speed' }; break;
