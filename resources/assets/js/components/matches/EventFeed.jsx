@@ -91,7 +91,7 @@ var EventFeed = React.createClass({
             );
         } else {
             return (
-                <p>Game events will appear here as they happen in game, keep your eyes peeled!</p>
+                <p>Tower and Kill events will appear here as they happen in game, keep your eyes peeled!</p>
             )
         }
     },

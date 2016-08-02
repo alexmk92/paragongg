@@ -6,39 +6,33 @@ var GameClock = React.createClass({
     getInitialState: function() {
         return {
             gameStart: null,
-            timeElapsed: null,
-            isLive: true
+            timeElapsed: null
         }
     },
     componentWillMount: function() {
         if(this.props.startTime !== null) {
-            this.setState({ gameStart: new Date(this.props.startTime), isLive: this.props.isLive });
-        }
-    },
-    componentWillReceiveProps: function(nextProps) {
-        if(!nextProps.isLive) {
-            setTimeout(function() {
-                this.setState({ isLive: false });
-            }.bind(this), 2500);
+            this.setState({ gameStart: new Date(this.props.startTime) });
         }
     },
     componentDidMount: function() {
-        if(this.state.isLive) {
-            this.updateTimer();
-        }
+        this.updateTimer();
     },
     updateTimer: function() {
-        setInterval(function() {
-            this.setState({
-                timeElapsed: new Date().getTime() - this.state.gameStart.getTime()
-            });
-        }.bind(this), 1000);
+        if(this.props.isLive) {
+            this.interval = setInterval(function() {
+                this.setState({
+                    timeElapsed: new Date().getTime() - this.state.gameStart.getTime()
+                });
+            }.bind(this), 1000);
+        } else {
+            clearInterval(this.interval);
+        }
     },
     getMatchTime: function() {
         if(this.state.timeElapsed && this.state.startTime !== null) {
             return Helpers.prettyTime(this.state.timeElapsed, true);
         } else {
-            if(this.props.endTime && !this.state.isLive) {
+            if(this.props.endTime && !this.props.isLive) {
                 return Helpers.prettyTime(this.props.endTime, false);
             }
             return "00:00";
