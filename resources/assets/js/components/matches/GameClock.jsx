@@ -20,12 +20,14 @@ var GameClock = React.createClass({
     updateTimer: function() {
         if(this.props.isLive) {
             this.interval = setInterval(function() {
-                this.setState({
-                    timeElapsed: new Date().getTime() - this.state.gameStart.getTime()
-                });
+                if(this.props.isLive) {
+                    this.setState({
+                        timeElapsed: new Date().getTime() - this.state.gameStart.getTime()
+                    });
+                } else {
+                    clearInterval(this.interval);
+                }
             }.bind(this), 1000);
-        } else {
-            clearInterval(this.interval);
         }
     },
     getMatchTime: function() {

@@ -35,7 +35,7 @@ var TeamPanel = React.createClass({
         return this.state.players.map(function(player) {
             console.log("PLAYER: ", player);
             return (
-                <tr>
+                <tr key={"player-row-" + Helpers.uuid()}>
                     <td>
                         <div className="split">
                             <div>
