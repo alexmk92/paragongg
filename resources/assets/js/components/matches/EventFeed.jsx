@@ -84,7 +84,7 @@ var EventFeed = React.createClass({
         if(this.state.visibleEvents.length > 0) {
             return (
                 <ul className="event-list">
-                    <FlipMove enterAnimation="fade" leaveAnimation="fade">
+                    <FlipMove>
                         {this.state.visibleEvents}
                     </FlipMove>
                 </ul>
