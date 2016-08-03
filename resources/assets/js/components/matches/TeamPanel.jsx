@@ -36,7 +36,7 @@ var TeamPanel = React.createClass({
             console.log("PLAYER: ", player);
             return (
                 <tr key={"player-row-" + Helpers.uuid()}>
-                    <td>
+                    <td className="hero">
                         <div className="split">
                             <div>
                                 <img className="hero-preview" src={this.getHeroImage(player)} />
@@ -156,7 +156,7 @@ var TeamPanel = React.createClass({
                 <table className="scoreboard">
                     <thead>
                     <tr>
-                        <th>Hero</th>
+                        <th className="hero">Hero</th>
                         <th>Player</th>
                         <th>Score</th>
                         <th className="damage">Heroes</th>

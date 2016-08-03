@@ -26,20 +26,19 @@
     }
     .event-list {
         max-height: 600px;
-        overflow-x: hidden;
         overflow-y: auto;
         li {
             font-family: $font-condensed;
             width: 100%;
             display: table;
             cursor: default;
-            transition: all 0.8s;
-            opacity: 0.9;
+            transition: all 0.2s;
+            opacity: 0.75;
 
             &:first-child {
                 opacity: 1.0;
                 .event {
-                    padding: 24px;
+                    padding: 24px 12px;
                 }
             }
 
@@ -79,10 +78,10 @@
                 color: $secondary-highlight;
             }
             &:hover {
-                .event {
-                    padding: 24px;
-                }
                 opacity: 1;
+                .timestamp {
+                    background: lighten(#292e39, 5%);
+                }
             }
         }
     }
@@ -140,7 +139,7 @@
             .hero-preview {
                 float: left;
                 margin-right: 20px;
-                max-width: 50px;
+                max-width: 40px;
                 border-radius: 50%;
             }
             .split {
@@ -172,9 +171,14 @@
                 }
             }
             td, th {
-                padding: 12px 20px;
+                padding: 20px 7px;
                 vertical-align: middle;
                 text-align: left;
+            }
+            th {
+                &.hero {
+                    padding-left: 80px;
+                }
             }
             thead tr {
                 background: $panel-color-dark;
@@ -191,7 +195,9 @@
             }
             .damage {
                 text-align: center;
-
+            }
+            .hero {
+                padding-left: 20px;
             }
             .damage-bar {
                 display: inline-block;
