@@ -45,6 +45,11 @@ var CardContainer = React.createClass({
         return (
             <div onMouseMove={this.flipCard}>
                 <div className="card-container">
+                    <div className="card-stats-wrapper">
+                        <div className="card-stats">
+                            <CardStats rarity={ rarity } card={ CARD } />
+                        </div>
+                    </div>
                     <div className="anim-fadeIn" id="card-model-wrapper">
                         <div id="card-model" className="anim-flicker">
                             <div id="card-model-container">
@@ -57,11 +62,6 @@ var CardContainer = React.createClass({
                                 <span>{ CARD.name }</span>
                                 <div id="card-glow-layer" style={modelStyles} className={this.state.renderGlow ? 'visible' : ''}></div>
                             </div>
-                        </div>
-                    </div>
-                    <div className="card-stats-wrapper">
-                        <div className="card-stats">
-                            <CardStats rarity={ rarity } card={ CARD } />
                         </div>
                     </div>
                     <div id="particle-layer" className={this.state.renderGlow ? 'visible' : ''}></div>

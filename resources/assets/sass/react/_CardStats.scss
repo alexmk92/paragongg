@@ -25,23 +25,28 @@ canvas {
     min-height: 800px;
 
     #card-model-wrapper {
-        float: right;
         max-width: 600px;
-        width: 600px;
-        margin-top: 100px;
+        width: auto;
+        overflow: hidden;
+        padding: 100px 0;
         z-index: 10;
-
-        @media (max-width: $media-tablet) {
-            width: 100%;
-            float: none;
-            margin-bottom: 50px;
-            max-width: none;
-        }
 
         @media (max-width: $media-wide) {
             width: auto;
             margin: 40px 0;
         }
+
+        @media (max-width: $media-tablet) {
+            padding: 100px 0;
+            float: none;
+            margin-bottom: 50px;
+            max-width: none;
+        }
+
+        @media (max-width: $media-mobile) {
+            display: none;
+        }
+
 
         #card-model {
             position: relative;
@@ -92,9 +97,18 @@ canvas {
     }
 
     .card-stats-wrapper {
-        max-width: 650px;
-        width: 100%;
+        width: 600px;
+        float: left;
         z-index: 10;
+
+        @media (max-width: $media-desktop) {
+            width: 400px;
+        }
+
+        @media (max-width: $media-tablet) {
+            width: 100%;
+        }
+
 
         .attributes {
             width: 100%;
@@ -165,12 +179,14 @@ canvas {
 
         .card-stats {
             padding: 20px 5px;
-            max-width: 450px;
-            margin: 50px 0 100px;
+            margin-top: 50px;
             h1 {
                 padding-bottom: 25px;
                 margin-bottom: 25px;
                 border-bottom: 2px solid #222;
+            }
+            @media (max-width: $media-tablet) {
+                margin-top: 0;
             }
         }
     }

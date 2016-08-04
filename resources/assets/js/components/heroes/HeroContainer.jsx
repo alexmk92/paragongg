@@ -98,13 +98,18 @@ var HeroContainer = React.createClass({
     render: function() {
         var modelClass = this.state.hasFallbackImage ? ' fallback-portrait' : '';
         var modelURL = Helpers.S3URL() + "images/heroes/" + HERO.code + "/cutout.png";
-        if(Helpers.isClientMobile()) {
-            modelClass = ' mobile-portrait';
-            modelURL = Helpers.S3URL() + "images/heroes" + HERO.code + "/" + HERO.image + "/portrait_medium.png";
-        }
+        // if(Helpers.isClientMobile()) {
+        //     modelClass = ' mobile-portrait';
+        //     modelURL = Helpers.S3URL() + "images/heroes" + HERO.code + "/" + HERO.image + "/portrait_medium.png";
+        // }
         return(
             <div>
                 <div onMouseOver={this.updateParallax} className="hero-container">
+                    <div id="left-wrapper">
+                        <div id="hero-stats">
+                            <HeroStats onHeroRankChanged={this.updateHeroRank} heroRank={this.state.heroRank} hero={ HERO } />
+                        </div>
+                    </div>
                     <div className="anim-fadeIn" id="hero-model-wrapper">
                         <div id="hero-model" className={"anim-flicker" + modelClass}>
                             <PreloadImage src={modelURL}
@@ -113,11 +118,6 @@ var HeroContainer = React.createClass({
                                           onFallbackImageRendered={this.fallbackImageRendered}
                                           onImageLoaded={this.heroModelLoaded}
                             />
-                        </div>
-                    </div>
-                    <div id="left-wrapper">
-                        <div id="hero-stats">
-                            <HeroStats onHeroRankChanged={this.updateHeroRank} heroRank={this.state.heroRank} hero={ HERO } />
                         </div>
                     </div>
                     <div id="particle-layer" className={this.state.renderParticles ? 'visible' : ''}></div>
