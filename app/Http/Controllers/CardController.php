@@ -42,7 +42,7 @@ class CardController extends Controller
 
     public function getCards()
     {
-        $cards = Card::select('name', 'code', 'slug', 'type', 'cost', 'upgradeSlots', 'affinity', 'rarity', 'effects', 'background')->get();
+        $cards = Card::select('name', 'code', 'slug', 'type', 'cost', 'upgradeSlots', 'affinity', 'rarity', 'effects', 'background', 'icon')->get();
         $cardsOwned = null;
 
         if(getenv('APP_ENV') == 'local') {
