@@ -23,6 +23,9 @@ canvas {
 
 .card-container {
     min-height: 800px;
+    @media (max-width: $media-tablet) {
+        min-height: 0;
+    }
 
     #card-model-wrapper {
         width: auto;
@@ -106,6 +109,7 @@ canvas {
 
         @media (max-width: $media-tablet) {
             width: 100%;
+            margin-bottom: 80px;
         }
 
 
