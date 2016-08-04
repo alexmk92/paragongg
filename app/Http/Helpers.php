@@ -166,8 +166,17 @@ function getDeckFromString($string)
             $deck = Deck::find($shortcode->resource_id);
         }
     }
-    
+
     return $deck;
+}
+
+function getPlayerFromMatch($match, $accountId) {
+    foreach($match['players'] as $player) {
+        if($player['accountId'] == $accountId) {
+            return $player;
+        }
+    }
+    return false;
 }
 
 function is_value_in_array($needle, $haystack) {

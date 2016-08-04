@@ -32,7 +32,7 @@ Route::get('/news/{id}/{slug?}', 'NewsController@show');
 Route::get('/users/{username}', 'UserController@show');
 
 /* PLAYERS */
-Route::get('/players/{username}', 'UserController@profile')->middleware('admin');
+Route::get('/players/{username}', 'PlayerController@show')->middleware('admin');
 //Route::get('/players', 'PlayerController@index');
 //Route::post('/players/search', 'PlayerController@search');
 //Route::get('/players/top', 'PlayerController@top');
