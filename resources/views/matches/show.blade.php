@@ -7,3 +7,8 @@
         <div class="match-details"></div>
     </div>
 @endsection
+@section('scripts')
+    <script type="text/javascript">
+        var replayId = '{{ $match->replayId }}';
+    </script>
+@endsection

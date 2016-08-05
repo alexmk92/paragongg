@@ -16,7 +16,8 @@ class MatchController extends Controller
     // Show
     public function show($id)
     {
+        $match = Match::findOrFail($id);
         $customBackground = '/assets/images/backgrounds/profile.jpg';
-        return view('matches.show', compact('customBackground'));
+        return view('matches.show', compact('match', 'customBackground'));
     }
 }
