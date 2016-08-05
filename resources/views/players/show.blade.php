@@ -75,6 +75,9 @@
             <div class="match-history">
             <h3>Match history</h3>
                 <ul>
+                    @if($matches->count() === 0)
+                        <p>This user is yet to play any games this season.</p>
+                    @endif
                     @foreach($matches as $match)
                     <li>
                         <a href="/tmatches/{{ $match->replayId }}" class="match-preview {{ ($match->playerStats['team'] == $match->winningTeam) ? 'win' : 'lose' }}">
@@ -93,9 +96,9 @@
                                             @else
                                                 <span class="loss">Loss</span>
                                             @endif
-                                                {{ $match->startedAt }}</span>
-                                        <span class="tag"><span class="label">Duration</span>21:33</span>
-                                        <span class="tag"><span class="label">Match mode</span>{{ $match->gameType }}</span>
+                                                {{ getMongoDiff($match->startedAt) }}</span>
+                                        <span class="tag"><span class="label">Duration</span>{{ getMatchLength($match) }}</span>
+                                        <span class="tag"><span class="label">Match mode</span>{{ str_replace('_', ' ', $match->gameType) }}</span>
                                     </td>
                                     <td class="final">
                                         <span class="btn btn-faded"><i class="fa fa-play-circle" aria-hidden="true"></i> View match</span>

@@ -7,8 +7,4 @@ use Jenssegers\Mongodb\Eloquent\Model as Model;
 class Match extends Model
 {
     protected $connection = 'mongodb';
-    protected $collection = 'replays';
-
-
-    // Player
 }

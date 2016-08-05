@@ -189,3 +189,11 @@ function is_value_in_array($needle, $haystack) {
     }
     return false;
 }
+
+function getMongoDiff($date) {
+    $date = $date->toDateTime()->getTimestamp();
+    return Carbon::createFromTimestamp($date)->diffForHumans();
+}
+function getMatchLength($match) {
+    return gmdate("i:s", $match->newCheckpointTime);
+}

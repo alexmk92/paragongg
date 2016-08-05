@@ -30,7 +30,8 @@ class PlayerController extends Controller
             $match->playerStats = getPlayerFromMatch($match, $player->accountId);
         }
 
-        return view('players.show')->with('player', $player)->with('matches', $matches);
+        $customBackground = '/assets/images/backgrounds/profile.jpg';
+        return view('players.show', compact('player', 'matches', 'customBackground'));
     }
 
     public function getPlayer($username)
