@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Match;
+use App\Http\Controllers\Controller;
 
 class MatchController extends Controller
 {
