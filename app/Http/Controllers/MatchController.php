@@ -16,7 +16,7 @@ class MatchController extends Controller
     // Show
     public function show($id)
     {
-        $match = Match::where('replayId', $id);
+        $match = Match::where('replayId', $id)->first();
         $customBackground = '/assets/images/backgrounds/profile.jpg';
         return view('matches.show', compact('match', 'customBackground'));
     }

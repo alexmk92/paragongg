@@ -10,7 +10,7 @@ class MatchController extends Controller
     // Show
     public function show($id)
     {
-        $match = Match::where('replayId', $id);
+        $match = Match::where('replayId', $id)->first();
         return response()->json($match);
     }
 }
