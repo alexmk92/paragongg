@@ -61,18 +61,35 @@ module.exports = {
             default: return "#000";
         }
     },
-    prettyTime: function(totalSeconds, changingTime) {
-        if(!changingTime) {
-            var minutes = Math.floor(Math.abs(totalSeconds / 60));
-            var minString = parseInt(minutes / 1000);
-            var secString = parseInt(minutes % 60);
+    gameMinutes: function(ms) {
+        var min = (ms/1000/60) << 0;
+        var sec = ((ms/1000) % 60).toFixed(0) - 1;
 
-            if(minString < 10) minString = '0' + minString;
-            if(secString < 10) secString = '0' + secString;
-            return minString + ':' + secString;
-        } else {
-            return (new Date(totalSeconds)).toUTCString().match(/(\d\d:\d\d:\d\d)/)[0].substr(3, 6);
+        if(sec < 0) sec = 0;
+        if(sec < 10) {
+            sec = '0' + sec;
         }
+
+        return min + ':' + sec;
+    },
+    getGMTTime: function() {
+        var d = new Date();
+        return new Date(d.valueOf() + d.getTimezoneOffset() * 60000)
+    },
+    pretifyNumber: function(number) {
+        number = parseInt(this.dropZeroesAndDelimitNumbers(number.toString()));
+        if(number >= 1000) {
+            number = number / 1000;
+            number = parseInt(number).toFixed(1);
+            number = number.split('.');
+            if(number[1] === '0') {
+                number = parseInt(number).toFixed(0);
+            } else {
+                number = number.join('.');
+            }
+            number += 'k';
+        }
+        return number;
     },
     getFormattedStatistic: function(statLabel) {
         switch(statLabel.toUpperCase()) {
@@ -168,6 +185,7 @@ module.exports = {
     getCardImageURL: function(card, size, type) {
         if(!card) return "";
 
+        console.log('card is: ', card);
         if(!size) size = "medium";
         if(type === "icon")
             return this.S3URL() + "images/cards/" + card.code + "/" + card.icon + "/icon_" + size + '.png';

@@ -7,7 +7,7 @@ var EventFeed = React.createClass({
         return {
             events: [],
             visibleEvents: [],
-            gameStart: null
+            isLive: null
         }
     },
     getPlayerTeam: function(playerName) {
@@ -21,12 +21,12 @@ var EventFeed = React.createClass({
         });
         return team;
     },
+    componentWillMount: function() {
+        this.setState({ isLive: this.props.isLive });
+    },
     componentDidMount: function() {
         var sortedEvents = this.sortByTime(this.props.events);
-        this.setState({ events: sortedEvents, visibleEvents: this.getVisibleEvents(sortedEvents) })
-    },
-    componentWillMount: function() {
-        this.setState({ gameStart: new Date(this.props.startTime) });
+        this.setState({ events: sortedEvents, visibleEvents: this.getVisibleEvents(sortedEvents)})
     },
     shouldComponentUpdate: function(nextProps, nextState) {
         return nextState.visibleEvents.length > this.state.visibleEvents.length;
@@ -35,7 +35,7 @@ var EventFeed = React.createClass({
         var sortedEvents = this.sortByTime(nextProps.events);
         var visibleEvents = this.getVisibleEvents(sortedEvents);
         console.log('visible events length is now: ' + visibleEvents.length + ', it was: ' + this.state.visibleEvents.length);
-        this.setState({ events: sortedEvents, visibleEvents: visibleEvents });
+        this.setState({ events: sortedEvents, visibleEvents: visibleEvents, isLive: nextProps.isLive });
     },
     getEventLabel: function(event) {
         if(!Helpers.isNullOrUndefined(event.killed)) {
@@ -64,15 +64,16 @@ var EventFeed = React.createClass({
         }
     },
     getVisibleEvents: function(sortedEvents) {
-        console.log('state in events: ', this.state);
+        console.log('rendering events: ', sortedEvents);
         var visibleEvents = [];
-        var currentTime = new Date().getTime() - this.state.gameStart.getTime();
+        console.log(this.props.startTime);
+        var currentTime = Helpers.getGMTTime() - new Date(this.props.startTime).getTime();
 
         sortedEvents.forEach(function(event) {
-            if(event.timestamp <= currentTime) {
+            if(event.timestamp <= currentTime || this.state.isLive === false) {
                 visibleEvents.push(
                     <li key={'event_' + event.timestamp + '_' + event.killer }>
-                        <div className="timestamp">{Helpers.prettyTime(event.timestamp, false)}</div>
+                        <div className="timestamp">{Helpers.gameMinutes(event.timestamp)}</div>
                         { this.getEventLabel(event) }
                     </li>
                 );

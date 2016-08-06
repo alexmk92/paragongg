@@ -91,6 +91,7 @@ var DeckList = React.createClass({
         if(!endOfPage && !fetching) {
             var skip = this.state.decks[this.state.selectedType].skip;
             var deckURL = '/api/v1/decks?skip=' + skip + '&take=' + this.state.take;
+            console.log('requesting: ' + deckURL);
             if(HERO !== null) {
                 deckURL += '&hero=' + HERO.code;
             }

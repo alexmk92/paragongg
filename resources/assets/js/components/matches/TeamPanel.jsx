@@ -4,26 +4,58 @@ var Helpers = require('../../helpers');
 var TeamPanel = React.createClass({
     getInitialState: function() {
         return {
-            players: null
+            players: null, 
+            maxStats: null
         }  
     },
     componentWillMount: function() {
+        var players = this.getPlayers(this.props.players);
+        this.setState({ players: players, maxStats: this.computeMaxStats(players) });
+    },
+    componentWillReceiveProps: function(nextProps) {
+        var players = this.getPlayers(nextProps.players);
+        this.setState({ players: players, maxStats: this.computeMaxStats(players) });
+    },
+    shouldComponentUpdate: function(nextProps, nextState) {
+        /*
+        if(nextProps.maxStats !== this.props.maxStats) {
+            return true;
+        }
+        */
+        if(nextProps !== this.props) return true;
+        if(this.state !== nextState) return true;
+        return true;
+        //return false;
+    },
+    computeMaxStats: function(players) {
+        var maxStats = {
+            maxHeroDamage: 0,
+            maxTowerDamage: 0,
+            maxMinionDamage: 0,
+            maxJungleDamage: 0,
+            maxHarvesterDamage: 0,
+            maxInhibitorDamage: 0
+        };
+
+        players.forEach(function(player) {
+            if(player.damageToHeroes > maxStats.maxHeroDamage) maxStats.maxHeroDamage = player.damageToHeroes;
+            if(player.damageToTowers > maxStats.maxTowerDamage) maxStats.maxTowerDamage = player.damageToTowers;
+            if(player.damageToMinions > maxStats.maxMinionDamage) maxStats.maxMinionDamage = player.damageToMinions;
+            if(player.damageToJungle > maxStats.maxJungleDamage) maxStats.maxJungleDamage = player.damageToJungle;
+            if(player.damageToHarvesters > maxStats.maxHarvesterDamage) maxStats.maxHarvesterDamage = player.damageToHarvesters;
+            if(player.damageToInhibitors > maxStats.maxInhibitorDamage) maxStats.maxInhibitorDamage = player.damageToInhibitors;
+        });
+
+        return maxStats;
+    },
+    getPlayers: function(playersArray) {
         var players = [];
-        this.props.players.forEach(function(player) {
+        playersArray.forEach(function(player) {
             if(player.team === this.props.team) {
-                console.log('checking if: ' + player.team + ' is equal to ' + this.props.team);
                 players.push(player);
             }
         }.bind(this));
-        this.setState({ players: players });
-    },
-    shouldComponentUpdate: function(nextProps, nextState) {
-        if(nextProps.maxStats !== this.props.maxStats) {
-            return true;
-        } else if(nextProps.victor !== this.props.victor) {
-            return true;
-        }
-        return false;
+        return players;
     },
     getHeroName: function(player) {
         return 'Steel';
@@ -60,37 +92,37 @@ var TeamPanel = React.createClass({
                         <span className="small">{this.getKDA(player)}</span>
                     </td>
                     <td className="damage">
-                        <span className="small">{Helpers.dropZeroesAndDelimitNumbers(player.damageToHeroes)}</span>
+                        <span className="small">{Helpers.pretifyNumber(player.damageToHeroes)}</span>
                         <div className="damage-bar">
                             <div className="completion" style={this.getPercentageForStat(player, 'HERO')}></div>
                         </div>
                     </td>
                     <td className="damage">
-                        <span className="small">{Helpers.dropZeroesAndDelimitNumbers(player.damageToTowers)}</span>
+                        <span className="small">{Helpers.pretifyNumber(player.damageToTowers)}</span>
                         <div className="damage-bar">
                             <div className="completion" style={this.getPercentageForStat(player, 'TOWER')}></div>
                         </div>
                     </td>
                     <td className="damage">
-                        <span className="small">{Helpers.dropZeroesAndDelimitNumbers(player.damageToMinions)}</span>
+                        <span className="small">{Helpers.pretifyNumber(player.damageToMinions)}</span>
                         <div className="damage-bar">
                             <div className="completion" style={this.getPercentageForStat(player, 'MINION')}></div>
                         </div>
                     </td>
                     <td className="damage">
-                        <span className="small">{Helpers.dropZeroesAndDelimitNumbers(player.damageToJungle)}</span>
+                        <span className="small">{Helpers.pretifyNumber(player.damageToJungle)}</span>
                         <div className="damage-bar">
                             <div className="completion" style={this.getPercentageForStat(player, 'JUNGLE')}></div>
                         </div>
                     </td>
                     <td className="damage">
-                        <span className="small">{Helpers.dropZeroesAndDelimitNumbers(player.damageToHarvesters)}</span>
+                        <span className="small">{Helpers.pretifyNumber(player.damageToHarvesters)}</span>
                         <div className="damage-bar">
                             <div className="completion" style={this.getPercentageForStat(player, 'HARVESTERS')}></div>
                         </div>
                     </td>
                     <td className="damage">
-                        <span className="small">{Helpers.dropZeroesAndDelimitNumbers(player.damageToInhibitors)}</span>
+                        <span className="small">{Helpers.pretifyNumber(player.damageToInhibitors)}</span>
                         <div className="damage-bar">
                             <div className="completion" style={this.getPercentageForStat(player, 'INHIBITORS')}></div>
                         </div>
@@ -102,12 +134,12 @@ var TeamPanel = React.createClass({
     getPercentageForStat: function(player, type) {
         var style = { width: '0%' };
         switch(type.toUpperCase()) {
-            case 'HERO': style.width = ((player.damageToHeroes / this.props.maxStats.maxHeroDamage) * 100) + '%';break;
-            case 'TOWER': style.width = ((player.damageToTowers / this.props.maxStats.maxTowerDamage) * 100) + '%';break;
-            case 'MINION': style.width = ((player.damageToMinions / this.props.maxStats.maxMinionDamage) * 100) + '%';break;
-            case 'JUNGLE': style.width = ((player.damageToJungle / this.props.maxStats.maxJungleDamage) * 100) + '%';break;
-            case 'HARVESTERS': style.width = ((player.damageToHarvesters / this.props.maxStats.maxHarvesterDamage) * 100) + '%';break;
-            case 'INHIBITORS': style.width = ((player.damageToInhibitors / this.props.maxStats.maxInhibitorDamage) * 100) + '%';break;
+            case 'HERO': style.width = ((player.damageToHeroes / this.state.maxStats.maxHeroDamage) * 100) + '%';break;
+            case 'TOWER': style.width = ((player.damageToTowers / this.state.maxStats.maxTowerDamage) * 100) + '%';break;
+            case 'MINION': style.width = ((player.damageToMinions / this.state.maxStats.maxMinionDamage) * 100) + '%';break;
+            case 'JUNGLE': style.width = ((player.damageToJungle / this.state.maxStats.maxJungleDamage) * 100) + '%';break;
+            case 'HARVESTERS': style.width = ((player.damageToHarvesters / this.state.maxStats.maxHarvesterDamage) * 100) + '%';break;
+            case 'INHIBITORS': style.width = ((player.damageToInhibitors / this.state.maxStats.maxInhibitorDamage) * 100) + '%';break;
             default: break;
         }
         return style;
@@ -117,7 +149,11 @@ var TeamPanel = React.createClass({
         this.state.players.forEach(function(p) {
             tK += p.kills;
         });
-        var kda = Helpers.dropZeroesAndDelimitNumbers((player.kills + player.assists) / player.deaths);
+        // Prevent a divide by zero error
+        if(tK === 0) tK = 1;
+        var deaths = player.deaths === 0 ? 1 : player.deaths;
+
+        var kda = Helpers.dropZeroesAndDelimitNumbers((player.kills + player.assists) / deaths);
         var participation = Math.ceil(((player.kills + player.assists) / tK) * 100);
 
         return kda + ' KDA (' + participation + '%)';

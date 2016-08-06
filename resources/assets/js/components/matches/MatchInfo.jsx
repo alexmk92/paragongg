@@ -4,14 +4,12 @@ var dateFormat = require('dateformat');
 var MatchInfo = React.createClass({
     getMatchType: function() {
         switch(this.props.gameType.toUpperCase()) {
-            case 'COOP AI': return 'Coop vs AI'; break;
-            case 'SOLO AI': return 'Solo vs AI'; break;
-            case 'CUSTOM': return 'Custom'; break;
-            case 'CUSTOM PVP': return 'Custom PvP'; break;
-            case 'CUSTOM FEATURED': return 'Custom Featured'; break;
+            case 'COOP_AI': return 'Coop vs AI'; break;
+            case 'SOLO_AI': return 'Solo vs AI'; break;
+            case 'PRIVATE': return 'Custom'; break;
             case 'FEATURED': return 'Featured'; break;
             case 'PVP': return 'PvP'; break;
-            case 'FEATURED PVP': return 'Featured PvP'; break;
+            default: break;
         }  
     },
     getMatchTime: function() {
