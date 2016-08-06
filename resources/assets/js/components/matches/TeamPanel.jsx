@@ -170,9 +170,42 @@ var TeamPanel = React.createClass({
         }
         return '0 / 0 / 0'
     },
+    computeTotalStats: function() {
+        var heroDamage = 0;
+        var towerDamage = 0;
+        var minionDamage = 0;
+        var jungleDamage = 0;
+        var harvesterDamage = 0;
+        var inhibitorDamage = 0;
+
+        this.state.players.forEach(function(player) {
+            heroDamage += player.damageToHeroes;
+            towerDamage += player.damageToTowers;
+            minionDamage += player.damageToMinions;
+            jungleDamage += player.damageToJungle;
+            harvesterDamage += player.damageToHarvesters;
+            inhibitorDamage += player.damageToInhibitors;
+        });
+        return (
+            <tr className="total">
+                <td></td>
+                <td></td>
+                <td className="label"><span>Total:</span></td>
+                <td className="damage"><span className="small">{Helpers.pretifyNumber(heroDamage)}</span></td>
+                <td className="damage"><span className="small">{Helpers.pretifyNumber(towerDamage)}</span></td>
+                <td className="damage"><span className="small">{Helpers.pretifyNumber(minionDamage)}</span></td>
+                <td className="damage"><span className="small">{Helpers.pretifyNumber(jungleDamage)}</span></td>
+                <td className="damage"><span className="small">{Helpers.pretifyNumber(harvesterDamage)}</span></td>
+                <td className="damage"><span className="small">{Helpers.pretifyNumber(inhibitorDamage)}</span></td>
+            </tr>
+        )
+    },
     getResult: function() {
         if(this.props.isLive === false) {
-            var result = this.props.victor === this.props.team ? 'victory' : 'defeat';
+            var result = '';
+            if(parseInt(this.props.victor) === 1 || parseInt(this.props.victor) === 0) {
+                result = parseInt(this.props.victor) === this.props.team ? 'victory' : 'defeat';
+            }
             return(<span className={result}>{result}</span>);
         }
     },
@@ -205,6 +238,7 @@ var TeamPanel = React.createClass({
                     </thead>
                     <tbody>
                         {this.renderStatRows()}
+                        {this.computeTotalStats()}
                     </tbody>
                 </table>
             </div>

@@ -192,6 +192,17 @@
                 &:hover {
                     background: rgba(#0f1219, 0.5);
                 }
+                &.total {
+                    background: $panel-color-dark;
+                    td {
+                        &.label {
+                            text-transform: uppercase;
+                            text-align: right;
+                            padding: 0 15px;
+                        }
+                        padding: 10px 0;
+                    }
+                }
             }
             .damage {
                 text-align: center;

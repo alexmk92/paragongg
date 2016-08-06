@@ -77,14 +77,14 @@ module.exports = {
         return new Date(d.valueOf() + d.getTimezoneOffset() * 60000)
     },
     pretifyNumber: function(number) {
-        number = parseInt(this.dropZeroesAndDelimitNumbers(number.toString()));
+        //return number;
         if(number >= 1000) {
             number = number / 1000;
-            number = parseInt(number).toFixed(1);
-            number = number.split('.');
-            if(number[1] === '0') {
+            number = number.toString().split('.');
+            if(number[1] === '0' || number[1].indexOf('0') === 0) {
                 number = parseInt(number).toFixed(0);
             } else {
+                number[1] = number[1][0];
                 number = number.join('.');
             }
             number += 'k';

@@ -32,7 +32,7 @@ var GameClock = React.createClass({
         }
     },
     getMatchTime: function() {
-        if(this.state.timeElapsed && this.state.startTime !== null) {
+        if(this.state.timeElapsed && this.state.startTime !== null && this.props.isLive) {
             return Helpers.gameMinutes(this.state.timeElapsed);
         } else {
             if(this.props.endTime && !this.props.isLive) {
