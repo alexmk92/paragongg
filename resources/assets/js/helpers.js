@@ -65,6 +65,7 @@ module.exports = {
         var min = (ms/1000/60) << 0;
         var sec = ((ms/1000) % 60).toFixed(0) - 1;
 
+        if(sec < 0) sec = 0;
         if(sec < 10) {
             sec = '0' + sec;
         }

@@ -8,22 +8,29 @@ var TeamPanel = React.createClass({
         }  
     },
     componentWillMount: function() {
-        var players = [];
-        this.props.players.forEach(function(player) {
-            if(player.team === this.props.team) {
-                console.log('checking if: ' + player.team + ' is equal to ' + this.props.team);
-                players.push(player);
-            }
-        }.bind(this));
+        var players = this.getPlayers(this.props.players);
+        this.setState({ players: players });
+    },
+    componentWillReceiveProps: function(nextProps) {
+        var players = this.getPlayers(nextProps.players);
         this.setState({ players: players });
     },
     shouldComponentUpdate: function(nextProps, nextState) {
         if(nextProps.maxStats !== this.props.maxStats) {
             return true;
-        } else if(nextProps.victor !== this.props.victor) {
-            return true;
         }
-        return false;
+        if(nextProps !== this.props) return true;
+        return true;
+        //return false;
+    },
+    getPlayers: function(playersArray) {
+        var players = [];
+        playersArray.forEach(function(player) {
+            if(player.team === this.props.team) {
+                players.push(player);
+            }
+        }.bind(this));
+        return players;
     },
     getHeroName: function(player) {
         return 'Steel';
@@ -117,7 +124,11 @@ var TeamPanel = React.createClass({
         this.state.players.forEach(function(p) {
             tK += p.kills;
         });
-        var kda = Helpers.dropZeroesAndDelimitNumbers((player.kills + player.assists) / player.deaths);
+        // Prevent a divide by zero error
+        if(tK === 0) tK = 1;
+        var deaths = player.deaths === 0 ? 1 : player.deaths;
+
+        var kda = Helpers.dropZeroesAndDelimitNumbers((player.kills + player.assists) / deaths);
         var participation = Math.ceil(((player.kills + player.assists) / tK) * 100);
 
         return kda + ' KDA (' + participation + '%)';
