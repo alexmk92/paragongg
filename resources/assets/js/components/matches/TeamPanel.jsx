@@ -190,7 +190,7 @@ var TeamPanel = React.createClass({
             <tr className="total">
                 <td></td>
                 <td></td>
-                <td></td>
+                <td className="label"><span>Total:</span></td>
                 <td className="damage"><span className="small">{Helpers.pretifyNumber(heroDamage)}</span></td>
                 <td className="damage"><span className="small">{Helpers.pretifyNumber(towerDamage)}</span></td>
                 <td className="damage"><span className="small">{Helpers.pretifyNumber(minionDamage)}</span></td>
