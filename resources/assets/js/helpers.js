@@ -61,6 +61,16 @@ module.exports = {
             default: return "#000";
         }
     },
+    gameMinutes: function(ms) {
+        var min = (ms/1000/60) << 0;
+        var sec = ((ms/1000) % 60).toFixed(0) - 1;
+
+        if(sec < 10) {
+            sec = '0' + sec;
+        }
+
+        return min + ':' + sec;
+    },
     prettyTime: function(totalSeconds, changingTime) {
         if(!changingTime) {
             var minutes = Math.floor(Math.abs(totalSeconds / 60));
@@ -168,6 +178,7 @@ module.exports = {
     getCardImageURL: function(card, size, type) {
         if(!card) return "";
 
+        console.log('card is: ', card);
         if(!size) size = "medium";
         if(type === "icon")
             return this.S3URL() + "images/cards/" + card.code + "/" + card.icon + "/icon_" + size + '.png';

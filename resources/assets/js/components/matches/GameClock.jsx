@@ -10,6 +10,7 @@ var GameClock = React.createClass({
         }
     },
     componentWillMount: function() {
+        console.log('start time is: ', this.props.startTime);
         if(this.props.startTime !== null) {
             this.setState({ gameStart: new Date(this.props.startTime) });
         }
@@ -22,7 +23,7 @@ var GameClock = React.createClass({
             this.interval = setInterval(function() {
                 if(this.props.isLive) {
                     this.setState({
-                        timeElapsed: new Date().getTime() - this.state.gameStart.getTime()
+                        timeElapsed: (new Date().getTime() - (1000 * 60 * 60)) - this.state.gameStart.getTime()
                     });
                 } else {
                     clearInterval(this.interval);
@@ -32,10 +33,10 @@ var GameClock = React.createClass({
     },
     getMatchTime: function() {
         if(this.state.timeElapsed && this.state.startTime !== null) {
-            return Helpers.prettyTime(this.state.timeElapsed, true);
+            return Helpers.gameMinutes(this.state.timeElapsed);
         } else {
             if(this.props.endTime && !this.props.isLive) {
-                return Helpers.prettyTime(this.props.endTime, false);
+                return Helpers.gameMinutes(this.props.endTime);
             }
             return "00:00";
         }

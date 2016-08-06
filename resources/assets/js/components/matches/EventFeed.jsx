@@ -6,8 +6,7 @@ var EventFeed = React.createClass({
     getInitialState: function() {
         return {
             events: [],
-            visibleEvents: [],
-            gameStart: null
+            visibleEvents: []
         }
     },
     getPlayerTeam: function(playerName) {
@@ -24,9 +23,6 @@ var EventFeed = React.createClass({
     componentDidMount: function() {
         var sortedEvents = this.sortByTime(this.props.events);
         this.setState({ events: sortedEvents, visibleEvents: this.getVisibleEvents(sortedEvents) })
-    },
-    componentWillMount: function() {
-        this.setState({ gameStart: new Date(this.props.startTime) });
     },
     shouldComponentUpdate: function(nextProps, nextState) {
         return nextState.visibleEvents.length > this.state.visibleEvents.length;
@@ -66,13 +62,16 @@ var EventFeed = React.createClass({
     getVisibleEvents: function(sortedEvents) {
         console.log('state in events: ', this.state);
         var visibleEvents = [];
-        var currentTime = new Date().getTime() - this.state.gameStart.getTime();
+        console.log(this.props.startTime);
+        var currentTime = Math.abs((new Date().getTime() - (1000 * 60 * 60)) - this.props.startTime.getTime());
+
 
         sortedEvents.forEach(function(event) {
+            console.log('checking if: ' + event.timestamp + ' is less than ' + currentTime);
             if(event.timestamp <= currentTime) {
                 visibleEvents.push(
                     <li key={'event_' + event.timestamp + '_' + event.killer }>
-                        <div className="timestamp">{Helpers.prettyTime(event.timestamp, false)}</div>
+                        <div className="timestamp">{Helpers.gameMinutes(event.timestamp)}</div>
                         { this.getEventLabel(event) }
                     </li>
                 );
