@@ -23,7 +23,7 @@ var Match = React.createClass({
         this.getMatchInformation();
     },
     componentDidMount: function() {
-        setInterval(function() {
+        this.getMatchInterval = setInterval(function() {
             this.getMatchInformation();
         }.bind(this), 7500);
     },
@@ -59,10 +59,15 @@ var Match = React.createClass({
             }).then(function(replay) {
                 if(!Helpers.isNullOrUndefined(replay) && replay.hasOwnProperty('data')) {
                     var maxStats = this.computeMaxStats(replay.data);
-                    var newTime = new Date(replay.data.startedAt).getTime() + 180000;
-                    console.log('new time is: ', newTime);
-                    replay.data.startedAt = new Date(newTime);
-                    console.log('date is: ', replay.data.startedAt);
+                    var oldTime = replay.data.startedAt;
+                    if(replay.data.isLive === true) {
+                        var newTime = new Date(oldTime).getTime() + 180000;
+                        replay.data.startedAt = new Date(newTime);
+                    } else {
+                        clearInterval(this.getMatchInterval);
+                        console.log('cleared the get match interval and set replay time to its old state');
+                        replay.data.startedAt = oldTime;
+                    }
                     this.setState({ matchInfo:replay.data, maxStats: maxStats });
                 }
             }.bind(this));
@@ -91,6 +96,7 @@ var Match = React.createClass({
                         <EventFeed players={this.state.matchInfo.players}
                                    events={this.state.matchInfo.towerKills.concat(this.state.matchInfo.kills)}
                                    startTime={this.state.matchInfo.startedAt}
+                                   isLive={this.state.matchInfo.isLive}
                         />
                     </div>
                     <div className="wrapper">

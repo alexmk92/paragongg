@@ -72,18 +72,24 @@ module.exports = {
 
         return min + ':' + sec;
     },
-    prettyTime: function(totalSeconds, changingTime) {
-        if(!changingTime) {
-            var minutes = Math.floor(Math.abs(totalSeconds / 60));
-            var minString = parseInt(minutes / 1000);
-            var secString = parseInt(minutes % 60);
-
-            if(minString < 10) minString = '0' + minString;
-            if(secString < 10) secString = '0' + secString;
-            return minString + ':' + secString;
-        } else {
-            return (new Date(totalSeconds)).toUTCString().match(/(\d\d:\d\d:\d\d)/)[0].substr(3, 6);
+    getGMTTime: function() {
+        var d = new Date();
+        return new Date(d.valueOf() + d.getTimezoneOffset() * 60000)
+    },
+    pretifyNumber: function(number) {
+        number = parseInt(this.dropZeroesAndDelimitNumbers(number.toString()));
+        if(number >= 1000) {
+            number = number / 1000;
+            number = parseInt(number).toFixed(1);
+            number = number.split('.');
+            if(number[1] === '0') {
+                number = parseInt(number).toFixed(0);
+            } else {
+                number = number.join('.');
+            }
+            number += 'k';
         }
+        return number;
     },
     getFormattedStatistic: function(statLabel) {
         switch(statLabel.toUpperCase()) {

@@ -67,37 +67,37 @@ var TeamPanel = React.createClass({
                         <span className="small">{this.getKDA(player)}</span>
                     </td>
                     <td className="damage">
-                        <span className="small">{Helpers.dropZeroesAndDelimitNumbers(player.damageToHeroes)}</span>
+                        <span className="small">{Helpers.pretifyNumber(player.damageToHeroes)}</span>
                         <div className="damage-bar">
                             <div className="completion" style={this.getPercentageForStat(player, 'HERO')}></div>
                         </div>
                     </td>
                     <td className="damage">
-                        <span className="small">{Helpers.dropZeroesAndDelimitNumbers(player.damageToTowers)}</span>
+                        <span className="small">{Helpers.pretifyNumber(player.damageToTowers)}</span>
                         <div className="damage-bar">
                             <div className="completion" style={this.getPercentageForStat(player, 'TOWER')}></div>
                         </div>
                     </td>
                     <td className="damage">
-                        <span className="small">{Helpers.dropZeroesAndDelimitNumbers(player.damageToMinions)}</span>
+                        <span className="small">{Helpers.pretifyNumber(player.damageToMinions)}</span>
                         <div className="damage-bar">
                             <div className="completion" style={this.getPercentageForStat(player, 'MINION')}></div>
                         </div>
                     </td>
                     <td className="damage">
-                        <span className="small">{Helpers.dropZeroesAndDelimitNumbers(player.damageToJungle)}</span>
+                        <span className="small">{Helpers.pretifyNumber(player.damageToJungle)}</span>
                         <div className="damage-bar">
                             <div className="completion" style={this.getPercentageForStat(player, 'JUNGLE')}></div>
                         </div>
                     </td>
                     <td className="damage">
-                        <span className="small">{Helpers.dropZeroesAndDelimitNumbers(player.damageToHarvesters)}</span>
+                        <span className="small">{Helpers.pretifyNumber(player.damageToHarvesters)}</span>
                         <div className="damage-bar">
                             <div className="completion" style={this.getPercentageForStat(player, 'HARVESTERS')}></div>
                         </div>
                     </td>
                     <td className="damage">
-                        <span className="small">{Helpers.dropZeroesAndDelimitNumbers(player.damageToInhibitors)}</span>
+                        <span className="small">{Helpers.pretifyNumber(player.damageToInhibitors)}</span>
                         <div className="damage-bar">
                             <div className="completion" style={this.getPercentageForStat(player, 'INHIBITORS')}></div>
                         </div>
