@@ -4,24 +4,49 @@ var Helpers = require('../../helpers');
 var TeamPanel = React.createClass({
     getInitialState: function() {
         return {
-            players: null
+            players: null, 
+            maxStats: null
         }  
     },
     componentWillMount: function() {
         var players = this.getPlayers(this.props.players);
-        this.setState({ players: players });
+        this.setState({ players: players, maxStats: this.computeMaxStats(players) });
     },
     componentWillReceiveProps: function(nextProps) {
         var players = this.getPlayers(nextProps.players);
-        this.setState({ players: players });
+        this.setState({ players: players, maxStats: this.computeMaxStats(players) });
     },
     shouldComponentUpdate: function(nextProps, nextState) {
+        /*
         if(nextProps.maxStats !== this.props.maxStats) {
             return true;
         }
+        */
         if(nextProps !== this.props) return true;
+        if(this.state !== nextState) return true;
         return true;
         //return false;
+    },
+    computeMaxStats: function(players) {
+        var maxStats = {
+            maxHeroDamage: 0,
+            maxTowerDamage: 0,
+            maxMinionDamage: 0,
+            maxJungleDamage: 0,
+            maxHarvesterDamage: 0,
+            maxInhibitorDamage: 0
+        };
+
+        players.forEach(function(player) {
+            if(player.damageToHeroes > maxStats.maxHeroDamage) maxStats.maxHeroDamage = player.damageToHeroes;
+            if(player.damageToTowers > maxStats.maxTowerDamage) maxStats.maxTowerDamage = player.damageToTowers;
+            if(player.damageToMinions > maxStats.maxMinionDamage) maxStats.maxMinionDamage = player.damageToMinions;
+            if(player.damageToJungle > maxStats.maxJungleDamage) maxStats.maxJungleDamage = player.damageToJungle;
+            if(player.damageToHarvesters > maxStats.maxHarvesterDamage) maxStats.maxHarvesterDamage = player.damageToHarvesters;
+            if(player.damageToInhibitors > maxStats.maxInhibitorDamage) maxStats.maxInhibitorDamage = player.damageToInhibitors;
+        });
+
+        return maxStats;
     },
     getPlayers: function(playersArray) {
         var players = [];
@@ -109,12 +134,12 @@ var TeamPanel = React.createClass({
     getPercentageForStat: function(player, type) {
         var style = { width: '0%' };
         switch(type.toUpperCase()) {
-            case 'HERO': style.width = ((player.damageToHeroes / this.props.maxStats.maxHeroDamage) * 100) + '%';break;
-            case 'TOWER': style.width = ((player.damageToTowers / this.props.maxStats.maxTowerDamage) * 100) + '%';break;
-            case 'MINION': style.width = ((player.damageToMinions / this.props.maxStats.maxMinionDamage) * 100) + '%';break;
-            case 'JUNGLE': style.width = ((player.damageToJungle / this.props.maxStats.maxJungleDamage) * 100) + '%';break;
-            case 'HARVESTERS': style.width = ((player.damageToHarvesters / this.props.maxStats.maxHarvesterDamage) * 100) + '%';break;
-            case 'INHIBITORS': style.width = ((player.damageToInhibitors / this.props.maxStats.maxInhibitorDamage) * 100) + '%';break;
+            case 'HERO': style.width = ((player.damageToHeroes / this.state.maxStats.maxHeroDamage) * 100) + '%';break;
+            case 'TOWER': style.width = ((player.damageToTowers / this.state.maxStats.maxTowerDamage) * 100) + '%';break;
+            case 'MINION': style.width = ((player.damageToMinions / this.state.maxStats.maxMinionDamage) * 100) + '%';break;
+            case 'JUNGLE': style.width = ((player.damageToJungle / this.state.maxStats.maxJungleDamage) * 100) + '%';break;
+            case 'HARVESTERS': style.width = ((player.damageToHarvesters / this.state.maxStats.maxHarvesterDamage) * 100) + '%';break;
+            case 'INHIBITORS': style.width = ((player.damageToInhibitors / this.state.maxStats.maxInhibitorDamage) * 100) + '%';break;
             default: break;
         }
         return style;

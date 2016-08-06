@@ -10,8 +10,7 @@ var TeamPanel = require('./TeamPanel');
 var Match = React.createClass({
     getInitialState: function() {
         return {
-            matchInfo: null,
-            maxStats: null
+            matchInfo: null
         }
     },
     shouldComponentUpdate: function(nextProps, nextState) {
@@ -27,6 +26,9 @@ var Match = React.createClass({
             this.getMatchInformation();
         }.bind(this), 7500);
     },
+    /* Maybe we will use again in future as a toggle option to show max shared stats
+    // If we use this again in future then we need to set a maxStats state on this component
+    // and pass maxStats to the TeamPanel component
     // used so we can share between stat panels
     computeMaxStats: function(matchData) {
         var maxStats = {
@@ -49,6 +51,7 @@ var Match = React.createClass({
 
         return maxStats;
     },
+    */
     getMatchInformation: function() {
         if(!Helpers.isNullOrUndefined(replayId)) {
             var deckURL = '/api/v1/matches/find/' + replayId;
@@ -58,7 +61,7 @@ var Match = React.createClass({
                 cache : false
             }).then(function(replay) {
                 if(!Helpers.isNullOrUndefined(replay) && replay.hasOwnProperty('data')) {
-                    var maxStats = this.computeMaxStats(replay.data);
+                    //var maxStats = this.computeMaxStats(replay.data);
                     var oldTime = replay.data.startedAt;
                     if(replay.data.isLive === true) {
                         var newTime = new Date(oldTime).getTime() + 180000;
@@ -68,7 +71,7 @@ var Match = React.createClass({
                         console.log('cleared the get match interval and set replay time to its old state');
                         replay.data.startedAt = oldTime;
                     }
-                    this.setState({ matchInfo:replay.data, maxStats: maxStats });
+                    this.setState({ matchInfo:replay.data });
                 }
             }.bind(this));
         }
@@ -101,13 +104,11 @@ var Match = React.createClass({
                     </div>
                     <div className="wrapper">
                         <div className="match-stats">
-                            <TeamPanel maxStats={this.state.maxStats}
-                                       team={0} isLive={this.state.matchInfo.isLive}
+                            <TeamPanel team={0} isLive={this.state.matchInfo.isLive}
                                        victor={this.state.matchInfo.winningTeam}
                                        players={this.state.matchInfo.players}
                             />
-                            <TeamPanel maxStats={this.state.maxStats}
-                                       team={1}
+                            <TeamPanel team={1}
                                        isLive={this.state.matchInfo.isLive}
                                        victor={this.state.matchInfo.winningTeam}
                                        players={this.state.matchInfo.players}
