@@ -20,14 +20,14 @@ class MatchController extends Controller
 
     public function getPlayersElo(Request $request)
     {
-        $parameters = $request->all()->players;
+        $parameters = $request->all()['players'];
         return response()->json($parameters);
-        if(!$request->all()->players) abort(404);
+        if(!$request->all()['players']) abort(404);
 
         $players = $request->all()['players'];
         foreach($players as $player) {
-            $response = $this->find($player->username);
-            $player->elo = $response->elo;
+            //$response = $this->find($player['username']);
+            $player->elo = 1000;
         }
 
         return response()->json($players);
