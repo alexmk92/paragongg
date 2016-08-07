@@ -8,6 +8,8 @@ use App\Guide;
 use App\Hero;
 use App\Http\Traits\UpdatesSettings;
 use App\Job;
+use App\Match;
+use App\Player;
 use App\Setting;
 use App\User;
 use Illuminate\Http\Request;
@@ -23,9 +25,12 @@ class AdminController extends Controller
     public function index()
     {
         $stats = new Collection();
-        $stats->users  = User::count();
-        $stats->guides = Guide::count();
-        $stats->decks  = Deck::count();
+        $stats->users        = User::count();
+        $stats->players      = Player::count();
+        $stats->linkedUsers  = User::whereNotNull('epic_account_id')->count();
+        $stats->matches      = Match::count();
+        $stats->guides       = Guide::count();
+        $stats->decks        = Deck::count();
         return view('admin.index', compact('stats'));
     }
 

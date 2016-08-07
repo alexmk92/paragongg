@@ -12,15 +12,27 @@
     <div class="user-profile">
         <header>
         <span class="subheading">Player profile</span>
-        <h1>{{ $player->username }} <span class="verified" title="This user has linked their Epic account"><i class="fa fa-check-circle" aria-hidden="true"></i></span></h1>
+        <h1>{{ $player->getUsername() }} @if($user)<span class="verified" title="This user has linked their Epic account"><i class="fa fa-check-circle" aria-hidden="true"></i></span>@endif</h1>
+        @if($user)
         <div class="bio">
-        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec.</p>
-        <ul class="social">
-            <li><a href="https://twitter.com/jamiesheep"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-            <li><a href="https://twitch.tv/jamieshepherd"><i class="fa fa-twitch" aria-hidden="true"></i></a></li>
-            <li><a href="http://jamie.sh"><i class="fa fa-globe" aria-hidden="true"></i></a></li>
-        </ul>
+            @if($user->bio)
+            <p>{{ $user->bio }}</p>
+            @else
+            <p>This user has not completed their profile yet.</p>
+            @endif
+            <ul class="social">
+            @if($user->twitter)
+            <li><a href="https://twitter.com/{{ $user->twitter }}"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+            @endif
+            @if($user->twitch_tv)
+            <li><a href="https://twitch.tv/{{ $user->twitch_tv }}"><i class="fa fa-twitch" aria-hidden="true"></i></a></li>
+            @endif
+            @if($user->website)
+            <li><a href="{{ $user->website }}"><i class="fa fa-globe" aria-hidden="true"></i></a></li>
+            @endif
+            </ul>
         </div>
+        @endif
         </header>
         <div id="sidebar">
             <div class="sidebox cf">
