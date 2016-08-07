@@ -65,7 +65,7 @@ var Match = React.createClass({
                     //var maxStats = this.computeMaxStats(replay.data);
                     var oldTime = replay.data.startedAt;
                     if(replay.data.isLive === true) {
-                        var newTime = new Date(oldTime).getTime() + 60000;
+                        var newTime = new Date(oldTime).getTime() + 180000;
                         replay.data.startedAt = new Date(newTime);
                     } else {
                         clearInterval(this.getMatchInterval);
