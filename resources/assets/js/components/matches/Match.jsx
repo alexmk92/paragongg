@@ -105,16 +105,21 @@ var Match = React.createClass({
                     </div>
                     <div className="wrapper">
                         <div className="match-stats">
-                            <TeamPanel team={0} isLive={this.state.matchInfo.isLive}
+                            <TeamPanel team={0}
+                                       isLive={this.state.matchInfo.isLive}
                                        victor={this.state.matchInfo.winningTeam}
                                        players={this.state.matchInfo.players}
                                        heroes={this.state.heroes}
+                                       startTime={this.state.matchInfo.startedAt}
+                                       towerKills={this.state.matchInfo.towerKills}
                             />
                             <TeamPanel team={1}
                                        isLive={this.state.matchInfo.isLive}
                                        victor={this.state.matchInfo.winningTeam}
                                        players={this.state.matchInfo.players}
                                        heroes={this.state.heroes}
+                                       startTime={this.state.matchInfo.startedAt}
+                                       towerKills={this.state.matchInfo.towerKills}
                             />
                         </div>
                     </div>

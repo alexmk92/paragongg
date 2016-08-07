@@ -198,8 +198,24 @@ var TeamPanel = React.createClass({
         return '0 / 0 / 0'
     },
     getTeamTowers: function() {
-        var towers = 0;
-        return towers;
+        var currentTime = Helpers.getGMTTime() - new Date(this.props.startTime).getTime();
+        var kills = 0;
+        this.props.towerKills.map(function(event) {
+            console.log('checking if: ' + event.killer + ' was on this team');
+            var killer = null;
+            this.state.players.some(function(player) {
+                if(event.killer === player.username) {
+                    killer = event.killer;
+                    return true;
+                }
+                return false;
+            });
+            console.log("KILLER IS: " + killer);
+            if(killer !== null && currentTime <= new Date()) {
+                kills++;
+            }
+        }.bind(this));
+        return kills;
     },
     computeTotalStats: function() {
         var heroDamage = 0;
