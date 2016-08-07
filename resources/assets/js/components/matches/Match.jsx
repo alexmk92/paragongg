@@ -65,7 +65,7 @@ var Match = React.createClass({
                     //var maxStats = this.computeMaxStats(replay.data);
                     var oldTime = replay.data.startedAt;
                     if(replay.data.isLive === true) {
-                        var newTime = new Date(oldTime).getTime() + 180000;
+                        var newTime = new Date(oldTime).getTime() + 60000;
                         replay.data.startedAt = new Date(newTime);
                     } else {
                         clearInterval(this.getMatchInterval);
@@ -105,16 +105,21 @@ var Match = React.createClass({
                     </div>
                     <div className="wrapper">
                         <div className="match-stats">
-                            <TeamPanel team={0} isLive={this.state.matchInfo.isLive}
+                            <TeamPanel team={0}
+                                       isLive={this.state.matchInfo.isLive}
                                        victor={this.state.matchInfo.winningTeam}
                                        players={this.state.matchInfo.players}
                                        heroes={this.state.heroes}
+                                       startTime={this.state.matchInfo.startedAt}
+                                       towerKills={this.state.matchInfo.towerKills}
                             />
                             <TeamPanel team={1}
                                        isLive={this.state.matchInfo.isLive}
                                        victor={this.state.matchInfo.winningTeam}
                                        players={this.state.matchInfo.players}
                                        heroes={this.state.heroes}
+                                       startTime={this.state.matchInfo.startedAt}
+                                       towerKills={this.state.matchInfo.towerKills}
                             />
                         </div>
                     </div>
