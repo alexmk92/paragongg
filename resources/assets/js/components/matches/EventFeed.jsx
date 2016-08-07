@@ -29,6 +29,7 @@ var EventFeed = React.createClass({
         this.setState({ events: sortedEvents, visibleEvents: this.getVisibleEvents(sortedEvents)})
     },
     shouldComponentUpdate: function(nextProps, nextState) {
+        if(nextState.isLive !== this.state.isLive) return true;
         return nextState.visibleEvents.length > this.state.visibleEvents.length;
     },
     componentWillReceiveProps: function(nextProps) {
