@@ -93,7 +93,6 @@ module.exports = {
             }
             number += 'k';
         }
-        console.log('returning: ' + number);
         return number;
     },
     getFormattedStatistic: function(statLabel) {
