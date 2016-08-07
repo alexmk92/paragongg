@@ -77,18 +77,23 @@ module.exports = {
         return new Date(d.valueOf() + d.getTimezoneOffset() * 60000)
     },
     pretifyNumber: function(number) {
-        //return number;
         if(number >= 1000) {
+            console.log('trying to parse number: ' + number);
             number = number / 1000;
+            console.log('got: ', number);
             number = number.toString().split('.');
-            if(number[1] === '0' || number[1].indexOf('0') === 0) {
-                number = parseInt(number).toFixed(0);
-            } else {
-                number[1] = number[1][0];
-                number = number.join('.');
+            console.log('then got: ', number);
+            if(number.length > 1) {
+                if(number[1] === '0' || number[1].indexOf('0') === 0) {
+                    number = parseInt(number).toFixed(0);
+                } else {
+                    number[1] = number[1][0];
+                    number = number.join('.');
+                }
             }
             number += 'k';
         }
+        console.log('returning: ' + number);
         return number;
     },
     getFormattedStatistic: function(statLabel) {

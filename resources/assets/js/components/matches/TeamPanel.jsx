@@ -161,12 +161,12 @@ var TeamPanel = React.createClass({
     getPercentageForStat: function(player, type) {
         var style = { width: '0%' };
         switch(type.toUpperCase()) {
-            case 'HERO': style.width = ((player.damageToHeroes / this.state.maxStats.maxHeroDamage) * 100) + '%';break;
-            case 'TOWER': style.width = ((player.damageToTowers / this.state.maxStats.maxTowerDamage) * 100) + '%';break;
-            case 'MINION': style.width = ((player.damageToMinions / this.state.maxStats.maxMinionDamage) * 100) + '%';break;
-            case 'JUNGLE': style.width = ((player.damageToJungle / this.state.maxStats.maxJungleDamage) * 100) + '%';break;
-            case 'HARVESTERS': style.width = ((player.damageToHarvesters / this.state.maxStats.maxHarvesterDamage) * 100) + '%';break;
-            case 'INHIBITORS': style.width = ((player.damageToInhibitors / this.state.maxStats.maxInhibitorDamage) * 100) + '%';break;
+            case 'HERO': style.width = ((parseInt(player.damageToHeroes) / this.state.maxStats.maxHeroDamage) * 100) + '%';break;
+            case 'TOWER': style.width = ((parseInt(player.damageToTowers) / this.state.maxStats.maxTowerDamage) * 100) + '%';break;
+            case 'MINION': style.width = ((parseInt(player.damageToMinions) / this.state.maxStats.maxMinionDamage) * 100) + '%';break;
+            case 'JUNGLE': style.width = ((parseInt(player.damageToJungle) / this.state.maxStats.maxJungleDamage) * 100) + '%';break;
+            case 'HARVESTERS': style.width = ((parseInt(player.damageToHarvesters) / this.state.maxStats.maxHarvesterDamage) * 100) + '%';break;
+            case 'INHIBITORS': style.width = ((parseInt(player.damageToInhibitors) / this.state.maxStats.maxInhibitorDamage) * 100) + '%';break;
             default: break;
         }
         return style;
@@ -200,21 +200,24 @@ var TeamPanel = React.createClass({
     getTeamTowers: function() {
         var currentTime = Helpers.getGMTTime() - new Date(this.props.startTime).getTime();
         var kills = 0;
-        this.props.towerKills.map(function(event) {
-            console.log('checking if: ' + event.killer + ' was on this team');
-            var killer = null;
-            this.state.players.some(function(player) {
-                if(event.killer === player.username) {
-                    killer = event.killer;
-                    return true;
+        if(this.props.towerKills.length > 0) {
+            this.props.towerKills.map(function(event) {
+                console.log('checking if: ' + event.killer + ' was on this team');
+                var killer = null;
+                this.state.players.some(function(player) {
+                    if(event.killer === player.username) {
+                        killer = event.killer;
+                        return true;
+                    }
+                    return false;
+                });
+                console.log("KILLER IS: " + killer);
+                if(killer !== null && currentTime <= new Date()) {
+                    kills++;
                 }
-                return false;
-            });
-            console.log("KILLER IS: " + killer);
-            if(killer !== null && currentTime <= new Date()) {
-                kills++;
-            }
-        }.bind(this));
+            }.bind(this));
+        }
+
         return kills;
     },
     computeTotalStats: function() {
