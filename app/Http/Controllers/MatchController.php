@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Hero;
 use App\Match;
 use App\Player;
 use Carbon\Carbon;
@@ -16,8 +17,9 @@ class MatchController extends Controller
     // Show
     public function show($id)
     {
-        $match = Match::where('replayId', $id)->first();
+        $heroes = Hero::select('code', 'codename', 'name', 'image')->get();
+        $match  = Match::where('replayId', $id)->firstOrFail();
         $customBackground = '/assets/images/backgrounds/profile.jpg';
-        return view('matches.show', compact('match', 'customBackground'));
+        return view('matches.show', compact('match', 'customBackground', 'heroes'));
     }
 }

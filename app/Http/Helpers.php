@@ -194,6 +194,33 @@ function getMongoDiff($date) {
     $date = $date->toDateTime()->getTimestamp();
     return Carbon::createFromTimestamp($date)->diffForHumans();
 }
+
 function getMatchLength($match) {
     return gmdate("i:s", $match->newCheckpointTime);
+}
+
+function isBotName($username) {
+    $botNames = [
+        'blue_dekker', 'red_dekker',
+        'blue_feng mao', 'red_feng mao',
+        'blue_grim.exe', 'red_grim.exe',
+        'blue_gadget', 'red_gadget',
+        'blue_gideon', 'red_gideon',
+        'blue_greystone', 'red_greystone',
+        'blue_grux', 'red_grux',
+        'blue_howitzer', 'red_howitzer',
+        'blue_iggy & scorch', 'red_iggy & scorch',
+        'blue_kallari', 'red_kallari',
+        'blue_khaimera', 'red_khaimera',
+        'blue_murdock', 'red_murdock',
+        'blue_muriel', 'red_muriel',
+        'blue_rampage', 'red_rampage',
+        'blue_riktor', 'red_riktor',
+        'blue_sevarog', 'red_sevarog',
+        'blue_sparrow', 'red_sparrow',
+        'blue_steel', 'red_steel',
+        'blue_twinblast', 'red_twinblast',
+        'blue_fey', 'red_fey',
+    ];
+    return in_array(strtolower($username), $botNames);
 }

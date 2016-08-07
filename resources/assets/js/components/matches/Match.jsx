@@ -10,6 +10,7 @@ var TeamPanel = require('./TeamPanel');
 var Match = React.createClass({
     getInitialState: function() {
         return {
+            heroes: this.props.heroes,
             matchInfo: null
         }
     },
@@ -107,11 +108,13 @@ var Match = React.createClass({
                             <TeamPanel team={0} isLive={this.state.matchInfo.isLive}
                                        victor={this.state.matchInfo.winningTeam}
                                        players={this.state.matchInfo.players}
+                                       heroes={this.state.heroes}
                             />
                             <TeamPanel team={1}
                                        isLive={this.state.matchInfo.isLive}
                                        victor={this.state.matchInfo.winningTeam}
                                        players={this.state.matchInfo.players}
+                                       heroes={this.state.heroes}
                             />
                         </div>
                     </div>
@@ -127,5 +130,5 @@ module.exports = Match;
 
 var container = document.querySelector('.match-details');
 if(container) {
-    ReactDOM.render(<Match />, container);
+    ReactDOM.render(<Match heroes={HEROES}/>, container);
 }

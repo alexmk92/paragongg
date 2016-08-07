@@ -10,5 +10,6 @@
 @section('scripts')
     <script type="text/javascript">
         var replayId = '{{ $match->replayId }}';
+        var HEROES = {!! json_encode($heroes) !!};
     </script>
 @endsection

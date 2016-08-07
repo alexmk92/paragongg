@@ -59,6 +59,10 @@ class HeroController extends Controller
             $storage->getDriver()->put($path, $image->stream()->getContents(), ["CacheControl" => "max-age=86400"]);
         }
 
+        if($request->has('codename')) {
+            $hero->codename = $request->codename;
+        }
+
         $baseStats = new Collection();
         if($request->has('stat_physical_damage')) {
             $baseStats->physical_damage = array(

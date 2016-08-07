@@ -10,6 +10,8 @@
         <label>Upload new hero cutout</label>
         <input name="cutout" type="file">
         <hr>
+        <h3>Hero Epic Codename</h3>
+        <input type="text" name="codename" @if(isset($hero->codename)) value="{{ $hero->codename }}" @endif>
         <h3>Hero ability videos</h3>
         <label>LMB</label>
         <input type="text" name="ability_video_lmb" @if(isset($hero->abilities[0]['video']))value="{{ $hero->abilities[0]['video'] }}"@endif>

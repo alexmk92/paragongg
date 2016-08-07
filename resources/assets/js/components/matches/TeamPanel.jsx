@@ -4,6 +4,7 @@ var Helpers = require('../../helpers');
 var TeamPanel = React.createClass({
     getInitialState: function() {
         return {
+            heroes: this.props.heroes,
             players: null, 
             maxStats: null
         }  
@@ -58,10 +59,24 @@ var TeamPanel = React.createClass({
         return players;
     },
     getHeroName: function(player) {
-        return 'Steel';
+        var heroName = '-';
+        this.state.heroes.some(function (item) {
+            if(player.hero == item.codename) {
+                heroName = item.name;
+                return true;
+            }
+        });
+        return heroName;
     },
     getHeroImage: function(player) {
-        return "https://s3.amazonaws.com/paragongg-us/images/heroes/350982a548a16ce00215b04dbe62a0b1/C0BC54435DE7CB366AD33F10BCDB18616882819D/portrait_small.png";
+        var heroImage = '/assets/images/heroes/null.png';
+        this.state.heroes.some(function (item) {
+            if(player.hero == item.codename) {
+                heroImage = 'https://s3.amazonaws.com/paragongg-us/images/heroes/'+item.code+'/'+item.image+'/portrait_small.png'
+                return true;
+            }
+        });
+        return heroImage;
     },
     renderStatRows: function() {
         return this.state.players.map(function(player) {
@@ -80,7 +95,7 @@ var TeamPanel = React.createClass({
                         </div>
                     </td>
                     <td>
-                        <span><a href={"players/" + player.username }>{ player.username }</a></span>
+                        <span><a href={"/players/" + player.username }>{ player.username }</a></span>
                         <span className="small"><strong className="color master">2293</strong> Master</span>
                     </td>
                     <td>
@@ -170,6 +185,10 @@ var TeamPanel = React.createClass({
         }
         return '0 / 0 / 0'
     },
+    getTeamTowers: function() {
+        var towers = 0;
+        return towers;
+    },
     computeTotalStats: function() {
         var heroDamage = 0;
         var towerDamage = 0;
@@ -190,7 +209,7 @@ var TeamPanel = React.createClass({
             <tr className="total">
                 <td></td>
                 <td></td>
-                <td className="label"><span>Total:</span></td>
+                <td></td>
                 <td className="damage"><span className="small">{Helpers.pretifyNumber(heroDamage)}</span></td>
                 <td className="damage"><span className="small">{Helpers.pretifyNumber(towerDamage)}</span></td>
                 <td className="damage"><span className="small">{Helpers.pretifyNumber(minionDamage)}</span></td>
@@ -216,8 +235,9 @@ var TeamPanel = React.createClass({
         return (
             <div className={"team-stats team" + this.props.team}>
                 <div className="team-score">
-                    <span className={"subheader team" + this.props.team}>{ this.props.team === 0 ? 'RED' : 'BLUE'} TEAM</span>
+                    <span className={"subheader team" + this.props.team}>{ this.props.team === 0 ? 'ORANGE' : 'BLUE'} TEAM</span>
                     <span className="score">{this.getTeamScore()}</span>
+                    <span className="towers"><i className="pgg pgg-tower"></i>{this.getTeamTowers()}</span>
                 </div>
                 <div className="result">
                     {this.getResult()}

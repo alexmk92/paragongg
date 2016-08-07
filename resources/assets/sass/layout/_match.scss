@@ -118,11 +118,19 @@
                     color: $secondary-highlight;
                 }
             }
-            .score {
+            .score, .towers {
                 margin: 5px 0 20px;
-                display: block;
+                display: inline-block;
                 font-size: 30px;
                 color: white;
+            }
+            .towers {
+                margin-left: 30px;
+                color: $font-color-base;
+                .pgg {
+                    font-size: 20px;
+                    margin-right: 5px;
+                }
             }
             &.team0 table.scoreboard {
                 border-left: 4px solid rgba($primary-highlight,0.7);
@@ -194,13 +202,10 @@
                 }
                 &.total {
                     background: $panel-color-dark;
+                    border-style: dashed;
                     td {
-                        &.label {
-                            text-transform: uppercase;
-                            text-align: right;
-                            padding: 0 15px;
-                        }
-                        padding: 10px 0;
+                        padding: 15px 0;
+                        font-weight: bold;
                     }
                 }
             }
