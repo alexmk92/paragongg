@@ -68,6 +68,10 @@ var TeamPanel = React.createClass({
         });
         return heroName;
     },
+    getPlayerName: function(player) {
+        var icon = player.accountId === 'bot' ? (<i className="fa fa-android" aria-hidden="true"></i>) : '';
+        return <a href={"/players/" + player.username}>{player.username} {icon}</a>
+    },
     getHeroImage: function(player) {
         var heroImage = '/assets/images/heroes/null.png';
         this.state.heroes.some(function (item) {
@@ -77,6 +81,14 @@ var TeamPanel = React.createClass({
             }
         });
         return heroImage;
+    },
+    getElo: function(player) {
+        var eloString = player.accountId === 'bot' ? (<span>Bot Account</span>) : (<span><strong className="color master">2293</strong> Master</span>);
+        return (
+            <span className="small">
+                {eloString}
+            </span>
+        )
     },
     renderStatRows: function() {
         return this.state.players.map(function(player) {
@@ -95,8 +107,8 @@ var TeamPanel = React.createClass({
                         </div>
                     </td>
                     <td>
-                        <span><a href={"/players/" + player.username }>{ player.username }</a></span>
-                        <span className="small"><strong className="color master">2293</strong> Master</span>
+                        <span>{this.getPlayerName(player)}</span>
+                        {this.getElo(player)}
                     </td>
                     <td>
                         <span>
