@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Traits\FindOrCreatePlayers;
+use App\Jobs\CalculateMatchElo;
 use App\Match;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -23,12 +24,24 @@ class MatchController extends Controller
         if(!$request->all()['players']) abort(404);
 
         $players = $request->all()['players'];
+        $playerElos = [];
 
         foreach($players as &$player) {
-            //$response = $this->find($player['username']);
-            $player['elo'] = 1000;
+            $result = Player::where('accountId', $player['accountId'])->first();
+            if(!$result) {
+                // @TODO create player profile
+                array_push($return, ['accountId' => $player['accountId'], 'elo' => 1000]);
+            }  else {
+                array_push($return, ['accountId' => $player['accountId'], 'elo' => $result->elo]);
+            }
         }
 
-        return response()->json($players);
+        return response()->json($playerElos);
     }
+
+    public function end($id)
+    {
+        $this->dispatch(new CalculateMatchElo($id));
+    }
+
 }

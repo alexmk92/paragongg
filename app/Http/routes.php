@@ -188,7 +188,7 @@ Route::group(['prefix' => 'api', 'namespace' => 'API', 'middleware' => 'cors'], 
     Route::get('/v1/matches/find/{id}', 'MatchController@show')->middleware('admin');
 
     Route::post('/v1/parser/getPlayersElo', 'MatchController@getPlayersElo');
-    Route::get('/v1/parser/endMatch', 'MatchController@end');
+    Route::get('/v1/parser/endMatch/{id}', 'MatchController@end');
 });
 
 /* SHORTCODE */
