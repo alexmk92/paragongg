@@ -6,11 +6,32 @@ use App\Http\Traits\FindOrCreatePlayers;
 use App\Jobs\CalculateMatchElo;
 use App\Match;
 use App\Http\Controllers\Controller;
+use App\Player;
 use Illuminate\Http\Request;
 
 class MatchController extends Controller
 {
     use FindOrCreatePlayers;
+
+    public function player($accountId)
+    {
+        $skip = 0;
+        $take = 10;
+
+        if(isset($_GET['skip'])) $skip = (int)$_GET['skip'];
+        if(isset($_GET['take'])) $take = (int)$_GET['take'];
+
+        $player  = Player::where('accountId', $accountId)->get();
+        //$matches = Match::select('replayId')->where(['players' => array('$elemMatch' => array('accountId' => $accountId))])
+        $matches = Match::where(['players' => array('$elemMatch' => array('accountId' => $accountId))])
+            ->skip($skip)
+            ->take($take)
+            ->get();
+
+        //$matches = Match::whereIn('replayId', $player->matches)->take(10)->get();
+
+        return $matches;
+    }
     // Show
     public function show($id)
     {
