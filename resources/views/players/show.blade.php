@@ -125,3 +125,8 @@
         </div>
     </div>
 @endsection
+@section('scripts')
+    <script type="text/javascript">
+        var pId = '{{ $player->accountId }}';
+    </script>
+@endsection
