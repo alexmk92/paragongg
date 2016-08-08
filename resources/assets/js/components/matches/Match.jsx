@@ -126,7 +126,16 @@ var Match = React.createClass({
                 </div>
             )
         } else {
-            return(<div>waiting...</div>);
+            return(<div className="match-preloader">
+                <span className="loading-text"><i className="fa fa-chevron-down" aria-hidden="true"></i> Loading match</span>
+                <div className="preload-container">
+                    <div className="spinner-container">
+                        <div className='uil-ring-css large'>
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>);
         }
     }
 });

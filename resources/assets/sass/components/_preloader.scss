@@ -91,6 +91,22 @@
     }
 }
 
+.match-preloader {
+    margin: 40px auto;
+    text-align: center;
+    .loading-text {
+        font-family: $font-condensed;
+        text-transform: uppercase;
+        display: block;
+        .fa {
+            margin-right: 5px;
+        }
+    }
+    .preload-container {
+        margin-top: 20px;
+    }
+}
+
 // SPINNER STYLES:
 @-webkit-keyframes uil-ring-anim {
     0% {
