@@ -68,10 +68,14 @@ class PlayerController extends Controller
     {
         $player  = Player::where('accountId', $accountId)->first();
 
-        if(!isset($player->matches)) {
-            $player->matches = Match::select('replayId')->where(['players' => array('$elemMatch' => array('accountId' => $accountId))])->get();
-            $player->save();
+        $matches = [];
+        // Temporary, will all be done on replay endpoint trigger
+        $result = Match::select('replayId')->where(['players' => array('$elemMatch' => array('accountId' => $accountId))])->get();
+        foreach($result as $match) {
+            array_push($matches, $match->replayId);
         }
+        $player->matches = $matches;
+        $player->save();
 
         $matches = Match::whereIn('replayId', $player->matches)->take(10)->get();
 
