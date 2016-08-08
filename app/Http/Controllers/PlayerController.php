@@ -66,8 +66,9 @@ class PlayerController extends Controller
 
     public function getMatches($accountId)
     {
-        $player  = Player::where('accountId', $accountId)->get();
-        if(!$player->matches) {
+        $player  = Player::where('accountId', $accountId)->first();
+
+        if(!isset($player->matches)) {
             $player->matches = Match::select('replayId')->where(['players' => array('$elemMatch' => array('accountId' => $accountId))])->get();
             $player->save();
         }
