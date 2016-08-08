@@ -25,7 +25,7 @@ var TeamPanel = React.createClass({
         */
         if(nextProps !== this.props) return true;
         if(this.state !== nextState) return true;
-        return true;
+        return false;
         //return false;
     },
     computeMaxStats: function(players) {
