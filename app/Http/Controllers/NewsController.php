@@ -149,6 +149,10 @@ class NewsController extends Controller
             $news->impact = $path;
         }
 
+        if($request->has('source')) {
+            $news->source = $request->source;
+        }
+
         $news->save();
 
         session()->flash('notification', 'success|News updated.');
