@@ -15,6 +15,7 @@ require("./components/news/NewsFeed");
 require("./components/news/NewsHero");
 require("./components/JobsFeed");
 require("./components/matches/Match");
+require("./components/matches/MatchFeed");
 require("./components/decks/DeckBuilder");
 require("./components/decks/DeckList");
 require("./components/decks/DeckDetail");

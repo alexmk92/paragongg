@@ -86,40 +86,11 @@
         <div class="wrapper">
             <div class="match-history">
             <h3>Match history</h3>
+                <div id="match-feed"></div>
                 <ul>
                     @if($matches->count() === 0)
                         <p>This user is yet to play any games this season.</p>
                     @endif
-                    @foreach($matches as $match)
-                    <li>
-                        <a href="/tmatches/{{ $match->replayId }}" class="match-preview {{ ($match->playerStats['team'] == $match->winningTeam) ? 'win' : 'lose' }}">
-                            <table>
-                                <tr>
-                                    <td class="hero-played">
-                                        <img src="https://s3.amazonaws.com/paragongg-us/images/heroes/350982a548a16ce00215b04dbe62a0b1/C0BC54435DE7CB366AD33F10BCDB18616882819D/portrait_small.png"/>
-                                    </td>
-                                    <td class="kda">
-                                        <span class="kills">{{ $match->playerStats['kills'] }}</span>/<span class="deaths">{{ $match->playerStats['deaths'] }}</span>/<span class="assists">{{ $match->playerStats['assists'] }}</span>
-                                    </td>
-                                    <td>
-                                        <span class="tag">
-                                            @if($match->playerStats['team'] == $match->winningTeam)
-                                                <span class="win">Win</span>
-                                            @else
-                                                <span class="loss">Loss</span>
-                                            @endif
-                                                {{ getMongoDiff($match->startedAt) }}</span>
-                                        <span class="tag"><span class="label">Duration</span>{{ getMatchLength($match) }}</span>
-                                        <span class="tag"><span class="label">Match mode</span>{{ str_replace('_', ' ', $match->gameType) }}</span>
-                                    </td>
-                                    <td class="final">
-                                        <span class="btn btn-faded"><i class="fa fa-play-circle" aria-hidden="true"></i> View match</span>
-                                    </td>
-                                </tr>
-                            </table>
-                        </a>
-                    </li>
-                    @endforeach
                 </ul>
             </div>
         </div>
