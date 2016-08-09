@@ -138,6 +138,21 @@ $pgg-version: "1.0.0";
     &.pgg-skull:before {
         content: "\66";
     }
+    &.pgg-ranger:before {
+        content: "\67";
+    }
+    &.pgg-support:before {
+        content: "\69";
+    }
+    &.pgg-tank:before {
+        content: "\6a";
+    }
+    &.pgg-fighter:before {
+        content: "\6b";
+    }
+    &.pgg-assassin:before {
+        content: "\6d";
+    }
 }
 
 &.pgg.affinity-color {
@@ -159,4 +174,6 @@ $pgg-version: "1.0.0";
     &.pgg-affinity-growth {
         color: $color-growth;
     }
+
+
 }
