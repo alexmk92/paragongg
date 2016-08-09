@@ -34,18 +34,17 @@ var HeroStats = React.createClass({
             this.props.onHeroRankChanged(this.state.multiplier);
     },
     renderSuggestedRoles: function() {
-        return;
-        var roles = <li>No suggested roles</li>;
-        if(this.props.hero.roles > 0) {
-            roles = this.props.hero.roles.map(function(role) {
-                return(
-                    <li className={"pgg pgg-role-" + role.toLowerCase()} title={"Role: " + role }></li>
-                );
-            });
+        var roles = <p>No suggested roles</p>;
+        if(this.props.hero.type) {
+            return(
+                <div>
+                    <label>{this.props.hero.type}</label>
+                    <i className={"pgg pgg-" + this.props.hero.type.toLowerCase()} title={"Role: " + this.props.hero.type }></i>
+                </div>
+            );
         }
         return (
             <div>
-                <label>Suggested Roles</label>
                 { roles }
             </div>
         );

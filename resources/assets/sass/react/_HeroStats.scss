@@ -230,7 +230,7 @@ canvas {
                         margin-right: 4%;
                     }
                 }
-                .affinities {
+                .affinities, .roles {
                     font-size: 72px;
                     .pgg {
                         &:first-of-type {
@@ -240,6 +240,9 @@ canvas {
                             display: none;
                         }
                     }
+                }
+                .roles {
+                    color: white;
                 }
                 @media (max-width: $media-mobile) {
                     .attribute {

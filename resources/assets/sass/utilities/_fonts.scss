@@ -153,6 +153,9 @@ $pgg-version: "1.0.0";
     &.pgg-assassin:before {
         content: "\6d";
     }
+    &.pgg-caster:before {
+        content: "\6e";
+    }
 }
 
 &.pgg.affinity-color {
