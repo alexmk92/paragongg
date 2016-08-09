@@ -300,7 +300,10 @@ module.exports = {
 
         // Check if we don't want to cache this request, if a user sets cache to true
         // we check for false here as the internal block fires a nocache url.
-        if (payload.type === "GET" && !payload.cache) payload.url = payload.url + "?_=" + new Date().getTime();
+        if (payload.type === "GET" && !payload.cache) {
+            var symbol = payload.url.indexOf('?') > -1 ? '&' : '?';
+            payload.url = payload.url + symbol + "_=" + new Date().getTime();
+        }
 
         if (window.XMLHttpRequest) {
             httpRequest = new XMLHttpRequest(); // code for IE7+, Firefox, Chrome, Opera, Safari
