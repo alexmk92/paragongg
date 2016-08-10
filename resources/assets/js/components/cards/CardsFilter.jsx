@@ -232,7 +232,7 @@ var CardsFilter = React.createClass({
                 { name : "Show Prime Helix Cards", type: "category", iconName : "", filterLabel : "prime", ref: "TOGGLE_PRIME", checked : false}
             ]},
             { group : [
-                { name : "Cost (Ascending)", type: "cost", iconName : "", filterLabel : "ascending",  ref: "SORT_ASC", checked : true},
+                { name : "Cost (Ascending)", type: "cost", iconName : "", filterLabel : "ascending",  ref: "SORT_ASC", checked : false},
                 { name : "Cost (Descending)", type: "cost", iconName : "", filterLabel : "descending", ref: "SORT_DESC", checked : false}
             ]},
             { group: [

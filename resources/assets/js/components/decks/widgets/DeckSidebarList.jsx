@@ -130,7 +130,6 @@ var DeckSidebarList = React.createClass({
                     }
                 }
                 var background = { backgroundImage : 'url(' + Helpers.getCardImageURL(card, "medium", "icon") + ')'};
-                console.log('background image is: ', background);
                 if(!hidden) {
                     return (
                         <li style={background}

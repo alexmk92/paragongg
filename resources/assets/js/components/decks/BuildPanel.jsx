@@ -73,7 +73,7 @@ var BuildPanel = React.createClass({
             }
             return (
                 <li key={"build_tab_" + i} className={ (i === this.state.selectedTab ? "active" : "")} onClick={ this.showBuild.bind(this, build, i) }>
-                    <span>{ build.title }</span>
+                    <span>{ build.title } ({build.cost}CP)</span>
                 </li>
             )
         }.bind(this));
