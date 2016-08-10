@@ -139,7 +139,6 @@ var DeckPreview = React.createClass({
                 </ul>
             </div>
         )
-
     },
     getStatLabel: function() {
         // TODO Check to see if the created_at date is today

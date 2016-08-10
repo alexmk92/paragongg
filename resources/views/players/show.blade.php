@@ -87,11 +87,6 @@
             <div class="match-history">
             <h3>Match history</h3>
                 <div id="match-feed"></div>
-                <ul>
-                    @if($matches->count() === 0)
-                        <p>This user is yet to play any games this season.</p>
-                    @endif
-                </ul>
             </div>
         </div>
     </div>
