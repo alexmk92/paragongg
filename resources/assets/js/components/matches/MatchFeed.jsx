@@ -23,17 +23,18 @@ var MatchItem = React.createClass({
     },
     getMatchResult: function(player) {
         console.log('does: ' + player.team + ' equal ' + this.props.match.winningTeam);
+        if(this.props.match.isLive === true) {
+            return 'live';
+        }
         if(player && player.team === this.props.match.winningTeam)
             return 'win';
         return 'loss';
     },
     render: function() {
         var matchResult = this.state.result;
-        var matchResultLink = matchResult;
-        if(matchResultLink === 'loss') matchResultLink = 'lose'; // we dont want orange highlighting on the left border, it looks too colourful
         return(
             <li>
-                <a href={'/tmatches/' + this.props.match.replayId} className={'match-preview ' + matchResultLink}>
+                <a href={'/tmatches/' + this.props.match.replayId} className={'match-preview ' + matchResult}>
                     <table>
                         <tr>
                             <td className="hero-played">
