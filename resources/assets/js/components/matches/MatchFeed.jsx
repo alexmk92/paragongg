@@ -118,10 +118,12 @@ var MatchFeed = React.createClass({
         }
     },
     renderInfiniteScrollStatus: function() {
-        var jsx = '';
-        if(this.state.fetching) jsx = <span><i className="fa fa-spinner fa-spin"></i> Fetching more of your match history</span>;
-        if(this.state.endOfPage) jsx = <span><i className="fa fa-check"></i> You've reached the end of the page</span>;
-        return jsx;
+        if(this.state.matches.length > 0) {
+            var jsx = '';
+            if(this.state.fetching) jsx = <span><i className="fa fa-spinner fa-spin"></i> Fetching more of your match history</span>;
+            if(this.state.endOfPage) jsx = <span><i className="fa fa-check"></i> You've reached the end of the page</span>;
+            return jsx;
+        }
     },
     render: function() {
         return (

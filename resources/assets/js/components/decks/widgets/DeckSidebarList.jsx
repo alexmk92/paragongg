@@ -129,7 +129,7 @@ var DeckSidebarList = React.createClass({
                         quantityLabel = finalQuantity + '/' + card.quantity;
                     }
                 }
-                var background = { backgroundImage : 'url(' + Helpers.getCardImageURL(card, "large", "") + ')'};
+                var background = { backgroundImage : 'url(' + Helpers.getCardImageURL(card, "medium", "icon") + ')'};
                 console.log('background image is: ', background);
                 if(!hidden) {
                     return (

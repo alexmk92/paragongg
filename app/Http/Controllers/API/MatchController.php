@@ -27,7 +27,7 @@ class MatchController extends Controller
             ->skip($skip)
             ->take($take)
             ->get();
-
+        
         //$matches = Match::whereIn('replayId', $player->matches)->take(10)->get();
 
         return $matches;
