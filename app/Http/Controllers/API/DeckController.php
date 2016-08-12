@@ -32,19 +32,19 @@ class DeckController extends Controller
                     $decks = $decks->where('featured', true);
                     break;
                 case 'updated':
-                    $decks = $decks->orderBy('updated_at', 'DESC');
+                    $decks = $decks->orderBy('updated_at', 'desc');
                     break;
                 case 'rated':
-                    $decks = $decks->orderBy('votes', 'DESC');
+                    $decks = $decks->orderBy('votes', 'desc');
                     break;
                 case 'views':
-                    $decks = $decks->orderBy('views', 'DESC');
+                    $decks = $decks->orderBy('views', 'desc');
                     break;
                 case 'newest':
-                    $decks = $decks->orderBy('created_at', 'DESC');
+                    $decks = $decks->orderBy('created_at', 'desc');
                     break;
                 default:
-                    $decks = $decks->orderBy('created_at', 'DESC');
+                    $decks = $decks->orderBy('updated_at', 'desc');
                     break;
             }
         }
@@ -52,6 +52,7 @@ class DeckController extends Controller
         $decks = $decks->skip($skip)
             ->take($take)
             ->get();
+
         $decks = $this->enhanceDecks($decks);
 
         return response()->json($decks);

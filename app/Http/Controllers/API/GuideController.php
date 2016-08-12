@@ -44,7 +44,7 @@ class GuideController extends Controller
                     $guides = $guides->orderBy('created_at', 'DESC');
                     break;
                 default:
-                    $guides = $guides->orderBy('created_at', 'DESC');
+                    $guides = $guides->orderBy('updated_at', 'DESC');
                     break;
             }
         }
