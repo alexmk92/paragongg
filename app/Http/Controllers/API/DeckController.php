@@ -43,6 +43,9 @@ class DeckController extends Controller
                 case 'newest':
                     $decks = $decks->orderBy('created_at', 'DESC');
                     break;
+                default:
+                    $decks = $decks->orderBy('created_at', 'DESC');
+                    break;
             }
         }
 

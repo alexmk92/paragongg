@@ -43,6 +43,9 @@ class GuideController extends Controller
                 case 'newest':
                     $guides = $guides->orderBy('created_at', 'DESC');
                     break;
+                default:
+                    $guides = $guides->orderBy('created_at', 'DESC');
+                    break;
             }
         }
 
