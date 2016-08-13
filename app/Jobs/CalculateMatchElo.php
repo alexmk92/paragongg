@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Hero;
 use App\Http\Traits\FindOrCreatePlayers;
 use App\Match;
+use App\Player;
 use GuzzleHttp\Client;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Queue\SerializesModels;
@@ -18,6 +19,7 @@ class CalculateMatchElo extends Job implements ShouldQueue
     use InteractsWithQueue, SerializesModels, DispatchesJobs, FindOrCreatePlayers;
 
     protected $replayId;
+    protected $match;
 
     /**
      * Create a new job instance.
@@ -27,7 +29,6 @@ class CalculateMatchElo extends Job implements ShouldQueue
     public function __construct($id)
     {
         $this->replayId = $id;
-        $this->match    = null;
     }
 
     /**
@@ -42,7 +43,6 @@ class CalculateMatchElo extends Job implements ShouldQueue
             $team0 = array_filter($this->match->players, function($player) { return $player['team'] === 0; });
             $team1 = array_filter($this->match->players, function($player) { return $player['team'] === 1; });
 
-
             $team0elo = $this->getAverageElo($team0);
             $team1elo = $this->getAverageElo($team1);
             $team0we  = $this->getWinExpectancy($team0elo, $team1elo);
@@ -50,7 +50,7 @@ class CalculateMatchElo extends Job implements ShouldQueue
 
             foreach($team0 as $p) {
                 $player = Player::where('accountId', $p->accountId);
-                $k = ($player->matches->count() >= 10 ? 30 : 15);
+                $k = ($player->matches->count() >= 10 ? 30 : 15); // How many matches
                 $player->elo = $this->getEloChange($k, 0, $team0we);
                 $player->save();
             }
@@ -58,11 +58,11 @@ class CalculateMatchElo extends Job implements ShouldQueue
             foreach($team1 as $p) {
                 $player = Player::where('accountId', $p->accountId);
                 $k = ($player->matches->count() >= 10 ? 30 : 15);
-                $player->elo = $this->getEloChange($k, 1, $team0we);
+                $player->elo = $this->getEloChange($k, 1, $team1we);
                 $player->save();
             }
-            $team0change = $this->getEloChange(0, $team0we);
-            $team1change = $this->getEloChange(1, $team1we);
+            //$team0change = $this->getEloChange(0, $team0we);
+            //$team1change = $this->getEloChange(1, $team1we);
         }
     }
 

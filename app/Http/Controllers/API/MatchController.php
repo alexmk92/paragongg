@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Traits\FindOrCreatePlayers;
 use App\Jobs\CalculateMatchElo;
+use App\Jobs\CreatePlayers;
 use App\Match;
 use App\Http\Controllers\Controller;
 use App\Player;
@@ -37,27 +38,31 @@ class MatchController extends Controller
         return response()->json($match);
     }
 
-    public function getPlayersElo(Request $request)
+    public function getPlayersElo()
     {
-        if(!$request->all()['players']) abort(404);
+        //if(!$request->all()['players']) abort(404);
 
-        $players = $request->all()['players'];
-        $playerElos = [];
+        $players     = request()->get('players');
+        $matchId     = request()->get('matchId');
+        $playerElos  = [];
         $createArray = [];
 
         foreach($players as &$player) {
             $result = Player::where('accountId', $player['accountId'])->first();
             if(!$result) {
                 array_push($createArray, $player['accountId']); // Push this player to array to be created
-                array_push($return, ['accountId' => $player['accountId'], 'elo' => 1000]); // Return 1000 as elo for now
+                array_push($playerElos, ['accountId' => $player['accountId'], 'elo' => 1000]); // Return 1000 as elo for now
             }  else {
-                array_push($result->matchHistory, $player['matchId']);
+                $matchHistory = $result->matches;
+                array_push($matchHistory, $matchId);
+                $result->matches = $matchHistory;
                 $result->save();
-                array_push($return, ['accountId' => $player['accountId'], 'elo' => $result->elo]);
+                array_push($playerElos, ['accountId' => $player['accountId'], 'elo' => $result->elo]);
             }
         }
 
-        $this->createPlayers($createArray);
+        // Create players that don't exist
+        $this->dispatch(new CreatePlayers($createArray, $matchId));
 
         return response()->json($playerElos);
     }
@@ -66,5 +71,9 @@ class MatchController extends Controller
     {
         $this->dispatch(new CalculateMatchElo($id));
     }
+
+    // awsjidaqjkdqak - 1020
+    // ewrqwlkeqkwelq - 1010
+    // askldasldkasda - 1000
 
 }

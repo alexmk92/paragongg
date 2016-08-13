@@ -190,7 +190,6 @@ trait FindOrCreatePlayers
         }
 
         $response = json_decode($res, true);
-        dd($response);
 
         foreach($response as $playerResponse) {
             $player              = new Player();
