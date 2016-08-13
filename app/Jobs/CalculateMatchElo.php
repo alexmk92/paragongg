@@ -20,6 +20,7 @@ class CalculateMatchElo extends Job implements ShouldQueue
 
     protected $replayId;
     protected $match;
+    protected $teams = [];
 
     /**
      * Create a new job instance.
@@ -40,29 +41,41 @@ class CalculateMatchElo extends Job implements ShouldQueue
     {
         $this->match = Match::where('replayId', $this->replayId)->first();
         if($this->match->gameType == 'pvp') {
-            $team0 = array_filter($this->match->players, function($player) { return $player['team'] === 0; });
-            $team1 = array_filter($this->match->players, function($player) { return $player['team'] === 1; });
+            $this->teams[0] = array_filter($this->match->players, function($player) { return $player['team'] === 0; });
+            $this->teams[1] = array_filter($this->match->players, function($player) { return $player['team'] === 1; });
+            $this->calculateTeamElo();
+        }
+    }
 
-            $team0elo = $this->getAverageElo($team0);
-            $team1elo = $this->getAverageElo($team1);
-            $team0we  = $this->getWinExpectancy($team0elo, $team1elo);
-            $team1we  = $this->getWinExpectancy($team1elo, $team0elo);
+    public function calculateTeamElo()
+    {
+        $team = [
+            1 => [
+                'avg' => 0,
+                'we'  => 0,
+            ],
+            2 => [
+                'avg' => 0,
+                'we'  => 0,
+            ]
+        ];
 
-            foreach($team0 as $p) {
+        // Calculate avg elo for each team
+        for($i = 0; $i < 2; $i++) {
+            $team[$i]['elo'] = $this->getAverageElo($this->teams[$i]);
+        }
+
+        // Generate win expectency and save elo change per player
+        for($i = 0; $i < 2; $i++) {
+            $x = ($i == 0) ? 1 : 0;
+            $team[$i]['we']  = $this->getWinExpectancy($team[$i]['elo'], $team[$x]['elo']);
+
+            foreach($team[$i] as $p) {
                 $player = Player::where('accountId', $p->accountId);
                 $k = ($player->matches->count() >= 10 ? 30 : 15); // How many matches
-                $player->elo = $this->getEloChange($k, 0, $team0we);
+                $player->elo = $this->getEloChange($k, 0, $team[$i]['we']);
                 $player->save();
             }
-
-            foreach($team1 as $p) {
-                $player = Player::where('accountId', $p->accountId);
-                $k = ($player->matches->count() >= 10 ? 30 : 15);
-                $player->elo = $this->getEloChange($k, 1, $team1we);
-                $player->save();
-            }
-            //$team0change = $this->getEloChange(0, $team0we);
-            //$team1change = $this->getEloChange(1, $team1we);
         }
     }
 
@@ -71,8 +84,7 @@ class CalculateMatchElo extends Job implements ShouldQueue
         $average = 0;
         foreach($team as $player) {
             if($player['elo'] == 0) {
-                //$player['elo'] = 1000;
-                $player['elo'] = rand(1000,1500);
+                $player['elo'] = 1000;
             }
             $average += $player['elo'];
         }
