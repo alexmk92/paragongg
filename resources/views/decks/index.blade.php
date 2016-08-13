@@ -12,6 +12,8 @@
         var DECKS  = {!! json_encode($decks) !!};
         var HEROES = {!! json_encode($heroes) !!};
         var HERO   = {!! json_encode($hero) !!}
+
+        console.log(DECKS);
     </script>
 @endsection
 @section('body')

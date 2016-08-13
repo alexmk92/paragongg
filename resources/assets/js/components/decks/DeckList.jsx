@@ -74,6 +74,9 @@ var DeckList = React.createClass({
             newHash = '#filter=' + this.state.selectedType;
         }
         window.location.hash = newHash;
+        setTimeout(function() {
+            console.log(this.state.decks);
+        }.bind(this), 5000);
     },
     setSelectedType: function(index) {
         var type = '';
@@ -90,7 +93,7 @@ var DeckList = React.createClass({
         var fetching = this.state.decks[this.state.selectedType].fetching;
         if(!endOfPage && !fetching) {
             var skip = this.state.decks[this.state.selectedType].skip;
-            var deckURL = '/api/v1/decks?skip=' + skip + '&take=' + this.state.take;
+            var deckURL = '/api/v1/decks?skip=' + skip + '&take=' + this.state.take + '&filter=' + this.state.selectedType.toLowerCase();
             console.log('requesting: ' + deckURL);
             if(HERO !== null) {
                 deckURL += '&hero=' + HERO.code;
@@ -113,14 +116,18 @@ var DeckList = React.createClass({
 
                 var decks = JSON.parse(JSON.stringify(this.state.decks));
                 decks[this.state.selectedType].fetching = false;
-                decks[this.state.selectedType].skip += 10;
+                decks[this.state.selectedType].skip += this.state.take;
                 decks[this.state.selectedType].decks = decks[this.state.selectedType].decks.concat(newDecks);
 
+                // the promise has resolved, update the decks with the new data
                 this.setState({ decks: decks });
             }.bind(this));
+
+            // show the fetching status
             var decks = JSON.parse(JSON.stringify(this.state.decks));
             decks[this.state.selectedType].fetching = true;
             this.setState({ decks: decks });
+
         }
     },
     handleScroll: function() {
@@ -144,7 +151,7 @@ var DeckList = React.createClass({
                 deck.votes = payload.data.value;
                 // make a shallow copy of the state
                 var newDecks = JSON.parse(JSON.stringify(this.state.decks));
-                // Mutate state for the correc tdeck
+                // Set state for the correct deck
                 for(var k in this.state.decks) {
                     if(k === this.state.selectedType) {
                         newDecks[k].decks = this.state.decks[k].decks.map(function(oldDeck) {
@@ -164,15 +171,25 @@ var DeckList = React.createClass({
         }
     },
     renderDeckList: function() {
-        var decks = this.state.decks[this.state.selectedType].decks.map(function(deck) {
-            if(!deck.voted) deck.voted = false;
-            return (
-                <DeckPreview key={Helpers.uuid()}
-                             deck={deck}
-                             sharedTooltip={this.tooltip}
-                             onDeckUpvoted={this.upvoteDeck}
-                />
-            );
+        var decks = [];
+        this.state.decks[this.state.selectedType].decks.forEach(function(deck) {
+            var hidden = false;
+            /*
+            if(this.state.selectedType === 'recent') {
+                hidden = new Date(deck.created_at).getTime() < new Date(deck.updated_at).getTime();
+            }
+            */
+            //console.log('hidden is: ', hidden);
+            if(!hidden) {
+                if(!deck.voted) deck.voted = false;
+                decks.push(
+                    <DeckPreview key={Helpers.uuid()}
+                                 deck={deck}
+                                 sharedTooltip={this.tooltip}
+                                 onDeckUpvoted={this.upvoteDeck}
+                    />
+                );
+            }
         }.bind(this));
         if(decks.length === 0) {
             var type = Helpers.isNullOrUndefined(HERO) ? this.state.selectedType : HERO.name;
