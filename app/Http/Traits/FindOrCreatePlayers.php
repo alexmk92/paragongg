@@ -173,5 +173,44 @@ trait FindOrCreatePlayers
         return $player;
     }
 
+    public function createPlayers($accountIds, $matchId)
+    {
+        $parameters = implode('&accountId=', $accountIds);
+        $client = new Client();
+        try {
+            $res = $client->request('GET', 'https://account-public-service-prod03.ol.epicgames.com/account/api/public/account?accountId=' . $parameters, [
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Authorization' => 'Bearer ' . APIToken(),
+                    'X-Epic-ApiKey' => env('EPIC_API_KEY'),
+                ]
+            ])->getBody();
+        } catch (ClientException $exception) {
+
+        }
+
+        $response = json_decode($res, true);
+        //dd($response);
+
+        foreach($response as $playerResponse) {
+            $player              = new Player();
+            $player->matches     = [$matchId];
+            $player->accountId   = $playerResponse['id'];
+            $player->elo         = 1000;
+            $player->username    = null;
+            $player->usernamePSN = null;
+            // If has PSN account
+            if(isset($playerResponse['externalAuths']['psn'])) {
+                $player->usernamePSN = $playerResponse['externalAuths']['psn']['externalDisplayName'];
+            }
+            // If has EPIC account
+            if(isset($response['displayName'])) {
+                $player->username    = $playerResponse['displayName'];
+            }
+            $player->save();
+        }
+
+    }
+
 
 }

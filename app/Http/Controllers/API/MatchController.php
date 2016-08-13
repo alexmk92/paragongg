@@ -21,14 +21,11 @@ class MatchController extends Controller
         if(isset($_GET['skip'])) $skip = (int)$_GET['skip'];
         if(isset($_GET['take'])) $take = (int)$_GET['take'];
 
-        $player  = Player::where('accountId', $accountId)->get();
-        //$matches = Match::select('replayId')->where(['players' => array('$elemMatch' => array('accountId' => $accountId))])
-        $matches = Match::where(['players' => array('$elemMatch' => array('accountId' => $accountId))])
+        $player  = Player::where('accountId', $accountId)->first();
+        $matches = Match::whereIn('replayId', $player->matches)
             ->skip($skip)
             ->take($take)
             ->get();
-        
-        //$matches = Match::whereIn('replayId', $player->matches)->take(10)->get();
 
         return $matches;
     }
@@ -46,16 +43,21 @@ class MatchController extends Controller
 
         $players = $request->all()['players'];
         $playerElos = [];
+        $createArray = [];
 
         foreach($players as &$player) {
             $result = Player::where('accountId', $player['accountId'])->first();
             if(!$result) {
-                // @TODO create player profile
-                array_push($return, ['accountId' => $player['accountId'], 'elo' => 1000]);
+                array_push($createArray, $player['accountId']); // Push this player to array to be created
+                array_push($return, ['accountId' => $player['accountId'], 'elo' => 1000]); // Return 1000 as elo for now
             }  else {
+                array_push($result->matchHistory, $player['matchId']);
+                $result->save();
                 array_push($return, ['accountId' => $player['accountId'], 'elo' => $result->elo]);
             }
         }
+
+        $this->createPlayers($createArray);
 
         return response()->json($playerElos);
     }

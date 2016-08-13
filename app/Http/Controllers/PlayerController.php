@@ -53,31 +53,18 @@ class PlayerController extends Controller
             }
         }
 
-        $matches = $this->getMatches($player->accountId);
+        $matches = $this->getMatches($player);
         foreach($matches as $match) {
             $match->playerStats = getPlayerFromMatch($match, $player->accountId);
         }
-
-        dd($player);
 
         $customBackground = '/assets/images/backgrounds/profile.jpg';
         return view('players.show', compact('player', 'user', 'matches', 'customBackground'));
     }
 
-    public function getMatches($accountId)
+    public function getMatches($player)
     {
-        $player  = Player::where('accountId', $accountId)->first();
-
-        $matches = [];
-        // Temporary, will all be done on replay endpoint trigger
-        $result = Match::select('replayId')->where(['players' => array('$elemMatch' => array('accountId' => $accountId))])->get();
-        foreach($result as $match) {
-            array_push($matches, $match->replayId);
-        }
-        $player->matches = $matches;
-        $player->save();
-
-        $matches = Match::whereIn('replayId', $player->matches)->take(10)->get();
+        return Match::whereIn('replayId', $player->matches)->get();
 
         return $matches;
     }
