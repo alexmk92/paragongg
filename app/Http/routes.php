@@ -29,7 +29,7 @@ Route::get('/news/delete/{id}', 'NewsController@delete')->middleware('mod');
 Route::get('/news/{id}/{slug?}', 'NewsController@show');
 
 
-Route::get('/test13', 'MatchController@test13');
+//Route::get('/test13', 'MatchController@test13');
 /* USERS */
 Route::get('/users/{username}', 'UserController@show');
 
