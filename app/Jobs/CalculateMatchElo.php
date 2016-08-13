@@ -41,6 +41,8 @@ class CalculateMatchElo extends Job implements ShouldQueue
         if($this->match->gameType == 'pvp') {
             $team0 = array_filter($this->match->players, function($player) { return $player['team'] === 0; });
             $team1 = array_filter($this->match->players, function($player) { return $player['team'] === 1; });
+
+
             $team0elo = $this->getAverageElo($team0);
             $team1elo = $this->getAverageElo($team1);
             $team0we  = $this->getWinExpectancy($team0elo, $team1elo);
