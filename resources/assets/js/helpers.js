@@ -36,7 +36,7 @@ module.exports = {
             { ref : "COOLDOWNREDUCTIONPERCENTAGE", label : "Cooldown Reduction", icon: "pgg pgg-cooldown-reduction", modifier : "%", value : 0, modified: false, multiplier: 100, divider: 1, statRef: "cooldown_reduction" },
             { ref : "MAXENERGY", label : "Max Mana", icon: "pgg pgg-max-mana", modifier : "", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "max_mana" },
             { ref : "MAXHEALTH", label : "Max Health", icon: "pgg pgg-max-health", modifier : "", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "max_health" },
-            { ref : "ENERGYREGENRATE", label : "Energy Regen", icon: "pgg pgg-mana-regeneration", modifier : "/s", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "mana_regen"   },
+            { ref : "ENERGYREGENRATE", label : "Mana Regen", icon: "pgg pgg-mana-regeneration", modifier : "/s", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "mana_regen"   },
             { ref : "LIFESTEALRATING", label : "Lifesteal", icon: "pgg pgg-lifesteal", modifier : "%", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "lifesteal"   },
             { ref : "PHYSICALPENETRATIONRATING", label : "Physical Pen", icon: "pgg pgg-physical-penetration", modifier : "", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "physical_pen"   },
             { ref : "ENERGYPENETRATIONRATING", label : "Energy Pen", icon: "pgg pgg-armor-penetration", modifier : "", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "energy_pen"   },
@@ -101,7 +101,7 @@ module.exports = {
             case "COOLDOWNREDUCTIONPERCENTAGE": return { label : "Cooldown Reduction", icon: "pgg pgg-cooldown-reduction", modifier : "%", multiplier: 100, statRef: 'cooldown_reduction' }; break;
             case "MAXENERGY" : return { label : "Max Mana", icon: "pgg pgg-max-mana", modifier : "", multiplier: 1, statRef: 'max_mana' }; break;
             case "MAXHEALTH" : return { label : "Max Health", icon: "pgg pgg-max-health", modifier : "", multiplier: 1, statRef: 'max_health' }; break;
-            case "ENERGYREGENRATE" : return { label : "Energy Regen", icon: "pgg pgg-mana-regeneration", modifier : "/s", multiplier: 1, statRef: 'mana_regen' }; break;
+            case "ENERGYREGENRATE" : return { label : "Mana Regen", icon: "pgg pgg-mana-regeneration", modifier : "/s", multiplier: 1, statRef: 'mana_regen' }; break;
             case "ATTACKRATING" : return { label : "Physical Damage", icon: "pgg pgg-physical-damage", modifier : "", multiplier: 1, statRef: 'physical_damage' }; break;
             case "LIFESTEALRATING" : return { label : "Lifesteal", icon: "pgg pgg-lifesteal", modifier : "%", multiplier: 1, statRef: 'lifesteal' }; break;
             case "PHYSICALPENETRATIONRATING" : return { label : "Physical Pen", icon: "pgg pgg-physical-penetration", modifier : "", multiplier: 1, statRef: 'physical_pen' }; break;
