@@ -93,7 +93,7 @@ var GuidesFeed = React.createClass({
         var fetching = this.state.guides[this.state.selectedType].fetching;
         if(!endOfPage && !fetching) {
             var skip = this.state.guides[this.state.selectedType].skip;
-            var guideURL = '/api/v1/guides?filter=' + this.state.selectedType + '&skip=' + skip + '&take=' + this.state.take;
+            var guideURL = '/api/v1/guides?filter=' + this.state.selectedType.toLowerCase() + '&skip=' + skip + '&take=' + this.state.take;
             if(typeof HERO !== 'undefined' && HERO !== null) {
                 guideURL += '&hero=' + HERO.code;
             } else if(typeof TYPE !== "undefined" && TYPE !== null && TYPE === "GAMEPLAY") {
@@ -117,7 +117,7 @@ var GuidesFeed = React.createClass({
 
                 var guides = JSON.parse(JSON.stringify(this.state.guides));
                 guides[this.state.selectedType].fetching = false;
-                guides[this.state.selectedType].skip += 10;
+                guides[this.state.selectedType].skip += this.state.take;
                 guides[this.state.selectedType].guides = guides[this.state.selectedType].guides.concat(newGuides);
 
                 this.setState({ guides: guides });

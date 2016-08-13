@@ -31,7 +31,7 @@ class DeckController extends Controller
                 case 'featured':
                     $decks = $decks->where('featured', true);
                     break;
-                case 'updated':
+                case 'recent':
                     $decks = $decks->orderBy('updated_at', 'desc');
                     break;
                 case 'rated':
