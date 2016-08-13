@@ -14,13 +14,13 @@
         <input type="text" name="codename" @if(isset($hero->codename)) value="{{ $hero->codename }}" @endif>
         <h3>Hero ability videos</h3>
         <label>LMB</label>
-        <input type="text" name="ability_video_lmb" @if(isset($hero->videos[0]))value="{{ $hero->videos[0] }} "@endif>
+        <input type="text" name="ability_video_lmb" @if(isset($hero->videos[0]))value="{{ $hero->videos[0] }}"@endif>
         <label>RMB</label>
-        <input type="text" name="ability_video_rmb" @if(isset($hero->videos[1]))value="{{ $hero->videos[1] }} "@endif>
+        <input type="text" name="ability_video_rmb" @if(isset($hero->videos[1]))value="{{ $hero->videos[1] }}"@endif>
         <label>Q</label>
-        <input type="text" name="ability_video_q" @if(isset($hero->videos[2]))value="{{ $hero->videos[2] }} "@endif>
+        <input type="text" name="ability_video_q" @if(isset($hero->videos[2]))value="{{ $hero->videos[2] }}"@endif>
         <label>E</label>
-        <input type="text" name="ability_video_e" @if(isset($hero->videos[3]))value="{{ $hero->videos[3]}} "@endif>
+        <input type="text" name="ability_video_e" @if(isset($hero->videos[3]))value="{{ $hero->videos[3]}}"@endif>
         <label>Ultimate</label>
         <input type="text" name="ability_video_ultimate" @if(isset($hero->videos[4]))value="{{ $hero->videos[4] }}"@endif>
         <hr>

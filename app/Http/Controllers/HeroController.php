@@ -163,23 +163,23 @@ class HeroController extends Controller
 
         $videos = [];
         if($request->has('ability_video_lmb')) {
-            $videos[0] = $request->ability_video_lmb;
+            $videos[0] = trim($request->ability_video_lmb);
         }
 
         if($request->has('ability_video_rmb')) {
-            $videos[1] = $request->ability_video_rmb;
+            $videos[1] = trim($request->ability_video_rmb);
         }
 
         if($request->has('ability_video_q')) {
-            $videos[2] = $request->ability_video_q;
+            $videos[2] = trim($request->ability_video_q);
         }
 
         if($request->has('ability_video_e')) {
-            $videos[3] = $request->ability_video_e;
+            $videos[3] = trim($request->ability_video_e);
         }
 
         if($request->has('ability_video_ultimate')) {
-            $videos[4] = $request->ability_video_ultimate;
+            $videos[4] = trim($request->ability_video_ultimate);
         }
 
         $hero->videos = $videos;
