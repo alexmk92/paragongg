@@ -25,6 +25,66 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.7/es5-shim.min.js"></script>
     @yield('libraries')
 
+    @if(!isset($hideAnalytics))
+        <!-- Google Analytics -->
+        <script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-32129070-1']);
+            _gaq.push(['_setSampleRate', '10']);
+            _gaq.push(['_trackPageview']);
+
+            _gaq.push(['_setAccount', 'UA-32132943-1']);
+            _gaq.push(['_setSampleRate', '100']);
+            _gaq.push(['_trackPageview']);
+
+            (function() {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
+        <!-- Quantcast -->
+        <script type="text/javascript">
+            var _qevents = _qevents || [];
+
+            (function() {
+                var elem = document.createElement('script');
+                elem.src = (document.location.protocol == "https:" ? "https://secure" : "http://edge") + ".quantserve.com/quant.js";
+                elem.async = true;
+                elem.type = "text/javascript";
+                var scpt = document.getElementsByTagName('script')[0];
+                scpt.parentNode.insertBefore(elem, scpt);
+            })();
+
+            _qevents.push({
+                qacct:"p-8bG6eLqkH6Avk"
+            });
+        </script>
+        <noscript>
+            <div style="display:none;">
+                <img src="//pixel.quantserve.com/pixel/p-8bG6eLqkH6Avk.gif" border="0" height="1" width="1" alt="Quantcast"/>
+            </div>
+        </noscript>
+        <!-- comScore -->
+        <script type="text/javascript">
+            var _comscore = _comscore || [];
+            _comscore.push({ c1: "2", c2: "6177433",
+                options: {
+                    url_append: "comscorekw=wikiacsid_games"
+                }
+            });
+
+            (function() {
+                var s = document.createElement("script"), el = document.getElementsByTagName("script")[0]; s.async = true;
+                s.src = (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js";
+                el.parentNode.insertBefore(s, el);
+            })();
+        </script>
+        <noscript>
+            <img src="http://b.scorecardresearch.com/p?c1=2&c2=6177433&c3=&c4=&c5=&c6=&c7=http%3A%2F%2Fwww.wikia.com%2FWikia%3Fcomscorekw%3Dwikiacsid_lifestyle&c15=&cv=2.0&cj=1" />
+        </noscript>
+    @endif
+
 </head>
 <body @if(isset($customBackground)) style="background-image: none;" @endif>
 @if(isset($customBackground))
@@ -53,20 +113,6 @@
 @yield('scripts')
 <script type="text/javascript" src="/build/js/vendor.min.js"></script>
 <script type="text/javascript" src="/build/js/app.min.js"></script>
-
-@if(!isset($hideAnalytics))
-
-     <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-        ga('create', 'UA-52110087-4', 'auto');
-        ga('send', 'pageview');
-    </script>
-
-@endif
 
 <div class="beta-notification">V2.2 BETA</div>
 
