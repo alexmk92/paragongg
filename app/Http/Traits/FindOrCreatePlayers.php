@@ -98,10 +98,12 @@ trait FindOrCreatePlayers
             $player->accountId   = $response->accountId;
             $player->username    = $usernameEPIC;
             $player->usernamePSN = $usernamePSN;
+            $player->matches     = [];
             $player->save();
         } else {
             $player->username    = $usernameEPIC;
             $player->usernamePSN = $usernamePSN;
+            $player->matches     = [];
             $player->save();
         }
 
@@ -163,10 +165,12 @@ trait FindOrCreatePlayers
             $player->accountId   = $response->accountId;
             $player->username    = $usernameEPIC;
             $player->usernamePSN = $usernamePSN;
+            $player->matches     = [];
             $player->save();
         } else {
             $player->username    = $usernameEPIC;
             $player->usernamePSN = $usernamePSN;
+            $player->matches     = [];
             $player->save();
         }
 
