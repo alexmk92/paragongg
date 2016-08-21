@@ -64,9 +64,8 @@ class PlayerController extends Controller
 
     public function getMatches($player)
     {
+        $player = Player::where('accountId', $player)->first();
         return Match::whereIn('replayId', $player->matches)->get();
-
-        return $matches;
     }
 
     public function search(Request $request)
