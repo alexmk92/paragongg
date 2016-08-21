@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Hero;
 use App\Http\Traits\FindOrCreatePlayers;
 use App\Match;
 use App\Player;
@@ -23,6 +24,7 @@ class PlayerController extends Controller
         $player = $this->find($username, null);
 
         $user   = User::where('epic_account_id', $player->accountId)->first();
+        $heroes = Hero::select('code', 'codename', 'name', 'image')->get();
 
         if(isset($player->usernamePSN) && $username == $player->usernamePSN) {
             if(!$player->username) {
@@ -37,7 +39,7 @@ class PlayerController extends Controller
         }
 
         $customBackground = '/assets/images/backgrounds/profile.jpg';
-        return view('players.show', compact('player', 'user', 'matches', 'customBackground'));
+        return view('players.show', compact('player', 'user', 'matches', 'heroes', 'customBackground'));
     }
 
     public function showPSN($username)
@@ -45,7 +47,9 @@ class PlayerController extends Controller
         if(isBotName($username)) return view('players.bot');
 
         $player = $this->findPSN($username);
+
         $user   = User::where('epic_account_id', $player->accountId)->first();
+        $heroes = Hero::select('code', 'codename', 'name', 'image')->get();
 
         if(isset($player->usernamePSN) && $username == $player->usernamePSN) {
             if($player->username) {
@@ -59,7 +63,7 @@ class PlayerController extends Controller
         }
 
         $customBackground = '/assets/images/backgrounds/profile.jpg';
-        return view('players.show', compact('player', 'user', 'matches', 'customBackground'));
+        return view('players.show', compact('player', 'user', 'matches', 'heroes', 'customBackground'));
     }
 
     public function getMatches($player)

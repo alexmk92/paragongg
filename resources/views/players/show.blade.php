@@ -94,5 +94,6 @@
 @section('scripts')
     <script type="text/javascript">
         var pId = '{{ $player->accountId }}';
+        var HEROES = {!! json_encode($heroes) !!};
     </script>
 @endsection
