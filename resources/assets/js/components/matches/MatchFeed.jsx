@@ -45,10 +45,12 @@ var MatchItem = React.createClass({
                             </td>
                             <td>
                                 <span className="tag">
-                                    <span className={matchResult}>{matchResult} {Helpers.prettyDate(new Date(this.props.match.startedAt))}</span>
+                                    <span className={matchResult}>{matchResult}</span>
+                                    {Helpers.prettyDate(new Date(this.props.match.startedAt))}
                                 </span>
                                 <span className="tag">
                                     <span className="label">Duration</span>
+                                    {Helpers.gameMinutes(this.props.match.newCheckpointTime)}
                                 </span>
                                 <span className="tag">
                                     <span className="label">Match mode</span> {this.props.match.gameType.replace('_', '')}

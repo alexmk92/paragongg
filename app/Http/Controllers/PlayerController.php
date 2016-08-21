@@ -53,7 +53,7 @@ class PlayerController extends Controller
             }
         }
 
-        $matches = $this->getMatches($player);
+        $matches = $this->getMatches($player->accountId);
         foreach($matches as $match) {
             $match->playerStats = getPlayerFromMatch($match, $player->accountId);
         }
