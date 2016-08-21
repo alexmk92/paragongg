@@ -108,7 +108,7 @@ var TeamPanel = React.createClass({
                     </td>
                     <td>
                         <span>{this.getPlayerName(player)}</span>
-                        {this.getElo(player)}
+                        {/*{this.getElo(player)}*/}
                     </td>
                     <td>
                         <span>
