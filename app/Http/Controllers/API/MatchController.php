@@ -34,7 +34,6 @@ class MatchController extends Controller
     public function show($id)
     {
         $match = Match::where('replayId', $id)->first();
-        $match->startedAt = $match->startedAt->toDateTime()->format('Y-m-d H:i:s');
         return response()->json($match);
     }
 
