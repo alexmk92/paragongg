@@ -91,7 +91,7 @@ class ModerationController extends Controller
     {
         $guide = Guide::findOrFail($id);
         $guide->timestamps = false;
-        $guide->featured = true;
+        $guide->featured = false;
         $guide->save();
         $guide->timestamps = true;
 
