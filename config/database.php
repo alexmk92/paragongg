@@ -73,13 +73,15 @@ return [
 
         'mongodb' => [
             'driver'   => 'mongodb',
-            'host'     => env('DB2_HOST', 'localhost'),
+            'host'     => explode(",", env('DB2_HOST', 'localhost')),
             'port'     => env('DB2_PORT', 27017),
             'database' => env('DB2_DATABASE', ''),
             'username' => env('DB2_USERNAME', ''),
             'password' => env('DB2_PASSWORD', ''),
             'options' => [
-                'db' => 'admin' // sets the authentication database required by mongo 3
+                'db' => 'admin', // sets the authentication database required by mongo 3
+                'authSource' => 'admin',
+                'replicaSet' => 'pggCluster0-shard-0'
             ]
         ],
 
