@@ -127,17 +127,18 @@ var Build = React.createClass({
         var hasSamePassiveEffect = false;
         if(upgradeSlot && this.props.selectedCard) {
             var passiveList = "";
+            var damageType = this.props.selectedCard.damageType || null;
             this.props.selectedCard.effects.some(function(effect) {
                 var statString = "";
                 if(effect.stat) statString = effect.stat.toUpperCase();
                 if(effect.description) statString = effect.description.toUpperCase();
-                var selectedEffectType = Helpers.getFormattedStatistic(statString);
+                var selectedEffectType = Helpers.getFormattedStatistic(statString, damageType);
                 if(upgradeSlot.parentCard.effects) {
                     passiveList = "";
                     upgradeSlot.parentCard.effects.forEach(function(slotEffect) {
                         if(slotEffect.stat) statString = slotEffect.stat.toUpperCase();
                         if(slotEffect.description) statString = slotEffect.description.toUpperCase();
-                        var slotEffectType = Helpers.getFormattedStatistic(statString);
+                        var slotEffectType = Helpers.getFormattedStatistic(statString, damageType);
                         if(!Helpers.isNullOrUndefined(slotEffectType)) {
                             passiveList += slotEffectType.label + ", ";
                         }
@@ -276,12 +277,14 @@ var Build = React.createClass({
                 var statString = "";
                 if(effect.stat) statString = effect.stat.toUpperCase();
                 if(effect.description) statString = effect.description.toUpperCase();
-                var selectedEffectType = Helpers.getFormattedStatistic(statString);
+                var damageType = selectedCard.damageType || null;
+                var selectedEffectType = Helpers.getFormattedStatistic(statString, damageType);
                 if(upgradeCard.effects) {
                     upgradeCard.effects.forEach(function(upgradeEffect) {
                         if(upgradeEffect.stat) statString = upgradeEffect.stat.toUpperCase();
                         if(upgradeEffect.description) statString = upgradeEffect.description.toUpperCase();
-                        var slotEffectType = Helpers.getFormattedStatistic(statString);
+                        var damageType = upgradeCard.damageType || null;
+                        var slotEffectType = Helpers.getFormattedStatistic(statString, damageType);
                         if(!Helpers.isNullOrUndefined(selectedEffectType) && !Helpers.isNullOrUndefined(slotEffectType) && selectedEffectType.label === slotEffectType.label) {
                             hasSamePassiveEffect = true;
                         }

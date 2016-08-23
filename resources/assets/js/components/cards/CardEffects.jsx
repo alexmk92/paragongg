@@ -57,11 +57,11 @@ var CardEffects = React.createClass({
             return <span key={"str-"+i}>{string} </span>;
         });
     },
-    getStats: function(effects) {
+    getStats: function(effects, damageType) {
         var items = [];
         effects.forEach(function(stat, i) {
             if(stat.stat) {
-                var statistic = Helpers.getFormattedStatistic(stat.stat);
+                var statistic = Helpers.getFormattedStatistic(stat.stat, damageType);
                 if(statistic !== null) {
                     // stat was sometimes being expressed as 600%, added this code to ensure only numbers with a multiplier below 0 will be
                     // scaled to there full integer value
@@ -91,9 +91,10 @@ var CardEffects = React.createClass({
     render: function() {
         var effects, maxedEffects;
         if(this.props.card.effects && this.props.card.effects.length > 0) {
+            var damageType = this.props.card.damageType || 'Physical';
             effects = (
                 <ul className="effects">
-                    {this.getStats(this.props.card.effects)}
+                    {this.getStats(this.props.card.effects, damageType)}
                 </ul>
             );
         } else {
