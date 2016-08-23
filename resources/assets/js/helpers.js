@@ -47,6 +47,7 @@ module.exports = {
             { ref : "PHYSICALRESISTANCERATING", label : "Physical Armor", icon : "pgg pgg-physical-armor", modifier : "", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "physical_armor"   },
             { ref : "WELLRIGPLACEMENTTIMER", label : "Placement Time", icon: "pgg pgg-harvester-placement-time", modifier : "s", value : 0, modified: false, multiplier: 1, divider: 1, statRef: ""   },
             { ref : "ATTACKRATING", label : "Physical Damage", icon: "pgg pgg-physical-damage", modifier : "", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "physical_damage"  },
+            { ref : "ATTACKRATING", label : "Energy Damage", icon: "pgg pgg-energy-damage", modifier : "", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "energy_damage"  },
             { ref : "MAXMOVEMENTSPEED", label : "Max Movement Speed", icon: "pgg pgg-movement-speed", modifier : "", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "movement_speed"  }
         ]
     },
@@ -95,14 +96,15 @@ module.exports = {
         }
         return number;
     },
-    getFormattedStatistic: function(statLabel) {
+    getFormattedStatistic: function(statLabel, damageType) {
+        if(this.isNullOrUndefined(damageType)) damageType = 'Physical';
         switch(statLabel.toUpperCase()) {
             case "ATTACKSPEEDRATING": return { label : "Attack Speed", icon: "pgg pgg-attack-speed", modifier : "", multiplier: 1, statRef: 'attack_speed' }; break;
             case "COOLDOWNREDUCTIONPERCENTAGE": return { label : "Cooldown Reduction", icon: "pgg pgg-cooldown-reduction", modifier : "%", multiplier: 100, statRef: 'cooldown_reduction' }; break;
             case "MAXENERGY" : return { label : "Max Mana", icon: "pgg pgg-max-mana", modifier : "", multiplier: 1, statRef: 'max_mana' }; break;
             case "MAXHEALTH" : return { label : "Max Health", icon: "pgg pgg-max-health", modifier : "", multiplier: 1, statRef: 'max_health' }; break;
             case "ENERGYREGENRATE" : return { label : "Mana Regen", icon: "pgg pgg-mana-regeneration", modifier : "/s", multiplier: 1, statRef: 'mana_regen' }; break;
-            case "ATTACKRATING" : return { label : "Physical Damage", icon: "pgg pgg-physical-damage", modifier : "", multiplier: 1, statRef: 'physical_damage' }; break;
+            case "ATTACKRATING" : return { label : damageType + " Damage", icon: "pgg pgg-physical-damage", modifier : "", multiplier: 1, statRef: damageType.toLowerCase() + '_damage' }; break;
             case "LIFESTEALRATING" : return { label : "Lifesteal", icon: "pgg pgg-lifesteal", modifier : "%", multiplier: 1, statRef: 'lifesteal' }; break;
             case "PHYSICALPENETRATIONRATING" : return { label : "Physical Pen", icon: "pgg pgg-physical-penetration", modifier : "", multiplier: 1, statRef: 'physical_pen' }; break;
             case "ENERGYPENETRATIONRATING" : return { label : "Energy Pen", icon: "pgg pgg-armor-penetration", modifier : "", multiplier: 1, statRef: 'energy_pen' }; break;
@@ -119,8 +121,10 @@ module.exports = {
     isNullOrUndefined: function(object) {
         return typeof object === 'undefined' || object === null;
     },
-    getStatisticCategory: function(stat) {
+    getStatisticCategory: function(stat, damageType) {
         stat = stat.toUpperCase();
+        if(this.isNullOrUndefined(damageType)) damageType = 'Physical';
+        damageType = damageType.toUpperCase();
         if(stat.includes("{ATTR:HP}")){
             return "HEALTH";
         }
@@ -173,7 +177,7 @@ module.exports = {
             case "MAXENERGY" : return "MANA"; break;
             case "MAXHEALTH": return "HEALTH"; break;
             case "ENERGYREGENRATE" : return "ENERGY REGEN"; break;
-            case "ATTACKRATING" : return "PHYSICAL DAMAGE"; break;
+            case "ATTACKRATING" : return damageType + " DAMAGE"; break;
             case "LIFESTEALRATING" : return "LIFESTEAL"; break;
             case "PHYSICALPENETRATIONRATING" : return "PENETRATION"; break;
             case "ENERGYPENETRATIONRATING" : return "PENETRATION"; break;

@@ -44,6 +44,7 @@ var BuildStats = React.createClass({
         if(this.isSelectedBuildEmpty(build)) {
             this.props.cards.all.forEach(function(card) {
                 if(card) {
+                    var damageType = card.damageType || null;
                     card.effects.map(function(effect) {
                         var statString = "";
                         // We don't want to include +Health of health regen pots on activataeables
@@ -53,8 +54,9 @@ var BuildStats = React.createClass({
                             }
                             if(effect.stat) statString = effect.stat.toUpperCase();
                             if(effect.description) statString = effect.description.toUpperCase();
-                            var statCategory = Helpers.getStatisticCategory(effect.stat);
-                            var formattedStat = Helpers.getFormattedStatistic(statString);
+                            var statCategory = Helpers.getStatisticCategory(effect.stat, damageType);
+                            var damageType = card.damageType || null;
+                            var formattedStat = Helpers.getFormattedStatistic(statString, damageType);
                             if(!Helpers.isNullOrUndefined(formattedStat)) {
                                 if(Helpers.isNullOrUndefined(this.props.selectedBuild) && !this.doesCategoryExistInArray(statCategory, newComparisons)) {
                                     if(statCategory !== "" && statCategory !== "DPS") newComparisons.push({ label : statCategory, ref: formattedStat.statRef, icon: formattedStat.icon, modifier: formattedStat.modifier });
@@ -73,6 +75,7 @@ var BuildStats = React.createClass({
             // Get comparison data for the selected build
             build.slots.forEach(function(slot) {
                 if(slot.card) {
+                    var damageType = slot.card.damageType || null;
                     slot.card.effects.map(function(effect) {
                         var statString = "";
                         if(Helpers.isNullOrUndefined(effect.cooldown)) {
@@ -81,8 +84,9 @@ var BuildStats = React.createClass({
                             }
                             if(effect.stat) statString = effect.stat.toUpperCase();
                             if(effect.description) statString = effect.description.toUpperCase();
-                            var statCategory = Helpers.getStatisticCategory(statString);
-                            var formattedStat = Helpers.getFormattedStatistic(statString);
+                            var statCategory = Helpers.getStatisticCategory(statString, damageType);
+                            var damageType = slot.card.damageType || null;
+                            var formattedStat = Helpers.getFormattedStatistic(statString, damageType);
                             if(!Helpers.isNullOrUndefined(formattedStat)) {
                                 // Always add a DPS field
                                 if(!this.doesCategoryExistInArray("DPS", newComparisons)) {
@@ -163,11 +167,12 @@ var BuildStats = React.createClass({
 
         } else {
             explodedEquipment.forEach(function(card) {
+                var damageType = card.damageType || null;
                 card.effects.forEach(function(effect) {
                     var statString = "";
                     if(effect.stat) statString = effect.stat.toUpperCase();
                     if(effect.description) statString = effect.description.toUpperCase();
-                    var statCategory = Helpers.getStatisticCategory(statString);
+                    var statCategory = Helpers.getStatisticCategory(statString, damageType);
 
                     if(statCategory === type) {
                         if(statCategory === "CRIT" && effect.value < 1) {
@@ -200,11 +205,12 @@ var BuildStats = React.createClass({
             }.bind(this));
 
             explodedUpgrades.forEach(function(upgradeCard) {
+                var damageType = upgradeCard.damageType || null;
                 upgradeCard.effects.forEach(function(effect) {
                     var statString = "";
                     if(effect.stat) statString = effect.stat.toUpperCase();
                     if(effect.description) statString = effect.description.toUpperCase();
-                    var statCategory = Helpers.getStatisticCategory(statString);
+                    var statCategory = Helpers.getStatisticCategory(statString, damageType);
 
                     if(statCategory === type) {
                         if(statCategory === "CRIT") {
@@ -251,12 +257,12 @@ var BuildStats = React.createClass({
             return total;
         }
     },
-    getValueForEffect: function(effect, desiredEffect) {
+    getValueForEffect: function(effect, desiredEffect, damageType) {
         var statString = "";
         if(effect.stat) statString = effect.stat.toUpperCase();
         if(effect.description) statString = effect.description.toUpperCase();
-        var statCategory = Helpers.getStatisticCategory(statString);
-        var statDetails = Helpers.getFormattedStatistic(statString);
+        var statCategory = Helpers.getStatisticCategory(statString, damageType);
+        //var statDetails = Helpers.getFormattedStatistic(statString);
 
 
         if(statCategory === desiredEffect && !Helpers.isNullOrUndefined(effect.value)) {
@@ -271,8 +277,9 @@ var BuildStats = React.createClass({
     recurseSlotsAndGetValue: function(build, baseTotal, effectType) {
         build.slots.forEach(function(slot) {
             if(slot.card) {
+                var damageType = slot.card.damageType || null;
                 slot.card.effects.forEach(function(effect) {
-                    var value = this.getValueForEffect(effect, effectType);
+                    var value = this.getValueForEffect(effect, effectType, damageType);
                     if(typeof value.value !== "undefined") {
                         baseTotal += value.value;
                     }
@@ -280,7 +287,7 @@ var BuildStats = React.createClass({
                 slot.upgrades.forEach(function(upgradeSlot) {
                     if(upgradeSlot.card) {
                         upgradeSlot.card.effects.forEach(function(effect) {
-                            var value = this.getValueForEffect(effect, effectType);
+                            var value = this.getValueForEffect(effect, effectType, damageType);
                             if(typeof value.value !== "undefined") {
                                 baseTotal += value.value;
                             }
@@ -291,16 +298,17 @@ var BuildStats = React.createClass({
         }.bind(this));
         return baseTotal;
     },
-    computeDamageForEffect: function(effect, currentValues) {
+    computeDamageForEffect: function(effect, currentValues, damageType) {
         var statString = "";
         if(effect.stat) statString = effect.stat.toUpperCase();
         if(effect.description) statString = effect.description.toUpperCase();
-        var statCategory = Helpers.getStatisticCategory(statString);
-        var statDetails = Helpers.getFormattedStatistic(statString);
+        var statCategory = Helpers.getStatisticCategory(statString, damageType);
+        var statDetails = Helpers.getFormattedStatistic(statString, damageType);
 
         if(statCategory === "PHYSICAL DAMAGE" || statCategory === "CRIT" || statCategory === "ATTACK SPEED") {
             if(!Helpers.isNullOrUndefined(statDetails)) {
                 switch(statDetails.label.toUpperCase()) {
+                    case "ENERGY DAMAGE" : currentValues.attackDamage += effect.value; break;
                     case "PHYSICAL DAMAGE" : currentValues.attackDamage += effect.value; break;
                     case "ATTACK SPEED" : currentValues.attackSpeed += effect.value; break;
                     case "CRITICAL CHANCE" : currentValues.critChance += effect.value; break;
@@ -419,24 +427,26 @@ var BuildStats = React.createClass({
                 if(build) {
                     build.slots.forEach(function(slot) {
                         if(slot.card) {
+                            var damageType = slot.card.damageType || null;
                             slot.card.effects.forEach(function(effect) {
-                                d = this.computeDamageForEffect(effect, d);
+                                d = this.computeDamageForEffect(effect, d, damageType);
                                 slot.upgrades.forEach(function(upgradeSlot) {
                                     if(upgradeSlot.card) {
                                         upgradeSlot.card.effects.forEach(function(effect) {
-                                            d = this.computeDamageForEffect(effect, d);
+                                            d = this.computeDamageForEffect(effect, d, damageType);
                                         }.bind(this));
                                         if(upgradeSlot.card.maxedEffects) {
                                             upgradeSlot.card.maxedEffects.forEach(function(effect) {
-                                                d = this.computeDamageForEffect(effect, d);
+                                                d = this.computeDamageForEffect(effect, d, damageType);
                                             }.bind(this));
                                         }
                                     }
                                 }.bind(this));
                             }.bind(this));
                             if(slot.card.maxedEffects) {
+                                var damageType = slot.card.damageType || null;
                                 slot.card.maxedEffects.forEach(function(effect) {
-                                    d = this.computeDamageForEffect(effect, d);
+                                    d = this.computeDamageForEffect(effect, d, damageType);
                                 }.bind(this));
                             }
                         }
@@ -444,12 +454,13 @@ var BuildStats = React.createClass({
                 } else if(Helpers.isNullOrUndefined(this.props.selectedBuild)) {
                     this.props.cards.all.forEach(function(card) {
                         if(card) {
+                            var damageType = card.damageType || null;
                             card.effects.forEach(function(effect) {
-                                d = this.computeDamageForEffect(effect, d);
+                                d = this.computeDamageForEffect(effect, d, damageType);
                             }.bind(this));
                             if(card.maxedEffects) {
                                 card.maxedEffects.forEach(function(effect) {
-                                    d = this.computeDamageForEffect(effect, d);
+                                    d = this.computeDamageForEffect(effect, d, damageType);
                                 }.bind(this));
                             }
                         }
@@ -626,22 +637,24 @@ var BuildStats = React.createClass({
 
                 this.props.selectedBuild.slots.forEach(function(slot) {
                     if(slot.card) {
+                        var damageType = slot.card.damageType || null;
                         slot.card.effects.forEach(function(effect) {
                             var statString = "";
                             if(effect.stat) statString = effect.stat.toUpperCase();
                             if(effect.description) statString = effect.description.toUpperCase();
-                            var stat = Helpers.getStatisticCategory(statString);
+                            var stat = Helpers.getStatisticCategory(statString, damageType);
                             var statIndex = spiderChartData.categories.indexOf(stat);
                             if(statIndex > -1) {
                                 data[0].data[statIndex]++
                             }
                             slot.upgrades.forEach(function(upgradeSlot) {
                                 if(upgradeSlot.card) {
+                                    var damageType = upgradeSlot.damageType || null;
                                     upgradeSlot.card.effects.forEach(function(effect) {
                                         var statString = "";
                                         if(effect.stat) statString = effect.stat.toUpperCase();
                                         if(effect.description) statString = effect.description.toUpperCase();
-                                        var stat = Helpers.getStatisticCategory(statString);
+                                        var stat = Helpers.getStatisticCategory(statString, damageType);
                                         var statIndex = spiderChartData.categories.indexOf(stat);
                                         if(statIndex > -1) {
                                             data[0].data[statIndex]++
@@ -664,22 +677,24 @@ var BuildStats = React.createClass({
                     for(var i = 0; i < spiderChartData.categories.length; i++) { data[index].data[i] = 0 }
                     build.slots.forEach(function(slot) {
                         if(slot.card) {
+                            var damageType = slot.card.damageType || null;
                             slot.card.effects.forEach(function(effect) {
                                 var statString = "";
                                 if(effect.stat) statString = effect.stat.toUpperCase();
                                 if(effect.description) statString = effect.description.toUpperCase();
-                                var stat = Helpers.getStatisticCategory(statString);
+                                var stat = Helpers.getStatisticCategory(statString, damageType);
                                 var statIndex = spiderChartData.categories.indexOf(stat);
                                 if(statIndex > -1) {
                                     data[index].data[statIndex]++
                                 }
                                 slot.upgrades.forEach(function(upgradeSlot) {
                                     if(upgradeSlot.card) {
+                                        var damageType = upgradeSlot.damageType || null;
                                         upgradeSlot.card.effects.forEach(function(effect) {
                                             var statString = "";
                                             if(effect.stat) statString = effect.stat.toUpperCase();
                                             if(effect.description) statString = effect.description.toUpperCase();
-                                            var stat = Helpers.getStatisticCategory(statString);
+                                            var stat = Helpers.getStatisticCategory(statString, damageType);
                                             var statIndex = spiderChartData.categories.indexOf(stat);
                                             if(statIndex > -1) {
                                                 data[index].data[statIndex]++
@@ -706,11 +721,12 @@ var BuildStats = React.createClass({
 
             this.props.cards.all.forEach(function(card) {
                 if(card) {
+                    var damageType = card.damageType || null;
                     card.effects.forEach(function(effect) {
                         var statString = "";
                         if(effect.stat) statString = effect.stat.toUpperCase();
                         if(effect.description) statString = effect.description.toUpperCase();
-                        var stat = Helpers.getStatisticCategory(statString);
+                        var stat = Helpers.getStatisticCategory(statString, damageType);
                         var statIndex = spiderChartData.categories.indexOf(stat);
                         if(statIndex > -1) {
                             data[0].data[statIndex]++

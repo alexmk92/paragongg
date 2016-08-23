@@ -787,16 +787,18 @@ var DeckBuilder = React.createClass({
 
         var hasSamePassiveEffect = false;
         if(upgradeCard && selectedCard && typeof selectedCard.effects !== "undefined") {
+            var damageType = selectedCard.damageType || null;
             selectedCard.effects.some(function(effect) {
                 var statString = "";
                 if(effect.stat) statString = effect.stat.toUpperCase();
                 if(effect.description) statString = effect.description.toUpperCase();
-                var selectedEffectType = Helpers.getFormattedStatistic(statString);
+                var selectedEffectType = Helpers.getFormattedStatistic(statString, damageType);
                 if(upgradeCard.effects) {
+                    var damageType = upgradeCard.damageType || null;
                     upgradeCard.effects.forEach(function(upgradeEffect) {
                         if(upgradeEffect.stat) statString = upgradeEffect.stat.toUpperCase();
                         if(upgradeEffect.description) statString = upgradeEffect.description.toUpperCase();
-                        var slotEffectType = Helpers.getFormattedStatistic(statString);
+                        var slotEffectType = Helpers.getFormattedStatistic(statString, damageType);
                         if(!Helpers.isNullOrUndefined(selectedEffectType) && !Helpers.isNullOrUndefined(slotEffectType) && selectedEffectType.label === slotEffectType.label) {
                             hasSamePassiveEffect = true;
                         }
