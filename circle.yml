@@ -13,6 +13,5 @@ deployment:
   prod:
     branch: master
     commands:
-      - export CURRENT_DEPLOYMENT=pggdeploy-$(date '+%Y-%m-%d_%H-%M-%S')
-      - zip -r ${CURRENT_DEPLOYMENT}.zip .
-      - aws s3 sync ${CURRENT_DEPLOYMENT}.zip s3://paragongg-deployment/app/ --delete
+      - zip -r pggdeploy-master.zip . -x /node_modules*
+      - aws s3 sync pggdeploy-master.zip s3://paragongg-deployment/app/ --delete
