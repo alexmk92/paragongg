@@ -74,6 +74,7 @@ class UpdateCardObject extends Job implements ShouldQueue
         $card->upgradeSlots = $cardDetails->upgradeSlots;
         $card->affinity = $cardDetails->affinities[0];
         $card->rarity   = $cardDetails->rarity;
+        $card->damageType = $cardDetails->damageType;
         $card->effects = $cardDetails->effects;
         if($cardDetails->maxedEffects) {
             $card->maxedEffects = $cardDetails->maxedEffects;
