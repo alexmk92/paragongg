@@ -2,6 +2,8 @@ $card-width : 135px;
 $card-height : 180px;
 #cards-feed {
 
+    min-height: 600px;
+
     .filter-wrapper {
         position: relative;
     }

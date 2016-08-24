@@ -1065,7 +1065,8 @@ var DeckBuilder = React.createClass({
             this.updateDescription();
         }.bind(this), 350);
 
-
+        console.log(HEROES);
+        console.log(this.state.selectedHero);
         return (
             <div>
                 <div id='sidebar' className={this.state.activeTab === -1 ? 'hidden' : ''}>
@@ -1142,6 +1143,7 @@ var DeckBuilder = React.createClass({
                                        cardsRedirectOnClick={false}
                                        onCardClicked={this.addCardToDeck}
                                        onDismissFilter={this.toggleSearchFilter}
+                                       heroScaling={this.state.selectedHero.scale}
                             />
                         </div>
                     </div>

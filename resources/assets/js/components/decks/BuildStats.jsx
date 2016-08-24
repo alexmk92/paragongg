@@ -53,6 +53,13 @@ var BuildStats = React.createClass({
                                 return;
                             }
                             if(effect.stat) statString = effect.stat.toUpperCase();
+                            if(statString === 'ATTACKRATING') {
+                                if(card.damageType.toUpperCase() === 'ENERGY') {
+                                    statString = 'ATTACKRATING-E';
+                                } else {
+                                    statString = 'ATTACKRATING-P';
+                                }
+                            }
                             if(effect.description) statString = effect.description.toUpperCase();
                             var statCategory = Helpers.getStatisticCategory(effect.stat, damageType);
                             var damageType = card.damageType || null;
@@ -83,6 +90,13 @@ var BuildStats = React.createClass({
                                 return;
                             }
                             if(effect.stat) statString = effect.stat.toUpperCase();
+                            if(statString === 'ATTACKRATING') {
+                                if(slot.card.damageType.toUpperCase() === 'ENERGY') {
+                                    statString = 'ATTACKRATING-E';
+                                } else {
+                                    statString = 'ATTACKRATING-P';
+                                }
+                            }
                             if(effect.description) statString = effect.description.toUpperCase();
                             var statCategory = Helpers.getStatisticCategory(statString, damageType);
                             var damageType = slot.card.damageType || null;
@@ -305,7 +319,7 @@ var BuildStats = React.createClass({
         var statCategory = Helpers.getStatisticCategory(statString, damageType);
         var statDetails = Helpers.getFormattedStatistic(statString, damageType);
 
-        if(statCategory === "PHYSICAL DAMAGE" || statCategory === "CRIT" || statCategory === "ATTACK SPEED") {
+        if(statCategory === "PHYSICAL DAMAGE" || statCategory === "CRIT" || statCategory === "ATTACK SPEED" || statCategory === "ENERGY DAMAGE") {
             if(!Helpers.isNullOrUndefined(statDetails)) {
                 switch(statDetails.label.toUpperCase()) {
                     case "ENERGY DAMAGE" : currentValues.attackDamage += effect.value; break;

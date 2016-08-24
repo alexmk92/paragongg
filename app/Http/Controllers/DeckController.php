@@ -85,7 +85,7 @@ class DeckController extends Controller
     // Create
     public function create()
     {
-        $heroes = Hero::select('affinities', 'code', 'name', 'slug', 'image', 'images', 'baseStats')->orderBy('name', 'asc')->get();
+        $heroes = Hero::select('affinities', 'scale', 'code', 'name', 'slug', 'image', 'images', 'baseStats')->orderBy('name', 'asc')->get();
         $cards = app('App\Http\Controllers\CardController')->getCards();
         $userId = Auth::user() ? Auth::user()->id : "null";
         $hideGlobalNotification = true;
@@ -320,7 +320,7 @@ class DeckController extends Controller
     // Edit
     public function edit($id)
     {
-        $heroes = Hero::select('affinities', 'code', 'name', 'slug', 'image', 'images', 'baseStats')->orderBy('name', 'asc')->get();
+        $heroes = Hero::select('affinities', 'scale', 'code', 'name', 'slug', 'image', 'images', 'baseStats')->orderBy('name', 'asc')->get();
         $cards = app('App\Http\Controllers\CardController')->getCards();
         $currentDeck = Deck::findOrFail($id);
         $userId = Auth::user() ? Auth::user()->id : "null";

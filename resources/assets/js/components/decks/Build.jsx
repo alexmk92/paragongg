@@ -129,26 +129,41 @@ var Build = React.createClass({
             var passiveList = "";
             var damageType = this.props.selectedCard.damageType || null;
             this.props.selectedCard.effects.some(function(effect) {
+                if(effect.stat.toUpperCase() === 'ATTACKRATING') {
+                    if(this.props.selectedCard.damageType.toUpperCase() === 'ENERGY') {
+                        effect.stat = 'ATTACKRATING-E';
+                    } else {
+                        effect.stat = 'ATTACKRATING-P';
+                    }
+                }
                 var statString = "";
                 if(effect.stat) statString = effect.stat.toUpperCase();
-                if(effect.description) statString = effect.description.toUpperCase();
+                else if(effect.description) statString = effect.description.toUpperCase();
                 var selectedEffectType = Helpers.getFormattedStatistic(statString, damageType);
                 if(upgradeSlot.parentCard.effects) {
                     passiveList = "";
                     upgradeSlot.parentCard.effects.forEach(function(slotEffect) {
+                        if(slotEffect.stat.toUpperCase() === 'ATTACKRATING') {
+                            if(upgradeSlot.parentCard.damageType.toUpperCase() === 'ENERGY') {
+                                slotEffect.stat = 'ATTACKRATING-E';
+                            } else {
+                                slotEffect.stat = 'ATTACKRATING-P';
+                            }
+                        }
                         if(slotEffect.stat) statString = slotEffect.stat.toUpperCase();
-                        if(slotEffect.description) statString = slotEffect.description.toUpperCase();
+                        else if(slotEffect.description) statString = slotEffect.description.toUpperCase();
                         var slotEffectType = Helpers.getFormattedStatistic(statString, damageType);
                         if(!Helpers.isNullOrUndefined(slotEffectType)) {
                             passiveList += slotEffectType.label + ", ";
                         }
+                        console.log(selectedEffectType.label + ', ' + slotEffectType.label);
                         if(!Helpers.isNullOrUndefined(selectedEffectType) && !Helpers.isNullOrUndefined(slotEffectType) && selectedEffectType.label === slotEffectType.label) {
                             hasSamePassiveEffect = true;
                         }
-                    });
+                    }.bind(this));
                 } else { hasSamePassiveEffect = false }
                 return hasSamePassiveEffect;
-            });
+            }.bind(this));
 
             if(!hasSamePassiveEffect) {
                 this.invokeNotification("warning", "You must slot an upgrade card which has the following passives: " + passiveList);

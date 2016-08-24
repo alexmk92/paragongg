@@ -93,6 +93,7 @@ var CardsFeed = React.createClass({
                                  onCardClicked={this.onCardClicked}
                                  shouldResetFilter={this.state.shouldResetCardFilter}
                                  onCardFilterReset={this.resetCardFilter}
+                                 heroScaling={this.props.heroScaling || null}
                     />
                     { doneMobileButton }
                 </div>

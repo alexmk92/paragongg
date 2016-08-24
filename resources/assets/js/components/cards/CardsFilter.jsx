@@ -35,7 +35,8 @@ var CardsFilter = React.createClass({
                 { name : "Universal" }
             ],
             statistics : [
-                { name : "Physical Damage", iconName : "pgg-physical-damage", ref : "ATTACKRATING", checked : false },
+                { name : "Physical Damage", iconName : "pgg-physical-damage", ref : "ATTACKRATING-P", checked : false },
+                { name : "Energy Damage", iconName : "pgg-energy-damage", ref : "ATTACKRATING-E", checked : false },
                 { name : "Energy Pen", iconName : "pgg-energy-damage", ref : "ENERGYPENETRATIONRATING", checked : false },
                 { name : "Physical Pen", iconName : "pgg-physical-penetration", ref : "PHYSICALPENETRATIONRATING", checked : false },
                 { name : "Energy Armor", iconName : "pgg-energy-armor", ref : "ENERGYRESISTANCERATING", checked : false },
@@ -362,7 +363,16 @@ var CardsFilter = React.createClass({
                 card.effects.forEach(function(effect) {
                     if(effect.stat) {
                         this.state.statistics.some(function(stat) {
-                            if(stat.ref === effect.stat.toUpperCase()) {
+                            var compareStat = effect.stat.toUpperCase();
+                            // allows us to determine between energy and physical damage
+                            if(effect.stat.toUpperCase() === 'ATTACKRATING') {
+                                if(card.damageType && card.damageType.toUpperCase() === 'ENERGY') {
+                                    compareStat = 'ATTACKRATING-E';
+                                } else {
+                                    compareStat = 'ATTACKRATING-P';
+                                }
+                            }
+                            if(stat.ref === compareStat) {
                                 matches = stat.checked;
                                 return true;
                             }
@@ -375,9 +385,88 @@ var CardsFilter = React.createClass({
                 card.maxedEffects.forEach(function (effect) {
                     if (effect.stat) {
                         this.state.statistics.some(function (stat) {
-                            if (stat.ref === effect.stat.toUpperCase()) {
+                            var compareStat = effect.stat.toUpperCase();
+                            // allows us to determine between energy and physical damage
+                            if(effect.stat.toUpperCase() === 'ATTACKRATING') {
+                                if(card.damageType && card.damageType.toUpperCase() === 'ENERGY') {
+                                    compareStat = 'ATTACKRATING-E';
+                                } else {
+                                    compareStat = 'ATTACKRATING-P';
+                                }
+                            }
+                            if (stat.ref === compareStat) {
                                 matches = stat.checked;
                                 return true;
+                            }
+                            return false;
+                        }.bind(this));
+                    }
+                }.bind(this));
+            }
+        }
+
+        // TODO Investigate the below comment to remove this last check
+        // this last check prevents things like bump juice showing up for filters on physical/energy damage - for some reason active cards
+        // were passing through when they shouldn't have been
+        if(this.state.searchTerm !== '' && !this.state.showActiveCards && card.type.toUpperCase() === "ACTIVE" && card.effects.length === 1)
+            matches = false;
+
+        // TODO Refactor this method, there is a hefty amount of code duplication.  This will however stop heroes that aren't the correct scaling to see that type of damage card
+        // If we are filtering for a specific hero, then a damageScaling prop will be passed, we want to hide cards of this damage
+        // type as heroes like gadgets cannot equip them.
+        if(!Helpers.isNullOrUndefined(this.props.heroScaling)) {
+            if(card.effects) {
+                card.effects.forEach(function(effect) {
+                    if(effect.stat) {
+                        this.state.statistics.some(function(stat) {
+                            var compareStat = effect.stat.toUpperCase();
+                            // allows us to determine between energy and physical damage
+                            if(effect.stat.toUpperCase() === 'ATTACKRATING') {
+                                if(card.damageType && card.damageType.toUpperCase() === 'ENERGY') {
+                                    compareStat = 'ATTACKRATING-E';
+                                } else {
+                                    compareStat = 'ATTACKRATING-P';
+                                }
+                            }
+                            if(this.props.heroScaling.toUpperCase() === 'ENERGYDAMAGE') {
+                                if(compareStat === 'ATTACKRATING-P' || compareStat === 'PHYSICALPENETRATIONRATING') {
+                                    matches = false;
+                                    return true;
+                                }
+                            } else if(this.props.heroScaling.toUpperCase() === 'PHYSICALDAMAGE') {
+                                if(compareStat === 'ATTACKRATING-E' || compareStat === 'ENERGYPENETRATIONRATING') {
+                                    matches = false;
+                                    return true;
+                                }
+                            }
+                            return false;
+                        }.bind(this));
+                    }
+                }.bind(this));
+            }
+            if(card.maxedEffects) {
+                card.maxedEffects.forEach(function (effect) {
+                    if (effect.stat) {
+                        this.state.statistics.some(function (stat) {
+                            var compareStat = effect.stat.toUpperCase();
+                            // allows us to determine between energy and physical damage
+                            if(effect.stat.toUpperCase() === 'ATTACKRATING') {
+                                if(card.damageType && card.damageType.toUpperCase() === 'ENERGY') {
+                                    compareStat = 'ATTACKRATING-E';
+                                } else {
+                                    compareStat = 'ATTACKRATING-P';
+                                }
+                            }
+                            if(this.props.heroScaling.toUpperCase() === 'ENERGYDAMAGE') {
+                                if(compareStat === 'ATTACKRATING-P' || compareStat === 'PHYSICALPENETRATIONRATING') {
+                                    matches = false;
+                                    return true;
+                                }
+                            } else if(this.props.heroScaling.toUpperCase() === 'PHYSICALDAMAGE') {
+                                if(compareStat === 'ATTACKRATING-E' || compareStat === 'ENERGYPENETRATIONRATING') {
+                                    matches = false;
+                                    return true;
+                                }
                             }
                             return false;
                         }.bind(this));
@@ -594,7 +683,7 @@ var CardsFilter = React.createClass({
         this.props.onFilterChanged(cards, this.state.costOrder);
     },
     setTooltipContent: function(card) {
-        if(Helpers.isClientMobile()) return;
+        //if(Helpers.isClientMobile()) return;
 
         var content = (
             <div className="pgg-tooltip pgg-tooltip-card">

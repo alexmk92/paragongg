@@ -51,9 +51,18 @@ var StatPanel = React.createClass({
         collection.forEach(function(card) {
             card.effects.forEach(function(effect) {
                 if(typeof effect.stat !== "undefined" && effect.stat) {
+                    var compareStat = effect.stat.toUpperCase();
+                    // allows us to determine between energy and physical damage
+                    if(effect.stat.toUpperCase() === 'ATTACKRATING') {
+                        if(card.damageType && card.damageType.toUpperCase() === 'ENERGY') {
+                            compareStat = 'ATTACKRATING-E';
+                        } else {
+                            compareStat = 'ATTACKRATING-P';
+                        }
+                    }
                     // New stats is what we merge with the final array
                     newStats.some(function(stat) {
-                        if(stat.ref === effect.stat.toUpperCase()) {
+                        if(stat.ref === compareStat) {
                             var oldValue = stat.value;
                             stat.value = Helpers.dropZeroesAndDelimitNumbers(stat.value = (stat.value + effect.value));
                             if(stat.value !== oldValue) stat.modified = true;

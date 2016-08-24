@@ -91,7 +91,7 @@ var CardEffects = React.createClass({
     render: function() {
         var effects, maxedEffects;
         if(this.props.card.effects && this.props.card.effects.length > 0) {
-            var damageType = this.props.card.damageType || 'Physical';
+            var damageType = this.props.card.damageType || null;
             effects = (
                 <ul className="effects">
                     {this.getStats(this.props.card.effects, damageType)}
@@ -103,10 +103,11 @@ var CardEffects = React.createClass({
             );
         }
         if(this.props.card.maxedEffects && this.props.card.maxedEffects.length > 0) {
+            var damageType = this.props.card.damageType || null;
             maxedEffects = (
                 <ul className="maxedEffects">
                     <label>Fully Upgraded Bonus</label>
-                    {this.getStats(this.props.card.maxedEffects)}
+                    {this.getStats(this.props.card.maxedEffects, damageType)}
                 </ul>
             );
         }

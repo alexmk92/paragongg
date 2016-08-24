@@ -14,7 +14,7 @@ class Card extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'code', 'description', 'type', 'cost', 'upgradeSlots', 'affinity', 'effects',
+        'name', 'code', 'description', 'type', 'damageType', 'cost', 'upgradeSlots', 'affinity', 'effects',
     ];
 
     protected $hidden = [
