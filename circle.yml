@@ -14,5 +14,5 @@ deployment:
     branch: master
     commands:
       - npm run build
-      #- zip -r pggdeploy-master.zip . -x /node_modules*
-      #- aws s3 cp pggdeploy-master.zip s3://paragongg-deploy/app/
+      - zip -r pggdeploy-master.zip . -x /node_modules*
+      - aws s3 cp pggdeploy-master.zip s3://paragongg-deploy/app/
