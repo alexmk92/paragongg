@@ -114,7 +114,7 @@
 <script type="text/javascript" src="/build/js/vendor.min.js"></script>
 <script type="text/javascript" src="/build/js/app.min.js"></script>
 
-<div class="beta-notification">V2.2 BETA</div>
+<div class="beta-notification">V2.5 BETA</div>
 
 </body>
 </html>
