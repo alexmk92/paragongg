@@ -67,6 +67,7 @@ class UpdateHeroObject extends Job implements ShouldQueue
         $hero->type       = $heroDetails->type;
         $hero->attack     = $heroDetails->attack;
         $hero->stats      = $heroDetails->stats;
+        $hero->scale      = $heroDetails->scale;
         $hero->abilities  = $heroDetails->abilities;
         $hero->save();
 
