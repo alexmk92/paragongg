@@ -46,8 +46,8 @@ module.exports = {
             { ref : "ENERGYRESISTANCERATING", label : "Energy Armor", icon: "pgg pgg-energy-armor", modifier : "", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "energy_armor"   },
             { ref : "PHYSICALRESISTANCERATING", label : "Physical Armor", icon : "pgg pgg-physical-armor", modifier : "", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "physical_armor"   },
             { ref : "WELLRIGPLACEMENTTIMER", label : "Placement Time", icon: "pgg pgg-harvester-placement-time", modifier : "s", value : 0, modified: false, multiplier: 1, divider: 1, statRef: ""   },
-            { ref : "ATTACKRATING", label : "Physical Damage", icon: "pgg pgg-physical-damage", modifier : "", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "physical_damage"  },
-            { ref : "ATTACKRATING", label : "Energy Damage", icon: "pgg pgg-energy-damage", modifier : "", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "energy_damage"  },
+            { ref : "ATTACKRATING-P", label : "Physical Damage", icon: "pgg pgg-physical-damage", modifier : "", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "physical_damage"  },
+            { ref : "ATTACKRATING-E", label : "Energy Damage", icon: "pgg pgg-energy-damage", modifier : "", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "energy_damage"  },
             { ref : "MAXMOVEMENTSPEED", label : "Max Movement Speed", icon: "pgg pgg-movement-speed", modifier : "", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "movement_speed"  }
         ]
     },
@@ -79,11 +79,8 @@ module.exports = {
     },
     pretifyNumber: function(number) {
         if(number >= 1000) {
-            console.log('trying to parse number: ' + number);
             number = number / 1000;
-            console.log('got: ', number);
             number = number.toString().split('.');
-            console.log('then got: ', number);
             if(number.length > 1) {
                 if(number[1] === '0' || number[1].indexOf('0') === 0) {
                     number = parseInt(number).toFixed(0);
@@ -98,13 +95,23 @@ module.exports = {
     },
     getFormattedStatistic: function(statLabel, damageType) {
         if(this.isNullOrUndefined(damageType)) damageType = 'Physical';
+        var damagePrefix = 'P';
+        if(damageType.toUpperCase() === 'ENERGY') {
+            damagePrefix = 'E';
+        }
+
+        if(statLabel.toUpperCase() === 'ATTACKRATING') {
+            statLabel += '-' + damagePrefix;
+        }
+
         switch(statLabel.toUpperCase()) {
             case "ATTACKSPEEDRATING": return { label : "Attack Speed", icon: "pgg pgg-attack-speed", modifier : "", multiplier: 1, statRef: 'attack_speed' }; break;
             case "COOLDOWNREDUCTIONPERCENTAGE": return { label : "Cooldown Reduction", icon: "pgg pgg-cooldown-reduction", modifier : "%", multiplier: 100, statRef: 'cooldown_reduction' }; break;
             case "MAXENERGY" : return { label : "Max Mana", icon: "pgg pgg-max-mana", modifier : "", multiplier: 1, statRef: 'max_mana' }; break;
             case "MAXHEALTH" : return { label : "Max Health", icon: "pgg pgg-max-health", modifier : "", multiplier: 1, statRef: 'max_health' }; break;
             case "ENERGYREGENRATE" : return { label : "Mana Regen", icon: "pgg pgg-mana-regeneration", modifier : "/s", multiplier: 1, statRef: 'mana_regen' }; break;
-            case "ATTACKRATING" : return { label : damageType + " Damage", icon: "pgg pgg-physical-damage", modifier : "", multiplier: 1, statRef: damageType.toLowerCase() + '_damage' }; break;
+            case "ATTACKRATING-P" : return { label : "Physical Damage", icon: "pgg pgg-physical-damage", modifier : "", multiplier: 1, statRef: 'physical_damage' }; break;
+            case "ATTACKRATING-E" : return { label : "Energy Damage", icon: "pgg pgg-energy-damage", modifier : "", multiplier: 1, statRef: 'energy_damage' }; break;
             case "LIFESTEALRATING" : return { label : "Lifesteal", icon: "pgg pgg-lifesteal", modifier : "%", multiplier: 1, statRef: 'lifesteal' }; break;
             case "PHYSICALPENETRATIONRATING" : return { label : "Physical Pen", icon: "pgg pgg-physical-penetration", modifier : "", multiplier: 1, statRef: 'physical_pen' }; break;
             case "ENERGYPENETRATIONRATING" : return { label : "Energy Pen", icon: "pgg pgg-armor-penetration", modifier : "", multiplier: 1, statRef: 'energy_pen' }; break;
@@ -125,6 +132,15 @@ module.exports = {
         stat = stat.toUpperCase();
         if(this.isNullOrUndefined(damageType)) damageType = 'Physical';
         damageType = damageType.toUpperCase();
+
+        var damagePrefix = 'P';
+        if(damageType.toUpperCase() === 'ENERGY') {
+            damagePrefix = 'E';
+        }
+
+        if(stat.toUpperCase() === 'ATTACKRATING')
+            stat += '-' + damagePrefix;
+
         if(stat.includes("{ATTR:HP}")){
             return "HEALTH";
         }
@@ -158,7 +174,7 @@ module.exports = {
             return "LIFESTEAL";
         }
         else if(stat.includes("{ATTR:MPREG}")) {
-            return "ENERGY REGEN";
+            return "MANA REGEN";
         }
         else if(stat.includes("{ATTR:CRITCH}")) {
             return "CRIT";
@@ -169,15 +185,16 @@ module.exports = {
         else if(stat.includes("{ATTR:CDR}")) {
             return "CDR";
         }
-
+        
         // ATTR Strings dont work here as cant do includes ina  switch
         switch(stat) {
             case "ATTACKSPEEDRATING": return "ATTACK SPEED"; break;
             case "COOLDOWNREDUCTIONPERCENTAGE" : return "CDR"; break;
             case "MAXENERGY" : return "MANA"; break;
             case "MAXHEALTH": return "HEALTH"; break;
-            case "ENERGYREGENRATE" : return "ENERGY REGEN"; break;
-            case "ATTACKRATING" : return damageType + " DAMAGE"; break;
+            case "ENERGYREGENRATE" : return "MANA REGEN"; break;
+            case "ATTACKRATING-P" : return "PHYSICAL DAMAGE"; break;
+            case "ATTACKRATING-E" : return "ENERGY DAMAGE"; break;
             case "LIFESTEALRATING" : return "LIFESTEAL"; break;
             case "PHYSICALPENETRATIONRATING" : return "PENETRATION"; break;
             case "ENERGYPENETRATIONRATING" : return "PENETRATION"; break;
@@ -192,8 +209,6 @@ module.exports = {
     },
     getCardImageURL: function(card, size, type) {
         if(!card) return "";
-
-        console.log('card is: ', card);
         if(!size) size = "medium";
         if(type === "icon")
             return this.S3URL() + "images/cards/" + card.code + "/" + card.icon + "/icon_" + size + '.png';
