@@ -14,4 +14,4 @@ deployment:
     branch: master
     commands:
       - zip -r pggdeploy-master.zip . -x /node_modules*
-      - aws s3 cp pggdeploy-master.zip s3://paragongg-deployment/app/ --delete
+      - aws s3 cp pggdeploy-master.zip s3://paragongg-deployment/app/
