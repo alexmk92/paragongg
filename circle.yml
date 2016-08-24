@@ -1,5 +1,6 @@
 dependencies:
   pre:
+    - yes | sudo apt-get update; sudo apt-get install zip
     - yes | pecl install mongodb
     - echo "extension=mongodb.so" > /opt/circleci/php/$(phpenv global)/etc/php.ini
   cache_directories:
@@ -12,4 +13,6 @@ deployment:
   prod:
     branch: master
     commands:
-      - aws s3 sync . s3://paragongg-deployment/app/ --delete
+      - export CURRENT_DEPLOYMENT=pgg-(date '+%Y-%m-%d_%H-%M')
+      - zip -r ${CURRENT_DEPLOYMENT}.zip .
+      - aws s3 sync ${CURRENT_DEPLOYMENT}.zip s3://paragongg-deployment/app/ --delete
