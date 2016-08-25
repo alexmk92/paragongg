@@ -30,6 +30,13 @@ var MatchItem = React.createClass({
             return 'win';
         return 'loss';
     },
+    getGameDuration: function() {
+        if(!Helpers.isNullOrUndefined(this.props.match.gameLength) && this.props.match.gameLength !== 0) {
+            return Helpers.gameMinutes(this.props.match.gameLength);
+        } else {
+            return Helpers.gameMinutes(this.props.match.latestCheckpointTime);
+        }
+    },
     render: function() {
         var matchResult = this.state.result;
         return(
@@ -50,7 +57,7 @@ var MatchItem = React.createClass({
                                 </span>
                                 <span className="tag">
                                     <span className="label">Duration</span>
-                                    {Helpers.gameMinutes(this.props.match.newCheckpointTime)}
+                                    {this.getGameDuration()}
                                 </span>
                                 <span className="tag">
                                     <span className="label">Match mode</span> {this.props.match.gameType.replace('_', '')}

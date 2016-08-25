@@ -46,7 +46,7 @@ class MatchController extends Controller
         $playerElos  = [];
         $createArray = [];
 
-        foreach($players as &$player) {
+        foreach($players as $player) {
             $result = Player::where('accountId', $player['accountId'])->first();
             if(!$result) {
                 array_push($createArray, $player['accountId']); // Push this player to array to be created

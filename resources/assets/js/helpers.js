@@ -231,10 +231,7 @@ module.exports = {
         if (diff <= 5400) {return "1 hour ago";}
         if (diff <= 86400) {return Math.round(diff / 3600) + " hours ago";}
         if (diff <= 129600) {return "1 day ago";}
-        if (diff < 604800) {return Math.round(diff / 86400) + " days ago";}
-        if (diff <= 777600) {return "1 week ago";}
-        if (diff <= (777600 * 2)) { return "2 weeks ago"; }
-        if (diff <= (777600 * 3)) { return "3 weeks ago"; }
+        if (diff < (777600 * 4)) {return (Math.round(diff / 86400)) < 31 ? Math.round(diff/86400) + " days ago" : "1 month ago";}
         if (diff <= (777600 * 4)) { return "1 month ago"; }
         if (diff <= ((777600 * 4) * 2)) { return "2 months ago"; }
         if (diff <= ((777600 * 4) * 3)) { return "3 months ago"; }
