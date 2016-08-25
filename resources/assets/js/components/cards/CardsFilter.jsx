@@ -428,12 +428,12 @@ var CardsFilter = React.createClass({
                                     compareStat = 'ATTACKRATING-P';
                                 }
                             }
-                            if(this.props.heroScaling.toUpperCase() === 'ENERGYDAMAGE') {
+                            if(this.props.heroScaling && this.props.heroScaling.toUpperCase() === 'ENERGYDAMAGE') {
                                 if(compareStat === 'ATTACKRATING-P' || compareStat === 'PHYSICALPENETRATIONRATING') {
                                     matches = false;
                                     return true;
                                 }
-                            } else if(this.props.heroScaling.toUpperCase() === 'PHYSICALDAMAGE') {
+                            } else if(this.props.heroScaling && this.props.heroScaling.toUpperCase() === 'PHYSICALDAMAGE') {
                                 if(compareStat === 'ATTACKRATING-E' || compareStat === 'ENERGYPENETRATIONRATING') {
                                     matches = false;
                                     return true;
@@ -457,12 +457,12 @@ var CardsFilter = React.createClass({
                                     compareStat = 'ATTACKRATING-P';
                                 }
                             }
-                            if(this.props.heroScaling.toUpperCase() === 'ENERGYDAMAGE') {
+                            if(this.props.heroScaling && this.props.heroScaling.toUpperCase() === 'ENERGYDAMAGE') {
                                 if(compareStat === 'ATTACKRATING-P' || compareStat === 'PHYSICALPENETRATIONRATING') {
                                     matches = false;
                                     return true;
                                 }
-                            } else if(this.props.heroScaling.toUpperCase() === 'PHYSICALDAMAGE') {
+                            } else if(this.props.heroScaling && this.props.heroScaling.toUpperCase() === 'PHYSICALDAMAGE') {
                                 if(compareStat === 'ATTACKRATING-E' || compareStat === 'ENERGYPENETRATIONRATING') {
                                     matches = false;
                                     return true;
