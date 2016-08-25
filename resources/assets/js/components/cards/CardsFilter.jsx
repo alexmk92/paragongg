@@ -408,8 +408,8 @@ var CardsFilter = React.createClass({
         // TODO Investigate the below comment to remove this last check
         // this last check prevents things like bump juice showing up for filters on physical/energy damage - for some reason active cards
         // were passing through when they shouldn't have been
-        if(this.state.searchTerm !== '' && !this.state.showActiveCards && card.type.toUpperCase() === "ACTIVE" && card.effects.length === 1)
-            matches = false;
+        //if(this.state.searchTerm !== '' && !this.state.showActiveCards && card.type.toUpperCase() === "ACTIVE" && card.effects.length === 1)
+        //   matches = false;
 
         // TODO Refactor this method, there is a hefty amount of code duplication.  This will however stop heroes that aren't the correct scaling to see that type of damage card
         // If we are filtering for a specific hero, then a damageScaling prop will be passed, we want to hide cards of this damage
