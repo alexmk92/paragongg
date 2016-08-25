@@ -67,7 +67,7 @@ class CreatePlayers extends Job implements ShouldQueue
                 $player->usernamePSN = $playerResponse['externalAuths']['psn']['externalDisplayName'];
             }
             // If has EPIC account
-            if(isset($response['displayName'])) {
+            if(isset($playerResponse['displayName'])) {
                 $player->username    = $playerResponse['displayName'];
             }
             $player->save();

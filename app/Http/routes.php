@@ -11,6 +11,8 @@
 |
 */
 
+use App\Jobs\CreatePlayers;
+
 Route::get('/', 'HomeController@index');
 Route::auth();
 Route::get('/auth', 'Auth\OAuthController@linkAccount')->middleware('auth');
@@ -85,6 +87,10 @@ Route::get('/guides/hero/{hero}', 'GuideController@index');
 Route::get('/guides/publish/{id}', 'GuideController@publish');
 Route::get('/guides/unpublish/{id}', 'GuideController@unpublish');
 Route::get('/guides/{id}/{slug?}', 'GuideController@show');
+
+
+
+Route::get('/testtest', 'MatchController@testtest');
 
 /* COMMUNITY */
 //Route::get('/community', 'CommunityController@index');

@@ -3,6 +3,9 @@
     @include('account.nav')
     <div class="wrapper">
         <h3>Your decks</h3>
+        <hr>
+        <a class="btn" href="/account/decks/import"><i class="fa fa-rocket" aria-hidden="true"></i> Import decks from your Paragon account</a>
+        <hr>
         <div class="content-wrapper table">
             <div class="table-scroller">
             <table class="minimal full">

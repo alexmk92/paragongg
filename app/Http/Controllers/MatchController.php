@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Hero;
 use App\Http\Traits\FindOrCreatePlayers;
+use App\Jobs\CreatePlayers;
 use App\Match;
 use App\Player;
 use Carbon\Carbon;
@@ -26,14 +27,10 @@ class MatchController extends Controller
         return view('matches.show', compact('match', 'customBackground', 'heroes'));
     }
 
-
-
-    public function test13() {
-        $createArray = [
-            'f245bf2d6cd647a1814b56b9b39f5e46',
-            'ccaa437e847448138857d25a43b4aa3f',
-            '938186eb6b184e3fb2b11274e49af322'
-        ];
-        $this->createPlayers($createArray, '1d9b6252f2184394a99707478d7e0f70');
+    public function testtest()
+    {
+        $createArray = ['0d60882e386b4e4da1f3852592130352', 'ed486c5a10be4ab697d8663135d1ee6c'];
+        $matchId = '43d5bafb1fb945abb7c16e16ac3efb27';
+        $this->dispatch(new CreatePlayers($createArray, $matchId));
     }
 }
