@@ -196,7 +196,7 @@ function getMongoDiff($date) {
 }
 
 function getMatchLength($match) {
-    return gmdate("i:s", $match->newCheckpointTime);
+    return gmdate("i:s", $match->latestCheckpointTime);
 }
 
 function isBotName($username) {
