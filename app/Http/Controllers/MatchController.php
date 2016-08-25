@@ -26,11 +26,4 @@ class MatchController extends Controller
         $customBackground = '/assets/images/backgrounds/profile.jpg';
         return view('matches.show', compact('match', 'customBackground', 'heroes'));
     }
-
-    public function testtest()
-    {
-        $createArray = ['0d60882e386b4e4da1f3852592130352', 'ed486c5a10be4ab697d8663135d1ee6c'];
-        $matchId = '43d5bafb1fb945abb7c16e16ac3efb27';
-        $this->dispatch(new CreatePlayers($createArray, $matchId));
-    }
 }
