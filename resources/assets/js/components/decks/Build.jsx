@@ -130,7 +130,7 @@ var Build = React.createClass({
             var damageType = this.props.selectedCard.damageType || null;
             this.props.selectedCard.effects.some(function(effect) {
                 if(effect.stat && effect.stat.toUpperCase() === 'ATTACKRATING') {
-                    if(this.props.selectedCard.damageType.toUpperCase() === 'ENERGY') {
+                    if(this.props.selectedCard.damageType && this.props.selectedCard.damageType.toUpperCase() === 'ENERGY') {
                         effect.stat = 'ATTACKRATING-E';
                     } else {
                         effect.stat = 'ATTACKRATING-P';
@@ -144,7 +144,7 @@ var Build = React.createClass({
                     passiveList = "";
                     upgradeSlot.parentCard.effects.forEach(function(slotEffect) {
                         if(slotEffect.stat && slotEffect.stat.toUpperCase() === 'ATTACKRATING') {
-                            if(upgradeSlot.parentCard.damageType.toUpperCase() === 'ENERGY') {
+                            if(upgradeSlot.parentCard.damageType && upgradeSlot.parentCard.damageType.toUpperCase() === 'ENERGY') {
                                 slotEffect.stat = 'ATTACKRATING-E';
                             } else {
                                 slotEffect.stat = 'ATTACKRATING-P';

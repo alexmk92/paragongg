@@ -54,7 +54,7 @@ var BuildStats = React.createClass({
                             }
                             if(effect.stat) statString = effect.stat.toUpperCase();
                             if(statString === 'ATTACKRATING') {
-                                if(card.damageType.toUpperCase() === 'ENERGY') {
+                                if(card.damageType && card.damageType.toUpperCase() === 'ENERGY') {
                                     statString = 'ATTACKRATING-E';
                                 } else {
                                     statString = 'ATTACKRATING-P';
@@ -91,7 +91,7 @@ var BuildStats = React.createClass({
                             }
                             if(effect.stat) statString = effect.stat.toUpperCase();
                             if(statString === 'ATTACKRATING') {
-                                if(slot.card.damageType.toUpperCase() === 'ENERGY') {
+                                if(slot.card.damageType && slot.card.damageType.toUpperCase() === 'ENERGY') {
                                     statString = 'ATTACKRATING-E';
                                 } else {
                                     statString = 'ATTACKRATING-P';
@@ -185,7 +185,7 @@ var BuildStats = React.createClass({
                 card.effects.forEach(function(effect) {
                     var statString = "";
                     if(effect.stat) statString = effect.stat.toUpperCase();
-                    if(effect.description) statString = effect.description.toUpperCase();
+                    else if(effect.description) statString = effect.description.toUpperCase();
                     var statCategory = Helpers.getStatisticCategory(statString, damageType);
 
                     if(statCategory === type) {
@@ -223,7 +223,7 @@ var BuildStats = React.createClass({
                 upgradeCard.effects.forEach(function(effect) {
                     var statString = "";
                     if(effect.stat) statString = effect.stat.toUpperCase();
-                    if(effect.description) statString = effect.description.toUpperCase();
+                    else if(effect.description) statString = effect.description.toUpperCase();
                     var statCategory = Helpers.getStatisticCategory(statString, damageType);
 
                     if(statCategory === type) {
@@ -274,7 +274,7 @@ var BuildStats = React.createClass({
     getValueForEffect: function(effect, desiredEffect, damageType) {
         var statString = "";
         if(effect.stat) statString = effect.stat.toUpperCase();
-        if(effect.description) statString = effect.description.toUpperCase();
+        else if(effect.description) statString = effect.description.toUpperCase();
         var statCategory = Helpers.getStatisticCategory(statString, damageType);
         //var statDetails = Helpers.getFormattedStatistic(statString);
 
@@ -315,7 +315,7 @@ var BuildStats = React.createClass({
     computeDamageForEffect: function(effect, currentValues, damageType) {
         var statString = "";
         if(effect.stat) statString = effect.stat.toUpperCase();
-        if(effect.description) statString = effect.description.toUpperCase();
+        else if(effect.description) statString = effect.description.toUpperCase();
         var statCategory = Helpers.getStatisticCategory(statString, damageType);
         var statDetails = Helpers.getFormattedStatistic(statString, damageType);
 
@@ -655,7 +655,7 @@ var BuildStats = React.createClass({
                         slot.card.effects.forEach(function(effect) {
                             var statString = "";
                             if(effect.stat) statString = effect.stat.toUpperCase();
-                            if(effect.description) statString = effect.description.toUpperCase();
+                            else if(effect.description) statString = effect.description.toUpperCase();
                             var stat = Helpers.getStatisticCategory(statString, damageType);
                             var statIndex = spiderChartData.categories.indexOf(stat);
                             if(statIndex > -1) {
@@ -667,7 +667,7 @@ var BuildStats = React.createClass({
                                     upgradeSlot.card.effects.forEach(function(effect) {
                                         var statString = "";
                                         if(effect.stat) statString = effect.stat.toUpperCase();
-                                        if(effect.description) statString = effect.description.toUpperCase();
+                                        else if(effect.description) statString = effect.description.toUpperCase();
                                         var stat = Helpers.getStatisticCategory(statString, damageType);
                                         var statIndex = spiderChartData.categories.indexOf(stat);
                                         if(statIndex > -1) {
@@ -695,7 +695,7 @@ var BuildStats = React.createClass({
                             slot.card.effects.forEach(function(effect) {
                                 var statString = "";
                                 if(effect.stat) statString = effect.stat.toUpperCase();
-                                if(effect.description) statString = effect.description.toUpperCase();
+                                else if(effect.description) statString = effect.description.toUpperCase();
                                 var stat = Helpers.getStatisticCategory(statString, damageType);
                                 var statIndex = spiderChartData.categories.indexOf(stat);
                                 if(statIndex > -1) {
@@ -707,7 +707,7 @@ var BuildStats = React.createClass({
                                         upgradeSlot.card.effects.forEach(function(effect) {
                                             var statString = "";
                                             if(effect.stat) statString = effect.stat.toUpperCase();
-                                            if(effect.description) statString = effect.description.toUpperCase();
+                                            else if(effect.description) statString = effect.description.toUpperCase();
                                             var stat = Helpers.getStatisticCategory(statString, damageType);
                                             var statIndex = spiderChartData.categories.indexOf(stat);
                                             if(statIndex > -1) {
@@ -739,7 +739,7 @@ var BuildStats = React.createClass({
                     card.effects.forEach(function(effect) {
                         var statString = "";
                         if(effect.stat) statString = effect.stat.toUpperCase();
-                        if(effect.description) statString = effect.description.toUpperCase();
+                        else if(effect.description) statString = effect.description.toUpperCase();
                         var stat = Helpers.getStatisticCategory(statString, damageType);
                         var statIndex = spiderChartData.categories.indexOf(stat);
                         if(statIndex > -1) {
