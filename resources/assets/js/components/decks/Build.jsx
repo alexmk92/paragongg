@@ -129,7 +129,7 @@ var Build = React.createClass({
             var passiveList = "";
             var damageType = this.props.selectedCard.damageType || null;
             this.props.selectedCard.effects.some(function(effect) {
-                if(effect.stat.toUpperCase() === 'ATTACKRATING') {
+                if(effect.stat && effect.stat.toUpperCase() === 'ATTACKRATING') {
                     if(this.props.selectedCard.damageType.toUpperCase() === 'ENERGY') {
                         effect.stat = 'ATTACKRATING-E';
                     } else {
@@ -143,7 +143,7 @@ var Build = React.createClass({
                 if(upgradeSlot.parentCard.effects) {
                     passiveList = "";
                     upgradeSlot.parentCard.effects.forEach(function(slotEffect) {
-                        if(slotEffect.stat.toUpperCase() === 'ATTACKRATING') {
+                        if(slotEffect.stat && slotEffect.stat.toUpperCase() === 'ATTACKRATING') {
                             if(upgradeSlot.parentCard.damageType.toUpperCase() === 'ENERGY') {
                                 slotEffect.stat = 'ATTACKRATING-E';
                             } else {
@@ -156,7 +156,6 @@ var Build = React.createClass({
                         if(!Helpers.isNullOrUndefined(slotEffectType)) {
                             passiveList += slotEffectType.label + ", ";
                         }
-                        console.log(selectedEffectType.label + ', ' + slotEffectType.label);
                         if(!Helpers.isNullOrUndefined(selectedEffectType) && !Helpers.isNullOrUndefined(slotEffectType) && selectedEffectType.label === slotEffectType.label) {
                             hasSamePassiveEffect = true;
                         }
