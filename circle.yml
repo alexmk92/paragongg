@@ -1,6 +1,5 @@
 dependencies:
   pre:
-    - yes | sudo apt-get update; sudo apt-get install zip
     - yes | pecl install mongodb
     - echo "extension=mongodb.so" > /opt/circleci/php/$(phpenv global)/etc/php.ini
   cache_directories:
@@ -13,6 +12,7 @@ deployment:
   prod:
     branch: master
     commands:
+      - yes | sudo apt-get update; sudo apt-get install zip
       - npm run build
       - zip -r pggdeploy-master.zip . -x /node_modules*
       - aws s3 cp pggdeploy-master.zip s3://paragongg-deploy/app/
