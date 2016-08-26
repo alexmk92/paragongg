@@ -8,6 +8,7 @@ use App\Hero;
 use App\Card;
 use App\Http\Traits\ImportExportDecks;
 use App\Http\Traits\RetrievesCardCollection;
+use App\Jobs\ImportDeck;
 use App\Shortcode;
 use App\User;
 use GuzzleHttp\Client;
@@ -238,7 +239,7 @@ class DeckController extends Controller
             return false;
         }
 
-        session()->flash('notification', 'success|This deck has been saved to your Epic account.');
+        session()->flash('notification', 'success|This deck has been saved to your Epic account. You will need to restart the Paragon client to see your changes in-game.');
         return redirect('/decks/'.$id);
     }
 
@@ -274,11 +275,11 @@ class DeckController extends Controller
 
         foreach($decks as $deck) {
             if(isset($deck['hero'])) {
-                $this->importToParagonGG($user, $deck['id']);
+                $this->dispatch(new ImportDeck($user, $deck['id']));
             }
         }
 
-        session()->flash('notification', 'success|All decks imported to Paragon.gg');
+        session()->flash('notification', 'success|Your decks are being imported to Paragon.gg and will be available shortly.');
         return redirect('/account/decks');
     }
 

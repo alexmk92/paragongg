@@ -4,7 +4,7 @@
     <div class="wrapper">
         <h3>Your decks</h3>
         <hr>
-        <a class="btn" href="/decks/import"><i class="fa fa-rocket" aria-hidden="true"></i> Import decks from your Paragon account</a>
+        <a class="btn" href="/decks/import"><i class="fa fa-chevron-circle-down" aria-hidden="true"></i> Import decks from your Paragon account</a>
         <hr>
         <div class="content-wrapper table">
             <div class="table-scroller">
