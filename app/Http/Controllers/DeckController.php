@@ -9,8 +9,10 @@ use App\Card;
 use App\Http\Traits\ImportExportDecks;
 use App\Http\Traits\RetrievesCardCollection;
 use App\Jobs\ImportDeck;
+use App\Lockout;
 use App\Shortcode;
 use App\User;
+use Carbon\Carbon;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
@@ -271,7 +273,23 @@ class DeckController extends Controller
     {
         $user = auth()->user();
 
+        $lockout = Lockout::where('user_id', $user->id)->first();
+        if($lockout) {
+            if($lockout->expires > Carbon::now()) {
+                session()->flash('notification', 'warning|Sorry. You\'ll have to wait a little while before you can perform this action again.');
+                return redirect()->back();
+            } else {
+                $lockout->delete();
+            }
+        }
+
         $decks = $this->getDecks($user);
+
+        // Create lockout to stop them doing this every 10 mins
+        $lockout = new Lockout();
+        $lockout->user_id = $user->id;
+        $lockout->expires = Carbon::now()->addMinutes(10);
+        $lockout->save();
 
         foreach($decks as $deck) {
             if(isset($deck['hero'])) {

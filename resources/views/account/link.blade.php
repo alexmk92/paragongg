@@ -29,7 +29,7 @@
                     <li>Much more, very soon!</li>
                 </ul>
                 <p>You have not yet linked your Epic Games account to your Paragon.GG account. To do this, please click the link below. This will open a link to the Epic Games authentication servers and is completely secure. You are not required to enter your Epic account details on our website.</p>
-                <p><a class="btn" href="https://accounts.epicgames.com/login/index?state=/testenv&client_id=8483bd1714c44d33ab64277635d68464&response_type=code&loginSubheading=Paragon.GG+Account+Link"><i class="fa fa-link" aria-hidden="true"></i> Link Epic account</a></p>
+                <p><a class="btn" href="https://accounts.epicgames.com/login/index?state=/account&client_id=8483bd1714c44d33ab64277635d68464&response_type=code&loginSubheading=Paragon.GG+Account+Link"><i class="fa fa-link" aria-hidden="true"></i> Link Epic account</a></p>
             </div>
         @endif
     </div>

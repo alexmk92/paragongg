@@ -23,6 +23,11 @@
             <p>Creating a deck for Paragon.gg is <strong>quick</strong> and <strong>easy</strong>, and will allow you to show the community the cards you use in Paragon.</p>
             <a class="btn btn-primary btn-margin" href="/decks/create">Build a deck</a>
         </div>
+        <div class="sidebox panel">
+            <h4>Import your decks</h4>
+            <p>Share decks directly from your Paragon account with the community. Import decks with a single click straight to Paragon.gg.</p>
+            <a class="btn btn-primary btn-margin" href="/decks/import">Import a deck</a>
+        </div>
         <div class="listbox panel">
             <h4>Featured decks</h4>
             <ul>
