@@ -5,6 +5,7 @@
         width: 100%;
 
         .deck-preview-wrapper {
+            position: relative;
             &:hover {
                 .affinity-bar {
                     opacity: 1;
@@ -17,8 +18,9 @@
                 }
             }
             .affinity-bar {
+                position: absolute;
                 width: 100%;
-                opacity: 1;
+                opacity: 0.8;
                 margin-top: -1px;
 
                 .segment {
@@ -27,7 +29,8 @@
                     vertical-align: top;
 
                     &.universal {
-                        background: $color-universal;
+                        //background: $color-universal;
+                        background: #939f9f;
                     }
                     &.fury {
                         background: $color-fury;
@@ -36,7 +39,8 @@
                         background: $color-growth;
                     }
                     &.order {
-                        background: $color-order;
+                        background: #f6d25c;
+                        //background: $color-order;
                     }
                     &.intellect {
                         background: $color-intellect;
