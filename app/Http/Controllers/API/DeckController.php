@@ -21,7 +21,7 @@ class DeckController extends Controller
         if(isset($_GET['skip'])) $skip = (int)$_GET['skip'];
         if(isset($_GET['take'])) $take = (int)$_GET['take'];
 
-        $decks = Deck::select('title', 'hero.image', 'hero.name', 'hero.code', 'slug', 'author_id', 'created_at', 'updated_at', 'views', 'votes');
+        $decks = Deck::select('title', 'affinities', 'hero.image', 'hero.name', 'hero.code', 'slug', 'author_id', 'created_at', 'updated_at', 'views', 'votes');
 
         if(isset($_GET['hero'])) {
             $decks->where('hero.slug', $_GET['hero']);
