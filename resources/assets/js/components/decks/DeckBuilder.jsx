@@ -665,11 +665,14 @@ var DeckBuilder = React.createClass({
             this.state.deck.all.forEach(function(card) {
                 for(var i = 0; i < card.quantity; i++) {
                     compressedCards.push(card.code);
+
+                    // Get the affinity weighting of this deck
                     var found = false;
                     var index = null;
                     affinities.some(function(affinity, i) {
-                        if(affinity.toLowerCase() === card.affinity.toLowerCase()) {
+                        if(affinity.name.toLowerCase() === card.affinity.toLowerCase()) {
                             found = true;
+                            index = i;
                             return true;
                         }
                         return false;
@@ -677,7 +680,7 @@ var DeckBuilder = React.createClass({
                     if(!found) {
                         affinities.push({
                             name: card.affinity.toLowerCase(),
-                            count: 0
+                            count: 1
                         })
                     } else {
                         affinities[index].count++;
@@ -687,6 +690,7 @@ var DeckBuilder = React.createClass({
 
             var deckAndBuilds = {
                 title : this.state.title,
+                affinities: affinities,
                 description : this.state.description,
                 author : USER_ID,
                 cards : compressedCards,
@@ -708,7 +712,6 @@ var DeckBuilder = React.createClass({
             };
 
             var json = JSON.stringify(deckAndBuilds);
-
             if(typeof CURRENT_DECK !== "undefined" && CURRENT_DECK) {
                 Helpers.post("/decks/edit/" + CURRENT_DECK._id, { data : json });
             } else {
