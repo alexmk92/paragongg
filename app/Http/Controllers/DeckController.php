@@ -37,27 +37,27 @@ class DeckController extends Controller
             ->get();
 
         $decks = [];
-        $decks['featured'] = Deck::select('title', 'hero.image', 'hero.name', 'hero.code', 'slug', 'author_id', 'created_at', 'updated_at', 'views', 'votes')->where('featured', true);
+        $decks['featured'] = Deck::select('title', 'affinities', 'hero.image', 'hero.name', 'hero.code', 'slug', 'author_id', 'created_at', 'updated_at', 'views', 'votes')->where('featured', true);
         if($hero) $decks['featured'] = $decks['featured']->where('hero.code', $hero->code);
         $decks['featured'] = $decks['featured']->skip($skip)
             ->take($take)
             ->get();
 
-        $decks['recent'] = Deck::select('title', 'hero.image', 'hero.name', 'hero.code', 'slug', 'author_id', 'created_at', 'updated_at', 'views', 'votes')->orderBy('updated_at', 'desc');
+        $decks['recent'] = Deck::select('title', 'affinities','hero.image', 'hero.name', 'hero.code', 'slug', 'author_id', 'created_at', 'updated_at', 'views', 'votes')->orderBy('updated_at', 'desc');
         if($hero) $decks['recent'] = $decks['recent']->where('hero.code', $hero->code);
         $decks['recent'] = $decks['recent']->skip($skip)
             ->take($take)
             ->get();
         $decks['recent'] = $this->enhanceDecks($decks['recent']);
 
-        $decks['rated'] = Deck::select('title', 'hero.image', 'hero.name', 'hero.code', 'slug', 'author_id', 'created_at', 'updated_at', 'views', 'votes')->orderBy('votes', 'desc');
+        $decks['rated'] = Deck::select('title', 'affinities', 'hero.image', 'hero.name', 'hero.code', 'slug', 'author_id', 'created_at', 'updated_at', 'views', 'votes')->orderBy('votes', 'desc');
         if($hero) $decks['rated'] = $decks['rated']->where('hero.code', $hero->code);
         $decks['rated'] = $decks['rated']->skip($skip)
             ->take($take)
             ->get();
         $decks['rated'] = $this->enhanceDecks($decks['rated']);
 
-        $decks['views'] = Deck::select('title', 'hero.image', 'hero.name', 'hero.code', 'slug', 'author_id', 'created_at', 'updated_at', 'views', 'votes')->orderBy('views', 'desc');
+        $decks['views'] = Deck::select('title', 'affinities', 'hero.image', 'hero.name', 'hero.code', 'slug', 'author_id', 'created_at', 'updated_at', 'views', 'votes')->orderBy('views', 'desc');
         if($hero) $decks['views'] = $decks['views']->where('hero.code', $hero->code);
         $decks['views'] = $decks['views']->skip($skip)
             ->take($take)

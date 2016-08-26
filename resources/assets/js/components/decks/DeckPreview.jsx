@@ -43,47 +43,28 @@ var DeckPreview = React.createClass({
         this.tooltip.hideTooltip();
     },
     renderAffinityBar: function() {
-        // this will compute card %age and then set color accordingly
-        var cardCounts = [];
-        var total = 0;
-        this.props.deck.cards.all.forEach(function(card){
-            if(card) {
-                if(cardCounts.length === 0 ){
-                    total += card.quantity;
-                    cardCounts.push({ affinity : card.affinity, value : card.quantity });
-                } else {
-                    var affinityFound = false;
-                    var existingObject = null;
-                    cardCounts.forEach(function(cardObject) {
-                        if(cardObject.affinity === card.affinity && !affinityFound) {
-                            affinityFound = true;
-                        }
-                    });
-                    if(!affinityFound) {
-                        total += card.quantity;
-                        cardCounts.push({ affinity : card.affinity, value : card.quantity });
-                    }
-                }
-            }
-        }.bind(this));
-        cardCounts.sort(function(a, b) {
-            if (a.value > b.value)
-                return -1;
-            if (a.value < b.value)
-                return 1;
-            return 0;
-        });
+        if(!Helpers.isNullOrUndefined(this.props.deck.affinities)) {
+            var total = 0;
+            this.props.deck.affinities.forEach(function(affinityInfo) {
+                total += affinityInfo.count;
+            });
+            this.props.deck.affinities.sort(function(a, b) {
+                if (a.count > b.count)
+                    return -1;
+                if (a.count < b.count)
+                    return 1;
+                return 0;
+            });
 
-        // find the width of each bar
-        var bars = cardCounts.map(function(affinityInfo, i) {
-            var percentage = ((affinityInfo.value / total) * 100) + "%";
-            var affinityClass = "bar bar-color-" + affinityInfo.affinity.toLowerCase().trim();
-            return (
-                <div key={ "affinity-bar-" + Helpers.uuid() }style={{ width : percentage }} className={ affinityClass }></div>
-            )
-        });
-
-        return bars;
+            // find the width of each bar
+            return this.props.deck.affinities.map(function(affinityInfo) {
+                var percentage = ((affinityInfo.count / total) * 100) + "%";
+                var affinityClass = "segment " + affinityInfo.name.toLowerCase().trim();
+                return (
+                    <div key={ "affinity-bar-" + Helpers.uuid() } style={{ width : percentage }} className={ affinityClass }></div>
+                )
+            });
+        }
     },
     upvoteDeck: function() {
         this.props.onDeckUpvoted(this.props.deck);
@@ -177,64 +158,29 @@ var DeckPreview = React.createClass({
     render: function() {
         var userVoted = this.props.deck.voted ? "active" : "";
         return (
-            <a className="deck-preview cf" href={"/decks/" + this.props.deck._id + "/" + this.props.deck.slug}>
-                <div className="deck-hero">
-                    <PreloadImage src={ Helpers.S3URL() + "images/heroes/" + this.props.deck.hero.code + "/" + this.props.deck.hero.image + "/portrait_small.png" }
-                                  fallbackSrc="assets/images/heroes/null.png"
-                    />
-                </div>
-                <div className="deck-details">
-                    <div className="title"><h3>{ this.props.deck.title }</h3></div>
-                    <div className="details">
-                        <span className="emphasis">{ this.props.deck.hero.name }</span> deck by <span className="emphasis">{ this.props.deck.author ? this.props.deck.author.username : "anonymous" }</span> { this.getTimeLabel() } <span className="emphasis">{ Helpers.prettyDate(this.props.deck.updated_at) }</span>
+            <div className="deck-preview-wrapper">
+                <a className="deck-preview cf" href={"/decks/" + this.props.deck._id + "/" + this.props.deck.slug}>
+                    <div className="deck-hero">
+                        <PreloadImage src={ Helpers.S3URL() + "images/heroes/" + this.props.deck.hero.code + "/" + this.props.deck.hero.image + "/portrait_small.png" }
+                                      fallbackSrc="assets/images/heroes/null.png"
+                        />
                     </div>
-                    <div className="stats">
-                        { this.getStatLabel() }
-                        <span className="stat"><i className="fa fa-star" aria-hidden="true"></i> { this.props.deck.votes }</span>
-                        <span className="stat"><i className="fa fa-eye" aria-hidden="true"></i> { this.props.deck.views }</span>
+                    <div className="deck-details">
+                        <div className="title"><h3>{ this.props.deck.title }</h3></div>
+                        <div className="details">
+                            <span className="emphasis">{ this.props.deck.hero.name }</span> deck by <span className="emphasis">{ this.props.deck.author ? this.props.deck.author.username : "anonymous" }</span> { this.getTimeLabel() } <span className="emphasis">{ Helpers.prettyDate(this.props.deck.updated_at) }</span>
+                        </div>
+                        <div className="stats">
+                            { this.getStatLabel() }
+                            <span className="stat"><i className="fa fa-star" aria-hidden="true"></i> { this.props.deck.votes }</span>
+                            <span className="stat"><i className="fa fa-eye" aria-hidden="true"></i> { this.props.deck.views }</span>
+                        </div>
                     </div>
+                </a>
+                <div className="affinity-bar">
+                    { this.renderAffinityBar() }
                 </div>
-            </a>
-
-            //
-            //
-            // <li className="deck-preview-container">
-            //     <div className="hero-portrait">
-            //         <PreloadImage src={ Helpers.getHeroImageURL(this.props.deck.hero) } />
-            //     </div>
-            //
-            //     <div className="title-wrapper">
-            //         <h3><a href={this.state.deckURL}>{ this.props.deck.title }</a></h3>
-            //         <span className="author">{ this.getStatLabel() }<span className="subtext">Published by</span> <a href="#">{ this.props.deck.author ? this.props.deck.author.username : "anonymous" }</a></span>
-            //     </div>
-            //
-            //     <div className="build-overview">
-            //         <span className="large-text">{ this.getCardTotal() }<span className="subtext">CARDS</span></span>
-            //         <span className="large-text">{ this.props.deck.builds.length }<span className="subtext">BUILDS</span></span>
-            //     </div>
-            //
-            //     <div className="mid-section">
-            //         <div className="votes-panel">
-            //             <i className={"fa fa-star " + userVoted} onClick={ this.upvoteDeck }></i>
-            //             <span>{ Helpers.delimitNumbers(this.props.deck.votes || 0) }</span>
-            //         </div>
-            //         { this.renderDeckPreview() }
-            //     </div>
-            //
-            //
-            //     <div className="stat-bar">
-            //         <div className="buttons-left">
-            //             <a href="#">SHARE</a>
-            //         </div>
-            //         <div className="buttons-right">
-            //             <span><i className="fa fa-eye"></i> { Helpers.delimitNumbers(this.props.deck.views || 0) }</span>
-            //         </div>
-            //     </div>
-            //     <div className="black-overlay"></div>
-            //     <div className="affinity-bar">
-            //         { this.renderAffinityBar() }
-            //     </div>
-            // </li>
+            </div>
         );
     }
 });
