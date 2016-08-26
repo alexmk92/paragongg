@@ -47,11 +47,18 @@ var DeckPreview = React.createClass({
             var total = 0;
             var affinitiesArray = []; // Store to an array of objects so we can sort (currently saved as a single object to work with epics API)
 
-            for(var k in this.props.deck.affinities) {
-                if(this.props.deck.affinities.hasOwnProperty(k)) {
-                    affinitiesArray.push({ name: k, count: this.props.deck.affinities[k] })
+            // We used to save to mongo as an array of affinities, now we save an object, this allows us to render decks using the
+            // old format so the index view doesn't break
+            if(Object.prototype.toString.call( this.props.deck.affinities ) === '[object Array]') {
+                affinitiesArray = this.props.deck.affinities;
+            } else {
+                for(var k in this.props.deck.affinities) {
+                    if(this.props.deck.affinities.hasOwnProperty(k)) {
+                        affinitiesArray.push({ name: k, count: this.props.deck.affinities[k] })
+                    }
                 }
             }
+
             affinitiesArray.forEach(function(affinityInfo) {
                 total += affinityInfo.count;
             });
