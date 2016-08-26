@@ -45,10 +45,24 @@ var DeckPreview = React.createClass({
     renderAffinityBar: function() {
         if(!Helpers.isNullOrUndefined(this.props.deck.affinities)) {
             var total = 0;
-            this.props.deck.affinities.forEach(function(affinityInfo) {
+            var affinitiesArray = []; // Store to an array of objects so we can sort (currently saved as a single object to work with epics API)
+
+            // We used to save to mongo as an array of affinities, now we save an object, this allows us to render decks using the
+            // old format so the index view doesn't break
+            if(Object.prototype.toString.call( this.props.deck.affinities ) === '[object Array]') {
+                affinitiesArray = this.props.deck.affinities;
+            } else {
+                for(var k in this.props.deck.affinities) {
+                    if(this.props.deck.affinities.hasOwnProperty(k)) {
+                        affinitiesArray.push({ name: k, count: this.props.deck.affinities[k] })
+                    }
+                }
+            }
+
+            affinitiesArray.forEach(function(affinityInfo) {
                 total += affinityInfo.count;
             });
-            this.props.deck.affinities.sort(function(a, b) {
+            affinitiesArray.sort(function(a, b) {
                 if (a.count > b.count)
                     return -1;
                 if (a.count < b.count)
@@ -57,7 +71,7 @@ var DeckPreview = React.createClass({
             });
 
             // find the width of each bar
-            return this.props.deck.affinities.map(function(affinityInfo) {
+            return affinitiesArray.map(function(affinityInfo) {
                 var percentage = ((affinityInfo.count / total) * 100) + "%";
                 var affinityClass = "segment " + affinityInfo.name.toLowerCase().trim();
                 return (

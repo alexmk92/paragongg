@@ -661,29 +661,17 @@ var DeckBuilder = React.createClass({
         } else {
             // We need to do this as we store only the card code so we lose the quantity of cards
             var compressedCards = [];
-            var affinities = [];
+            var affinities = {};
             this.state.deck.all.forEach(function(card) {
                 for(var i = 0; i < card.quantity; i++) {
                     compressedCards.push(card.code);
 
                     // Get the affinity weighting of this deck
-                    var found = false;
-                    var index = null;
-                    affinities.some(function(affinity, i) {
-                        if(affinity.name.toLowerCase() === card.affinity.toLowerCase()) {
-                            found = true;
-                            index = i;
-                            return true;
-                        }
-                        return false;
-                    });
-                    if(!found) {
-                        affinities.push({
-                            name: card.affinity.toLowerCase(),
-                            count: 1
-                        })
+                    var found = typeof affinities[card.affinity.toLowerCase()] !== 'undefined';
+                    if(found) {
+                        affinities[card.affinity.toLowerCase()]+=1;
                     } else {
-                        affinities[index].count++;
+                        affinities[card.affinity.toLowerCase()]=1;
                     }
                 }
             });
