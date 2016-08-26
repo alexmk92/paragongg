@@ -73,6 +73,11 @@ trait ImportExportDecks
 
         foreach($data['cards'] as $card) {
             array_push($cards, $card['id']);
+            if(count($card['linkedCards']) > 0) {
+                foreach($card['linkedCards'] as $linkedCard) {
+                    array_push($cards, $linkedCard['id']);
+                }
+            }
             $affinities[strtolower($card['affinities'][0])]++;
         }
 
