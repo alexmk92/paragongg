@@ -73,6 +73,9 @@ Route::post('/decks/edit/{id}', 'DeckController@update')->middleware('auth');
 Route::get('/decks/delete/{id}', 'DeckController@delete')->middleware('auth');
 Route::get('/decks/export/{id}', 'DeckController@export')->middleware('auth');
 Route::get('/decks/export/{id}/save/{slot}', 'DeckController@exportSave')->middleware('auth');
+Route::get('/decks/import', 'DeckController@import')->middleware('auth');
+Route::get('/decks/import/all', 'DeckController@importAll')->middleware('auth');
+Route::get('/decks/import/{id}', 'DeckController@importSave')->middleware('auth');
 Route::get('/decks/{id}/{slug?}', 'DeckController@show');
 
 /* GUIDES */

@@ -6,6 +6,7 @@ use App\Deck;
 use App\Guide;
 use App\Hero;
 use App\Card;
+use App\Http\Traits\ImportExportDecks;
 use App\Http\Traits\RetrievesCardCollection;
 use App\Shortcode;
 use App\User;
@@ -21,9 +22,9 @@ use Illuminate\Support\Facades\Log;
 
 class DeckController extends Controller
 {
-    use GeneratesShortcodes, RetrievesCardCollection;
+    use GeneratesShortcodes, RetrievesCardCollection, ImportExportDecks;
 
-    // Create
+    // Index
     public function index($hero = null)
     {
         if($hero) $hero = Hero::select('name','slug','code')->where('slug', $hero)->firstOrFail();
@@ -239,6 +240,46 @@ class DeckController extends Controller
 
         session()->flash('notification', 'success|This deck has been saved to your Epic account.');
         return redirect('/decks/'.$id);
+    }
+
+    public function import()
+    {
+        $user = auth()->user();
+
+        if(!$user->epic_account_id) {
+            session()->flash('notification', 'warning|You must link your Epic account before you can import decks.');
+            return redirect('/account/link');
+        }
+
+        $decks = $this->getDecks($user);
+
+        return view('decks.import', compact('decks'));
+    }
+
+    public function importSave($id)
+    {
+        $user = auth()->user();
+
+        $this->importToParagonGG($user, $id);
+
+        session()->flash('notification', 'success|Deck imported to Paragon.gg');
+        return redirect('/account/decks');
+    }
+
+    public function importAll()
+    {
+        $user = auth()->user();
+
+        $decks = $this->getDecks($user);
+
+        foreach($decks as $deck) {
+            if(isset($deck['hero'])) {
+                $this->importToParagonGG($user, $deck['id']);
+            }
+        }
+
+        session()->flash('notification', 'success|All decks imported to Paragon.gg');
+        return redirect('/account/decks');
     }
 
     // Read
