@@ -37,6 +37,21 @@ var MatchItem = React.createClass({
             return Helpers.gameMinutes(this.props.match.latestCheckpointTime);
         }
     },
+    getHeroAvatarForMatch: function() {
+        var heroCode = this.state.player.hero.toUpperCase();
+        var heroForMatch = null;
+        HEROES.some(function(hero) {
+            if(heroCode === hero.codename.toUpperCase()) {
+                heroForMatch = hero;
+                return true;
+            }
+            return false;
+        });
+        if(heroForMatch !== null) {
+            console.log(heroForMatch);
+            return Helpers.getHeroImageURL(heroForMatch, 'small');
+        }
+    },
     render: function() {
         var matchResult = this.state.result;
         return(
@@ -45,7 +60,7 @@ var MatchItem = React.createClass({
                     <table>
                         <tr>
                             <td className="hero-played">
-                                <PreloadImage src="https://s3.amazonaws.com/paragongg-us/images/heroes/350982a548a16ce00215b04dbe62a0b1/C0BC54435DE7CB366AD33F10BCDB18616882819D/portrait_small.png"/>
+                                <PreloadImage src={this.getHeroAvatarForMatch(this.props.match)} defaultSrc="https://s3.amazonaws.com/paragongg-us/images/heroes/350982a548a16ce00215b04dbe62a0b1/C0BC54435DE7CB366AD33F10BCDB18616882819D/portrait_small.png"/>
                             </td>
                             <td className="kda">
                                 <span className="kills">{ this.state.player.kills }</span>/<span className="deaths">{ this.state.player.deaths }</span>/<span className="assists">{ this.state.player.assists }</span>

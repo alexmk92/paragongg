@@ -30,7 +30,6 @@ class PlayerController extends Controller
             if(!$player->username) {
                 return redirect('/players/psn/'.$player->usernamePSN);
             }
-            return redirect('/players/'.$player->username);
         }
 
         $matches = $this->getMatches($player->accountId);
