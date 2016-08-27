@@ -171,6 +171,7 @@ class AdminController extends Controller
                     $affinities[strtolower($card->affinity)]++;
                 }
             }
+            $deck->timestamps = false;
             $deck->affinities = $affinities;
             $deck->save();
         }
