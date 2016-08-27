@@ -151,4 +151,31 @@ class AdminController extends Controller
         session()->flash('notification', 'success|Moderator status removed.');
         return redirect('admin/moderation');
     }
+
+    public function upgradeDecks()
+    {
+        $decks = Deck::where('affinities', 'exists', false)->get();
+
+        foreach($decks as $deck) {
+            $affinities = [
+                'universal' => 0,
+                'fury' => 0,
+                'intellect' => 0,
+                'growth' => 0,
+                'order' => 0,
+                'corruption' => 0,
+            ];
+            foreach($deck->cards as $card) {
+                $card = Card::where('code', $card)->first();
+                if(isset($card->affinity)) {
+                    $affinities[strtolower($card->affinity)]++;
+                }
+            }
+            $deck->affinities = $affinities;
+            $deck->save();
+        }
+
+        session()->flash('notification', 'success|Upgrade finished.');
+        return redirect('/decks');
+    }
 }

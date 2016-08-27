@@ -1,11 +1,13 @@
 #guides-feed, #decks-feed {
     margin: 20px 0;
+    .guide-preview {
+        border-bottom: 1px solid $faded-line;
+    }
     .guide-preview, .deck-preview {
         display: block;
         width: 100%;
         min-height: 80px;
         padding: 20px 0;
-        border-bottom: 1px solid $faded-line;
         transition: all 0.2s;
         &:hover {
             background: rgba($panel-color-dark, 0.8);

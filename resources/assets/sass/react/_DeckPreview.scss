@@ -3,33 +3,42 @@
 
     .main-list {
         width: 100%;
+        .deck-preview {
+            border-bottom: none;
+        }
 
         .deck-preview-wrapper {
             position: relative;
             &:hover {
                 .affinity-bar {
-                    opacity: 1;
+                    opacity: 1.0 !important;
                     transition: opacity 0.2s;
 
                     .segment {
-                        height: 3px;
+                        height: 5px !important;
                         transition: height 0.2s;
+                        &.universal {
+                            opacity: 0.6;
+                        }
                     }
                 }
             }
             .affinity-bar {
                 position: absolute;
+                bottom: 0;
                 width: 100%;
-                opacity: 0.8;
-                margin-top: -1px;
+                opacity: 0.5;
+                margin-top: 0;
 
                 .segment {
-                    height: 1px;
+                    height: 2px;
                     display: inline-block;
-                    vertical-align: top;
+                    vertical-align: bottom;
 
                     &.universal {
+                        //height: 1px;
                         //background: $color-universal;
+                        opacity: 0.3;
                         background: #939f9f;
                     }
                     &.fury {
