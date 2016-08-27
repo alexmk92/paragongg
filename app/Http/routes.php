@@ -17,6 +17,9 @@ Route::get('/', 'HomeController@index');
 Route::auth();
 Route::get('/auth', 'Auth\OAuthController@linkAccount')->middleware('auth');
 
+/* HEALTH CHECK */
+Route::get('/health', function() { return "Status: OK"; });
+
 /* STATIC */
 Route::get('/terms',   function(){ return view('static.terms');   });
 Route::get('/privacy', function(){ return view('static.privacy'); });
