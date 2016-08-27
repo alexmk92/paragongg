@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Card;
 use App\Deck;
+use App\FailedJob;
 use App\Guide;
 use App\Hero;
 use App\Http\Traits\UpdatesSettings;
@@ -89,7 +90,7 @@ class AdminController extends Controller
 
     public function getFailedJobs()
     {
-        $failedJobs = FailedJob::orderBy('created_at', 'DESC')
+        $failedJobs = FailedJob::orderBy('failed_at', 'DESC')
             ->get();
 
         return response()->json($failedJobs);
