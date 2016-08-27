@@ -99,6 +99,26 @@ class AdminController extends Controller
         return response()->json($result['Attributes']);
     }
 
+    public function getNextJob()
+    {
+        $credentials = array(
+            "region" => env('SQS_REGION'),
+            "version" => 'latest',
+            "credentials" => array(
+                "key" => env('SQS_KEY'),
+                "secret" => env('SQS_SECRET')
+            )
+        );
+        $queue_url = env('SQS_PREFIX').'/'.env('SQS_QUEUE');
+        $client = new SqsClient($credentials);
+
+        $result = $client->receiveMessage(array(
+            'QueueUrl' => $queue_url
+        ));
+
+        dd($result);
+    }
+
     public function cards()
     {
         $cards = Card::orderBy('name', 'ASC')

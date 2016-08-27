@@ -154,6 +154,7 @@ Route::group(['prefix' => 'moderation', 'namespace' => 'Moderation', 'middleware
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['auth', 'admin', 'cors']], function () {
     Route::get('/', 'AdminController@index');
     Route::get('/jobs', 'AdminController@jobs');
+    Route::get('/jobs/next', 'AdminController@getNextJob');
     Route::get('/cards', 'AdminController@cards');
     Route::get('/heroes', 'AdminController@heroes');
     Route::get('/moderation', 'AdminController@moderation');
