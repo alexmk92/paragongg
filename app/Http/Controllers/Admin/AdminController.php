@@ -73,6 +73,11 @@ class AdminController extends Controller
         return view('admin.jobs');
     }
 
+    public function failedJobs()
+    {
+        return view('admin.failedjobs');
+    }
+
     public function getJobs()
     {
         $jobs = Job::orderByRaw("FIELD(queue, 'high', 'default', 'low')")
@@ -80,6 +85,14 @@ class AdminController extends Controller
             ->get();
 
         return response()->json($jobs);
+    }
+
+    public function getFailedJobs()
+    {
+        $failedJobs = FailedJob::orderBy('created_at', 'DESC')
+            ->get();
+
+        return response()->json($failedJobs);
     }
 
     public function cards()

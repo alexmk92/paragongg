@@ -154,6 +154,7 @@ Route::group(['prefix' => 'moderation', 'namespace' => 'Moderation', 'middleware
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['auth', 'admin', 'cors']], function () {
     Route::get('/', 'AdminController@index');
     Route::get('/jobs', 'AdminController@jobs');
+    Route::get('/jobs/failed', 'AdminController@failedJobs');
     Route::get('/cards', 'AdminController@cards');
     Route::get('/heroes', 'AdminController@heroes');
     Route::get('/moderation', 'AdminController@moderation');
@@ -165,6 +166,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::get('/maintenance/update-heroes', '\App\Http\Controllers\HeroController@pullHeroes');
     Route::get('/maintenance/update-hero-images', '\App\Http\Controllers\HeroController@pullHeroImages');
     Route::get('/api/jobs', 'AdminController@getJobs');
+    Route::get('/api/jobs/failed', 'AdminController@getFailedJobs');
     Route::get('/settings', 'AdminController@getSettings');
     Route::post('/settings', 'AdminController@setSettings');
 
