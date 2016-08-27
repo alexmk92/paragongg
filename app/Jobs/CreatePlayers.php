@@ -6,11 +6,13 @@ use App\Hero;
 use App\Http\Traits\FindOrCreatePlayers;
 use App\Match;
 use App\Player;
+use Exception;
 use GuzzleHttp\Client;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
@@ -72,5 +74,20 @@ class CreatePlayers extends Job implements ShouldQueue
             }
             $player->save();
         }
+    }
+
+    /**
+     * The job failed to process.
+     *
+     * @param Exception $e
+     * @internal param Exception $exception
+     */
+    public function failed(Exception $e)
+    {
+        // Send user notification of failure, etc...
+        Mail::send('emails.jobfail', ['exception' => $e], function ($m) {
+            $m->from('noreply@paragon.gg', 'Paragon.gg System');
+            $m->to('notifications@paragon.gg', 'Paragon.gg Notifications')->subject('A job has failed on the queue');
+        });
     }
 }

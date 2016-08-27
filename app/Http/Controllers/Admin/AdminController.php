@@ -12,11 +12,13 @@ use App\Match;
 use App\Player;
 use App\Setting;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 
 class AdminController extends Controller
 {
@@ -25,12 +27,44 @@ class AdminController extends Controller
     public function index()
     {
         $stats = new Collection();
-        $stats->users        = User::count();
-        $stats->players      = Player::count();
-        $stats->linkedUsers  = User::whereNotNull('epic_account_id')->count();
-        $stats->matches      = Match::count();
-        $stats->guides       = Guide::count();
-        $stats->decks        = Deck::count();
+        $expires = Carbon::now()->addMinutes(60);
+
+        // Count of all users in database
+        if(!Cache::has('adminStats.usersCount')) {
+            Cache::put('adminStats.usersCount', User::count(), $expires);
+        }
+        $stats->users = Cache::get('adminStats.usersCount');
+
+        // Count of all users who have linked their accounts with Epic
+        if(!Cache::has('adminStats.linkedUsers')) {
+            Cache::put('adminStats.linkedUsers', User::whereNotNull('epic_account_id')->count(), $expires);
+        }
+        $stats->linkedUsers = Cache::get('adminStats.linkedUsers');
+
+        // Count of all guides in the database
+        if(!Cache::has('adminStats.guidesCount')) {
+            Cache::put('adminStats.guidesCount', Guide::count(), $expires);
+        }
+        $stats->guides       = Cache::get('adminStats.guidesCount');
+
+        // Count of all guides in the database
+        if(!Cache::has('adminStats.decksCount')) {
+            Cache::put('adminStats.decksCount', Deck::count(), $expires);
+        }
+        $stats->decks        = Cache::get('adminStats.decksCount');
+
+        // Count of all matches in the database
+        if(!Cache::has('adminStats.matchesCount')) {
+            Cache::put('adminStats.matchesCount', Match::count(), $expires);
+        }
+        $stats->matches = Cache::get('adminStats.matchesCount');
+
+        // Count of all players in database
+        if(!Cache::has('adminStats.playersCount')) {
+            Cache::put('adminStats.playersCount', Player::count(), $expires);
+        }
+        $stats->players = Cache::get('adminStats.playersCount');
+
         return view('admin.index', compact('stats'));
     }
 
