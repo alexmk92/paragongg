@@ -75,11 +75,6 @@ class AdminController extends Controller
         return view('admin.jobs');
     }
 
-    public function failedJobs()
-    {
-        return view('admin.failedjobs');
-    }
-
     public function getJobs()
     {
         $credentials = array(
@@ -102,14 +97,6 @@ class AdminController extends Controller
         ));
 
         return response()->json($result['Attributes']);
-    }
-
-    public function getFailedJobs()
-    {
-        $failedJobs = FailedJob::orderBy('failed_at', 'DESC')
-            ->get();
-
-        return response()->json($failedJobs);
     }
 
     public function cards()
