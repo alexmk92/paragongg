@@ -84,10 +84,11 @@ class CreatePlayers extends Job implements ShouldQueue
      */
     public function failed(Exception $e)
     {
+        Log::warning('Job failed: '.$e);
         // Send user notification of failure, etc...
-        Mail::send('emails.jobfail', ['exception' => $e], function ($m) {
-            $m->from('noreply@paragon.gg', 'Paragon.gg System');
-            $m->to('notifications@paragon.gg', 'Paragon.gg Notifications')->subject('A job has failed on the queue');
+        Mail::send('emails.jobfail', ['exception' => $e], function ($mail) {
+            $mail->from('noreply@paragon.gg', 'Paragon.gg System');
+            $mail->to('notifications@paragon.gg', 'Paragon.gg Notifications')->subject('A job has failed on the queue');
         });
     }
 }

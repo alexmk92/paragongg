@@ -7,7 +7,6 @@
             <li><a href="/admin/moderation" {{ Request::is( 'admin/moderation') ? 'class=active' : '' }}>Moderation</a></li>
             <li><a href="/admin/maintenance" {{ Request::is( 'admin/maintenance') ? 'class=active' : '' }}>Maintenance</a></li>
             <li><a href="/admin/jobs" {{ Request::is( 'admin/jobs') ? 'class=active' : '' }}>Queued jobs</a></li>
-            <li><a href="/admin/jobs/failed" {{ Request::is( 'admin/jobs/failed') ? 'class=active' : '' }}>Failed jobs</a></li>
             <li><a href="/admin/settings" {{ Request::is( 'admin/settings') ? 'class=active' : '' }}>Global Settings</a></li>
         </ul>
     </div>

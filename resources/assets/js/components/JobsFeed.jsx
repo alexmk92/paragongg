@@ -5,14 +5,14 @@ var FlipMove = require('react-flip-move');
 var JobsFeed = React.createClass({
     getInitialState: function () {
         return {
-            jobs: []
+            queue: []
         }
     },
     componentDidMount: function () {
-        this.getJobs();
-        setInterval(this.getJobs, 1000);
+        this.getQueue();
+        setInterval(this.getQueue, 1000);
     },
-    getJobs: function () {
+    getQueue: function () {
         var httpRequest;
         var _this = this;
 
@@ -27,7 +27,7 @@ var JobsFeed = React.createClass({
         httpRequest.onreadystatechange = function() {
             if (httpRequest.readyState === XMLHttpRequest.DONE) {
                 if (httpRequest.status === 200) {
-                    _this.setState({jobs: JSON.parse(httpRequest.responseText)});
+                    _this.setState({queue: JSON.parse(httpRequest.responseText)});
                 }
             }
         };
@@ -35,43 +35,27 @@ var JobsFeed = React.createClass({
         httpRequest.send();
     },
     render: function () {
-        var jobs = [];
-        this.state.jobs.forEach(function (job) {
-
-            jobs.push(<Job key={job.id}
-                           id={job.id}
-                           queue={job.queue}
-                           payload={job.payload}
-                           attempts={job.attempts}
-                           reserved={job.reserved}
-                           created_at={job.created_at}
-            />);
-
-        }, this);
+        console.log(this.state.queue);
         return (
             <div>
-                <h3>Queued jobs ({jobs.length}) </h3>
+                <h3>Queue statistics</h3>
                 <div className="content-wrapper">
-                    <FlipMove enterAnimation="fade" leaveAnimation="fade">
-                        {jobs}
-                    </FlipMove>
-                </div>
-            </div>
-        )
-    }
-});
+                    <table className="stats">
+                        <tr>
+                            <td>
+                                <label>Jobs in queue</label>
+                                <span>{this.state.queue.ApproximateNumberOfMessages}</span>
+                            </td>
+                            <td>
+                                <label>Jobs processing</label>
+                                <span>{this.state.queue.ApproximateNumberOfMessagesNotVisible}</span>
+                            </td>
+                        </tr>
+                    </table>
 
-var Job = React.createClass({
-    render: function () {
-        var payload = JSON.parse(this.props.payload);
-        return (
-            <div className="job">
-                <div className="id">{this.props.id}</div>
-                <div className="queue"><strong>Queue:</strong> {this.props.queue}</div>
-                <div className="attempts"><strong>Attempts:</strong> {this.props.attempts}</div>
-                <div className="reserved"><strong>Reserved:</strong> {this.props.reserved}</div>
-                <div className="created_at"><strong>Created:</strong> {this.props.created_at}</div>
-                <div className="payload" title={this.props.payload}>{payload.data.command.substr(0, 140)}</div>
+
+
+                </div>
             </div>
         )
     }

@@ -13,6 +13,7 @@ use App\Match;
 use App\Player;
 use App\Setting;
 use App\User;
+use Aws\Sqs\SqsClient;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -81,11 +82,26 @@ class AdminController extends Controller
 
     public function getJobs()
     {
-        $jobs = Job::orderByRaw("FIELD(queue, 'high', 'default', 'low')")
-            ->orderBy('created_at', 'DESC')
-            ->get();
+        $credentials = array(
+            "region" => env('SQS_REGION'),
+            "version" => 'latest',
+            "credentials" => array(
+                "key" => env('SQS_KEY'),
+                "secret" => env('SQS_SECRET')
+            )
+        );
+        $queue_url = env('SQS_PREFIX').'/'.env('SQS_QUEUE');
+        $client = new SqsClient($credentials);
 
-        return response()->json($jobs);
+        $result = $client->getQueueAttributes(array(
+            'QueueUrl' => $queue_url,
+            'AttributeNames' => array(
+                'ApproximateNumberOfMessages',
+                'ApproximateNumberOfMessagesNotVisible'
+            )
+        ));
+
+        return response()->json($result['Attributes']);
     }
 
     public function getFailedJobs()
