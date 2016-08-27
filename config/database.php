@@ -81,6 +81,7 @@ return [
             'options' => [
                 'db' => 'admin', // sets the authentication database required by mongo 3
                 'authSource' => 'admin',
+                'ssl' => true,
                 'replicaSet' => env('DB2_REPLICA_SET', null)
             ]
         ],

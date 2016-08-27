@@ -8,7 +8,7 @@
         border-bottom: 1px solid $faded-line;
         transition: all 0.2s;
         &:hover {
-            background: rgba($panel-color-dark, 0.4);
+            background: rgba($panel-color-dark, 0.8);
             padding-left: 20px;
             color: white;
         }
