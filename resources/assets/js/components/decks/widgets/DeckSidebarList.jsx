@@ -162,6 +162,17 @@ var DeckSidebarList = React.createClass({
             )
         }
     },
+    getCardsInDeck: function() {
+        var totalCards = 0;
+        this.props.deck.cards.all.forEach(function(card) {
+            if(card.hasOwnProperty('quantity')) {
+                totalCards += card.quantity;
+            } else {
+                totalCards += 1;
+            }
+        });
+        return totalCards;
+    },
     renderTitleAndExportOptions: function() {
         if(!Helpers.isNullOrUndefined(this.props.hasTitleAndExportOptions)) {
             if(this.props.hasTitleAndExportOptions === false) return '';
@@ -171,7 +182,7 @@ var DeckSidebarList = React.createClass({
                 {this.props.title ? <h4>{this.props.title}</h4> : <h4>Deck</h4>}
                 <a href={"/decks/export/" + this.props.deck._id} className="btn btn-primary btn-half btn-margin-bottom" title="Export this deck to your Paragon account"><i className="fa fa-upload" aria-hidden="true"></i> Export deck</a>
                 <a className="btn btn-faded btn-half btn-margin-bottom" title="Make a copy of this deck to edit on Paragon.gg"><i className="fa fa-clone" aria-hidden="true"></i> Make a copy</a>
-                <span className="subtext">{ this.props.deck.cards.all.length }/40 CARDS</span>
+                <span className="subtext">{ this.getCardsInDeck() }/40 CARDS</span>
             </div>
         )
     },
