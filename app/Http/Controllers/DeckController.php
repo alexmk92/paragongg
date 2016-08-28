@@ -138,6 +138,21 @@ class DeckController extends Controller
         return view('decks.success', compact('shortcode'));
     }
 
+    public function copy($id)
+    {
+        $currentDeck = Deck::findOrFail($id);
+
+        $heroes = Hero::select('affinities', 'scale', 'code', 'name', 'slug', 'image', 'images', 'baseStats')->orderBy('name', 'asc')->get();
+        $cards = app('App\Http\Controllers\CardController')->getCards();
+        $userId = Auth::user() ? Auth::user()->id : "null";
+        $hideGlobalNotification = true;
+
+        $currentDeck = $this->sortCards($currentDeck);
+
+        return view('decks.create', compact('currentDeck', 'cards', 'heroes', 'userId', 'hideGlobalNotification'));
+    }
+
+
     public function export($id)
     {
         $user = auth()->user();
@@ -385,6 +400,13 @@ class DeckController extends Controller
         $currentDeck = Deck::findOrFail($id);
         $userId = Auth::user() ? Auth::user()->id : "null";
 
+        $currentDeck = $this->sortCards($currentDeck);
+
+        return view('decks.edit', compact('cards', 'currentDeck', 'heroes', 'userId'));
+    }
+
+    public function sortCards($currentDeck)
+    {
         // pass back a dummy object for now
         //$currentDeck->hero = Hero::where('code', $currentDeck->hero)->firstOrFail();
         $uniqueCards = Card::whereIn('code', $currentDeck->cards)->get();
@@ -459,7 +481,7 @@ class DeckController extends Controller
             }
         }
 
-        return view('decks.edit')->with('cards', $cards)->with('currentDeck', $currentDeck)->with('heroes', $heroes)->with('userId', $userId);
+        return $currentDeck;
     }
 
     // Update

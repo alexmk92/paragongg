@@ -16,7 +16,13 @@
         var rawCards = {!! json_encode($cards) !!};
         var HEROES = {!! json_encode($heroes) !!};
         var USER_ID = {{ $userId }};
-        var CURRENT_DECK = null;
+
+
+        @if(isset($currentDeck))
+            var CURRENT_DECK = {!! json_encode($currentDeck) !!};
+        @else
+            var CURRENT_DECK = null;
+        @endif
 
         var csrf = '{{ csrf_token() }}';
 

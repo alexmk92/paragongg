@@ -71,6 +71,7 @@ Route::get('/decks/hero/{hero}', 'DeckController@index');
 Route::get('/decks/create', 'DeckController@create');
 Route::post('/decks/create', 'DeckController@store');
 Route::get('/decks/success', 'DeckController@success');
+Route::get('/decks/copy/{id}', 'DeckController@copy');
 Route::get('/decks/edit/{id}', 'DeckController@edit')->middleware('auth');
 Route::post('/decks/edit/{id}', 'DeckController@update')->middleware('auth');
 Route::get('/decks/delete/{id}', 'DeckController@delete')->middleware('auth');

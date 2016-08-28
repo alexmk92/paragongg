@@ -24,6 +24,7 @@
                     <div class="initial">
                         <i class="fa fa-retweet" aria-hidden="true"></i> Share it
                     </div>
+                    @if(isset($shortcode))
                     <div class="social-buttons">
                         <a href="https://www.reddit.com/r/paragon/submit?url={{ urlencode( 'http://para.gg/'.$shortcode->code) }}&title={{ urlencode($deck->title) }}"
                            onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=768,width=1024');return false;"><i class="fa fa-reddit-alien" aria-hidden="true"></i></a>
@@ -32,6 +33,7 @@
                         <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode( 'http://para.gg/'.$shortcode->code) }}&t={{ urlencode($deck->title) }}"
                            onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;"><i class="fa fa-facebook-official" aria-hidden="true"></i></a>
                     </div>
+                    @endif
                 </div>
                 @if($shortcode)
                     <label style="margin-top: 30px;">Or use this shareable link</label>
