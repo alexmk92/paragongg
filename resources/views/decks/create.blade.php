@@ -20,6 +20,7 @@
 
         @if(isset($currentDeck))
             var CURRENT_DECK = {!! json_encode($currentDeck) !!};
+            var COPY = true;
         @else
             var CURRENT_DECK = null;
         @endif

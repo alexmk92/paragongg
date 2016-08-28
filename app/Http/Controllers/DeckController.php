@@ -150,6 +150,7 @@ class DeckController extends Controller
         $currentDeck = $this->sortCards($currentDeck);
         $currentDeck->title = '';
         $currentDeck->description = '';
+        $currentDeck->author_id = null;
 
         return view('decks.create', compact('currentDeck', 'cards', 'heroes', 'userId', 'hideGlobalNotification'));
     }

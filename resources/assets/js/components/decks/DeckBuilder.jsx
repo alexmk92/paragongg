@@ -700,7 +700,9 @@ var DeckBuilder = React.createClass({
             };
 
             var json = JSON.stringify(deckAndBuilds);
-            if(typeof CURRENT_DECK !== "undefined" && CURRENT_DECK) {
+            if(typeof COPY !== "undefined" && COPY) {
+                Helpers.post("/decks/create", { data : json });
+            } else if(typeof CURRENT_DECK !== "undefined" && CURRENT_DECK) {
                 Helpers.post("/decks/edit/" + CURRENT_DECK._id, { data : json });
             } else {
                 Helpers.post("/decks/create", { data : json });
