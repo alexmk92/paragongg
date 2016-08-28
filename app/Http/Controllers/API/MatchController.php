@@ -39,29 +39,44 @@ class MatchController extends Controller
 
     public function getPlayersElo()
     {
-        //if(!$request->all()['players']) abort(404);
-
         $players     = request()->get('players');
         $matchId     = request()->get('matchId');
+
+        $accountIds  = [];
+        foreach($players as $player) {
+            array_push($accountIds, $player['accountId']);
+        }
+
         $playerElos  = [];
         $createArray = [];
 
-        foreach($players as $player) {
-            $result = Player::where('accountId', $player['accountId'])->first();
-            if(!$result) {
-                array_push($createArray, $player['accountId']); // Push this player to array to be created
-                array_push($playerElos, ['accountId' => $player['accountId'], 'elo' => 1000]); // Return 1000 as elo for now
-            }  else {
-                $matchHistory = $result->matches;
+        $players = Player::whereIn('accountId', $accountIds)->get();
+
+        foreach($accountIds as $id) {
+            $foundPlayer = null;
+            foreach($players as $player) {
+                $player = collect($player);
+                if($player->contains($id)) {
+                    $foundPlayer = $players->where('accountId', $id)->first();
+                    break;
+                }
+            }
+            if($foundPlayer) {
+                $matchHistory = $foundPlayer['matches'];
                 array_push($matchHistory, $matchId);
-                $result->matches = $matchHistory;
-                $result->save();
-                array_push($playerElos, ['accountId' => $player['accountId'], 'elo' => $result->elo]);
+                $foundPlayer->matches = $matchHistory;
+                $foundPlayer->save();
+                array_push($playerElos, ['accountId' => $id, 'elo' => $foundPlayer['elo']]);
+            } else {
+                array_push($createArray, $id); // Push this player to array to be created
+                array_push($playerElos, ['accountId' => $id, 'elo' => 1000]); // Return 1000 as elo for now
             }
         }
 
         // Create players that don't exist
-        $this->dispatch(new CreatePlayers($createArray, $matchId));
+        if(count($createArray) > 0) {
+            $this->dispatch(new CreatePlayers($createArray, $matchId));
+        }
 
         return response()->json($playerElos);
     }
