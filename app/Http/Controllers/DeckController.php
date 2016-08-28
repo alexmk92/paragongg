@@ -148,6 +148,8 @@ class DeckController extends Controller
         $hideGlobalNotification = true;
 
         $currentDeck = $this->sortCards($currentDeck);
+        $currentDeck->title = '';
+        $currentDeck->description = '';
 
         return view('decks.create', compact('currentDeck', 'cards', 'heroes', 'userId', 'hideGlobalNotification'));
     }
