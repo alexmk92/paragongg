@@ -3,6 +3,7 @@ dependencies:
     - yes | pecl install mongodb
     - echo "extension=mongodb.so" > /opt/circleci/php/$(phpenv global)/etc/php.ini
   override:
+    - npm install
     - composer install --no-interaction
   cache_directories:
       - ./vendor
