@@ -8,7 +8,7 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
-    <meta name="keywords" content="@yield('meta_keywords', 'paragon,news,strategy,guides,stats,cards,moba,database,datalivestream,livestreams')"/>
+    <meta name="keywords" content="@yield('meta_keywords', 'paragon,news,decks,stats,guides,strategy,statistics,cards,moba,database,data,livestream,livestreams')"/>
     @yield('meta_tags')
 
     <!-- Favicon -->
@@ -109,12 +109,12 @@
 {{-- Include footer --}}
 @include('layouts.footer')
 
-{{-- Webpack --}}
+{{-- Scripts --}}
 @yield('scripts')
 <script type="text/javascript" src="/build/js/vendor.min.js"></script>
 <script type="text/javascript" src="/build/js/app.min.js"></script>
 
-<div class="beta-notification">V2.5 BETA</div>
+<div class="beta-notification">V2.6 BETA</div>
 
 </body>
 </html>
