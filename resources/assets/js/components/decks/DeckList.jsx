@@ -96,6 +96,7 @@ var DeckList = React.createClass({
             var deckURL = '/api/v1/decks?skip=' + skip + '&take=' + this.state.take + '&filter=' + this.state.selectedType.toLowerCase();
             console.log('requesting: ' + deckURL);
             if(HERO !== null) {
+                //noinspection ES6ModulesDependencies
                 deckURL += '&hero=' + HERO.code;
             }
             Helpers.ajax({

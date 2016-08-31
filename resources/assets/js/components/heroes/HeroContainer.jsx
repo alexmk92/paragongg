@@ -39,15 +39,16 @@ var HeroContainer = React.createClass({
     shouldComponentUpdate: function(nextProps, nextState) {
         if(nextState.renderParticles !== this.state.renderParticles) return true;
         if(nextState.heroRank !== this.state.heroRank) return true;
-        if(nextState.hasFallbackImage !== this.state.hasFallbackImage) return true;
+        return nextState.hasFallbackImage !== this.state.hasFallbackImage;
 
-        return false;
+
     },
     updateHeroRank: function(rank) {
         this.setState({ heroRank : rank });
     },
     renderGraph: function() {
         return;
+        //noinspection ES6ModulesDependencies
         return (
             <div id="graph-wrapper">
                 <h3 className="section-heading">Game Statistics <span className="subheader">{ HERO.name} stats, last 7 days</span></h3>

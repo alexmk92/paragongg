@@ -226,7 +226,7 @@ var Build = React.createClass({
             else if(this.validateCardType(upgradeSlot) && !bindUpgradeAtNextAvailableIndex) {
                 // ATTEMPT TO BIND THE CARD
                 newBuild = this.props.build;
-                newSlots = newBuild.slots;
+                var newSlots = newBuild.slots;
 
 
                 var lastModdedSlot = null;

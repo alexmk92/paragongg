@@ -29,13 +29,11 @@ var DeckSidebarList = React.createClass({
         }
     },
     sortCards: function(type) {
-        var newCards = this.props.deck.cards[type].sort(function(a, b) {
+        return this.props.deck.cards[type].sort(function(a, b) {
             if(a.name < b.name) return -1;
             if(a.name > b.name) return 1;
             return 0;
         });
-
-        return newCards;
     },
     /* TOOLTIP METHODS */
     setTooltipContent: function(card) {

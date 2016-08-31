@@ -191,7 +191,7 @@ var VerticalBarChart = React.createClass({
             plotOptions: {
                 series: {
                     borderWidth: 0,
-                    animation: (this.props.animated === true ? true : false)
+                    animation: (this.props.animated === true)
                 },
                 column: {
                     grouping: true,

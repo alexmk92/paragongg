@@ -19,7 +19,7 @@ var HorizontalBarChart = React.createClass({
         this.chart.destroy();
     },
     getBaseTheme: function() {
-        var theme = this.props.options || {
+        return this.props.options || {
                 colors: this.props.colors || ["#ff6f00", "#64bf22", "#42a9e8", "#aa2ed3", "#2ed3ba", "#e634c2", "#e4e22e"],
                 chart: {
                     style: {
@@ -140,8 +140,6 @@ var HorizontalBarChart = React.createClass({
                 contrastTextColor: '#F0F0F3',
                 maskColor: 'rgba(255,255,255,0.3)'
             };
-
-        return theme;
     },
     renderChart: function(theme) {
         Highcharts.setOptions(theme);
@@ -216,7 +214,7 @@ var HorizontalBarChart = React.createClass({
                             var startText = _this.props.series.parts[this.series.index] ? _this.props.series.parts[this.series.index].start : this.series.name + " (";
                             var endText = _this.props.series.parts[this.series.index] ? _this.props.series.parts[this.series.index].end : "%)";
                             if (this.series.name)
-                                return '<span style="margin-left: 0px; text-transform: uppercase; color:white; font-weight: 100; padding: 8px 10px; font-size: 14px; border-radius: 5px; background: rgba(0, 0, 0, 0.4) ">' + startText + labelValue + endText + '</span>';
+                                return '<span style="margin-left: 0; text-transform: uppercase; color:white; font-weight: 100; padding: 8px 10px; font-size: 14px; border-radius: 5px; background: rgba(0, 0, 0, 0.4) ">' + startText + labelValue + endText + '</span>';
                             else return '';
                         }
                     }

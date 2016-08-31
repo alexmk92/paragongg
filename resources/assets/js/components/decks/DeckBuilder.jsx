@@ -65,6 +65,7 @@ var DeckBuilder = React.createClass({
                 cardCount += card.quantity;
             });
 
+            //noinspection ES6ModulesDependencies
             this.setState({
                 title: CURRENT_DECK.title,
                 description: CURRENT_DECK.description,
@@ -284,6 +285,7 @@ var DeckBuilder = React.createClass({
     },
     getCardByCode: function(cardCode) {
         var cardToReturn = null;
+        //noinspection ES6ModulesDependencies
         CARDS.all.some(function(card) {
             if(card.code === cardCode) {
                 cardToReturn = card;
@@ -416,7 +418,7 @@ var DeckBuilder = React.createClass({
 
         if(newDeck.length <= 0) {
             newActiveTab = 0;
-            newFlashTabAnimation = false;
+            var newFlashTabAnimation = false;
         }
 
         this.lastDeletedCard = card;
@@ -442,10 +444,9 @@ var DeckBuilder = React.createClass({
         });
     },
     updateBuildsWithNewDeck: function(newDeck) {
-        var newBuilds = this.state.builds.map(function(build) {
+        return this.state.builds.map(function(build) {
             return this.updateBuildWithNewDeck(build, newDeck);
         }.bind(this));
-        return newBuilds;
     },
     updateBuildWithNewDeck: function(build, deck) {
         var deletedACard = false;
@@ -828,10 +829,8 @@ var DeckBuilder = React.createClass({
                 cards.prime = [];
                 cards.equipment = [];
                 cards.upgrades = cards.upgrades.map(function(card) {
-                    card.hidden = false;
-                    if(!this.validateCardType(selectedCard, card)) {
-                        card.hidden = true;
-                    }
+
+                    card.hidden = !this.validateCardType(selectedCard, card);
                     console.log(card.hidden);
                     return card;
                 }.bind(this));
@@ -871,7 +870,7 @@ var DeckBuilder = React.createClass({
                     if(upgradeSlot.card !== null) { upgradeCount++ }
                 });
                 if(upgradeCount > 0)
-                    upgradeBadge = <div className="upgrade-badge">{ upgradeCount }</div>
+                    upgradeBadge = <div className="upgrade-badge">{ upgradeCount }</div>;
 
                 return (
                     <div key={ "slot-" + i + "-icon" }

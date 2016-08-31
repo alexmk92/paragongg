@@ -8,6 +8,7 @@ var BuildPanel = require('./BuildPanel');
 
 var DeckDetail = React.createClass({
     getInitialState: function() {
+        //noinspection ES6ModulesDependencies
         return {
             deck : this.props.deck,
             builds: [],

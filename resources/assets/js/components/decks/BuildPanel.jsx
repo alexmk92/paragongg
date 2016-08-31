@@ -129,7 +129,7 @@ var BuildPanel = React.createClass({
                 }
             }.bind(this));
         }  else {
-            return <blockquote>Sorry there are no builds in this deck</blockquote>
+            return <blockquote>Sorry there are no builds in this deck</blockquote>;
             /*
             if(!Helpers.isNullOrUndefined(this.props.hasStats) && this.props.hasStats === true)
                 jsx.push(<span key="no-builds" style={{display: 'block', fontSize: '16px', marginTop: '-30px', padding: '20px 0 60px 0'}}>Sorry, there are no builds in this deck, therefore we computed a statistical analysis on what can be achieved from this deck!</span>);

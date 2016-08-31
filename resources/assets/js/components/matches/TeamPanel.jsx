@@ -24,8 +24,8 @@ var TeamPanel = React.createClass({
         }
         */
         if(nextProps !== this.props) return true;
-        if(this.state !== nextState) return true;
-        return false;
+        return this.state !== nextState;
+
         //return false;
     },
     computeMaxStats: function(players) {
@@ -76,7 +76,7 @@ var TeamPanel = React.createClass({
         var heroImage = '/assets/images/heroes/null.png';
         this.state.heroes.some(function (item) {
             if(player.hero == item.codename) {
-                heroImage = 'https://s3.amazonaws.com/paragongg-us/images/heroes/'+item.code+'/'+item.image+'/portrait_small.png'
+                heroImage = 'https://s3.amazonaws.com/paragongg-us/images/heroes/'+item.code+'/'+item.image+'/portrait_small.png';
                 return true;
             }
         });

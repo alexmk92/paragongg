@@ -32,9 +32,9 @@ var NewsFeed = React.createClass({
     },
     shouldComponentUpdate: function(nextProps, nextState) {
         if(this.state.news.length !== nextState.news.length) return true;
-        if(this.state.newsEnd !== nextState.newsEnd) return true;
+        return this.state.newsEnd !== nextState.newsEnd;
 
-        return false;
+
     },
     handleScroll: function() {
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {

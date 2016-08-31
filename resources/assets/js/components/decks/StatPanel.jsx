@@ -65,8 +65,7 @@ var StatPanel = React.createClass({
                         if(stat.ref === compareStat) {
                             var oldValue = stat.value;
                             stat.value = Helpers.dropZeroesAndDelimitNumbers(stat.value = (stat.value + effect.value));
-                            if(stat.value !== oldValue) stat.modified = true;
-                            else stat.modified = false;
+                            stat.modified = stat.value !== oldValue;
 
                             return true;
                         }

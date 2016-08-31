@@ -15,8 +15,8 @@ var Match = React.createClass({
         }
     },
     shouldComponentUpdate: function(nextProps, nextState) {
-        if(this.state.matchInfo !== nextState.matchInfo) return true;
-        return false;
+        return this.state.matchInfo !== nextState.matchInfo;
+
     },
     componentWillMount: function() {
         this.victor = false;

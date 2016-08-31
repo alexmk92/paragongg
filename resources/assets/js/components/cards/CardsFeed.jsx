@@ -27,11 +27,7 @@ var CardsFeed = React.createClass({
             return true;
         }
         if(nextState.cards.length === this.state.cards.length) {
-            if(nextState.cards.length > 0 && this.state.cards.length > 0) {
-                return false;
-            } else {
-                return true;
-            }
+            return !(nextState.cards.length > 0 && this.state.cards.length > 0);
         }
 
         return this.state !== nextState;

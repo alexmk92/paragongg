@@ -95,6 +95,7 @@ var GuidesFeed = React.createClass({
             var skip = this.state.guides[this.state.selectedType].skip;
             var guideURL = '/api/v1/guides?filter=' + this.state.selectedType.toLowerCase() + '&skip=' + skip + '&take=' + this.state.take;
             if(typeof HERO !== 'undefined' && HERO !== null) {
+                //noinspection ES6ModulesDependencies
                 guideURL += '&hero=' + HERO.code;
             } else if(typeof TYPE !== "undefined" && TYPE !== null && TYPE === "GAMEPLAY") {
                 guideURL += "&type=gameplay"

@@ -42,6 +42,7 @@ var CardContainer = React.createClass({
         var modelStyles = {
             boxShadow : rarity.label === "Starter" ? "" : "rgba("+ rarity.color +", 0.5) 0px 0px 150px 30px"
         };
+        //noinspection ES6ModulesDependencies
         return (
             <div onMouseMove={this.flipCard}>
                 <div className="card-container">
