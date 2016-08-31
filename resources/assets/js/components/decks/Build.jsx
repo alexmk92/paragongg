@@ -752,7 +752,7 @@ var Build = React.createClass({
 
         return (
             <div className="builds-wrapper">
-                <input defaultValue={this.props.build.title} onChange={newTitle} defaultValue={ "" } className="h2" placeholder="ENTER BUILD TITLE" ref="buildTitleInput" />
+                <input defaultValue={this.props.build.title} onChange={newTitle} className="h2" placeholder="ENTER BUILD TITLE" ref="buildTitleInput" />
                 <span className="build-cost">{ this.getBuildCost() }/60 <span>CP</span></span>
                 <ul className={"build-list " + buildListClass }>
                     { this.getBuildSlots() }
