@@ -8,8 +8,16 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Class ReportController
+ * @package App\Http\Controllers
+ */
 class ReportController extends Controller
 {
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function store($id)
     {
         if(!Auth::check()) abort(403);

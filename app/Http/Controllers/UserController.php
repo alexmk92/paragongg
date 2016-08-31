@@ -8,9 +8,17 @@ use App\Hero;
 use App\User;
 use App\Http\Requests;
 
+/**
+ * Class UserController
+ * @package App\Http\Controllers
+ */
 class UserController extends Controller
 {
     // Show
+    /**
+     * @param $username
+     * @return mixed
+     */
     public function show($username)
     {
         $user = User::where('username', $username)->firstOrFail();
@@ -26,6 +34,10 @@ class UserController extends Controller
         return view('users.show', compact('user', 'guides', 'decks', 'twitchLive'));
     }
 
+    /**
+     * @param $username
+     * @return mixed
+     */
     public function profile($username)
     {
         $customBackground = '/assets/images/backgrounds/profile.jpg';

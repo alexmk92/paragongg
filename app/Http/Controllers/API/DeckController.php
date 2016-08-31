@@ -11,8 +11,15 @@ use App\Card;
 use App\Hero;
 use App\User;
 
+/**
+ * Class DeckController
+ * @package App\Http\Controllers\API
+ */
 class DeckController extends Controller
 {
+    /**
+     * @return mixed
+     */
     public function index()
     {
         $skip = 0;
@@ -58,6 +65,10 @@ class DeckController extends Controller
         return response()->json($decks);
     }
 
+    /**
+     * @param $decks
+     * @return mixed
+     */
     protected function enhanceDecks($decks)
     {
         foreach($decks as $deck) {
@@ -70,6 +81,10 @@ class DeckController extends Controller
         return $decks;
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function show($id)
     {
         $deck = Deck::findOrFail($id);

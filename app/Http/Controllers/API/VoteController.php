@@ -11,8 +11,16 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Class VoteController
+ * @package App\Http\Controllers\API
+ */
 class VoteController extends Controller
 {
+    /**
+     * @param Request $request
+     * @return mixed
+     */
     public function store(Request $request)
     {
         if(!Auth::check()) return response()->json(['code' => 403, 'message' => 'You must be logged in to vote']);
@@ -45,6 +53,11 @@ class VoteController extends Controller
         }
     }
 
+    /**
+     * @param $type
+     * @param $id
+     * @return mixed
+     */
     public function getNode($type, $id)
     {
         if($type == 'comment') {

@@ -4,6 +4,10 @@ namespace App\Http\Requests\Discussion;
 
 use App\Http\Requests\Request;
 
+/**
+ * Class CreateDiscussionRequest
+ * @package App\Http\Requests\Discussion
+ */
 class CreateDiscussionRequest extends Request
 {
     /**

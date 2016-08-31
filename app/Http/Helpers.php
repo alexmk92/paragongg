@@ -9,6 +9,10 @@ use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Cache;
 
+/**
+ * @param $uri
+ * @return CommentThread
+ */
 function findOrCreateThread($uri)
 {
     $thread = CommentThread::where('uri', $uri)->first();
@@ -36,12 +40,20 @@ function findOrCreateThread($uri)
     return $thread;
 }
 
+/**
+ * @param $thread
+ * @return mixed
+ */
 function getCommentCount($thread)
 {
     $thread = CommentThread::find($thread);
     return CommentThreadComment::where('thread_id', $thread->id)->count();
 }
 
+/**
+ * @param $channel
+ * @return bool
+ */
 function isTwitchLive($channel)
 {
     if (!Cache::has('twitchLive.'.$channel)) {
@@ -55,6 +67,9 @@ function isTwitchLive($channel)
     return (!is_null($twitchLive->stream)) ? TRUE : FALSE;
 }
 
+/**
+ * @return string
+ */
 function displayNotification()
 {
     if (Session::has('notification'))
@@ -66,6 +81,9 @@ function displayNotification()
     return '';
 }
 
+/**
+ * @return bool|string
+ */
 function globalNotification()
 {
     $globalNotification = Setting::where('key', 'globalNotification')->first();
@@ -77,6 +95,9 @@ function globalNotification()
     return false;
 }
 
+/**
+ * @return mixed
+ */
 function APIToken()
 {
     if(!Cache::has('APITOKEN')) {
@@ -105,11 +126,18 @@ function APIToken()
     return Cache::get('APITOKEN');
 }
 
+/**
+ * @return string
+ */
 function S3URL()
 {
     return 'https://s3.amazonaws.com/paragongg-us';
 }
 
+/**
+ * @param $user
+ * @return string
+ */
 function getAvatar($user)
 {
     if(!$user->avatar) {
@@ -118,6 +146,10 @@ function getAvatar($user)
     return S3URL() . "/images/users/" . $user->id . "/avatars/" . $user->avatar;
 }
 
+/**
+ * @param $string
+ * @return string
+ */
 function createSlug($string)
 {
     $string = strtolower($string);
@@ -128,6 +160,12 @@ function createSlug($string)
     return implode("-", $matches[0]);
 }
 
+/**
+ * @param $index
+ * @param $ability
+ * @param $abilityString
+ * @return bool
+ */
 function checkAbilitySelection($index, $ability, $abilityString)
 {
     $abilities = explode(',', $abilityString);
@@ -137,6 +175,10 @@ function checkAbilitySelection($index, $ability, $abilityString)
     return false;
 }
 
+/**
+ * @param $string
+ * @return null
+ */
 function getDeckFromString($string)
 {
     $deck = null;
@@ -170,6 +212,11 @@ function getDeckFromString($string)
     return $deck;
 }
 
+/**
+ * @param $match
+ * @param $accountId
+ * @return bool
+ */
 function getPlayerFromMatch($match, $accountId) {
     foreach($match['players'] as $player) {
         if($player['accountId'] == $accountId) {
@@ -179,6 +226,11 @@ function getPlayerFromMatch($match, $accountId) {
     return false;
 }
 
+/**
+ * @param $needle
+ * @param $haystack
+ * @return bool
+ */
 function is_value_in_array($needle, $haystack) {
     if(in_array($needle, $haystack)) {
         return true;
@@ -190,15 +242,27 @@ function is_value_in_array($needle, $haystack) {
     return false;
 }
 
+/**
+ * @param $date
+ * @return mixed
+ */
 function getMongoDiff($date) {
     $date = $date->toDateTime()->getTimestamp();
     return Carbon::createFromTimestamp($date)->diffForHumans();
 }
 
+/**
+ * @param $match
+ * @return false|string
+ */
 function getMatchLength($match) {
     return gmdate("i:s", $match->latestCheckpointTime);
 }
 
+/**
+ * @param $username
+ * @return bool
+ */
 function isBotName($username) {
     $botNames = [
         'blue_dekker', 'red_dekker',

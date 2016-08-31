@@ -7,8 +7,18 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
+/**
+ * Class GeneratesShortcodes
+ * @package App\Http\Traits
+ */
 trait GeneratesShortcodes
 {
+    /**
+     * @param $url
+     * @param $type
+     * @param $id
+     * @return string
+     */
     public function generate($url, $type, $id)
     {
         $uniqid = base_convert(microtime(false), 10, 36);

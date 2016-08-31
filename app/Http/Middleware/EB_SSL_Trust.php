@@ -4,6 +4,10 @@ namespace App\Http\Middleware;
 
 use Closure;
 
+/**
+ * Class EB_SSL_Trust
+ * @package App\Http\Middleware
+ */
 class EB_SSL_Trust
 {
     /**

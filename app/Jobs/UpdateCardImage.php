@@ -10,6 +10,10 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
+/**
+ * Class UpdateCardImage
+ * @package App\Jobs
+ */
 class UpdateCardImage extends Job implements ShouldQueue
 {
     use InteractsWithQueue, SerializesModels;

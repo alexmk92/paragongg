@@ -13,6 +13,10 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
+/**
+ * Class HomeController
+ * @package App\Http\Controllers
+ */
 class HomeController extends Controller
 {
     /**
@@ -38,6 +42,9 @@ class HomeController extends Controller
         return view('home', compact('featuredCard', 'featuredHero', 'featuredNews', 'featuredGuides', 'topDecks'));
     }
 
+    /**
+     * @return mixed
+     */
     public function featuredGuides()
     {
         $guides = Guide::where('featured', true)->get();
@@ -47,6 +54,9 @@ class HomeController extends Controller
         return $guides;
     }
 
+    /**
+     * @return mixed
+     */
     public function topDecks()
     {
         $decks = Deck::orderBy('votes', 'DESC')->take(4)->get();

@@ -12,9 +12,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
+/**
+ * Class HeroController
+ * @package App\Http\Controllers
+ */
 class HeroController extends Controller
 {
     // Index
+    /**
+     * @return mixed
+     */
     public function index()
     {
         $heroes = Hero::all();
@@ -23,6 +30,10 @@ class HeroController extends Controller
     }
 
     // Read
+    /**
+     * @param $slug
+     * @return mixed
+     */
     public function show($slug)
     {
         $hero = Hero::where('slug', urldecode($slug))->firstOrFail();
@@ -32,6 +43,10 @@ class HeroController extends Controller
     }
 
     // Edit
+    /**
+     * @param $code
+     * @return mixed
+     */
     public function edit($code)
     {
         $hero = Hero::where('code', $code)->firstOrFail();
@@ -39,6 +54,11 @@ class HeroController extends Controller
     }
 
     // Update
+    /**
+     * @param $code
+     * @param Request $request
+     * @return mixed
+     */
     public function update($code, Request $request)
     {
         $hero = Hero::where('code', $code)->firstOrFail();
@@ -192,6 +212,10 @@ class HeroController extends Controller
     }
 
     // Delete
+    /**
+     * @param $code
+     * @return mixed
+     */
     public function delete($code)
     {
         $hero = Hero::where('code', $code)->firstOrFail();
@@ -201,6 +225,9 @@ class HeroController extends Controller
     }
 
     // Pull latest heroes
+    /**
+     * @return mixed
+     */
     public function pullHeroes()
     {
         // Get latest hero list

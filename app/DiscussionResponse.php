@@ -4,6 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class DiscussionResponse
+ * @package App
+ */
 class DiscussionResponse extends Model
 {
     /**
@@ -13,6 +17,9 @@ class DiscussionResponse extends Model
      */
     protected $table = 'discussion_responses';
 
+    /**
+     * @return mixed
+     */
     public function author()
     {
         return $this->belongsTo('App\User', 'user_id', 'id');

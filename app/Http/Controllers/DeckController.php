@@ -23,11 +23,19 @@ use Illuminate\Http\Request;
 use App\Http\Traits\GeneratesShortcodes;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * Class DeckController
+ * @package App\Http\Controllers
+ */
 class DeckController extends Controller
 {
     use GeneratesShortcodes, RetrievesCardCollection, ImportExportDecks;
 
     // Index
+    /**
+     * @param null $hero
+     * @return mixed
+     */
     public function index($hero = null)
     {
         if($hero) $hero = Hero::select('name','slug','code')->where('slug', $hero)->firstOrFail();
@@ -74,6 +82,10 @@ class DeckController extends Controller
             ->with('hero', $hero);
     }
 
+    /**
+     * @param $decks
+     * @return mixed
+     */
     protected function enhanceDecks($decks)
     {
         foreach($decks as $deck) {
@@ -87,6 +99,9 @@ class DeckController extends Controller
     }
 
     // Create
+    /**
+     * @return mixed
+     */
     public function create()
     {
         $heroes = Hero::select('affinities', 'scale', 'code', 'name', 'slug', 'image', 'images', 'baseStats')->orderBy('name', 'asc')->get();
@@ -98,6 +113,10 @@ class DeckController extends Controller
     }
 
     // Store
+    /**
+     * @param Request $request
+     * @return mixed
+     */
     public function store(Request $request)
     {
         $payload = json_decode($request->data);
@@ -127,6 +146,9 @@ class DeckController extends Controller
         return redirect('/decks/success');
     }
 
+    /**
+     * @return mixed
+     */
     public function success()
     {
         if(session()->has('shortcode')) {
@@ -138,6 +160,10 @@ class DeckController extends Controller
         return view('decks.success', compact('shortcode'));
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function copy($id)
     {
         $currentDeck = Deck::findOrFail($id);
@@ -156,6 +182,10 @@ class DeckController extends Controller
     }
 
 
+    /**
+     * @param $id
+     * @return bool
+     */
     public function export($id)
     {
         $user = auth()->user();
@@ -204,6 +234,11 @@ class DeckController extends Controller
         return view('decks.export', compact('user', 'newDeck', 'occupied', 'vacant'));
     }
 
+    /**
+     * @param $id
+     * @param $slot
+     * @return bool
+     */
     public function exportSave($id, $slot)
     {
         $user = auth()->user();
@@ -263,6 +298,9 @@ class DeckController extends Controller
         return redirect('/decks/'.$id);
     }
 
+    /**
+     * @return mixed
+     */
     public function import()
     {
         $user = auth()->user();
@@ -277,6 +315,10 @@ class DeckController extends Controller
         return view('decks.import', compact('decks'));
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function importSave($id)
     {
         $user = auth()->user();
@@ -287,6 +329,9 @@ class DeckController extends Controller
         return redirect('/account/decks');
     }
 
+    /**
+     * @return mixed
+     */
     public function importAll()
     {
         $user = auth()->user();
@@ -320,6 +365,11 @@ class DeckController extends Controller
     }
 
     // Read
+    /**
+     * @param Request $request
+     * @param $id
+     * @return mixed
+     */
     public function show(Request $request, $id)
     {
         $thread = findOrCreateThread($request->path());
@@ -396,6 +446,10 @@ class DeckController extends Controller
     }
 
     // Edit
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function edit($id)
     {
         $heroes = Hero::select('affinities', 'scale', 'code', 'name', 'slug', 'image', 'images', 'baseStats')->orderBy('name', 'asc')->get();
@@ -408,6 +462,10 @@ class DeckController extends Controller
         return view('decks.edit', compact('cards', 'currentDeck', 'heroes', 'userId'));
     }
 
+    /**
+     * @param $currentDeck
+     * @return mixed
+     */
     public function sortCards($currentDeck)
     {
         // pass back a dummy object for now
@@ -488,6 +546,11 @@ class DeckController extends Controller
     }
 
     // Update
+    /**
+     * @param Request $request
+     * @param $id
+     * @return mixed
+     */
     public function update(Request $request, $id)
     {
         $payload = json_decode($request->data);
@@ -519,6 +582,10 @@ class DeckController extends Controller
     }
 
     // Delete
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function delete($id)
     {
         $deck = Deck::findOrFail($id);

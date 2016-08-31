@@ -9,6 +9,10 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
+/**
+ * Class ImportDeck
+ * @package App\Jobs
+ */
 class ImportDeck extends Job implements ShouldQueue
 {
     use GeneratesShortcodes, ImportExportDecks, InteractsWithQueue, SerializesModels;
@@ -18,6 +22,8 @@ class ImportDeck extends Job implements ShouldQueue
 
     /**
      * Create a new job instance.
+     * @param $user
+     * @param $deckId
      */
     public function __construct($user, $deckId)
     {

@@ -9,8 +9,15 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Cache;
 
+/**
+ * Class CommunityController
+ * @package App\Http\Controllers
+ */
 class CommunityController extends Controller
 {
+    /**
+     * @return mixed
+     */
     public function index()
     {
         $streams = $this->getStreams();
@@ -22,6 +29,9 @@ class CommunityController extends Controller
         return view('community.index', compact('streams', 'recentGeneral', 'recentTheorycrafting', 'recentQuestions', 'recentArticles'));
     }
 
+    /**
+     * @return array
+     */
     public function getStreams()
     {
         if (!Cache::has('twitchStreams')) {

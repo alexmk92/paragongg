@@ -12,8 +12,16 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Class VoteController
+ * @package App\Http\Controllers
+ */
 class VoteController extends Controller
 {
+    /**
+     * @param Request $request
+     * @return mixed
+     */
     public function store(Request $request)
     {
         if(!Auth::check()) {
@@ -58,6 +66,11 @@ class VoteController extends Controller
         }
     }
 
+    /**
+     * @param $type
+     * @param $id
+     * @return mixed
+     */
     public function getNode($type, $id)
     {
         if($type == 'comment') {

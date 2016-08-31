@@ -13,10 +13,19 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
+/**
+ * Class PlayerController
+ * @package App\Http\Controllers
+ */
 class PlayerController extends Controller
 {
     use FindOrCreatePlayers;
+
     // Show
+    /**
+     * @param $username
+     * @return mixed
+     */
     public function show($username)
     {
         if(isBotName($username)) return view('players.bot');
@@ -41,6 +50,10 @@ class PlayerController extends Controller
         return view('players.show', compact('player', 'user', 'matches', 'heroes', 'customBackground'));
     }
 
+    /**
+     * @param $username
+     * @return mixed
+     */
     public function showPSN($username)
     {
         if(isBotName($username)) return view('players.bot');
@@ -65,12 +78,20 @@ class PlayerController extends Controller
         return view('players.show', compact('player', 'user', 'matches', 'heroes', 'customBackground'));
     }
 
+    /**
+     * @param $player
+     * @return mixed
+     */
     public function getMatches($player)
     {
         $player = Player::where('accountId', $player)->first();
         return Match::whereIn('replayId', $player->matches)->get();
     }
 
+    /**
+     * @param Request $request
+     * @return mixed
+     */
     public function search(Request $request)
     {
         return redirect('/players/' . strtolower($request->username));

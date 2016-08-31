@@ -16,11 +16,18 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
+/**
+ * Class MigrateDatabaseController
+ * @package App\Http\Controllers\Admin
+ */
 class MigrateDatabaseController extends Controller
 {
     use UpdatesSettings, GeneratesShortcodes;
 
     // Entry point for migration
+    /**
+     * @return mixed
+     */
     public function run()
     {
         $this->updateSettings('migrationCompleted', false);
@@ -41,6 +48,9 @@ class MigrateDatabaseController extends Controller
         return redirect('/admin');
     }
 
+    /**
+     * @return mixed
+     */
     public function decksReset()
     {
         $decks = Deck::where('votes', '>', 0)->get();
@@ -60,6 +70,9 @@ class MigrateDatabaseController extends Controller
         return redirect('/decks');
     }
 
+    /**
+     * @return mixed
+     */
     public function convertGuides()
     {
         $guides = Guide::all();

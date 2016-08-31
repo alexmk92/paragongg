@@ -11,11 +11,18 @@ use Parsedown;
 use TOC;
 use Illuminate\Http\Request;
 
+/**
+ * Class NewsController
+ * @package App\Http\Controllers
+ */
 class NewsController extends Controller
 {
     use GeneratesShortcodes;
 
     // Index
+    /**
+     * @return mixed
+     */
     public function index()
     {
         //$featured = News::where('type', 'feature')->take(3)->get();
@@ -24,12 +31,19 @@ class NewsController extends Controller
     }
 
     // Create
+    /**
+     * @return mixed
+     */
     public function create()
     {
         return view('news.create');
     }
 
     // Store
+    /**
+     * @param Requests\News\CreateNewsRequest $request
+     * @return mixed
+     */
     public function store(Requests\News\CreateNewsRequest $request)
     {
         $storage = Storage::disk('s3');
@@ -83,6 +97,11 @@ class NewsController extends Controller
     }
 
     // Read
+    /**
+     * @param Request $request
+     * @param $id
+     * @return mixed
+     */
     public function show(Request $request, $id)
     {
         $article = News::findOrFail($id);
@@ -100,6 +119,10 @@ class NewsController extends Controller
     }
 
     // Edit
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function edit($id)
     {
         $news = News::findOrFail($id);
@@ -107,6 +130,11 @@ class NewsController extends Controller
     }
 
     // Update
+    /**
+     * @param $id
+     * @param Requests\News\UpdateNewsRequest $request
+     * @return mixed
+     */
     public function update($id, Requests\News\UpdateNewsRequest $request)
     {
         $storage = Storage::disk('s3');
@@ -160,6 +188,10 @@ class NewsController extends Controller
     }
 
     // Delete
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function delete($id)
     {
         $news = News::findOrFail($id);

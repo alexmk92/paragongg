@@ -7,8 +7,16 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
+/**
+ * Class UpdatesSettings
+ * @package App\Http\Traits
+ */
 trait UpdatesSettings
 {
+    /**
+     * @param $key
+     * @param $value
+     */
     public function updateSettings($key, $value)
     {
         $setting = Setting::where('key', $key)->first();

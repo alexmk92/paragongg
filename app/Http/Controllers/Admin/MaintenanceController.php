@@ -10,9 +10,16 @@ use App\Http\Controllers\Controller;
 use App\Jobs\UpdateCardObject;
 use App\Jobs\UpdateHeroObject;
 
+/**
+ * Class MaintenanceController
+ * @package App\Http\Controllers\Admin
+ */
 class MaintenanceController extends Controller
 {
     // Maintenance index
+    /**
+     * @return mixed
+     */
     function index()
     {
         return view('admin.maintenance.index');

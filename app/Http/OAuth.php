@@ -7,6 +7,11 @@ use GuzzleHttp\Exception\ServerException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Request;
 
+/**
+ * @param $user
+ * @param $code
+ * @return bool
+ */
 function getOAuthLogin($user, $code)
 {
     $auth = base64_encode(env('EPIC_API_CLIENT_ID').':'.env('EPIC_API_CLIENT_SECRET'));
@@ -48,6 +53,11 @@ function getOAuthLogin($user, $code)
     $user->save();
 }
 
+/**
+ * @param $user
+ * @param $token
+ * @return bool
+ */
 function refreshOAuthLogin($user, $token)
 {
     $auth = base64_encode(env('EPIC_API_CLIENT_ID').':'.env('EPIC_API_CLIENT_SECRET'));
@@ -86,6 +96,10 @@ function refreshOAuthLogin($user, $token)
     $user->save();
 }
 
+/**
+ * @param $user
+ * @return mixed
+ */
 function getOAuthToken($user)
 {
     // Check if current one has expired

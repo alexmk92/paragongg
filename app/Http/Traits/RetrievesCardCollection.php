@@ -10,8 +10,16 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Cache;
 
+/**
+ * Class RetrievesCardCollection
+ * @package App\Http\Traits
+ */
 trait RetrievesCardCollection
 {
+    /**
+     * @param $user
+     * @return bool
+     */
     public function getCardCollection($user)
     {
         Cache::forget('user.'.$user->id.'.cards');

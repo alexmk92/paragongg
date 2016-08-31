@@ -9,8 +9,16 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Class ReportController
+ * @package App\Http\Controllers\API
+ */
 class ReportController extends Controller
 {
+    /**
+     * @param Request $request
+     * @return mixed
+     */
     public function store(Request $request)
     {
         if(!Auth::check()) return response()->json(['code' => 403, 'message' => 'You must be logged in to report a comment']);

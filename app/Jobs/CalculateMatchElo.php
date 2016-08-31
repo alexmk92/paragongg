@@ -14,6 +14,10 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
+/**
+ * Class CalculateMatchElo
+ * @package App\Jobs
+ */
 class CalculateMatchElo extends Job implements ShouldQueue
 {
     use InteractsWithQueue, SerializesModels, DispatchesJobs, FindOrCreatePlayers;
@@ -79,6 +83,10 @@ class CalculateMatchElo extends Job implements ShouldQueue
         }
     }
 
+    /**
+     * @param $team
+     * @return float
+     */
     public function getAverageElo($team)
     {
         $average = 0;
@@ -91,6 +99,11 @@ class CalculateMatchElo extends Job implements ShouldQueue
         return (float)$average / count($team);
     }
 
+    /**
+     * @param $rating1
+     * @param $rating2
+     * @return float|int
+     */
     public function getWinExpectancy($rating1, $rating2)
     {
         $difference = (float)$rating1 - (float)$rating2;
@@ -99,6 +112,12 @@ class CalculateMatchElo extends Job implements ShouldQueue
         return 1 / (pow(10,$powerOf) + 1);
     }
 
+    /**
+     * @param $k
+     * @param $team
+     * @param $expectancy
+     * @return mixed
+     */
     public function getEloChange($k, $team, $expectancy)
     {
         $result = 0;

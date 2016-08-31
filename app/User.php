@@ -4,6 +4,10 @@ namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+/**
+ * Class User
+ * @package App
+ */
 class User extends Authenticatable
 {
     /**
@@ -24,6 +28,9 @@ class User extends Authenticatable
         'password', 'remember_token', 'oauth_token', 'oauth_expires', 'oauth_refresh_token', 'oauth_refresh_expires',
     ];
 
+    /**
+     * @return bool
+     */
     public function isAdmin()
     {
         if($this->role == 'administrator') {
@@ -32,6 +39,9 @@ class User extends Authenticatable
         return false;
     }
 
+    /**
+     * @return bool
+     */
     public function isMod()
     {
         if($this->role == 'administrator' ||
@@ -41,6 +51,9 @@ class User extends Authenticatable
         return false;
     }
 
+    /**
+     * @return bool
+     */
     public function epicAccountLinked()
     {
         if($this->epic_account_id != null && $this->epic_account_id != null) {
@@ -48,7 +61,10 @@ class User extends Authenticatable
         }
         return false;
     }
-    
+
+    /**
+     * @return mixed
+     */
     public function newsPosts()
     {
         return $this->hasMany('App\News');

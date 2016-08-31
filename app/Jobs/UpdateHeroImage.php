@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
+/**
+ * Class UpdateHeroImage
+ * @package App\Jobs
+ */
 class UpdateHeroImage extends Job implements ShouldQueue
 {
     use InteractsWithQueue, SerializesModels;

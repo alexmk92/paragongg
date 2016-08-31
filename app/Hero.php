@@ -4,6 +4,10 @@ namespace App;
 
 use Jenssegers\Mongodb\Eloquent\Model as Model;
 
+/**
+ * Class Hero
+ * @package App
+ */
 class Hero extends Model
 {
     protected $connection = 'mongodb';

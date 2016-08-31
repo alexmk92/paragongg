@@ -5,6 +5,10 @@ namespace App\Http\Requests\Account;
 use App\Http\Requests\Request;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Class UpdateProfileRequest
+ * @package App\Http\Requests\Account
+ */
 class UpdateProfileRequest extends Request
 {
     /**

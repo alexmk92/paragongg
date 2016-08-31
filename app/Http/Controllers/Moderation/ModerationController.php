@@ -15,15 +15,25 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+/**
+ * Class ModerationController
+ * @package App\Http\Controllers\Moderation
+ */
 class ModerationController extends Controller
 {
     use UpdatesSettings;
 
+    /**
+     * @return mixed
+     */
     public function index()
     {
         return view('moderation.index');
     }
 
+    /**
+     * @return mixed
+     */
     public function news()
     {
         $news = News::where('status', 'published')
@@ -32,6 +42,10 @@ class ModerationController extends Controller
         return view('moderation.news', compact('news'));
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function newsFrontpage($id)
     {
         $this->updateSettings('featuredNews', $id);
@@ -40,6 +54,10 @@ class ModerationController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function newsPromote($id)
     {
         $news = News::findOrFail($id);
@@ -53,6 +71,10 @@ class ModerationController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function newsDemote($id)
     {
         $news = News::findOrFail($id);
@@ -66,6 +88,9 @@ class ModerationController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * @return mixed
+     */
     public function guides()
     {
         $guides = Guide::where('status', 'published')
@@ -75,6 +100,10 @@ class ModerationController extends Controller
         return view('moderation.guides')->with('guides', $guides);
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function guidesFeature($id)
     {
         $guide = Guide::findOrFail($id);
@@ -87,6 +116,10 @@ class ModerationController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function guidesUnfeature($id)
     {
         $guide = Guide::findOrFail($id);
@@ -99,6 +132,9 @@ class ModerationController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * @return mixed
+     */
     public function decks()
     {
         $decks = Deck::orderBy('created_at', 'DESC')
@@ -106,6 +142,10 @@ class ModerationController extends Controller
         return view('moderation.decks', compact('decks'));
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function decksFeature($id)
     {
         $deck = Deck::findOrFail($id);
@@ -118,6 +158,10 @@ class ModerationController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function decksUnfeature($id)
     {
         $deck = Deck::findOrFail($id);
@@ -130,12 +174,19 @@ class ModerationController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * @return mixed
+     */
     public function cards()
     {
         $cards = Card::orderBy('name')->paginate(50);
         return view('moderation.cards', compact('cards'));
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function cardsFeature($id)
     {
         $this->updateSettings('featuredCard', $id);
@@ -144,12 +195,19 @@ class ModerationController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * @return mixed
+     */
     public function heroes()
     {
         $heroes = Hero::orderBy('name')->paginate(50);
         return view('moderation.heroes', compact('heroes'));
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function heroesFeature($id)
     {
         $this->updateSettings('featuredHero', $id);
@@ -158,12 +216,18 @@ class ModerationController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * @return mixed
+     */
     public function reports()
     {
         $reports = Report::where('status', 'open')->paginate(50);
         return view('moderation.reports', compact('reports'));
     }
 
+    /**
+     * @return mixed
+     */
     public function getPatch()
     {
         $patch = Setting::where('key', 'currentPatch')->first();
@@ -177,6 +241,10 @@ class ModerationController extends Controller
         return view('moderation.patch', compact('patch'));
     }
 
+    /**
+     * @param Request $request
+     * @return mixed
+     */
     public function setPatch(Request $request)
     {
         $this->updateSettings('currentPatch', $request->patch);

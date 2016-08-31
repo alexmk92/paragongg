@@ -12,8 +12,16 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use PhpParser\Comment;
 
+/**
+ * Class CommentController
+ * @package App\Http\Controllers\API
+ */
 class CommentController extends Controller
 {
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function thread($id)
     {
         $skip = 0;
@@ -39,6 +47,10 @@ class CommentController extends Controller
         return response()->json($comments);
     }
 
+    /**
+     * @param Request $request
+     * @return mixed
+     */
     public function store(Request $request)
     {
         $comment = new CommentThreadComment();
@@ -53,6 +65,10 @@ class CommentController extends Controller
         return response()->json(['code' => 200, 'message' => 'Message stored', 'comment' => $comment]);
     }
 
+    /**
+     * @param Request $request
+     * @return mixed
+     */
     public function upvote(Request $request) {
         $comment = CommentThreadComment::findOrFail($request->id);
         $comment->votes = $comment->votes + 1;
@@ -62,6 +78,10 @@ class CommentController extends Controller
         return response()->json(['code' => 200, 'message' => 'Comment upvoted', 'comment' => $comment]);
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function delete($id)
     {
         $comment = CommentThreadComment::where('user_id', auth()->user()->id)->where('id', $id)->first();

@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\Request;
 
+/**
+ * Class UpdatePasswordRequest
+ * @package App\Http\Requests\Account
+ */
 class UpdatePasswordRequest extends Request
 {
     /**
@@ -53,6 +57,9 @@ class UpdatePasswordRequest extends Request
         ];
     }
 
+    /**
+     * @return array
+     */
     public function messages()
     {
         return [

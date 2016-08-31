@@ -22,10 +22,17 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
+/**
+ * Class AdminController
+ * @package App\Http\Controllers\Admin
+ */
 class AdminController extends Controller
 {
     use UpdatesSettings;
 
+    /**
+     * @return mixed
+     */
     public function index()
     {
         $stats = new Collection();
@@ -70,11 +77,17 @@ class AdminController extends Controller
         return view('admin.index', compact('stats'));
     }
 
+    /**
+     * @return mixed
+     */
     public function jobs()
     {
         return view('admin.jobs');
     }
 
+    /**
+     * @return mixed
+     */
     public function getJobs()
     {
         $credentials = array(
@@ -119,6 +132,9 @@ class AdminController extends Controller
         dd($result);
     }
 
+    /**
+     * @return mixed
+     */
     public function cards()
     {
         $cards = Card::orderBy('name', 'ASC')
@@ -126,6 +142,9 @@ class AdminController extends Controller
         return view('admin.cards', compact('cards'));
     }
 
+    /**
+     * @return mixed
+     */
     public function heroes()
     {
         $heroes = Hero::orderBy('name', 'ASC')
@@ -133,6 +152,9 @@ class AdminController extends Controller
         return view('admin.heroes', compact('heroes'));
     }
 
+    /**
+     * @return mixed
+     */
     public function getSettings()
     {
         $settings = Setting::all();
@@ -143,6 +165,10 @@ class AdminController extends Controller
         return view('admin.settings', compact('settings'));
     }
 
+    /**
+     * @param Request $request
+     * @return mixed
+     */
     public function setSettings(Request $request)
     {
         $this->updateSettings('globalNotification', $request->global_notification);
@@ -151,12 +177,19 @@ class AdminController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * @return mixed
+     */
     public function moderation()
     {
         $users = User::where('role', 'moderator')->get();
         return view('admin.moderation', compact('users'));
     }
 
+    /**
+     * @param Request $request
+     * @return mixed
+     */
     public function mod(Request $request)
     {
         $user = User::where('username', $request->username)->firstOrFail();
@@ -166,6 +199,10 @@ class AdminController extends Controller
         return redirect('admin/moderation');
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function demod($id)
     {
         $user = User::findOrFail($id);
@@ -175,6 +212,9 @@ class AdminController extends Controller
         return redirect('admin/moderation');
     }
 
+    /**
+     * @return mixed
+     */
     public function upgradeDecks()
     {
         $decks = Deck::where('affinities', 'exists', false)->get();

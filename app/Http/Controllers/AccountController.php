@@ -11,15 +11,25 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
+/**
+ * Class AccountController
+ * @package App\Http\Controllers
+ */
 class AccountController extends Controller
 {
     // Index
+    /**
+     * @return mixed
+     */
     public function index()
     {
         return redirect('/account/profile');
     }
 
     // Edit profile (GET)
+    /**
+     * @return mixed
+     */
     public function editProfile()
     {
         $user = Auth::user();
@@ -28,6 +38,10 @@ class AccountController extends Controller
     }
 
     // Edit profile (POST)
+    /**
+     * @param UpdateProfileRequest $request
+     * @return mixed
+     */
     public function updateProfile(UpdateProfileRequest $request)
     {
         $user = Auth::user();
@@ -56,6 +70,9 @@ class AccountController extends Controller
     }
 
     // Edit profile (POST)
+    /**
+     * @return mixed
+     */
     public function linkAccount()
     {
         $user = Auth::user();
@@ -63,6 +80,9 @@ class AccountController extends Controller
     }
 
     // Edit password (GET)
+    /**
+     * @return mixed
+     */
     public function editPassword()
     {
         $user = Auth::user();
@@ -70,6 +90,10 @@ class AccountController extends Controller
     }
 
     // Edit password (POST)
+    /**
+     * @param UpdatePasswordRequest $request
+     * @return mixed
+     */
     public function updatePassword(UpdatePasswordRequest $request)
     {
         $user = Auth::user();
@@ -82,6 +106,9 @@ class AccountController extends Controller
     }
 
     // List a users guides
+    /**
+     * @return mixed
+     */
     public function guides()
     {
         $user = Auth::user();
@@ -90,6 +117,9 @@ class AccountController extends Controller
     }
 
     // List a users decks
+    /**
+     * @return mixed
+     */
     public function decks()
     {
         $user = Auth::user();
@@ -98,6 +128,9 @@ class AccountController extends Controller
         return view('account.decks', compact('user', 'decks'));
     }
 
+    /**
+     * @return bool|mixed
+     */
     public function getDecks()
     {
         $user = Auth::user();

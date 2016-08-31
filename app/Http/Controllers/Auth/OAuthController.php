@@ -7,9 +7,16 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * Class OAuthController
+ * @package App\Http\Controllers\Auth
+ */
 class OAuthController extends Controller
 {
     // Index
+    /**
+     * @return mixed
+     */
     public function linkAccount()
     {
         // If code exists
@@ -53,6 +60,9 @@ class OAuthController extends Controller
         }
     }
 
+    /**
+     * @return mixed
+     */
     public function unlinkAccount()
     {
         // Log out of Epic services

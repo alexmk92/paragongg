@@ -5,6 +5,10 @@ namespace App\Http\Middleware;
 use Carbon\Carbon;
 use Closure;
 
+/**
+ * Class Cors
+ * @package App\Http\Middleware
+ */
 class Cors
 {
     /**

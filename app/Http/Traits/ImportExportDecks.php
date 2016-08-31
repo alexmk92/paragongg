@@ -10,8 +10,16 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
+/**
+ * Class ImportExportDecks
+ * @package App\Http\Traits
+ */
 trait ImportExportDecks
 {
+    /**
+     * @param $user
+     * @return bool|mixed
+     */
     public function getDecks($user)
     {
         $client = new Client();
@@ -37,6 +45,11 @@ trait ImportExportDecks
         return $response;
     }
 
+    /**
+     * @param $user
+     * @param $id
+     * @return bool
+     */
     public function importToParagonGG($user, $id)
     {
         $client = new Client();

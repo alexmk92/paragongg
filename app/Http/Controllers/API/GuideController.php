@@ -6,9 +6,16 @@ use App\Guide;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+/**
+ * Class GuideController
+ * @package App\Http\Controllers\API
+ */
 class GuideController extends Controller
 {
     // Get
+    /**
+     * @return mixed
+     */
     public function index()
     {
         $skip = 0;

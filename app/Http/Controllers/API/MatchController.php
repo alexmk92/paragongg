@@ -10,10 +10,18 @@ use App\Http\Controllers\Controller;
 use App\Player;
 use Illuminate\Http\Request;
 
+/**
+ * Class MatchController
+ * @package App\Http\Controllers\API
+ */
 class MatchController extends Controller
 {
     use FindOrCreatePlayers;
 
+    /**
+     * @param $accountId
+     * @return mixed
+     */
     public function player($accountId)
     {
         $skip = 0;
@@ -31,12 +39,19 @@ class MatchController extends Controller
         return $matches;
     }
     // Show
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function show($id)
     {
         $match = Match::where('replayId', $id)->first();
         return response()->json($match);
     }
 
+    /**
+     * @return mixed
+     */
     public function getPlayersElo()
     {
         $players     = request()->get('players');
@@ -81,6 +96,9 @@ class MatchController extends Controller
         return response()->json($playerElos);
     }
 
+    /**
+     * @param $id
+     */
     public function end($id)
     {
         $this->dispatch(new CalculateMatchElo($id));

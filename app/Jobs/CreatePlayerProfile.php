@@ -13,6 +13,10 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
+/**
+ * Class CreatePlayerProfile
+ * @package App\Jobs
+ */
 class CreatePlayerProfile extends Job implements ShouldQueue
 {
     use InteractsWithQueue, SerializesModels, DispatchesJobs, FindOrCreatePlayers;

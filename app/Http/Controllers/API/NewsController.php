@@ -8,8 +8,15 @@ use App\News;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+/**
+ * Class NewsController
+ * @package App\Http\Controllers\API
+ */
 class NewsController extends Controller
 {
+    /**
+     * @return mixed
+     */
     public function index()
     {
         $skip = 0;

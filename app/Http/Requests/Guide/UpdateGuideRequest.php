@@ -4,6 +4,10 @@ namespace App\Http\Requests\Guide;
 
 use App\Http\Requests\Request;
 
+/**
+ * Class UpdateGuideRequest
+ * @package App\Http\Requests\Guide
+ */
 class UpdateGuideRequest extends Request
 {
     /**

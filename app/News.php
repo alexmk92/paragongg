@@ -4,6 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class News
+ * @package App
+ */
 class News extends Model
 {
     /**
@@ -13,6 +17,9 @@ class News extends Model
      */
     protected $table = 'news';
 
+    /**
+     * @return mixed
+     */
     public function author() {
         return $this->belongsTo('App\User', 'user_id');
     }

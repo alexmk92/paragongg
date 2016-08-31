@@ -16,6 +16,10 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
+/**
+ * Class CreatePlayers
+ * @package App\Jobs
+ */
 class CreatePlayers extends Job implements ShouldQueue
 {
     use InteractsWithQueue, SerializesModels, DispatchesJobs, FindOrCreatePlayers;
@@ -26,7 +30,9 @@ class CreatePlayers extends Job implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param $id
+     * @param $accountIds
+     * @param $matchId
+     * @internal param $id
      */
     public function __construct($accountIds, $matchId)
     {

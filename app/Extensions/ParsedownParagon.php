@@ -4,14 +4,25 @@ namespace App\Extensions;
 
 use Parsedown;
 
+/**
+ * Class ParsedownParagon
+ * @package App\Extensions
+ */
 class ParsedownParagon extends Parsedown
 {
+    /**
+     * ParsedownParagon constructor.
+     */
     function __construct()
     {
         $this->InlineTypes['{'] []= 'Paragon';
         $this->inlineMarkerList .= '{';
     }
 
+    /**
+     * @param $Excerpt
+     * @return array
+     */
     protected function inlineParagon($Excerpt)
     {
         if (preg_match('/\{{(.*?)\}}/', $Excerpt['text'], $matches)) {

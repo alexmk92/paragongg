@@ -17,11 +17,19 @@ use Illuminate\Support\Facades\Auth;
 use Parsedown;
 use TOC;
 
+/**
+ * Class GuideController
+ * @package App\Http\Controllers
+ */
 class GuideController extends Controller
 {
     use GeneratesShortcodes;
 
     // Create
+    /**
+     * @param null $hero
+     * @return mixed
+     */
     public function index($hero = null)
     {
         if($hero) $hero = Hero::where('slug', $hero)->firstOrFail();
@@ -69,6 +77,9 @@ class GuideController extends Controller
         return view('guides.index', compact('guides', 'heroes', 'hero'));
     }
 
+    /**
+     * @return mixed
+     */
     public function indexGameplay()
     {
         $guides = [];
@@ -123,6 +134,9 @@ class GuideController extends Controller
     }
 
     // Create
+    /**
+     * @return mixed
+     */
     public function create()
     {
         $heroes = Hero::select('name', 'code', 'image')
@@ -135,6 +149,10 @@ class GuideController extends Controller
     }
 
     // Edit
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function edit($id)
     {
         $heroes = Hero::select('name', 'code', 'image')
@@ -148,6 +166,10 @@ class GuideController extends Controller
     }
 
     // Store
+    /**
+     * @param CreateGuideRequest $request
+     * @return mixed
+     */
     public function store(CreateGuideRequest $request)
     {
         $guide = new Guide;
@@ -201,7 +223,12 @@ class GuideController extends Controller
         return redirect('/guides/'.$guide->id.'/'.$guide->slug);
     }
 
-    public function update(UpdateGuideRequest $request ,$id)
+    /**
+     * @param UpdateGuideRequest $request
+     * @param $id
+     * @return mixed
+     */
+    public function update(UpdateGuideRequest $request , $id)
     {
         $guide = Guide::findOrFail($id);
 
@@ -251,6 +278,11 @@ class GuideController extends Controller
     }
 
     // Read
+    /**
+     * @param $id
+     * @param Request $request
+     * @return mixed
+     */
     public function show($id, Request $request)
     {
         $guide  = Guide::findOrFail($id);
@@ -340,6 +372,10 @@ class GuideController extends Controller
     }
 
     // Publish
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function publish($id)
     {
         $guide = Guide::where('id', $id)->where('user_id', auth()->user()->id)->firstOrFail();
@@ -351,6 +387,10 @@ class GuideController extends Controller
     }
 
     // Unpublish
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function unpublish($id)
     {
         $guide = Guide::where('id', $id)->where('user_id', auth()->user()->id)->firstOrFail();
@@ -362,6 +402,10 @@ class GuideController extends Controller
     }
 
     // Delete
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function delete($id)
     {
         $guide = Guide::findOrFail($id);
@@ -370,6 +414,10 @@ class GuideController extends Controller
     }
 
     // Strategy redirect
+    /**
+     * @param $slug
+     * @return mixed
+     */
     public function strategy($slug)
     {
         $guide = Guide::where('slug', $slug)->firstOrFail();

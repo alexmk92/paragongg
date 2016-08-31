@@ -14,11 +14,19 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Cache;
 
+/**
+ * Class MatchController
+ * @package App\Http\Controllers
+ */
 class MatchController extends Controller
 {
     use FindOrCreatePlayers;
 
     // Show
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function show($id)
     {
         $heroes = Hero::select('code', 'codename', 'name', 'image')->get();

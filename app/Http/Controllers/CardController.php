@@ -16,10 +16,17 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * Class CardController
+ * @package App\Http\Controllers
+ */
 class CardController extends Controller
 {
     use RetrievesCardCollection;
     // Index
+    /**
+     * @return mixed
+     */
     public function index()
     {
         $cards = $this->getCards();
@@ -28,6 +35,11 @@ class CardController extends Controller
     }
 
     // Show
+    /**
+     * @param Request $request
+     * @param $slug
+     * @return mixed
+     */
     public function show(Request $request, $slug)
     {
         $card = Card::where('slug', $slug)->first();
@@ -40,6 +52,9 @@ class CardController extends Controller
         return view('cards.show', compact('card', 'thread'));
     }
 
+    /**
+     * @return mixed
+     */
     public function getCards()
     {
         $cards = Card::select('name', 'damageType', 'code', 'slug', 'type', 'cost', 'upgradeSlots', 'affinity', 'rarity', 'effects', 'maxedEffects', 'background', 'icon')->get();
@@ -71,12 +86,18 @@ class CardController extends Controller
     }
     
     // Get a user's cards collection
+    /**
+     * @return bool
+     */
     public function cardCollection()
     {
         return $this->getCardCollection(Auth::user());
     }
 
     // Create
+    /**
+     * @return mixed
+     */
     public function create()
     {
         //$cards = new Card();
@@ -85,6 +106,9 @@ class CardController extends Controller
     }
 
     // Store
+    /**
+     * @return mixed
+     */
     public function store()
     {
         //$cards = new Card();
@@ -93,6 +117,10 @@ class CardController extends Controller
     }
 
     // Edit
+    /**
+     * @param $code
+     * @return mixed
+     */
     public function edit($code)
     {
         $card = Card::where('code', $code)->get();
@@ -101,6 +129,11 @@ class CardController extends Controller
     }
 
     // Update
+    /**
+     * @param $code
+     * @param Request $request
+     * @return mixed
+     */
     public function update($code, Request $request)
     {
         $updatedCard = json_decode($request->input('data'), true);
@@ -112,6 +145,10 @@ class CardController extends Controller
     }
 
     // Delete
+    /**
+     * @param $code
+     * @return mixed
+     */
     public function delete($code)
     {
         $card = Card::where('code', $code)->firstOrFail();
@@ -121,6 +158,9 @@ class CardController extends Controller
     }
 
     // Pull latest cards
+    /**
+     * @return mixed
+     */
     public function pullCards()
     {
         // Get our current cards list

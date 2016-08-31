@@ -10,8 +10,16 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
+/**
+ * Class FindOrCreatePlayers
+ * @package App\Http\Traits
+ */
 trait FindOrCreatePlayers
 {
+    /**
+     * @param $username
+     * @return Player
+     */
     public function find($username)
     {
         $player = Player::where('username', $username)->first();
@@ -110,6 +118,10 @@ trait FindOrCreatePlayers
         return $player;
     }
 
+    /**
+     * @param $username
+     * @return Player
+     */
     public function findPSN($username)
     {
         $player = Player::where('usernamePSN', $username)->first();
@@ -177,6 +189,10 @@ trait FindOrCreatePlayers
         return $player;
     }
 
+    /**
+     * @param $accountIds
+     * @param $matchId
+     */
     public function createPlayers($accountIds, $matchId)
     {
         $parameters = implode('&accountId=', $accountIds);

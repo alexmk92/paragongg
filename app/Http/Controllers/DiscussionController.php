@@ -9,8 +9,15 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Class DiscussionController
+ * @package App\Http\Controllers
+ */
 class DiscussionController extends Controller
 {
+    /**
+     * @return mixed
+     */
     public function index()
     {
         $discussions = Discussion::orderBy('created_at', 'DESC')
@@ -19,6 +26,10 @@ class DiscussionController extends Controller
         return view('discussion.index', compact('discussions'));
     }
 
+    /**
+     * @param $category
+     * @return mixed
+     */
     public function category($category)
     {
         $categories = ['general', 'questions', 'theorycrafting'];
@@ -31,6 +42,10 @@ class DiscussionController extends Controller
         return view('discussion.index', compact('discussions', 'category'));
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function show($id)
     {
         $discussion = Discussion::findOrFail($id);
@@ -44,11 +59,18 @@ class DiscussionController extends Controller
         return view('discussion.show', compact('discussion', 'responses', 'bestAnswer'));
     }
 
+    /**
+     * @return mixed
+     */
     public function create()
     {
         return view('discussion.create');
     }
 
+    /**
+     * @param Requests\Discussion\CreateDiscussionRequest $request
+     * @return mixed
+     */
     public function store(Requests\Discussion\CreateDiscussionRequest $request)
     {
         $discussion = new Discussion();
@@ -62,6 +84,10 @@ class DiscussionController extends Controller
         return redirect('/discussion/'.$discussion->id.'/'.createSlug($discussion->title));
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function edit($id)
     {
         $discussion = Discussion::findOrFail($id);
@@ -69,11 +95,19 @@ class DiscussionController extends Controller
         return view('discussion.edit', compact('discussion'));
     }
 
+    /**
+     * @param $id
+     */
     public function update($id)
     {
 
     }
 
+    /**
+     * @param $id
+     * @param Request $request
+     * @return mixed
+     */
     public function reply($id, Request $request)
     {
         $discussion = Discussion::findOrFail($id);
@@ -88,6 +122,11 @@ class DiscussionController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * @param $id
+     * @param $rid
+     * @return mixed
+     */
     public function bestAnswer($id, $rid)
     {
         $discussion = Discussion::where('category', 'questions')->where('id', $id)->firstOrFail();
@@ -104,6 +143,10 @@ class DiscussionController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function delete($id)
     {
         $discussion = Discussion::findOrFail($id);
