@@ -136,7 +136,7 @@ var HeroPanel = React.createClass({
             }
         }.bind(this));
         if(heroes.length === 0) {
-            heroes.push(<li className="no-result"><span><i className="fa fa-info-circle" aria-hidden="true"/>  We're sorry, no hero matches the search term <span className="search-term">{this.state.searchTerm}</span>, please try again.</span></li>)
+            heroes.push(<li key="no-hero" className="no-result"><span><i className="fa fa-info-circle" aria-hidden="true"/>  We're sorry, no hero matches the search term <span className="search-term">{this.state.searchTerm}</span>, please try again.</span></li>)
         }
         return heroes;
     },
