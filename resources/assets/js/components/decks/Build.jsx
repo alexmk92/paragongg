@@ -8,21 +8,35 @@ var BuildStats = require('./BuildStats');
 
 var Build = React.createClass({
     componentWillMount: function() {
+        this.isClientMobile = Helpers.isClientMobile();
         this.tooltip = this.props.tooltip || new Tooltip();
         this.lastSelectedCard = this.props.lastSelectedCard;
         this.lastSelectedUpgradeSlot = null;
         this.lastSelectedSlot = -1;
         this.queuedCards    = [];
         this.queuedUpgrades = [];
+
+        window.addEventListener('resize', this.updateViewForDimensions);
+
+        // No tooltip on mobile
+        if(this.isClientMobile) {
+            this.tooltip = null;
+        }
     },
     componentDidMount: function() {
         window.scrollTo(0, 0);
-        this.isClientMobile = Helpers.isClientMobile();
-        if(!Helpers.isClientMobile()) {
+        if(this.isClientMobile) {
             this.refs.buildTitleInput.focus();
         }
         if(this.props.build.title !== "") {
             this.refs.buildTitleInput.value = this.props.build.title;
+        }
+    },
+    updateViewForDimensions: function() {
+        if(!Helpers.isClientMobile()) {
+            this.tooltip = this.props.tooltip || new Tooltip();
+        } else {
+            this.tooltip = null;
         }
     },
     shouldComponentUpdate: function(nextProps) {
@@ -43,7 +57,7 @@ var Build = React.createClass({
         }
         if(this.props.build.title === "") {
             this.refs.buildTitleInput.value = "";
-            if(!Helpers.isClientMobile()) this.refs.buildTitleInput.focus();
+            if(!this.isClientMobile) this.refs.buildTitleInput.focus();
         } else {
             this.refs.buildTitleInput.value = this.props.build.title;
         }
@@ -315,9 +329,8 @@ var Build = React.createClass({
             var card = "";
             var cardPulse = "";
             var upgradePulse = "";
-            var isClientMobile = Helpers.isClientMobile();
 
-            if(this.props.autoPlaceIndex === i && Helpers.isClientMobile() && this.props.selectedCard !== null) {
+            if(this.props.autoPlaceIndex === i && this.isClientMobile && this.props.selectedCard !== null) {
                 if(this.props.selectedCard.type !== "Upgrade") {
                     this.queuedCards.push({
                         slot: slot,
@@ -331,7 +344,7 @@ var Build = React.createClass({
                     })
                 }
             }
-            else if(this.props.autoPlaceIndex != -1 && this.lastSelectedSlot === i && Helpers.isClientMobile() && this.props.selectedCard !== null) {
+            else if(this.props.autoPlaceIndex != -1 && this.lastSelectedSlot === i && this.isClientMobile && this.props.selectedCard !== null) {
                 if(typeof slot.upgrades !== "undefined" || slot.upgrades !== null ) {
                     //this.bindUpgradeToCard(slot.upgrades[this.props.autoPlaceIndex], slot.card, false);
                     this.queuedUpgrades.push({
@@ -389,7 +402,7 @@ var Build = React.createClass({
             }
             var actionButtons = (function() {
                 // ALWAYS RETURN THIS VIEW FOR MOBILE ON TRAP
-                if(Helpers.isClientMobile() && slot.card) {
+                if(this.isClientMobile && slot.card) {
                     return (
                         <div key={"action-buttons-" + i } className={"delete-wrapper"} onClick={this.bindCardToSlot.bind(this, i)}
                              onContextMenu={this.removeCardFromSlot.bind(this, i, true)}>
@@ -401,7 +414,7 @@ var Build = React.createClass({
                     );
                 }
                 // CANNOT BE A UPGRADE CARD
-                if(!Helpers.isClientMobile()) {
+                if(!this.isClientMobile) {
                     if(this.props.selectedCard !== null && this.props.selectedCard.type !== "Upgrade") {
                         if(this.props.selectedCard === slot.card) {
                             return (
@@ -429,14 +442,14 @@ var Build = React.createClass({
                     }
                 }
             }.bind(this))();
-            if(!Helpers.isNullOrUndefined(this.props.selectedCard) && !isClientMobile) {
+            if(!Helpers.isNullOrUndefined(this.props.selectedCard) && !this.isClientMobile) {
                 if(this.props.selectedCard.type.toUpperCase() === "UPGRADE") {
                     if(!this.hasSamePassiveEffects(this.props.selectedCard, slot.card)) {
                         activeClass += " faded";
                     }
                 }
             }
-            if(this.lastSelectedSlot > -1 && !isClientMobile) {
+            if(this.lastSelectedSlot > -1 && !this.isClientMobile) {
                 if(i !== this.lastSelectedSlot && activeClass.indexOf("faded") < 0) {
                     activeClass += " faded";
                 }
@@ -548,7 +561,7 @@ var Build = React.createClass({
                     this.bindUpgradeToCard(bindSlot, bindSlot.card, true);
                 this.lastSelectedSlot = -1;
             }
-        } else if(Helpers.isClientMobile()) {
+        } else if(this.isClientMobile) {
             var slot = this.props.build.slots[index];
             if(!slot.card) {
                 if(Helpers.hasClass(elem, "glow-layer")) this.requestActiveTab(0, index, "EQUIPMENT");
@@ -638,7 +651,7 @@ var Build = React.createClass({
                 var newBuild = this.props.build;
                 newBuild.slots = newSlots;
 
-                if(Helpers.isClientMobile()) {
+                if(this.isClientMobile) {
                     activeTab = -1;
                 }
 
@@ -659,7 +672,7 @@ var Build = React.createClass({
     },
     /* TOOLTIP METHODS */
     setTooltipContent: function(card, message) {
-        if(!Helpers.isClientMobile()) {
+        if(!this.isClientMobile && this.tooltip !== null) {
             var content = null;
             if(card !== null) {
                 content = (
@@ -688,7 +701,7 @@ var Build = React.createClass({
     showTooltip: function(card, selector, event) {
         if(Helpers.isNullOrUndefined(event)) return;
 
-        if(!Helpers.isClientMobile()) {
+        if(!this.isClientMobile && this.tooltip !== null) {
             if(card) {
                 if(event.target.className.toLowerCase().indexOf(selector.toLowerCase()) > -1) {
                     this.tooltip.showTooltip();
@@ -699,7 +712,9 @@ var Build = React.createClass({
         }
     },
     hideTooltip: function() {
-        this.tooltip.hideTooltip();
+        if(this.tooltip !== null) {
+            this.tooltip.hideTooltip();
+        }
     },
     toggleQuickBind: function() {
         this.buildUpdated(this.build, null, true, !this.props.shouldQuickBindCards, null);

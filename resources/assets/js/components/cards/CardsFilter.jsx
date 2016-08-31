@@ -63,6 +63,10 @@ var CardsFilter = React.createClass({
     },
     componentWillMount: function() {
         this.tooltip = this.props.tooltip || new Tooltip();
+        if(Helpers.isClientMobile()) {
+            this.tooltip = null;
+        }
+        window.addEventListener('resize', this.updateViewForDimensions);
         
         // Get filter affinities from URL:
         this.filterWasReset = false;
@@ -85,6 +89,13 @@ var CardsFilter = React.createClass({
             showRareCards : options.booleanValues.showRareCards,
             showEpicCards : options.booleanValues.showEpicCards
         })
+    },
+    updateViewForDimensions: function() {
+        if(!Helpers.isClientMobile()) {
+            this.tooltip = this.props.tooltip || new Tooltip();
+        } else {
+            this.tooltip = null;
+        }
     },
     getInitialMoreOptions: function() {
         var hash = window.location.hash;
@@ -684,33 +695,37 @@ var CardsFilter = React.createClass({
     },
     setTooltipContent: function(card) {
         //if(Helpers.isClientMobile()) return;
-
-        var content = (
-            <div className="pgg-tooltip pgg-tooltip-card">
-                <div className="card-head">
-                    <span className="cost">{card.cost}</span>
-                    <div className="header">
-                        <span className="name">{card.name}</span>
-                        <span className={"rarity rarity-" + card.rarity.toLowerCase()}>{card.rarity}</span>
-                        <span className="type">{card.type}</span>
+        if(this.tooltip !== null) {
+            var content = (
+                <div className="pgg-tooltip pgg-tooltip-card">
+                    <div className="card-head">
+                        <span className="cost">{card.cost}</span>
+                        <div className="header">
+                            <span className="name">{card.name}</span>
+                            <span className={"rarity rarity-" + card.rarity.toLowerCase()}>{card.rarity}</span>
+                            <span className="type">{card.type}</span>
+                        </div>
+                        <i className={"affinity affinity-color pgg pgg-affinity-" + card.affinity.toLowerCase()}></i>
                     </div>
-                    <i className={"affinity affinity-color pgg pgg-affinity-" + card.affinity.toLowerCase()}></i>
+                    <div className="content">
+                        <CardEffects card={card} />
+                    </div>
                 </div>
-                <div className="content">
-                    <CardEffects card={card} />
-                </div>
-            </div>
-        );
-        var tooltip = document.getElementById("toptip");
-        ReactDOM.render(content, tooltip);
+            );
+            var tooltip = document.getElementById("toptip");
+            ReactDOM.render(content, tooltip);
+        }
     },
     showTooltip: function() {
-        if(Helpers.isClientMobile()) return;
-        this.tooltip.showTooltip();
+        if(this.tooltip !== null) {
+            this.tooltip.showTooltip();
+        }
     },
     hideTooltip: function() {
-        if(Helpers.isClientMobile()) return;
-        this.tooltip.hideTooltip();
+        if(this.tooltip !== null) {
+            if(Helpers.isClientMobile()) return;
+            this.tooltip.hideTooltip();
+        }
     },
     resetCardFilter: function() {
         this.filterWasReset = true;

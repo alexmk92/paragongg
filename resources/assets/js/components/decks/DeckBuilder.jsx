@@ -46,13 +46,18 @@ var DeckBuilder = React.createClass({
     },
     /* COMPONENT LIFECYCLE METHODS */
     componentWillMount: function() {
-        this.tooltip = new Tooltip();
+        this.tooltip = null;
         this.isClientMobile = Helpers.isClientMobile();
         this.isDragging = false;
         this.isAnimatingFlashTab = false;
         this.deckList = null;
         this.updateDeckList = false;
         this.notificationPanel = new Notification();
+
+        // No tooltips on mobile
+        if(!this.isClientMobile) {
+            this.tooltip = new Tooltip();
+        }
 
         var activeTab = this.isClientMobile ? -1 : 0;
 
@@ -223,7 +228,7 @@ var DeckBuilder = React.createClass({
     },
     /* TOOLTIP METHODS */
     setTooltipContent: function(card) {
-        if(card && !this.isDragging && !this.isClientMobile)
+        if(card && !this.isDragging && this.tooltip !== null)
         {
             if(this.state.selectedCard !== null && (card.code === this.state.selectedCard.code)) {
                 return false;
@@ -252,17 +257,21 @@ var DeckBuilder = React.createClass({
         }
     },
     showTooltip: function(card) {
-        if(card && !this.isDragging && !this.isClientMobile) {
-            if(this.state.selectedCard !== null && (card.code === this.state.selectedCard.code)) {
-                return false;
-            }
+        if(this.tooltip) {
+            if(card && !this.isDragging && !this.isClientMobile) {
+                if(this.state.selectedCard !== null && (card.code === this.state.selectedCard.code)) {
+                    return false;
+                }
 
-            this.lastHoveredCard = card;
-            this.tooltip.showTooltip();
+                this.lastHoveredCard = card;
+                this.tooltip.showTooltip();
+            }
         }
     },
     hideTooltip: function() {
-        this.tooltip.hideTooltip();
+        if(this.tooltip) {
+            this.tooltip.hideTooltip();
+        }
     },
     /* DECK BUILDER METHODS */
     getCardsForBuilds: function(builds) {
@@ -414,11 +423,8 @@ var DeckBuilder = React.createClass({
             }
         }.bind(this));
 
-        console.log("SELECTED CARD IS: ", selectedCard);
-
         if(newDeck.length <= 0) {
             newActiveTab = 0;
-            var newFlashTabAnimation = false;
         }
 
         this.lastDeletedCard = card;
@@ -824,12 +830,11 @@ var DeckBuilder = React.createClass({
     renderDeckList: function() {
         var cards = JSON.parse(JSON.stringify(this.state.deck));
         var selectedCard = this.state.selectedBuildSlotCard || this.state.selectedCard;
-        if(this.isClientMobile) {
+        if(this.isClientMobile && this.state.isBuildsPanelShowing) {
             if(!Helpers.isNullOrUndefined(selectedCard) || this.deckOptionFilter === 'UPGRADES') {
                 cards.prime = [];
                 cards.equipment = [];
                 cards.upgrades = cards.upgrades.map(function(card) {
-
                     card.hidden = !this.validateCardType(selectedCard, card);
                     console.log(card.hidden);
                     return card;
