@@ -18,7 +18,7 @@ class Discussion extends Model
     protected $table = 'discussion';
 
     /**
-     * @return mixed
+     * @return User
      */
     public function author()
     {
@@ -26,7 +26,7 @@ class Discussion extends Model
     }
 
     /**
-     * @return mixed
+     * @return DiscussionResponse
      */
     public function responses()
     {

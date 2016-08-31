@@ -82,5 +82,6 @@ class VoteController extends Controller
         if($type == 'guide') {
             return Guide::find($id);
         }
+        return false;
     }
 }

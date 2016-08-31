@@ -19,7 +19,6 @@ class NewsController extends Controller
 {
     use GeneratesShortcodes;
 
-    // Index
     /**
      * @return mixed
      */
@@ -30,7 +29,6 @@ class NewsController extends Controller
         return view('news.index', compact('featured'));
     }
 
-    // Create
     /**
      * @return mixed
      */
@@ -39,7 +37,6 @@ class NewsController extends Controller
         return view('news.create');
     }
 
-    // Store
     /**
      * @param Requests\News\CreateNewsRequest $request
      * @return mixed
@@ -96,7 +93,6 @@ class NewsController extends Controller
         return redirect('/news/'.$news->id.'/'.$news->slug);
     }
 
-    // Read
     /**
      * @param Request $request
      * @param $id
@@ -118,7 +114,6 @@ class NewsController extends Controller
         return view('news.show', compact('article', 'articleBody', 'articleTOC', 'recent', 'thread', 'shortcode'));
     }
 
-    // Edit
     /**
      * @param $id
      * @return mixed
@@ -129,7 +124,6 @@ class NewsController extends Controller
         return view('news.edit', compact('news'));
     }
 
-    // Update
     /**
      * @param $id
      * @param Requests\News\UpdateNewsRequest $request
@@ -187,7 +181,6 @@ class NewsController extends Controller
         return view('news.edit', compact('news'));
     }
 
-    // Delete
     /**
      * @param $id
      * @return mixed

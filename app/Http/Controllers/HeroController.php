@@ -18,7 +18,6 @@ use Intervention\Image\Facades\Image;
  */
 class HeroController extends Controller
 {
-    // Index
     /**
      * @return mixed
      */
@@ -29,7 +28,6 @@ class HeroController extends Controller
         return view('heroes.index')->with('heroes', $heroes);
     }
 
-    // Read
     /**
      * @param $slug
      * @return mixed
@@ -42,7 +40,6 @@ class HeroController extends Controller
         return view('heroes.show')->with('hero', $hero)->with('customBackground', $customBackground);
     }
 
-    // Edit
     /**
      * @param $code
      * @return mixed
@@ -53,7 +50,6 @@ class HeroController extends Controller
         return view('heroes.edit', compact('hero'));
     }
 
-    // Update
     /**
      * @param $code
      * @param Request $request
@@ -62,8 +58,6 @@ class HeroController extends Controller
     public function update($code, Request $request)
     {
         $hero = Hero::where('code', $code)->firstOrFail();
-//        $updatedHero = json_decode($request->input('data'), true);
-//        $hero->update($updatedHero[0]);
 
         if($request->hasFile('background')) {
             $path = 'images/heroes/' . $hero->code . '/background.jpg';
@@ -211,7 +205,6 @@ class HeroController extends Controller
         return redirect('admin/heroes');
     }
 
-    // Delete
     /**
      * @param $code
      * @return mixed
@@ -224,7 +217,6 @@ class HeroController extends Controller
         return redirect()->back();
     }
 
-    // Pull latest heroes
     /**
      * @return mixed
      */

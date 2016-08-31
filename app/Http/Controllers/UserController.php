@@ -14,7 +14,6 @@ use App\Http\Requests;
  */
 class UserController extends Controller
 {
-    // Show
     /**
      * @param $username
      * @return mixed
@@ -35,10 +34,9 @@ class UserController extends Controller
     }
 
     /**
-     * @param $username
      * @return mixed
      */
-    public function profile($username)
+    public function profile()
     {
         $customBackground = '/assets/images/backgrounds/profile.jpg';
         return view('users.profile', compact('customBackground'));

@@ -18,7 +18,7 @@ class DiscussionResponse extends Model
     protected $table = 'discussion_responses';
 
     /**
-     * @return mixed
+     * @return User
      */
     public function author()
     {

@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 class CommentThreadComment extends Model
 {
     /**
-     * @return mixed
+     * @return CommentThread
      */
     public function thread() {
         return $this->belongsTo('App\CommentThread', 'thread_id');

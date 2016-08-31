@@ -22,7 +22,6 @@ class MatchController extends Controller
 {
     use FindOrCreatePlayers;
 
-    // Show
     /**
      * @param $id
      * @return mixed

@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Log;
 class CardController extends Controller
 {
     use RetrievesCardCollection;
-    // Index
+
     /**
      * @return mixed
      */
@@ -34,7 +34,6 @@ class CardController extends Controller
         return view('cards.index')->with('cards', $cards);
     }
 
-    // Show
     /**
      * @param Request $request
      * @param $slug
@@ -84,8 +83,7 @@ class CardController extends Controller
 
         return $cards;
     }
-    
-    // Get a user's cards collection
+
     /**
      * @return bool
      */
@@ -94,57 +92,6 @@ class CardController extends Controller
         return $this->getCardCollection(Auth::user());
     }
 
-    // Create
-    /**
-     * @return mixed
-     */
-    public function create()
-    {
-        //$cards = new Card();
-        
-        return view('cards.create');
-    }
-
-    // Store
-    /**
-     * @return mixed
-     */
-    public function store()
-    {
-        //$cards = new Card();
-
-        return view('cards.create');
-    }
-
-    // Edit
-    /**
-     * @param $code
-     * @return mixed
-     */
-    public function edit($code)
-    {
-        $card = Card::where('code', $code)->get();
-
-        return view('cards.edit')->with('card', $card);
-    }
-
-    // Update
-    /**
-     * @param $code
-     * @param Request $request
-     * @return mixed
-     */
-    public function update($code, Request $request)
-    {
-        $updatedCard = json_decode($request->input('data'), true);
-        $card = Card::where('code', $code);
-        $card->update($updatedCard[0]);
-        session()->flash('notification', 'success|Card saved.');
-
-        return redirect()->back();
-    }
-
-    // Delete
     /**
      * @param $code
      * @return mixed
@@ -157,7 +104,6 @@ class CardController extends Controller
         return redirect()->back();
     }
 
-    // Pull latest cards
     /**
      * @return mixed
      */
@@ -165,8 +111,6 @@ class CardController extends Controller
     {
         // Get our current cards list
         $cards = Card::all();
-
-        //dd($cards);
 
         // Get latest cards list
         $client = new Client();

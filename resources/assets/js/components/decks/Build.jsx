@@ -739,15 +739,6 @@ var Build = React.createClass({
         var newTitle = Helpers.debounce(function() {
             this.titleChanged();
         }.bind(this), 350);
-        //var quickBindLabel = (this.props.shouldQuickBindCards === true) ? "Disable Quick Bind" : "Enable Quick Bind";
-        /* USE IN FUTURE MAYBE?
-         <ul id="options-wrapper">
-         <li onMouseEnter={this.setTooltipContent.bind(this, null, tooltipMessage)} onMouseMove={this.showTooltip.bind(this, null, null)} onMouseLeave={this.hideTooltip}>
-         <ToggleFilter onToggleFilterChanged={this.toggleQuickBind} parentClassName={"wide-with-text-only"} label={quickBindLabel} active={this.props.shouldQuickBindCards} />
-         </li>
-         </ul>
-         */
-        var tooltipMessage = ("Any selected equipment card will automatically be bound to the next available slot, upgrade cards must still need to be manually added to equipment cards.");
         var buildListClass = this.numberOfCardsPlaced() > 0 ? " upgrades-showing" : "";
 
         return (

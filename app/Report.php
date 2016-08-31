@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 class Report extends Model
 {
     /**
-     * @return mixed
+     * @return User
      */
     public function author() {
         return $this->belongsTo('App\User', 'user_id');

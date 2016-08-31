@@ -17,7 +17,6 @@ use Intervention\Image\Facades\Image;
  */
 class AccountController extends Controller
 {
-    // Index
     /**
      * @return mixed
      */
@@ -26,18 +25,15 @@ class AccountController extends Controller
         return redirect('/account/profile');
     }
 
-    // Edit profile (GET)
     /**
      * @return mixed
      */
     public function editProfile()
     {
         $user = Auth::user();
-        //dd($user);
         return view('account.profile')->with('user', $user);
     }
 
-    // Edit profile (POST)
     /**
      * @param UpdateProfileRequest $request
      * @return mixed
@@ -69,7 +65,6 @@ class AccountController extends Controller
         return redirect()->back();
     }
 
-    // Edit profile (POST)
     /**
      * @return mixed
      */
@@ -79,7 +74,6 @@ class AccountController extends Controller
         return view('account.link')->with('user', $user);
     }
 
-    // Edit password (GET)
     /**
      * @return mixed
      */
@@ -89,7 +83,6 @@ class AccountController extends Controller
         return view('account.password')->with('user', $user);
     }
 
-    // Edit password (POST)
     /**
      * @param UpdatePasswordRequest $request
      * @return mixed
@@ -105,7 +98,6 @@ class AccountController extends Controller
         return redirect()->back();
     }
 
-    // List a users guides
     /**
      * @return mixed
      */
@@ -116,7 +108,6 @@ class AccountController extends Controller
         return view('account.guides', compact('user', 'guides'));
     }
 
-    // List a users decks
     /**
      * @return mixed
      */

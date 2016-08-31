@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 class Guide extends Model
 {
     /**
-     * @return mixed
+     * @return User
      */
     public function author()
     {

@@ -63,7 +63,7 @@ class User extends Authenticatable
     }
 
     /**
-     * @return mixed
+     * @return News
      */
     public function newsPosts()
     {

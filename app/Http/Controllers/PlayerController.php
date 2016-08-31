@@ -21,7 +21,6 @@ class PlayerController extends Controller
 {
     use FindOrCreatePlayers;
 
-    // Show
     /**
      * @param $username
      * @return mixed

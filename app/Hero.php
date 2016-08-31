@@ -21,6 +21,11 @@ class Hero extends Model
         'name', 'code', 'affinities', 'type', 'role', 'attack', 'scale', 'stats', 'abilities'
     ];
 
+    /**
+     * The attributes hidden from JSON.
+     *
+     * @var array
+     */
     protected $hidden = [
         '_id', 'created_at', 'updated_at'
     ];
