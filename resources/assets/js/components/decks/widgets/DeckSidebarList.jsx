@@ -11,17 +11,28 @@ var DeckSidebarList = React.createClass({
             cards : this.props.deck.cards
         }
     },
-    componentDidMount: function() {
-        this.tooltip = this.props.sharedTooltip || new Toptip();
-    },
     componentWillMount: function() {
+        this.tooltip = this.props.sharedTooltip || new Toptip();
+        // No tooltips on mobile - this prevents the expensive JS calls
+        if(Helpers.isClientMobile()) {
+            this.tooltip = null;
+        }
         var newCards = {
             all : this.sortCards('all'),
             upgrades : this.sortCards('upgrades'),
             equipment : this.sortCards('equipment'),
             prime : this.sortCards('prime')
         };
+
+        window.addEventListener('resize', this.updateViewForDimensions);
         this.setState({ cards : newCards });
+    },
+    updateViewForDimensions: function() {
+        if(!Helpers.isClientMobile()) {
+            this.tooltip = this.props.sharedTooltip || new Toptip();
+        } else {
+            this.tooltip = null;
+        }
     },
     componentWillReceiveProps: function(nextProps) {
         if(nextProps.deck !== this.props.deck) {
@@ -37,7 +48,7 @@ var DeckSidebarList = React.createClass({
     },
     /* TOOLTIP METHODS */
     setTooltipContent: function(card) {
-        if(card)
+        if(card && this.tooltip !== null)
         {
             var content = (
                 <div className="pgg-tooltip pgg-tooltip-card">
@@ -62,12 +73,14 @@ var DeckSidebarList = React.createClass({
         }
     },
     showTooltip: function(card) {
-        if(card) {
+        if(this.tooltip !== null && card) {
             this.tooltip.showTooltip();
         }
     },
     hideTooltip: function() {
-        this.tooltip.hideTooltip();
+        if(this.tooltip !== null) {
+            this.tooltip.hideTooltip();
+        }
     },
     /* DELEGATE METHODS */
     selectCard: function(card) {

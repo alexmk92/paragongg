@@ -103,9 +103,12 @@ var BuildStats = React.createClass({
                             var formattedStat = Helpers.getFormattedStatistic(statString, damageType);
                             if(!Helpers.isNullOrUndefined(formattedStat)) {
                                 // Always add a DPS field
+                                // TODO Fix the DPS algorithm its slightly broken!
+                                /* Remove until we find out why number is wrong!
                                 if(!this.doesCategoryExistInArray("DPS", newComparisons)) {
                                     if(statCategory !== "") newComparisons.push({ label : "DPS", ref: formattedStat.statRef, icon: formattedStat.icon, modifier: formattedStat.modifier });
                                 }
+                                */
 
                                 if(!this.doesCategoryExistInArray(statCategory, newComparisons)) {
                                     if(statCategory !== "")
