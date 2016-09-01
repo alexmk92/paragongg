@@ -121,15 +121,15 @@ Route::group(['middleware' => 'impersonate'], function() {
 
 /* Account */
 Route::group(['prefix' => 'account', 'middleware' => 'auth'], function () {
-    Route::get('/', 'AccountController@index');
-    Route::get('/profile', 'AccountController@editProfile');
-    Route::get('/link', 'AccountController@linkAccount');
-    Route::get('/unlink', 'Auth\OAuthController@unlinkAccount');
-    Route::post('/profile', 'AccountController@updateProfile');
+    Route::get('/', 'AccountController@index')->middleware('impersonate');
+    Route::get('/profile', 'AccountController@editProfile')->middleware('impersonate');
+    Route::get('/link', 'AccountController@linkAccount')->middleware('impersonate');
+    Route::get('/unlink', 'Auth\OAuthController@unlinkAccount')->middleware('impersonate');
+    Route::post('/profile', 'AccountController@updateProfile')->middleware('impersonate');
     Route::get('/password', 'AccountController@editPassword');
     Route::post('/password', 'AccountController@updatePassword');
-    Route::get('/guides', 'AccountController@guides');
-    Route::get('/decks', 'AccountController@decks');
+    Route::get('/guides', 'AccountController@guides')->middleware('impersonate');
+    Route::get('/decks', 'AccountController@decks')->middleware('impersonate');
 });
 
 /* Moderation */

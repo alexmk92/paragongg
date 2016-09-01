@@ -5,7 +5,9 @@ namespace App\Http\Traits;
 use App\Deck;
 use App\Hero;
 use App\Shortcode;
+use Doctrine\DBAL\Exception\ServerException;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;

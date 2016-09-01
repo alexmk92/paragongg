@@ -312,6 +312,11 @@ class DeckController extends Controller
 
         $decks = $this->getDecks($user);
 
+        if(!$decks) {
+            session()->flash('notification', 'error|There was an error getting your decks from Epic');
+            return redirect()->back();
+        }
+
         return view('decks.import', compact('decks'));
     }
 
@@ -347,6 +352,10 @@ class DeckController extends Controller
         }
 
         $decks = $this->getDecks($user);
+        if(!$decks) {
+            session()->flash('notification', 'error|There was an error getting your decks from Epic');
+            return redirect()->back();
+        }
 
         // Create lockout to stop them doing this every 10 mins
         $lockout = new Lockout();

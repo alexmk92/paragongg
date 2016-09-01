@@ -142,15 +142,9 @@ body {
     left: 0;
     right: 0;
     background: #fcf8e3;
-    padding: 15px 10px;
+    padding: 12px 10px;
     text-align: center;
     z-index: 2001;
-    a {
-        color: $secondary-highlight;
-        &:hover {
-            text-decoration: underline;
-        }
-    }
 }
 
 .disable-highlighting {

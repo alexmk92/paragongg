@@ -107,7 +107,7 @@
 </div>
 
 @if(session()->has('impersonate'))
-    <div class="impersonate-enabled"><i class="fa fa-user-secret" aria-hidden="true"></i> You are currently impersonating another account: <strong>{{ auth()->user()->username }}</strong>. <a href="/admin/users/impersonate/stop">Click here to stop.</a></div>
+    <div class="impersonate-enabled"><i class="fa fa-user-secret" aria-hidden="true"></i> You are currently impersonating another account. Currently viewing from the perspective of: <strong>{{ auth()->user()->username }}</strong>. <a class="btn btn-faded btn-warning-hover" style="margin-left: 10px;" href="/admin/users/impersonate/stop"><i class="fa fa-times-circle" aria-hidden="true"></i> Stop impersonating</a></div>
 @endif
 
 {{-- Include footer --}}
