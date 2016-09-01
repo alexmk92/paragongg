@@ -28,6 +28,7 @@ Route::group(['middleware' => 'impersonate'], function() {
 
     /* NEWS */
     Route::get('/news', 'NewsController@index');
+    Route::get('/news/feed', 'NewsController@feed');
     Route::get('/news/create', 'NewsController@create')->middleware('mod');
     Route::post('/news/create', 'NewsController@store')->middleware('mod');
     Route::get('/news/edit/{id}', 'NewsController@edit')->middleware('mod');
@@ -69,6 +70,7 @@ Route::group(['middleware' => 'impersonate'], function() {
 
     /* DECKS */
     Route::get('/decks', 'DeckController@index');
+    Route::get('/decks/feed', 'DeckController@feed');
     Route::get('/decks/hero/{hero}', 'DeckController@index');
     Route::get('/decks/create', 'DeckController@create');
     Route::post('/decks/create', 'DeckController@store');
@@ -86,6 +88,7 @@ Route::group(['middleware' => 'impersonate'], function() {
 
     /* GUIDES */
     Route::get('/guides', 'GuideController@index');
+    Route::get('/guides/feed', 'GuideController@feed');
     Route::get('/guides/gameplay', 'GuideController@indexGameplay');
     Route::get('/guides/create', 'GuideController@create')->middleware('auth');
     Route::post('/guides/create', 'GuideController@store')->middleware('auth');

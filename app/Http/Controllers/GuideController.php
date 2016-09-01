@@ -13,6 +13,7 @@ use App\Http\Requests\Guide\UpdateGuideRequest;
 use App\Http\Traits\GeneratesShortcodes;
 use App\Shortcode;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Parsedown;
 use TOC;
@@ -422,5 +423,53 @@ class GuideController extends Controller
     {
         $guide = Guide::where('slug', $slug)->firstOrFail();
         return redirect('/guides/'.$guide->id.'/'.$guide->slug);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function feed()
+    {
+        // create new feed
+        $feed = App::make("feed");
+
+        $feed->setCache(60, 'feedGuidesKey');
+
+        // check if there is cached feed and build new only if is not
+        if (!$feed->isCached())
+        {
+            // creating rss feed with our most recent 20 records in news table
+            $guides = Guide::orderBy('created_at', 'desc')->take(30)->get();
+
+            // set your feed's title, description, link, pubdate and language
+            $feed->title = 'Paragon.gg Guide Feed';
+            $feed->description = 'All of the latest guides directly from Paragon.gg';
+            $feed->logo = 'https://pbs.twimg.com/profile_images/755362733990764545/bTF9fM2R.jpg';
+            $feed->link = url('news/feed');
+            $feed->setDateFormat('datetime'); // 'datetime', 'timestamp' or 'carbon'
+            $feed->pubdate = $guides->first()->created_at; // date of latest news
+            $feed->lang = 'en';
+            $feed->setShortening(true); // true or false
+            $feed->setTextLimit(100); // maximum length of description text
+
+            foreach ($guides as $g)
+            {
+                // set item's title, author, url, pubdate, description and content
+                $feed->add($g->title, $g->author->username, url($g->slug), $g->created_at, substr($g->description,0,100), $g->description);
+            }
+
+        }
+
+        // return your feed ('atom' or 'rss' format)
+        if(isset($_GET['type'])) {
+            if($_GET['type'] == 'atom') {
+                return $feed->render('atom');
+            }
+            if($_GET['type'] == 'rss') {
+                return $feed->render('rss');
+            }
+        }
+        return $feed->render('rss');
+
     }
 }

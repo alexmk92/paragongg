@@ -17,6 +17,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests;
 use Illuminate\Http\Request;
@@ -612,5 +613,54 @@ class DeckController extends Controller
 
         session()->flash('notification', 'success|Deck deleted successfully.');
         return redirect('/account/decks');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function feed()
+    {
+        // create new feed
+        $feed = App::make("feed");
+
+        $feed->setCache(60, 'feedDecksKey');
+
+        // check if there is cached feed and build new only if is not
+        if (!$feed->isCached())
+        {
+            // creating rss feed with our most recent 20 records in news table
+            $decks = Deck::orderBy('created_at', 'desc')->take(30)->get();
+
+            // set your feed's title, description, link, pubdate and language
+            $feed->title = 'Paragon.gg Deck Feed';
+            $feed->description = 'All of the latest decks directly from Paragon.gg';
+            $feed->logo = 'https://pbs.twimg.com/profile_images/755362733990764545/bTF9fM2R.jpg';
+            $feed->link = url('news/feed');
+            $feed->setDateFormat('datetime'); // 'datetime', 'timestamp' or 'carbon'
+            $feed->pubdate = $decks->first()->created_at; // date of latest news
+            $feed->lang = 'en';
+            $feed->setShortening(true); // true or false
+            $feed->setTextLimit(100); // maximum length of description text
+
+            foreach ($decks as $d)
+            {
+                $author = User::where('id', $d->author_id)->first();
+                // set item's title, author, url, pubdate, description and content
+                $feed->add($d->title, $author->username, url($d->slug), $d->created_at, substr($d->description,0,100), $d->description);
+            }
+
+        }
+
+        // return your feed ('atom' or 'rss' format)
+        if(isset($_GET['type'])) {
+            if($_GET['type'] == 'atom') {
+                return $feed->render('atom');
+            }
+            if($_GET['type'] == 'rss') {
+                return $feed->render('rss');
+            }
+        }
+        return $feed->render('rss');
+
     }
 }

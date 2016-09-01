@@ -15,7 +15,8 @@
         "google/apiclient": "1.0.*@beta",
         "caseyamcl/toc": "~1.0",
         "doctrine/dbal": "^2.5",
-        "aws/aws-sdk-php": "~3.0"
+        "aws/aws-sdk-php": "~3.0",
+        "roumen/feed": "^2.10"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

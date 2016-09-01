@@ -6,6 +6,7 @@ use App\Http\Traits\GeneratesShortcodes;
 use App\News;
 use App\Http\Requests;
 use App\Shortcode;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Storage;
 use Parsedown;
 use TOC;
@@ -27,6 +28,55 @@ class NewsController extends Controller
         //$featured = News::where('type', 'feature')->take(3)->get();
         $featured = News::take(3)->where('featured', true)->get();
         return view('news.index', compact('featured'));
+    }
+
+    /**
+     * @return mixed
+     */
+    public function feed()
+    {
+        // create new feed
+        $feed = App::make("feed");
+
+        $feed->setCache(60, 'feedNewsKey');
+
+        // check if there is cached feed and build new only if is not
+        if (!$feed->isCached())
+        {
+            // creating rss feed with our most recent 20 records in news table
+            $news = News::orderBy('created_at', 'desc')->take(30)->get();
+
+            // set your feed's title, description, link, pubdate and language
+            $feed->title = 'Paragon.gg News Feed';
+            $feed->description = 'All of the latest news directly from Paragon.gg';
+            $feed->logo = 'https://pbs.twimg.com/profile_images/755362733990764545/bTF9fM2R.jpg';
+            $feed->link = url('news/feed');
+            $feed->setDateFormat('datetime'); // 'datetime', 'timestamp' or 'carbon'
+            $feed->pubdate = $news->first()->created_at; // date of latest news
+            $feed->lang = 'en';
+            $feed->setShortening(true); // true or false
+            $feed->setTextLimit(100); // maximum length of description text
+
+            foreach ($news as $n)
+            {
+                // set item's title, author, url, pubdate, description and content
+                $feed->add($n->title, $n->author->username, url($n->slug), $n->created_at, substr($n->body,0,100), $n->body);
+            }
+
+        }
+
+        // return your feed ('atom' or 'rss' format)
+        if(isset($_GET['type'])) {
+            if($_GET['type'] == 'atom') {
+                return $feed->render('atom');
+            }
+
+            if($_GET['type'] == 'rss') {
+                return $feed->render('rss');
+            }
+        }
+        return $feed->render('rss');
+
     }
 
     /**
