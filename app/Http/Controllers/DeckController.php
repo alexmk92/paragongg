@@ -623,7 +623,18 @@ class DeckController extends Controller
         // create new feed
         $feed = App::make("feed");
 
-        $feed->setCache(60, 'feedDecksKey');
+        // Set cache of feed (RSS/Atom)
+        if(isset($_GET['type'])) {
+            if($_GET['type'] == 'atom') {
+                $feed->setCache(60, 'feedDecksKeyAtom');
+            }
+
+            if($_GET['type'] == 'rss') {
+                $feed->setCache(60, 'feedDecksKeyRss');
+            }
+        } else {
+            $feed->setCache(60, 'feedDecksKeyRss');
+        }
 
         // check if there is cached feed and build new only if is not
         if (!$feed->isCached())
