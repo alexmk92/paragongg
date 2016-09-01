@@ -64,16 +64,19 @@ class AdminController extends Controller
         $stats->decks        = Cache::get('adminStats.decksCount');
 
         // Count of all matches in the database
-        if(!Cache::has('adminStats.matchesCount')) {
-            Cache::put('adminStats.matchesCount', Match::count(), $expires);
-        }
-        $stats->matches = Cache::get('adminStats.matchesCount');
+        //if(!Cache::has('adminStats.matchesCount')) {
+        //    Cache::put('adminStats.matchesCount', Match::count(), $expires);
+        //}
+        //$stats->matches = Cache::get('adminStats.matchesCount');
+
+        $stats->matches = "Currently disabled";
 
         // Count of all players in database
-        if(!Cache::has('adminStats.playersCount')) {
-            Cache::put('adminStats.playersCount', Player::count(), $expires);
-        }
-        $stats->players = Cache::get('adminStats.playersCount');
+        //if(!Cache::has('adminStats.playersCount')) {
+        //    Cache::put('adminStats.playersCount', Player::count(), $expires);
+        //}
+        //$stats->players = Cache::get('adminStats.playersCount');
+        $stats->players = "Currently disabled";
 
         return view('admin.index', compact('stats'));
     }
