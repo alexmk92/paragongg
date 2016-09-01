@@ -64,6 +64,7 @@ class CardController extends Controller
         }
 
         if(Auth::check() && Auth::user()->epicAccountLinked()) {
+
             $cardsOwned = $this->cardCollection();
 
             if($cardsOwned) {
