@@ -258,6 +258,18 @@ class AdminController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @return \Illuminate\View\View
+     * @internal param $username
+     */
+    public function findUsers(Request $request)
+    {
+        $users = User::where('username', 'like', '%'.$request->username.'%')->paginate(50);
+
+        return view('admin.users', compact('users'));
+    }
+
+    /**
      * @param $id
      * @return \Illuminate\Http\RedirectResponse
      */

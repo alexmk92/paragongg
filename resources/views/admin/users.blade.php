@@ -5,6 +5,12 @@
         <span class="breadcrumb"><a href="/admin">Admin</a> / <a href="/admin/users">Users</a></span>
         <h1>Users</h1>
         <hr>
+        <form role="form" method="POST" action="{{ Request::url() }}" enctype="multipart/form-data">
+            {!! csrf_field() !!}
+            <input name="username" type="text" placeholder="Search by username" style="display: inline-block; margin-right: 10px; margin-bottom: 10px;">
+            <button type="submit" class="btn">Search</button>
+        </form>
+        <hr>
         <div class="table-scroller">
         <table class="minimal">
             <thead>

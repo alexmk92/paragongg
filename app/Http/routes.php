@@ -173,6 +173,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::get('/settings', 'AdminController@getSettings');
     Route::post('/settings', 'AdminController@setSettings');
     Route::get('/users', 'AdminController@users');
+    Route::post('/users', 'AdminController@findUsers');
     Route::get('/users/impersonate/stop', 'AdminController@stopImpersonate');
     Route::get('/users/impersonate/{id}', 'AdminController@impersonate');
 
