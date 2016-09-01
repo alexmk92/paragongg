@@ -106,6 +106,10 @@
 {!! displayNotification() !!}
 </div>
 
+@if(session()->has('impersonate'))
+    <div class="impersonate-enabled"><i class="fa fa-user-secret" aria-hidden="true"></i> You are currently impersonating another account: <strong>{{ auth()->user()->username }}</strong>. <a href="/admin/users/impersonate/stop">Click here to stop.</a></div>
+@endif
+
 {{-- Include footer --}}
 @include('layouts.footer')
 

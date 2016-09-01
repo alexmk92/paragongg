@@ -31,6 +31,7 @@ class DeckController extends Controller
 {
     use GeneratesShortcodes, RetrievesCardCollection, ImportExportDecks;
 
+    // Index
     /**
      * @param null $hero
      * @return mixed
@@ -97,6 +98,7 @@ class DeckController extends Controller
         return $decks;
     }
 
+    // Create
     /**
      * @return mixed
      */
@@ -110,6 +112,7 @@ class DeckController extends Controller
         return view('decks.create', compact('cards', 'heroes', 'userId', 'hideGlobalNotification', 'hideFooter'));
     }
 
+    // Store
     /**
      * @param Request $request
      * @return mixed
@@ -361,6 +364,7 @@ class DeckController extends Controller
         return redirect('/account/decks');
     }
 
+    // Read
     /**
      * @param Request $request
      * @param $id
@@ -441,6 +445,7 @@ class DeckController extends Controller
         return view('decks.show', compact('deck', 'thread', 'shortcode'));
     }
 
+    // Edit
     /**
      * @param $id
      * @return mixed
@@ -540,6 +545,7 @@ class DeckController extends Controller
         return $currentDeck;
     }
 
+    // Update
     /**
      * @param Request $request
      * @param $id
@@ -575,6 +581,7 @@ class DeckController extends Controller
         return redirect('/decks/'.$deck->id.'/'.$deck->slug);
     }
 
+    // Delete
     /**
      * @param $id
      * @return mixed

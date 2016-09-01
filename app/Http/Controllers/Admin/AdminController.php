@@ -20,6 +20,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
 /**
@@ -241,5 +242,45 @@ class AdminController extends Controller
 
         session()->flash('notification', 'success|Upgrade finished.');
         return redirect('/decks');
+    }
+
+    /**
+     * @return \Illuminate\View\View
+     */
+    public function users()
+    {
+        $users = User::select('id', 'username', 'role')->paginate(50);
+
+        return view('admin.users', compact('users'));
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function impersonate($id)
+    {
+        $user = User::find($id);
+
+        // Guard against administrator impersonate
+        if(! $user->isAdmin()) {
+            Auth::user()->setImpersonating($user->id);
+        } else {
+            session()->flash('notification', 'error|Impersonate disabled for this user.');
+        }
+
+        return redirect()->back();
+    }
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function stopImpersonate()
+    {
+        Auth::user()->stopImpersonating();
+
+        session()->flash('notification', 'success|Welcome back!');
+
+        return redirect()->back();
     }
 }

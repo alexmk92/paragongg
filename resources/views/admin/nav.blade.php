@@ -2,6 +2,7 @@
     <div class="sidebox navigation cf">
         <ul>
             <li><a href="/admin" {{ Request::is( 'admin') ? 'class=active' : '' }}>Dashboard</a></li>
+            <li><a href="/admin/users" {{ Request::is( 'admin/users') ? 'class=active' : '' }}>Users</a></li>
             <li><a href="/admin/cards" {{ Request::is( 'admin/cards') ? 'class=active' : '' }}>Cards</a></li>
             <li><a href="/admin/heroes" {{ Request::is( 'admin/heroes') ? 'class=active' : '' }}>Heroes</a></li>
             <li><a href="/admin/moderation" {{ Request::is( 'admin/moderation') ? 'class=active' : '' }}>Moderation</a></li>

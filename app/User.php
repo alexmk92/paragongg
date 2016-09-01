@@ -69,4 +69,28 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\News');
     }
+
+    /**
+     * @param $id
+     */
+    public function setImpersonating($id)
+    {
+        session()->put('impersonate', $id);
+    }
+
+    /**
+     *
+     */
+    public function stopImpersonating()
+    {
+        session()->forget('impersonate');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function isImpersonating()
+    {
+        return session()->has('impersonate');
+    }
 }

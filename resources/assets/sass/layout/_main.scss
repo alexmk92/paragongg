@@ -135,6 +135,24 @@ body {
     }
 }
 
+.impersonate-enabled {
+    color: #666;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fcf8e3;
+    padding: 15px 10px;
+    text-align: center;
+    z-index: 2001;
+    a {
+        color: $secondary-highlight;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
 .disable-highlighting {
     -webkit-touch-callout: none;/*for mobile*/
     -webkit-user-select: none;/*for chrome*/
