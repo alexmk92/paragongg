@@ -1,5 +1,4 @@
 var React = require('react');
-var dateFormat = require('dateformat');
 
 var MatchInfo = React.createClass({
     getMatchType: function() {
@@ -8,13 +7,9 @@ var MatchInfo = React.createClass({
             case 'SOLO_AI': return 'Solo vs AI'; break;
             case 'PRIVATE': return 'Custom'; break;
             case 'FEATURED': return 'Featured'; break;
-            case 'PVP': return 'PvP'; break;
+            case 'PVP': return 'Player vs Player'; break;
             default: break;
         }  
-    },
-    getMatchTime: function() {
-        var now = this.props.dateTime;
-        return dateFormat(now, 'mmmm dS, yyyy, h:MM TT');
     },
     render: function() {
         return (
@@ -27,7 +22,7 @@ var MatchInfo = React.createClass({
                     </li>
                     <li>
                         <label>Date</label>
-                        <span>{this.getMatchTime()}</span>
+                        <span>{this.props.date}</span>
                     </li>
                     <li>
                         <label>Replay ID</label>

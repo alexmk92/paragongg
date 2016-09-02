@@ -6,17 +6,19 @@ var GameClock = require('./GameClock');
 var EventFeed = require('./EventFeed');
 var MatchInfo = require('./MatchInfo');
 var TeamPanel = require('./TeamPanel');
+var dateFormat = require('dateformat');
+var moment     = require('moment');
 
 var Match = React.createClass({
     getInitialState: function() {
         return {
             heroes: this.props.heroes,
+            matchDate: moment.utc(this.props.match.startedAt).local().format("dddd, MMMM Do YYYY, h:mm:ss a"),
             matchInfo: null
         }
     },
     shouldComponentUpdate: function(nextProps, nextState) {
         return this.state.matchInfo !== nextState.matchInfo;
-
     },
     componentWillMount: function() {
         this.victor = false;
@@ -95,7 +97,7 @@ var Match = React.createClass({
                     <div id="sidebar">
                         <MatchInfo gameType={this.state.matchInfo.gameType}
                                    replayId={this.state.matchInfo.replayId}
-                                   dateTime={this.state.matchInfo.startedAt}
+                                   date={this.state.matchDate}
                         />
                         <EventFeed players={this.state.matchInfo.players}
                                    events={this.state.matchInfo.towerKills.concat(this.state.matchInfo.playerKills)}
@@ -144,5 +146,5 @@ module.exports = Match;
 
 var container = document.querySelector('.match-details');
 if(container) {
-    ReactDOM.render(<Match heroes={HEROES}/>, container);
+    ReactDOM.render(<Match heroes={HEROES} match={MATCH}/>, container);
 }

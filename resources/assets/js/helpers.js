@@ -73,9 +73,12 @@ module.exports = {
 
         return min + ':' + sec;
     },
-    getGMTTime: function() {
+    getUTCTime: function() {
         var d = new Date();
         return new Date(d.valueOf() + d.getTimezoneOffset() * 60000)
+    },
+    convertGMT: function(date) {
+
     },
     pretifyNumber: function(number) {
         if(number >= 1000) {

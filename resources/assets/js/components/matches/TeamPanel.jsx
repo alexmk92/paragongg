@@ -92,7 +92,6 @@ var TeamPanel = React.createClass({
     },
     renderStatRows: function() {
         return this.state.players.map(function(player) {
-            console.log("PLAYER: ", player);
             return (
                 <tr key={"player-row-" + Helpers.uuid()}>
                     <td className="hero">
@@ -198,7 +197,7 @@ var TeamPanel = React.createClass({
         return '0 / 0 / 0'
     },
     getTeamTowers: function() {
-        var currentTime = Helpers.getGMTTime() - new Date(this.props.startTime).getTime();
+        var currentTime = Helpers.getUTCTime() - new Date(this.props.startTime).getTime();
         var kills = 0;
         this.props.towerKills.forEach(function(event) {
             var killer = null;

@@ -68,7 +68,7 @@ var EventFeed = React.createClass({
         console.log('rendering events: ', sortedEvents);
         var visibleEvents = [];
         console.log(this.props.startTime);
-        var currentTime = Helpers.getGMTTime() - new Date(this.props.startTime).getTime();
+        var currentTime = Helpers.getUTCTime() - new Date(this.props.startTime).getTime();
 
         sortedEvents.forEach(function(event) {
             if(event.timestamp <= currentTime || this.state.isLive === false) {

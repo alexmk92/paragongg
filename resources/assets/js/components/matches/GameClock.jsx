@@ -23,7 +23,7 @@ var GameClock = React.createClass({
             this.interval = setInterval(function() {
                 if(this.props.isLive) {
                     this.setState({
-                        timeElapsed: (new Date().getTime() - (1000 * 60 * 60)) - this.state.gameStart.getTime()
+                        timeElapsed: (Helpers.getUTCTime() - this.state.gameStart.getTime())
                     });
                 } else {
                     clearInterval(this.interval);
