@@ -12,7 +12,7 @@ var Match = React.createClass({
     getInitialState: function() {
         return {
             heroes: this.props.heroes,
-            matchDate: moment.utc(this.props.match.startedAt).local().format("dddd, MMMM Do YYYY, h:mm:ss a"),
+            matchDate: moment.utc(this.props.match.startedAt).local().format("MMMM Do YYYY, h:mm:ss a"),
             matchInfo: null
         }
     },
