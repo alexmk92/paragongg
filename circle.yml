@@ -5,6 +5,7 @@ dependencies:
   override:
     - npm install
     - composer install --no-interaction
+    - npm run build
   cache_directories:
       - ./vendor
 test:
@@ -16,6 +17,5 @@ deployment:
     branch: master
     commands:
       - yes | sudo apt-get update; sudo apt-get install zip
-      - npm run build
       - zip -r pggdeploy-master.zip . -x /node_modules*
       - aws s3 cp pggdeploy-master.zip s3://paragongg-deploy/app/
