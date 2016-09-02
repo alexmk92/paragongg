@@ -2,13 +2,15 @@ var webpack           = require('webpack'),
     pkg               = require('./package.json'),
     path              = require('path'),
     autoprefixer      = require('autoprefixer'),
-    ExtractTextPlugin = require('extract-text-webpack-plugin');
+    ExtractTextPlugin = require('extract-text-webpack-plugin'),
+    ManifestPlugin    = require('webpack-manifest-plugin');
+
 
 const sassLoaders = [
     'css-loader',
     'postcss-loader',
     'sass-loader?includePaths[]=' + path.resolve(__dirname, './resources/assets/sass')
-]
+];
 
 module.exports = {
     devtool: 'cheap-eval-source-map',
@@ -22,7 +24,7 @@ module.exports = {
     },
     output: {
         path: __dirname + "/public/build/",
-        filename: "js/[name].min.js"
+        filename: "js/[name].[chunkhash].min.js"
     },
     module: {
         loaders: [
@@ -54,7 +56,10 @@ module.exports = {
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('development')
         }),
-        new ExtractTextPlugin("css/[name].min.css")
+        new ExtractTextPlugin("css/[name].[chunkhash].min.css"),
+        new ManifestPlugin({
+            fileName: 'rev-manifest.json',
+        }),
     ],
     postcss: [
         autoprefixer({

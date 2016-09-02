@@ -10,6 +10,28 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Cache;
 
 /**
+ * @param $file
+ * @return string
+ */
+function getVersionedFile($file)
+{
+    $path = public_path();
+    static $manifest = null;
+
+    if (is_null($manifest))
+    {
+        $manifest = json_decode(file_get_contents($path.'/build/rev-manifest.json'), true);
+    }
+
+    if (isset($manifest[$file]))
+    {
+        return '/build/'.$manifest[$file];
+    }
+
+    throw new InvalidArgumentException("File {$file} not defined in asset manifest.");
+}
+
+/**
  * @param $uri
  * @return CommentThread
  */

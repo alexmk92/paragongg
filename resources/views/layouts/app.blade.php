@@ -15,7 +15,7 @@
     <link rel="shortcut icon" href="/assets/images/favicon.ico" />
 
     <!-- Styles -->
-    <link media="all" type="text/css" rel="stylesheet" href="/build/css/app.min.css">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ getVersionedFile('app.css') }}">
 
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -115,8 +115,8 @@
 
 {{-- Scripts --}}
 @yield('scripts')
-<script type="text/javascript" src="/build/js/vendor.min.js"></script>
-<script type="text/javascript" src="/build/js/app.min.js"></script>
+<script type="text/javascript" src="{{ getVersionedFile('vendor.js') }}"></script>
+<script type="text/javascript" src="{{ getVersionedFile('app.js') }}"></script>
 
 <div class="beta-notification">V2.6 BETA</div>
 
