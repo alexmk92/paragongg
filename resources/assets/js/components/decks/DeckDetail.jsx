@@ -69,7 +69,7 @@ var DeckDetail = React.createClass({
                         </div>
                         <div className="title-wrapper">
                             <h3>{this.state.deck.title}</h3>
-                            <h3>{this.state.deck.author.username}</h3>
+                            <span>by <span className="emphasis username">{this.state.deck.author.username}</span> - Last updated <span className="emphasis date">{Helpers.prettyDate(this.state.deck.updated_at)}</span></span>
                         </div>
                     </div>
                     <div className="description">
