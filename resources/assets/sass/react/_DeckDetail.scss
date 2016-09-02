@@ -79,6 +79,15 @@
 
         &.active {
             background: $secondary-highlight;
+            .cost {
+                color: #ddd;
+            }
         }
+    }
+    .cost {
+        color: $font-color-faded;
+        font-size: 10px;
+        vertical-align: top;
+        margin-left: 2px;
     }
 }
