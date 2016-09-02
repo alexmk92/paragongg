@@ -436,14 +436,14 @@ class GuideController extends Controller
         // Set cache of feed (RSS/Atom)
         if(isset($_GET['type'])) {
             if($_GET['type'] == 'atom') {
-                $feed->setCache(60, 'feedGuidesKeyAtom');
+                $feed->setCache(10, 'feedGuidesKeyAtom');
             }
 
             if($_GET['type'] == 'rss') {
-                $feed->setCache(60, 'feedGuidesKeyRss');
+                $feed->setCache(10, 'feedGuidesKeyRss');
             }
         } else {
-            $feed->setCache(60, 'feedGuidesKeyRss');
+            $feed->setCache(10, 'feedGuidesKeyRss');
         }
 
         // check if there is cached feed and build new only if is not

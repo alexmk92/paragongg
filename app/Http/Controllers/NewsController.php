@@ -41,14 +41,14 @@ class NewsController extends Controller
         // Set cache of feed (RSS/Atom)
         if(isset($_GET['type'])) {
             if($_GET['type'] == 'atom') {
-                $feed->setCache(60, 'feedNewsKeyAtom');
+                $feed->setCache(10, 'feedNewsKeyAtom');
             }
 
             if($_GET['type'] == 'rss') {
-                $feed->setCache(60, 'feedNewsKeyRss');
+                $feed->setCache(10, 'feedNewsKeyRss');
             }
         } else {
-            $feed->setCache(60, 'feedNewsKeyRss');
+            $feed->setCache(10, 'feedNewsKeyRss');
         }
 
 
