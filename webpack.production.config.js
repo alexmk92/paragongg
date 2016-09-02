@@ -2,7 +2,8 @@ var webpack           = require('webpack'),
     pkg               = require('./package.json'),
     path              = require('path'),
     autoprefixer      = require('autoprefixer'),
-    ExtractTextPlugin = require('extract-text-webpack-plugin');
+    ExtractTextPlugin = require('extract-text-webpack-plugin'),
+    ManifestPlugin    = require('webpack-manifest-plugin');
 
 const sassLoaders = [
     'css-loader',
@@ -25,7 +26,7 @@ module.exports = {
     },
     output: {
         path: __dirname + "/public/build/",
-        filename: "js/[name].min.js"
+        filename: "js/[name].[chunkhash].min.js"
     },
     module: {
         loaders: [
@@ -64,7 +65,7 @@ module.exports = {
                 'NODE_ENV': JSON.stringify('production')
             }
         }),
-        new ExtractTextPlugin("css/[name].min.css"),
+        new ExtractTextPlugin("css/[name].[chunkhash].min.css"),
         new webpack.optimize.CommonsChunkPlugin('vendor', 'js/vendor.min.js'),
         //new webpack.optimize.DedupePlugin(),
         new webpack.optimize.UglifyJsPlugin({
@@ -74,7 +75,10 @@ module.exports = {
             },
             sourceMap: false
         }),
-        new webpack.optimize.AggressiveMergingPlugin()
+        new webpack.optimize.AggressiveMergingPlugin(),
+        new ManifestPlugin({
+            fileName: 'rev-manifest.json',
+        }),
     ],
     postcss: [
         autoprefixer({
