@@ -626,14 +626,14 @@ class DeckController extends Controller
         // Set cache of feed (RSS/Atom)
         if(isset($_GET['type'])) {
             if($_GET['type'] == 'atom') {
-                $feed->setCache(60, 'feedDecksKeyAtom');
+                $feed->setCache(10, 'feedDecksKeyAtom');
             }
 
             if($_GET['type'] == 'rss') {
-                $feed->setCache(60, 'feedDecksKeyRss');
+                $feed->setCache(10, 'feedDecksKeyRss');
             }
         } else {
-            $feed->setCache(60, 'feedDecksKeyRss');
+            $feed->setCache(10, 'feedDecksKeyRss');
         }
 
         // check if there is cached feed and build new only if is not
@@ -655,9 +655,13 @@ class DeckController extends Controller
 
             foreach ($decks as $d)
             {
-                $author = User::where('id', $d->author_id)->first();
+                $author = 'Anonymous';
+                if($d->author_id) {
+                    $author = User::where('id', $d->author_id)->first();
+                    $author = $author->username;
+                }
                 // set item's title, author, url, pubdate, description and content
-                $feed->add($d->title, $author->username, url('decks/'.$d->id.'/'.$d->slug), $d->created_at, substr($d->description,0,100), $d->description);
+                $feed->add($d->title, $author, url('decks/'.$d->id.'/'.$d->slug), $d->created_at, substr($d->description,0,100), $d->description);
             }
 
         }

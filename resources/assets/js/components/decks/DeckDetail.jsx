@@ -59,6 +59,13 @@ var DeckDetail = React.createClass({
     buildsUpdated: function(newSelectedBuild, newBuilds ) {
         this.setState({ selectedBuild: newSelectedBuild, builds : newBuilds });
     },
+    getAuthor: function() {
+        if(typeof this.state.deck.author !== "undefined" && typeof this.state.deck.author.username !== "undefined" && this.state.deck.author.username) {
+            return this.state.deck.author.username;
+        }
+        return "Anonymous";
+
+    },
     render: function() {
         return (
             <div>
@@ -69,7 +76,7 @@ var DeckDetail = React.createClass({
                         </div>
                         <div className="title-wrapper">
                             <h3>{this.state.deck.title}</h3>
-                            <span>by <span className="emphasis username">{this.state.deck.author.username}</span> - Last updated <span className="emphasis date">{Helpers.prettyDate(this.state.deck.updated_at)}</span></span>
+                            <span>by <span className="emphasis username">{this.getAuthor()}</span> - Last updated <span className="emphasis date">{Helpers.prettyDate(this.state.deck.updated_at)}</span></span>
                         </div>
                     </div>
                     <div className="description">
