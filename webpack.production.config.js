@@ -66,7 +66,7 @@ module.exports = {
             }
         }),
         new ExtractTextPlugin("css/[name].[chunkhash].min.css"),
-        new webpack.optimize.CommonsChunkPlugin('vendor', 'js/vendor.min.js'),
+        new webpack.optimize.CommonsChunkPlugin('vendor', 'js/vendor.[chunkhash].min.js'),
         //new webpack.optimize.DedupePlugin(),
         new webpack.optimize.UglifyJsPlugin({
             compress: {
