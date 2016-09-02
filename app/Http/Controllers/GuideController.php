@@ -466,7 +466,7 @@ class GuideController extends Controller
             foreach ($guides as $g)
             {
                 // set item's title, author, url, pubdate, description and content
-                $feed->add($g->title, $g->author->username, url($g->slug), $g->created_at, substr($g->description,0,100), $g->description);
+                $feed->add($g->title, $g->author->username, url('guides/'.$g->id.'/'.$g->slug), $g->created_at, substr($g->description,0,100), $g->description);
             }
 
         }

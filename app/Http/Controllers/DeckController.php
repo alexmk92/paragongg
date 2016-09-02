@@ -657,7 +657,7 @@ class DeckController extends Controller
             {
                 $author = User::where('id', $d->author_id)->first();
                 // set item's title, author, url, pubdate, description and content
-                $feed->add($d->title, $author->username, url($d->slug), $d->created_at, substr($d->description,0,100), $d->description);
+                $feed->add($d->title, $author->username, url('decks/'.$d->id.'/'.$d->slug), $d->created_at, substr($d->description,0,100), $d->description);
             }
 
         }

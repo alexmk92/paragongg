@@ -72,7 +72,7 @@ class NewsController extends Controller
             foreach ($news as $n)
             {
                 // set item's title, author, url, pubdate, description and content
-                $feed->add($n->title, $n->author->username, url($n->slug), $n->created_at, substr($n->body,0,100), $n->body);
+                $feed->add($n->title, $n->author->username, url('news/'.$n->id.'/'.$n->slug), $n->created_at, substr($n->body,0,100), $n->body);
             }
 
         }
