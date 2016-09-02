@@ -6,7 +6,6 @@ var GameClock = require('./GameClock');
 var EventFeed = require('./EventFeed');
 var MatchInfo = require('./MatchInfo');
 var TeamPanel = require('./TeamPanel');
-var dateFormat = require('dateformat');
 var moment     = require('moment');
 
 var Match = React.createClass({
