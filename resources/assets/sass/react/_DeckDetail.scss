@@ -30,6 +30,11 @@
         .deck-info {
             margin-bottom: 40px;
 
+            .deck-title-panel {
+                background: $panel-color;
+                padding: 20px;
+            }
+
             .hero-avatar {
                 float: left;
                 margin-right: 20px;
@@ -38,7 +43,7 @@
                 display: inline-block;
 
                 img {
-                    border-radius: 50%;
+                    border-radius: 5px;
                     width: 100%;
                 }
             }

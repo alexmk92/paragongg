@@ -63,12 +63,13 @@ var DeckDetail = React.createClass({
         return (
             <div>
                 <div className="deck-info">
-                    <div className="cf">
+                    <div className="cf deck-title-panel">
                         <div className="hero-avatar">
                             <img src={ Helpers.getHeroImageURL(this.state.deck.hero)} alt={this.state.deck.hero.name} />
                         </div>
                         <div className="title-wrapper">
-                            <h2>{this.state.deck.title}</h2>
+                            <h3>{this.state.deck.title}</h3>
+                            <h3>{this.state.deck.author.username}</h3>
                         </div>
                     </div>
                     <div className="description">
