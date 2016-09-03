@@ -26,7 +26,7 @@ var Match = React.createClass({
     componentDidMount: function() {
         this.getMatchInterval = setInterval(function() {
             this.getMatchInformation();
-        }.bind(this), 7500);
+        }.bind(this), 5000);
     },
     /* Maybe we will use again in future as a toggle option to show max shared stats
     // If we use this again in future then we need to set a maxStats state on this component
