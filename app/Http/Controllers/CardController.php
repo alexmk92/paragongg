@@ -123,11 +123,11 @@ class CardController extends Controller
             ]
         ])->getBody();
 
-        $response = json_decode($res);
+        $response = json_decode($res, true);
 
         // If card doesn't exist anymore, delete it
         foreach($cards as $card) {
-            if(!is_value_in_array($card->code, $response)) {
+            if(!find_key_value($response, 'id', $card->code)) {
                 $card->delete();
             }
         }

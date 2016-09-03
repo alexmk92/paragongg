@@ -249,18 +249,19 @@ function getPlayerFromMatch($match, $accountId) {
 }
 
 /**
- * @param $needle
- * @param $haystack
+ * @param $array
+ * @param $key
+ * @param $value
  * @return bool
  */
-function is_value_in_array($needle, $haystack) {
-    if(in_array($needle, $haystack)) {
-        return true;
+function find_key_value($array, $key, $value) {
+    foreach ($array as $item)
+    {
+        if (is_array($item) && find_key_value($item, $key, $value)) return true;
+
+        if (isset($item[$key]) && $item[$key] == $value) return true;
     }
-    foreach($haystack as $element) {
-        if(is_array($element) && is_value_in_array($needle, $element))
-            return true;
-    }
+
     return false;
 }
 
