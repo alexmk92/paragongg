@@ -54,6 +54,7 @@ class UpdateCardObject extends Job implements ShouldQueue
         $card->affinity = $this->object['affinities'][0];
         $card->rarity   = $this->object['rarity'];
         $card->damageType = $this->object['damageType'];
+        if($card->name == "The Archmagus") $card->damageType = 'Energy';
         $card->effects = $this->object['effects'];
         if(isset($this->object['maxedEffects'])) {
             $card->maxedEffects = $this->object['maxedEffects'];

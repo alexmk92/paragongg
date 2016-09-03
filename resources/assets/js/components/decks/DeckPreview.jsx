@@ -72,8 +72,8 @@ var DeckPreview = React.createClass({
 
         // NEW BADGE
         var timeDiff = Math.abs(created_at.getTime() - new Date().getTime());
-        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-        if(diffDays >= 0 && diffDays <= 2)
+        var diffHours = Math.ceil(timeDiff / (1000 * 3600));
+        if(diffHours >= 0 && diffHours <= 6)
             return <span className={"stat new"}>New</span>;
 
         return "";
