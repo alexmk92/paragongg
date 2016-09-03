@@ -65,15 +65,15 @@ var Match = React.createClass({
                 if(!Helpers.isNullOrUndefined(replay) && replay.hasOwnProperty('data')) {
                     //var maxStats = this.computeMaxStats(replay.data);
                     var oldTime = replay.data.startedAt;
+                    // if its a live game offset by 3 minutes so we can be in sync on event feed
                     if(replay.data.isLive === true) {
-                        var newTime = new Date(oldTime).getTime() + 120000;
+                        var newTime = new Date(oldTime).getTime() + 180000;
                         replay.data.startedAt = new Date(newTime);
                     } else {
                         clearInterval(this.getMatchInterval);
-                        console.log('cleared the get match interval and set replay time to its old state');
                         replay.data.startedAt = oldTime;
                     }
-                    this.setState({ matchInfo:replay.data });
+                    this.setState({ matchInfo: replay.data });
                 }
             }.bind(this));
         }

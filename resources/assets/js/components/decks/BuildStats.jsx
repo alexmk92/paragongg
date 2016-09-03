@@ -20,7 +20,7 @@ var BuildStats = React.createClass({
         }
     },
     componentDidMount: function() {
-        this.sliderChanged(1);
+        this.sliderChanged(15);
         if(this.state.compareAllBuilds) {
             setTimeout(function() {
                 var newComparisons = this.getComparisonFields();
@@ -804,7 +804,7 @@ var BuildStats = React.createClass({
                         <div id="statistic-title-wrapper">
                             <h3>{ isBuildEmpty !== null ? "Build" : "Deck" } statistics</h3>
                             <div id="rank-slider">
-                                <Rcslider defaultValue={1} min={1} max={15} onChange={this.sliderChanged}
+                                <Rcslider defaultValue={15} min={1} max={15} onChange={this.sliderChanged}
                                           tipFormatter={null}/>
                             </div>
                         </div>
