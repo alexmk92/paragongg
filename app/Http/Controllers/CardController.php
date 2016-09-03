@@ -115,7 +115,7 @@ class CardController extends Controller
 
         // Get latest cards list
         $client = new Client();
-        $res = $client->request('GET', 'https://developer-paragon.epicgames.com/v1/cards', [
+        $res = $client->request('GET', 'https://developer-paragon.epicgames.com/v1/cards/complete', [
             'headers' => [
                 'Accept'        => 'application/json',
                 'Authorization' => 'Bearer '.APIToken(),

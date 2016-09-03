@@ -8,7 +8,9 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Exception\NotReadableException;
 use Intervention\Image\Facades\Image;
 
 /**
@@ -38,51 +40,94 @@ class UpdateCardObject extends Job implements ShouldQueue
      */
     public function handle()
     {
-        $client = new Client();
         $card = Card::where('code', $this->object->id)->first();
 
+        // Update card stats
         if (!$card) {
-            Card::create(['name' => $this->object->name, 'code' => $this->object->id]);
-            $this->dispatch(new UpdateCardImage($this->object));
-        } else {
-            // Check background image
-            $filename_background = explode('/', $this->object->images->large);
-            $filename_background = end($filename_background);
-            $filename_background = pathinfo($filename_background, PATHINFO_FILENAME);
-
-            $filename_icon = explode('/', $this->object->images->icon);
-            $filename_icon = end($filename_icon);
-            $filename_icon = pathinfo($filename_icon, PATHINFO_FILENAME);
-
-            if(!$card->background || $card->background != $filename_background || !$card->icon || $card->icon != $filename_icon) {
-                $this->dispatch(new UpdateCardImage($this->object));
-            }
+            $card = Card::create(['name' => $this->object->name, 'code' => $this->object->id]);
         }
 
-        $cardDetails = $client->request('GET', 'https://developer-paragon.epicgames.com/v1/card/' . $this->object->id, [
-            'headers' => [
-                'Accept' => 'application/json',
-                'Authorization' => 'Bearer ' . APIToken(),
-                'X-Epic-ApiKey' => env('EPIC_API_KEY'),
-            ]
-        ])->getBody();
-
-        $cardDetails = json_decode($cardDetails);
-
-        $card = Card::where('code', $this->object->id)->first();
-        $card->name = $cardDetails->name;
-        $card->slug = createSlug($card->name);
-        $card->type = $cardDetails->slotType;
-        $card->cost = $cardDetails->cost;
-        $card->images = $cardDetails->images;
-        $card->upgradeSlots = $cardDetails->upgradeSlots;
-        $card->affinity = $cardDetails->affinities[0];
-        $card->rarity   = $cardDetails->rarity;
-        $card->damageType = $cardDetails->damageType;
-        $card->effects = $cardDetails->effects;
-        if($cardDetails->maxedEffects) {
-            $card->maxedEffects = $cardDetails->maxedEffects;
+        $card->name = $this->object->name;
+        $card->slug = createSlug($this->object->name);
+        $card->type = $this->object->slotType;
+        $card->cost = $this->object->cost;
+        $card->images = $this->object->images;
+        $card->upgradeSlots = $this->object->upgradeSlots;
+        $card->affinity = $this->object->affinities[0];
+        $card->rarity   = $this->object->rarity;
+        $card->damageType = $this->object->damageType;
+        $card->effects = $this->object->effects;
+        if($this->object->maxedEffects) {
+            $card->maxedEffects = $this->object->maxedEffects;
         }
         $card->save();
+
+        $this->getArt($card);
+    }
+
+    /**
+     * @param Card $card
+     */
+    public function getArt($card)
+    {
+        $storage = Storage::disk('s3');
+
+        // Save the background image
+        $filename = explode('/', $this->object->images->large);
+        $filename = end($filename);
+        $filename = pathinfo($filename, PATHINFO_FILENAME);
+
+        if(!$card->background || $card->background != $filename) {
+            // If an old image exists, delete the directory
+            if($card->background) $storage->deleteDirectory('images/cards/'.$this->object->id.'/'.$filename);
+
+            try {
+                $background_large  = Image::make('http:' . $this->object->images->large)->stream()->getContents();
+            } catch(NotReadableException $exception) {
+                Log::info("Couldn't retrieve card art (background) for: ".$card->code);
+                $background_large = Image::make('https://paragon.gg/assets/images/cards/card-placeholder.png')->stream()->getContents();
+            }
+
+            $background_medium = Image::make($background_large)->resize(150,200)->stream()->getContents();
+
+            // Upload these to S3
+            $storage->getDriver()->put('images/cards/' . $this->object->id . '/'.$filename.'/background_large.png', $background_large, ["CacheControl" => "max-age=31536000"]);
+            $storage->getDriver()->put('images/cards/' . $this->object->id . '/'.$filename.'/background_medium.png', $background_medium, ["CacheControl" => "max-age=31536000"]);
+
+            // Update the card background with the new filename
+            $card->background = $filename;
+            $card->save();
+
+        }
+
+        // Save the icon
+        $filename = explode('/', $this->object->images->icon);
+        $filename = end($filename);
+        $filename = pathinfo($filename, PATHINFO_FILENAME);
+
+        if(!$card->icon || $card->icon != $filename) {
+            // If an old image exists, delete the directory
+            if($card->icon) $storage->deleteDirectory('images/cards/'.$this->object->id.'/'.$filename);
+
+            try {
+                $icon_large  = Image::make('http:' . $this->object->images->icon)->stream()->getContents();
+            } catch(NotReadableException $exception) {
+                Log::info("Couldn't retrieve card art (icon) for: ".$card->code);
+                $icon_large = Image::make('https://paragon.gg/assets/images/cards/card-icon-placeholder.png')->stream()->getContents();
+            }
+
+            $icon_medium = Image::make($icon_large)->resize(256,256)->stream()->getContents();
+            $icon_small = Image::make($icon_large)->resize(128,128)->stream()->getContents();
+
+            // Upload these to S3
+            $storage->getDriver()->put('images/cards/' . $this->object->id . '/'.$filename.'/icon_large.png', $icon_large, ["CacheControl" => "max-age=31536000"]);
+            $storage->getDriver()->put('images/cards/' . $this->object->id . '/'.$filename.'/icon_medium.png', $icon_medium, ["CacheControl" => "max-age=31536000"]);
+            $storage->getDriver()->put('images/cards/' . $this->object->id . '/'.$filename.'/icon_small.png', $icon_small, ["CacheControl" => "max-age=31536000"]);
+
+            // Update the card icon with the new filename
+            $card->icon = $filename;
+            $card->save();
+
+        }
     }
 }
