@@ -97,25 +97,22 @@ var TeamPanel = React.createClass({
                     <td className="hero">
                         <div className="split">
                             <div>
-                                <img className="hero-preview" src={this.getHeroImage(player)} />
+                                <img className="hero-preview" src={this.getHeroImage(player)} title={this.getHeroName(player)} />
                             </div>
                             <div>
-                                <span className="highlight">{this.getHeroName(player)}</span>
+                                <span>{this.getPlayerName(player)}</span>
                                 <span className="small">Level {player.heroLevel}</span>
                             </div>
                         </div>
-                    </td>
-                    <td>
-                        <span>{this.getPlayerName(player)}</span>
-                        {/*{this.getElo(player)}*/}
                     </td>
                     <td>
                         <span>
                             <span className="highlight">{player.kills}</span>/
                             <span className="highlight">{player.deaths}</span>/
                             <span className="highlight">{player.assists}</span>
+                            <span className="small">{this.getKP(player)}</span>
                         </span>
-                        <span className="small">{this.getKDA(player)}</span>
+                        <span className="small">{this.getKDA(player)} KDA</span>
                     </td>
                     <td className="damage">
                         <span className="small">{Helpers.pretifyNumber(player.damageToHeroes)}</span>
@@ -179,10 +176,17 @@ var TeamPanel = React.createClass({
         if(tK === 0) tK = 1;
         var deaths = player.deaths === 0 ? 1 : player.deaths;
 
-        var kda = Helpers.dropZeroesAndDelimitNumbers((player.kills + player.assists) / deaths);
+        return Helpers.dropZeroesAndDelimitNumbers((player.kills + player.assists) / deaths);
+    },
+    getKP: function(player) {
+        var tK = 0;
+        this.state.players.forEach(function(p) {
+            tK += p.kills;
+        });
+
         var participation = Math.ceil(((player.kills + player.assists) / tK) * 100);
 
-        return kda + ' KDA (' + participation + '%)';
+        return ' (' + participation + '%)';
     },
     getTeamScore: function() {
         if(this.state.players !== null) {
@@ -233,8 +237,7 @@ var TeamPanel = React.createClass({
         return (
             <tr className="total">
                 <td></td>
-                <td></td>
-                <td></td>
+                <td className="damageLabel"><span className="small">Total damage:</span></td>
                 <td className="damage"><span className="small">{Helpers.pretifyNumber(heroDamage)}</span></td>
                 <td className="damage"><span className="small">{Helpers.pretifyNumber(towerDamage)}</span></td>
                 <td className="damage"><span className="small">{Helpers.pretifyNumber(minionDamage)}</span></td>
@@ -270,14 +273,13 @@ var TeamPanel = React.createClass({
                 <table className="scoreboard">
                     <thead>
                     <tr>
-                        <th className="hero">Hero</th>
-                        <th>Player</th>
+                        <th className="hero">Player</th>
                         <th>Score</th>
                         <th className="damage">Heroes</th>
                         <th className="damage">Towers</th>
                         <th className="damage">Minions</th>
                         <th className="damage">Jungle</th>
-                        <th className="damage">Rigs</th>
+                        <th className="damage">Wells</th>
                         <th className="damage">Inhibitors</th>
                     </tr>
                     </thead>
