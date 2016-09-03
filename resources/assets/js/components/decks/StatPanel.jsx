@@ -63,6 +63,16 @@ var StatPanel = React.createClass({
                     // New stats is what we merge with the final array
                     newStats.some(function(stat) {
                         if(stat.ref === compareStat) {
+                            // This function will ensure that scalings for physical damage/pen wont work for energy damage scaling heroes
+                            if(!Helpers.isNullOrUndefined(this.props.heroScaling)) {
+                                if((compareStat === 'ATTACKRATING-P' || compareStat === 'PHYSICALPENETRATIONRATING') && this.props.heroScaling.toUpperCase() === 'ENERGYDAMAGE') {
+                                    stat.modified = false;
+                                    return true;
+                                } else if((compareStat === 'ATTACKRATING-E' || compareStat === 'ENERGYPENETRATIONRATING') && this.props.heroScaling.toUpperCase() === 'PHYSICALDAMAGE') {
+                                    stat.modified = false;
+                                    return true;
+                                }
+                            }
                             var oldValue = stat.value;
                             stat.value = Helpers.dropZeroesAndDelimitNumbers(stat.value = (stat.value + effect.value));
                             stat.modified = stat.value !== oldValue;
@@ -70,10 +80,10 @@ var StatPanel = React.createClass({
                             return true;
                         }
                         return false;
-                    })
+                    }.bind(this))
                 }
-            });
-        });
+            }.bind(this));
+        }.bind(this));
         return newStats;
     },
     getCardStats: function(build) {
