@@ -147,14 +147,14 @@ var BuildStats = React.createClass({
         if(Helpers.isClientMobile()) {
             return (
                 <div id="statistic-wrapper">
-                    <StatPanel reset={this.props.resetStatPanel} title={ "Build stats" } heroRank={this.state.currentRank} heroStats={ this.props.hero.baseStats  } cardStats={ this.props.cards } build={this.props.selectedBuild} />
+                    <StatPanel reset={this.props.resetStatPanel} title={ "Build stats" } heroRank={this.state.currentRank} heroStats={ this.props.hero.baseStats  } heroScaling={ this.props.hero.scale } cardStats={ this.props.cards } build={this.props.selectedBuild} />
                 </div>
             )
         } else {
             return (
                 <div id="statistic-wrapper">
-                    <StatPanel reset={this.props.resetStatPanel} title={ "Base stats (" + this.props.hero.name + ")" } heroRank={this.state.currentRank} heroStats={ this.props.hero.baseStats } />
-                    <StatPanel title={ "Build stats" } heroRank={this.state.currentRank} heroStats={ this.props.hero.baseStats } cardStats={ this.props.cards } build={this.props.selectedBuild} />
+                    <StatPanel reset={this.props.resetStatPanel} title={ "Base stats (" + this.props.hero.name + ")" } heroRank={this.state.currentRank} heroStats={ this.props.hero.baseStats } heroScaling={ this.props.hero.scale } />
+                    <StatPanel title={ "Build stats" } heroRank={this.state.currentRank} heroStats={ this.props.hero.baseStats } heroScaling={ this.props.hero.scale } cardStats={ this.props.cards } build={this.props.selectedBuild} />
                 </div>
             )
         }

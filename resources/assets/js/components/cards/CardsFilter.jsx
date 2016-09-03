@@ -425,6 +425,7 @@ var CardsFilter = React.createClass({
         // TODO Refactor this method, there is a hefty amount of code duplication.  This will however stop heroes that aren't the correct scaling to see that type of damage card
         // If we are filtering for a specific hero, then a damageScaling prop will be passed, we want to hide cards of this damage
         // type as heroes like gadgets cannot equip them.
+        /* IF THIS EVER CHANGE IN FUTURE, WE MIGHT ADD THIS BACk, HERO SCALING HIDES DAMAGE CARDS FOR THE OPPOSITE TYPE , SO GREYSTONE MAY ONLY EQUIP PHYSICAL DAMAGE
         if(!Helpers.isNullOrUndefined(this.props.heroScaling)) {
             if(card.effects) {
                 card.effects.forEach(function(effect) {
@@ -485,6 +486,7 @@ var CardsFilter = React.createClass({
                 }.bind(this));
             }
         }
+        */
 
         return matches;
     },
