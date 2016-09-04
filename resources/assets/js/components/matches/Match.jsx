@@ -67,7 +67,7 @@ var Match = React.createClass({
                     var oldTime = replay.data.startedAt;
                     // if its a live game offset by 3 minutes so we can be in sync on event feed
                     if(replay.data.isLive === true) {
-                        var newTime = new Date(oldTime).getTime() + 240000;
+                        var newTime = new Date(oldTime).getTime() + 200000;
                         replay.data.startedAt = new Date(newTime);
                     } else {
                         clearInterval(this.getMatchInterval);
