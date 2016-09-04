@@ -65,9 +65,9 @@ var Match = React.createClass({
                 if(!Helpers.isNullOrUndefined(replay) && replay.hasOwnProperty('data')) {
                     //var maxStats = this.computeMaxStats(replay.data);
                     var oldTime = replay.data.startedAt;
-                    // if its a live game offset by 3 minutes so we can be in sync on event feed
+                    // if its a live game offset by 3.5 minutes so we can be in sync on event feed
                     if(replay.data.isLive === true) {
-                        var newTime = new Date(oldTime).getTime() + 200000;
+                        var newTime = new Date(oldTime).getTime() + 220000;
                         replay.data.startedAt = new Date(newTime);
                     } else {
                         clearInterval(this.getMatchInterval);
