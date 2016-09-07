@@ -9,12 +9,12 @@ require('particles.js');
 var HeroStats = React.createClass({
     getInitialState: function() {
         return {
-            multiplier : 1,
+            multiplier : 15,
             statistics : []
         }
     },
     componentDidMount: function() {
-        this.sliderChanged(1);
+        this.sliderChanged(15);
         particlesJS('particle-layer', ParticleTheme.sparks());
     },
     componentWillMount: function() {
@@ -122,7 +122,7 @@ var HeroStats = React.createClass({
                 </div>
 
                 <div id="rank-slider">
-                    <Rcslider defaultValue={1} min={1} max={15} onChange={this.sliderChanged} tipFormatter={null}  />
+                    <Rcslider defaultValue={15} min={1} max={15} onChange={this.sliderChanged} tipFormatter={null}  />
                 </div>
 
                 <ul id="stat-container">

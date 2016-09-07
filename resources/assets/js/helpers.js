@@ -33,7 +33,7 @@ module.exports = {
     getAllStatistics: function() {
         return [
             { ref : "ATTACKSPEEDRATING", label : "Attack Speed", icon: "pgg pgg-attack-speed", modifier : "", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "attack_speed" },
-            { ref : "COOLDOWNREDUCTIONPERCENTAGE", label : "Cooldown Reduction", icon: "pgg pgg-cooldown-reduction", modifier : "%", value : 0, modified: false, multiplier: 100, divider: 1, statRef: "cooldown_reduction" },
+            { ref : "COOLDOWNREDUCTIONPERCENTAGE", label : "Cooldown Reduction", icon: "pgg pgg-cooldown-reduction", modifier : "%", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "cooldown_reduction" },
             { ref : "MAXENERGY", label : "Max Mana", icon: "pgg pgg-max-mana", modifier : "", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "max_mana" },
             { ref : "MAXHEALTH", label : "Max Health", icon: "pgg pgg-max-health", modifier : "", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "max_health" },
             { ref : "ENERGYREGENRATE", label : "Mana Regen", icon: "pgg pgg-mana-regeneration", modifier : "/s", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "mana_regen"   },
@@ -41,7 +41,7 @@ module.exports = {
             { ref : "PHYSICALPENETRATIONRATING", label : "Physical Pen", icon: "pgg pgg-physical-penetration", modifier : "", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "physical_pen"   },
             { ref : "ENERGYPENETRATIONRATING", label : "Energy Pen", icon: "pgg pgg-armor-penetration", modifier : "", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "energy_pen"   },
             { ref : "CRITICALDAMAGEBONUS", label : "Critical Damage", icon: "pgg pgg-critical-strike-damage", modifier : "%", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "crit_bonus"   },
-            { ref : "CRITICALDAMAGECHANCE", label : "Critical Chance", icon: "pgg pgg-critical-strike-chance", modifier : "%", value : 0, modified: false, multiplier: 100, divider: 1, statRef: "crit_chance"   },
+            { ref : "CRITICALDAMAGECHANCE", label : "Critical Chance", icon: "pgg pgg-critical-strike-chance", modifier : "%", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "crit_chance"   },
             { ref : "HEALTHREGENRATE", label : "Health Regen", icon: "pgg pgg-health-regeneration", modifier : "/s", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "health_regen"  },
             { ref : "ENERGYRESISTANCERATING", label : "Energy Armor", icon: "pgg pgg-energy-armor", modifier : "", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "energy_armor"   },
             { ref : "PHYSICALRESISTANCERATING", label : "Physical Armor", icon : "pgg pgg-physical-armor", modifier : "", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "physical_armor"   },
@@ -109,7 +109,7 @@ module.exports = {
 
         switch(statLabel.toUpperCase()) {
             case "ATTACKSPEEDRATING": return { label : "Attack Speed", icon: "pgg pgg-attack-speed", modifier : "", multiplier: 1, statRef: 'attack_speed' }; break;
-            case "COOLDOWNREDUCTIONPERCENTAGE": return { label : "Cooldown Reduction", icon: "pgg pgg-cooldown-reduction", modifier : "%", multiplier: 100, statRef: 'cooldown_reduction' }; break;
+            case "COOLDOWNREDUCTIONPERCENTAGE": return { label : "Cooldown Reduction", icon: "pgg pgg-cooldown-reduction", modifier : "%", multiplier: 1, statRef: 'cooldown_reduction' }; break;
             case "MAXENERGY" : return { label : "Max Mana", icon: "pgg pgg-max-mana", modifier : "", multiplier: 1, statRef: 'max_mana' }; break;
             case "MAXHEALTH" : return { label : "Max Health", icon: "pgg pgg-max-health", modifier : "", multiplier: 1, statRef: 'max_health' }; break;
             case "ENERGYREGENRATE" : return { label : "Mana Regen", icon: "pgg pgg-mana-regeneration", modifier : "/s", multiplier: 1, statRef: 'mana_regen' }; break;
@@ -118,8 +118,8 @@ module.exports = {
             case "LIFESTEALRATING" : return { label : "Lifesteal", icon: "pgg pgg-lifesteal", modifier : "%", multiplier: 1, statRef: 'lifesteal' }; break;
             case "PHYSICALPENETRATIONRATING" : return { label : "Physical Pen", icon: "pgg pgg-physical-penetration", modifier : "", multiplier: 1, statRef: 'physical_pen' }; break;
             case "ENERGYPENETRATIONRATING" : return { label : "Energy Pen", icon: "pgg pgg-armor-penetration", modifier : "", multiplier: 1, statRef: 'energy_pen' }; break;
-            case "CRITICALDAMAGEBONUS" : return { label : "Critical Damage", icon: "pgg pgg-critical-strike-damage", modifier : "%", multiplier: 100, statRef: 'crit_bonus' }; break;
-            case "CRITICALDAMAGECHANCE" : return { label : "Critical Chance", icon: "pgg pgg-critical-strike-chance", modifier : "%", multiplier: 100, statRef: 'crit_chance' }; break;
+            case "CRITICALDAMAGEBONUS" : return { label : "Critical Damage", icon: "pgg pgg-critical-strike-damage", modifier : "%", multiplier: 1, statRef: 'crit_bonus' }; break;
+            case "CRITICALDAMAGECHANCE" : return { label : "Critical Chance", icon: "pgg pgg-critical-strike-chance", modifier : "%", multiplier: 1, statRef: 'crit_chance' }; break;
             case "HEALTHREGENRATE" : return { label : "Health Regen", icon: "pgg pgg-health-regeneration", modifier : "/s", multiplier: 1, statRef: 'health_regen' }; break;
             case "ENERGYRESISTANCERATING" : return { label : "Energy Armor", icon: "pgg pgg-energy-armor", modifier : "", multiplier: 1, statRef: 'energy_armor' }; break;
             case "PHYSICALRESISTANCERATING" : return { label : "Physical Armor", icon : "pgg pgg-physical-armor", modifier : "", multiplier: 1, statRef: 'physical_armor' }; break;

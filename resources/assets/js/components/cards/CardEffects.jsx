@@ -65,7 +65,7 @@ var CardEffects = React.createClass({
                 if(statistic !== null) {
                     // stat was sometimes being expressed as 600%, added this code to ensure only numbers with a multiplier below 0 will be
                     // scaled to there full integer value
-                    var value = stat.value < 1 ? (stat.value * statistic.multiplier) : stat.value;
+                    var value = stat.value < 1 ? (stat.value * 100) : stat.value;
                     items.push(
                         <li key={"stat_" + i}>
                             <span className="value">{ Helpers.dropZeroesAndDelimitNumbers(value) + "" + statistic.modifier }</span>
