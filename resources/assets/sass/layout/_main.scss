@@ -93,6 +93,10 @@ body {
     font-family: monospace;
     text-align: center;
     margin: 0;
+    &.replayId {
+        text-align: left;
+        max-width: 350px;
+    }
 }
 .hidden {
     display: none;

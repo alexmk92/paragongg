@@ -185,6 +185,7 @@ var TeamPanel = React.createClass({
         });
 
         var participation = Math.ceil(((player.kills + player.assists) / tK) * 100);
+        if(isNaN(participation)) participation = 0;
 
         return ' (' + participation + '%)';
     },

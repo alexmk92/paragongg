@@ -28,6 +28,14 @@
         min-height: 400px;
         height: 650px;
 
+        .pgg {
+            &:before {
+                font-size: 120%;
+                vertical-align: middle;
+                margin-right: 3px;
+            }
+        }
+
         h3 {
             .ability-icon {
                 display: inline-block;

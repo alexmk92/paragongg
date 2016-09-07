@@ -106,12 +106,67 @@
     .stat-list {
         li {
             margin-bottom: 20px;
+            &:last-of-type {
+                margin-bottom: 0;
+            }
         }
         span {
-            font-size: 20px;
+            font-size: 18px;
             &.faded {
                 font-weight: 300;
                 color: #999999;
+            }
+        }
+        .pgg {
+            margin-right: 5px;
+            font-size: 16px;
+        }
+    }
+    .liveDisclaimer {
+        display: block;
+        line-height: 110%;
+        font-size: 14px;
+        font-family: $font-condensed;
+        color: $font-color-faded;
+        margin-bottom: 15px;
+    }
+    .awards-list {
+        li {
+            background-color: $panel-color;
+            border: 1px solid $faded-line;
+            padding: 10px 15px;
+            max-width: 400px;
+            width: 100%;
+            display: table;
+            .content {
+                vertical-align: middle;
+                display: table-cell;
+            }
+            .pgg {
+                font-size: 54px;
+                display: table-cell;
+                width: 80px;
+                &:before {
+                    vertical-align: middle;
+                }
+            }
+            .title {
+                color: white;
+                display: block;
+                font-weight: 300;
+            }
+            .username {
+                color: $tertiary-highlight;
+                display: block;
+                font-size: 16px;
+                font-weight: bold;
+                margin: 5px 0;
+            }
+            .stats {
+                color: $font-color-faded;
+                display: block;
+                font-family: $font-condensed;
+                font-size: 16px;
             }
         }
     }

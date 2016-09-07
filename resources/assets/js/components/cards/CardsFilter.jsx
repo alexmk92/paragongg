@@ -37,7 +37,7 @@ var CardsFilter = React.createClass({
             statistics : [
                 { name : "Physical Damage", iconName : "pgg-physical-damage", ref : "ATTACKRATING-P", checked : false },
                 { name : "Energy Damage", iconName : "pgg-energy-damage", ref : "ATTACKRATING-E", checked : false },
-                { name : "Energy Pen", iconName : "pgg-energy-damage", ref : "ENERGYPENETRATIONRATING", checked : false },
+                { name : "Energy Pen", iconName : "pgg-energy-penetration", ref : "ENERGYPENETRATIONRATING", checked : false },
                 { name : "Physical Pen", iconName : "pgg-physical-penetration", ref : "PHYSICALPENETRATIONRATING", checked : false },
                 { name : "Energy Armor", iconName : "pgg-energy-armor", ref : "ENERGYRESISTANCERATING", checked : false },
                 { name : "Physical Armor", iconName : "pgg-physical-armor", ref : "PHYSICALRESISTANCERATING", checked : false },
@@ -779,7 +779,7 @@ var CardsFilter = React.createClass({
                 <DropDown label="Stats"
                           columns={ 2 }
                           title="FILTER BY STATS"
-                          buttonIcon="pgg pgg-armor-penetration"
+                          buttonIcon="pgg pgg-energy-penetration"
                           options={ this.state.statistics }
                           onOptionChanged={this.dropDownChanged}
                 />

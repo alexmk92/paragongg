@@ -87,23 +87,23 @@ var HeroStats = React.createClass({
 
         var affinities = this.props.hero.affinities.map(function(affinity) {
             return(
-                  <i className={"affinity-color pgg pgg-affinity-" + affinity.toLowerCase()} title={"Affinity: " + affinity }></i>
+                <i className={"affinity-color pgg pgg-affinity-" + affinity.toLowerCase()} title={"Affinity: " + affinity }></i>
             );
         });
 
         /*
-        var statistics = this.state.stats.map(function(stat) {
-            var scale = _this.state.multiplier === 1 ? 0 : stat.scaling;
-            var value = isNaN(stat.value) ? stat.value : Helpers.delimitNumbers((stat.value + ( scale * _this.state.multiplier)).toFixed(1));
-            var scaling = stat.scaling !== null ? <span className="scaling">({ stat.scaling } per level)</span> : "";
-            return (
-                <li key={stat.label}>
-                    <label>{ stat.label }</label>
-                    <span><i className={"pgg pgg-" + stat.icon }></i> { value } { scaling }</span>
-                </li>
-            );
-        });
-        */
+         var statistics = this.state.stats.map(function(stat) {
+         var scale = _this.state.multiplier === 1 ? 0 : stat.scaling;
+         var value = isNaN(stat.value) ? stat.value : Helpers.delimitNumbers((stat.value + ( scale * _this.state.multiplier)).toFixed(1));
+         var scaling = stat.scaling !== null ? <span className="scaling">({ stat.scaling } per level)</span> : "";
+         return (
+         <li key={stat.label}>
+         <label>{ stat.label }</label>
+         <span><i className={"pgg pgg-" + stat.icon }></i> { value } { scaling }</span>
+         </li>
+         );
+         });
+         */
         //var slug = Helpers.convertToSlug(this.props.hero.name);
         return (
             <div>

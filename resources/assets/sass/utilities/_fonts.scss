@@ -45,65 +45,14 @@ $pgg-version: "1.0.0";
     //-moz-osx-font-smoothing: grayscale;
     //font-family: "ParagonGG";
 
-    &.pgg-energy-damage:before {
-        content: "\61";
-    }
-    &.pgg-physical-armor:before {
-        content: "\68";
-    }
-    &.pgg-armor-penetration:before {
-        content: "\6c";
-    }
-    &.pgg-movement-speed:before {
-        content: "\6f";
-    }
-    &.pgg-energy-armor:before {
-        content: "\70";
-    }
-    &.pgg-cleave:before {
-        content: "\71";
-    }
-    &.pgg-max-health:before {
-        content: "\72";
-    }
-    &.pgg-physical-damage:before {
-        content: "\73";
-    }
     &.pgg-arrow-left:before {
         content: "\74";
-    }
-    &.pgg-physical-penetration:before {
-        content: "\75";
     }
     &.pgg-arrow-right:before {
         content: "\76";
     }
-    &.pgg-max-mana:before {
-        content: "\77";
-    }
-    &.pgg-attack-speed:before {
-        content: "\78";
-    }
     &.pgg-harvester-placement-time:before {
         content: "\79";
-    }
-    &.pgg-health-regeneration:before {
-        content: "\7a";
-    }
-    &.pgg-cooldown-reduction:before {
-        content: "\41";
-    }
-    &.pgg-critical-strike-damage:before {
-        content: "\42";
-    }
-    &.pgg-lifesteal:before {
-        content: "\43";
-    }
-    &.pgg-mana-regeneration:before {
-        content: "\44";
-    }
-    &.pgg-critical-strike-chance:before {
-        content: "\45";
     }
     &.pgg-affinity-universal:before {
         content: "\47";
@@ -141,9 +90,6 @@ $pgg-version: "1.0.0";
     &.pgg-ranger:before {
         content: "\67";
     }
-    &.pgg-support:before {
-        content: "\69";
-    }
     &.pgg-tank:before {
         content: "\6a";
     }
@@ -155,6 +101,93 @@ $pgg-version: "1.0.0";
     }
     &.pgg-caster:before {
         content: "\6e";
+    }
+    &.pgg-support:before {
+        content: "\69";
+    }
+    &.pgg-stun:before {
+        content: "\46";
+    }
+    &.pgg-mana-regeneration:before {
+        content: "\4d";
+    }
+    &.pgg-bleed:before {
+        content: "\4e";
+    }
+    &.pgg-attack-speed:before {
+        content: "\4f";
+    }
+    &.pgg-max-health:before {
+        content: "\50";
+    }
+    &.pgg-max-mana:before {
+        content: "\51";
+    }
+    &.pgg-cooldown-reduction:before {
+        content: "\52";
+    }
+    &.pgg-critical-strike-chance:before {
+        content: "\53";
+    }
+    &.pgg-movement-speed:before {
+        content: "\54";
+    }
+    &.pgg-physical-armor:before {
+        content: "\55";
+    }
+    &.pgg-critical-strike-damage:before {
+        content: "\56";
+    }
+    &.pgg-energy-armor:before {
+        content: "\57";
+    }
+    &.pgg-physical-damage:before {
+        content: "\58";
+    }
+    &.pgg-physical-penetration:before {
+        content: "\59";
+    }
+    &.pgg-travel-speed:before {
+        content: "\5a";
+    }
+    &.pgg-energy-damage:before {
+        content: "\30";
+    }
+    &.pgg-poison:before {
+        content: "\31";
+    }
+    &.pgg-shield-pierce:before {
+        content: "\32";
+    }
+    &.pgg-energy-penetration:before {
+        content: "\33";
+    }
+    &.pgg-burn:before {
+        content: "\34";
+    }
+    &.pgg-silence:before {
+        content: "\35";
+    }
+    &.pgg-slow:before {
+        content: "\36";
+    }
+    &.pgg-health-regeneration:before {
+        content: "\37";
+    }
+    &.pgg-juggernaut:before {
+        content: "\38";
+    }
+    &.pgg-snare:before {
+        content: "\39";
+    }
+    &.pgg-stasis:before {
+        content: "\21";
+    }
+    &.pgg-lifesteal:before {
+        content: "\22";
+    }
+    &.pgg-cleave:before {
+        content: "\23";
     }
 }
 

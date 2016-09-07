@@ -59,8 +59,7 @@
         padding: 15px;
         line-height: 20px;
         .pgg {
-            margin: 0 3px 0 5px;
-            font-size: 22px;
+            margin: 0 4px 0 0;
         }
         li {
             margin-bottom: 8px;
@@ -80,6 +79,12 @@
                 text-transform: uppercase;
                 margin-bottom: 5px;
             }
+        }
+    }
+    .pgg {
+        &:before {
+            font-size: 110%;
+            vertical-align: middle;
         }
     }
 }

@@ -134,20 +134,20 @@ var StatPanel = React.createClass({
                 return false;
             });
             /*
-            if(Helpers.isNullOrUndefined(stat)) {
-                newStats.some(function(newStat) {
-                    if(newStat.ref === oldStat.ref) {
-                        stat = newStat;
-                        return true;
-                    }
-                    return false;
-                });
-            }
-            if(stat && stat.ref === oldStat.ref) {
-                console.log('checking if: ' + oldStat.value + ' is greater than or equal to: ' + stat.value);
-                stat.modified = !(oldStat.value >= stat.value);
-            }
-            */
+             if(Helpers.isNullOrUndefined(stat)) {
+             newStats.some(function(newStat) {
+             if(newStat.ref === oldStat.ref) {
+             stat = newStat;
+             return true;
+             }
+             return false;
+             });
+             }
+             if(stat && stat.ref === oldStat.ref) {
+             console.log('checking if: ' + oldStat.value + ' is greater than or equal to: ' + stat.value);
+             stat.modified = !(oldStat.value >= stat.value);
+             }
+             */
         });
 
         return newStats;

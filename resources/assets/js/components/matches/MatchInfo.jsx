@@ -6,10 +6,22 @@ var MatchInfo = React.createClass({
             case 'COOP_AI': return 'Coop vs AI'; break;
             case 'SOLO_AI': return 'Solo vs AI'; break;
             case 'PRIVATE': return 'Custom'; break;
-            case 'FEATURED': return 'Featured'; break;
             case 'PVP': return 'Player vs Player'; break;
             default: break;
-        }  
+        }
+    },
+    getMatchIcon: function() {
+        //pgg-skull
+        switch(this.props.gameType.toUpperCase()) {
+            case 'COOP_AI': return 'pgg-paragon-logo'; break;
+            case 'SOLO_AI': return 'pgg-paragon-logo'; break;
+            case 'PRIVATE': return 'pgg-assassin'; break;
+            case 'PVP': return 'pgg-skull'; break;
+            default: break;
+        }
+    },
+    handleFocus: function(e) {
+        e.target.select();
     },
     render: function() {
         return (

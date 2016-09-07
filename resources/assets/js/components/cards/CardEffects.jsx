@@ -7,11 +7,17 @@ var CardEffects = React.createClass({
         description = description.split(" ");
 
         var statuses = [
-            { type : "{status:pen}", value : "", icon : "" },
-            { type : "{status:slow}", value : "Slow",  icon : "" },
-            { type : "{status:bleed}", value : "Bleed",  icon : "" },
-            { type : "{status:psn}", value : "Poison",  icon : "" },
-            { type : "{status:burn}", value : "Burn",  icon : "" }
+            { type : "{status:pen}", value : "", icon : "pgg pgg-shield-pierce" },
+            { type : "{status:slow}", value : "Slow",  icon : "pgg pgg-slow" },
+            { type : "{status:bleed}", value : "Bleed",  icon : "pgg pgg-bleed" },
+            { type : "{status:psn}", value : "Poison",  icon : "pgg pgg-poison" },
+            { type : "{status:burn}", value : "Burn",  icon : "pgg pgg-burn" },
+            { type : "{status:stasis}", value : "Stasis",  icon : "pgg pgg-stasis" },
+            { type : "{status:cleave}", value : "Cleave",  icon : "pgg pgg-cleave" },
+            { type : "{status:silence}", value : "Silence",  icon : "pgg pgg-silence" },
+            { type : "{status:snare}", value : "Snare",  icon : "pgg pgg-snare" },
+            { type : "{status:stun}", value : "Stun",  icon : "pgg pgg-stun" },
+            { type : "{status:juggernaut}", value : "Juggernaut",  icon : "pgg pgg-juggernaut" }
         ];
         var attributes = [
             { type : "{attr:physar}", value : "Physical Armor", icon : "pgg pgg-physical-armor" },
@@ -32,7 +38,7 @@ var CardEffects = React.createClass({
             { type : "{attr:endmg}", value : "Energy Damage", icon : "pgg pgg-energy-damage" },
             { type : "{attr:critch}", value : "Crit Chance", icon : "pgg pgg-critical-strike-chance" }
         ];
-        
+
         return description.map(function (string, i) {
             if (/({[a-zA-Z:]+})/.test(string)) {
                 var node = null;

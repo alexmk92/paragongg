@@ -25,7 +25,7 @@ module.exports = {
     },
     getHeroImageURL: function(hero, size) {
         if(!hero) return "";
-        
+
         if(!size) size = "small";
         return this.S3URL() + "images/heroes/" + hero.code + "/" + hero.image + "/portrait_" + size + ".png"
     },
@@ -39,7 +39,7 @@ module.exports = {
             { ref : "ENERGYREGENRATE", label : "Mana Regen", icon: "pgg pgg-mana-regeneration", modifier : "/s", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "mana_regen"   },
             { ref : "LIFESTEALRATING", label : "Lifesteal", icon: "pgg pgg-lifesteal", modifier : "%", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "lifesteal"   },
             { ref : "PHYSICALPENETRATIONRATING", label : "Physical Pen", icon: "pgg pgg-physical-penetration", modifier : "", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "physical_pen"   },
-            { ref : "ENERGYPENETRATIONRATING", label : "Energy Pen", icon: "pgg pgg-armor-penetration", modifier : "", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "energy_pen"   },
+            { ref : "ENERGYPENETRATIONRATING", label : "Energy Pen", icon: "pgg pgg-energy-penetration", modifier : "", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "energy_pen"   },
             { ref : "CRITICALDAMAGEBONUS", label : "Critical Damage", icon: "pgg pgg-critical-strike-damage", modifier : "%", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "crit_bonus"   },
             { ref : "CRITICALDAMAGECHANCE", label : "Critical Chance", icon: "pgg pgg-critical-strike-chance", modifier : "%", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "crit_chance"   },
             { ref : "HEALTHREGENRATE", label : "Health Regen", icon: "pgg pgg-health-regeneration", modifier : "/s", value : 0, modified: false, multiplier: 1, divider: 1, statRef: "health_regen"  },
@@ -117,7 +117,7 @@ module.exports = {
             case "ATTACKRATING-E" : return { label : "Energy Damage", icon: "pgg pgg-energy-damage", modifier : "", multiplier: 1, statRef: 'energy_damage' }; break;
             case "LIFESTEALRATING" : return { label : "Lifesteal", icon: "pgg pgg-lifesteal", modifier : "%", multiplier: 1, statRef: 'lifesteal' }; break;
             case "PHYSICALPENETRATIONRATING" : return { label : "Physical Pen", icon: "pgg pgg-physical-penetration", modifier : "", multiplier: 1, statRef: 'physical_pen' }; break;
-            case "ENERGYPENETRATIONRATING" : return { label : "Energy Pen", icon: "pgg pgg-armor-penetration", modifier : "", multiplier: 1, statRef: 'energy_pen' }; break;
+            case "ENERGYPENETRATIONRATING" : return { label : "Energy Pen", icon: "pgg pgg-energy-penetration", modifier : "", multiplier: 1, statRef: 'energy_pen' }; break;
             case "CRITICALDAMAGEBONUS" : return { label : "Critical Damage", icon: "pgg pgg-critical-strike-damage", modifier : "%", multiplier: 1, statRef: 'crit_bonus' }; break;
             case "CRITICALDAMAGECHANCE" : return { label : "Critical Chance", icon: "pgg pgg-critical-strike-chance", modifier : "%", multiplier: 1, statRef: 'crit_chance' }; break;
             case "HEALTHREGENRATE" : return { label : "Health Regen", icon: "pgg pgg-health-regeneration", modifier : "/s", multiplier: 1, statRef: 'health_regen' }; break;
@@ -188,7 +188,7 @@ module.exports = {
         else if(stat.includes("{ATTR:CDR}")) {
             return "CDR";
         }
-        
+
         // ATTR Strings dont work here as cant do includes ina  switch
         switch(stat) {
             case "ATTACKSPEEDRATING": return "ATTACK SPEED"; break;
@@ -269,7 +269,7 @@ module.exports = {
     hashCode : function(str) {
         return str.split('').reduce(function (prevHash, currVal) {
             return (prevHash << 5) - prevHash + currVal.charCodeAt(0);
-        }, 0);    
+        }, 0);
     },
     delimitNumbers : function(str) {
         return (str + "").replace(/\b(\d+)((\.\d+)*)\b/g, function(a, b, c) {

@@ -103,9 +103,9 @@
     text-align: center;
 
     .button {
-        font-size: 40px;
+        font-size: 28px;
         display: inline-block;
-        margin-top: -7px;
+        margin-top: 7px;
         cursor: pointer;
         &.sort {
             font-size: 30px;
@@ -191,9 +191,10 @@
                 &.cols-2 {
                     width: 49%;
                 }
-                i {
-                    font-size: 20px !important;
+                .pgg {
+                    font-size: 18px !important;
                     padding-right: 4px;
+                    vertical-align: middle;
                 }
                 input {
                     position: absolute;

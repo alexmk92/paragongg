@@ -5,6 +5,7 @@ var Helpers = require('../../helpers');
 var GameClock = require('./GameClock');
 var EventFeed = require('./EventFeed');
 var MatchInfo = require('./MatchInfo');
+var MatchAwards = require('./MatchAwards');
 var TeamPanel = require('./TeamPanel');
 var moment     = require('moment');
 
@@ -84,6 +85,48 @@ var Match = React.createClass({
         }
         */
     },
+    getHighestKDA: function() {
+        var highestPlayer = null;
+        this.state.matchInfo.players.forEach(function(player) {
+            var deaths = player.deaths === 0 ? 1 : player.deaths;
+            player.KDA = Helpers.dropZeroesAndDelimitNumbers((player.kills + player.assists) / deaths);
+
+            if(!highestPlayer) {
+                if(player.KDA > 0) {
+                    highestPlayer = player;
+                }
+            } else if(player.KDA > highestPlayer.KDA) {
+                highestPlayer = player;
+            }
+        });
+        return highestPlayer;
+    },
+    getHighestTowers: function() {
+        var highestPlayer = null;
+        this.state.matchInfo.players.forEach(function(player) {
+            if(!highestPlayer) {
+                if(player.damageToTowers > 0) {
+                    highestPlayer = player;
+                }
+            } else if(player.damageToTowers > highestPlayer.damageToTowers) {
+                highestPlayer = player;
+            }
+        });
+        return highestPlayer;
+    },
+    getHighestAssists: function() {
+        var highestPlayer = null;
+        this.state.matchInfo.players.forEach(function(player) {
+            if(!highestPlayer) {
+                if(player.assists > 0) {
+                    highestPlayer = player;
+                }
+            } else if(player.assists > highestPlayer.assists) {
+                highestPlayer = player;
+            }
+        });
+        return highestPlayer;
+    },
     render: function() {
         if(!Helpers.isNullOrUndefined(this.state.matchInfo)) {
             console.log('rendering with: ', this.state.matchInfo);
@@ -97,6 +140,11 @@ var Match = React.createClass({
                         <MatchInfo gameType={this.state.matchInfo.gameType}
                                    replayId={this.state.matchInfo.replayId}
                                    date={this.state.matchDate}
+                        />
+                        <MatchAwards kda={this.getHighestKDA()}
+                                     towers={this.getHighestTowers()}
+                                     assists={this.getHighestAssists()}
+                                     gameOver={this.state.matchInfo.endedAt}
                         />
                         <EventFeed players={this.state.matchInfo.players}
                                    events={this.state.matchInfo.towerKills.concat(this.state.matchInfo.playerKills)}
